@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link rel="stylesheet" type="text/css" href="PLUGINS_ROOT/org.polarsys.capella.doc/html/styles.css" media="all"/>
+	</head>
+	<body>
+		<h1 id="Functionalities">Functionalities</h1>
+		<p>Once the Textual Scenario Add-On is installed, you will be able to edit scenarios in textual mode.</p>
+		<h2 id="Textual_Scenario_View">Textual Scenario View</h2>
+		<p>When creating a new scenario diagram (OES, OAS, IS, FS, ES), the scenario editor is displayed as a separate view. The user shall be able to edit a scenario in the embedded Textual Scenario Editor. If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.</p>
+		<h3 id="Consistency_of_the_data">Consistency of the data</h3>
+		<p>In order to maintain consistency between diagram and text, two buttons are available:</p>
+		<ul>
+			<li>
+				<b> refresh button </b>: on pressing the refresh button, the text editor is updated with the data from the diagram
+			</li>
+			<li>
+				<b> save button </b>: on pressing the save button, the diagram is updated with the content described by the textual scenario associated to the current diagram
+			</li>
+		</ul>
+		<p>
+			<img width="760" align="middle" border="0" src="Images/IS_System_SyncButtons.png"/>
+		</p>
+		<h2 id="Syntax_for_the_Textual_Scenario_Editor">Syntax for the Textual Scenario Editor</h2>
+		<h3 id="Adding_Instance_Roles">Adding Instance Roles</h3>
+		<p>Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture level on which our diagram is located, we can add instance roles specifying a keyword (actor, component, function etc) and the name of the instance role (currently the parts associated need to exist already).</p>
+		<h4 id="Keywords">Keywords</h4>
+		<ul>
+			<li>
+				<b> actor </b>: it will create an instance role representing an actor; this keyword is available for IS, ES diagrams at Operational, System, Logical and Physical Level.
+			</li>
+			<li>
+				<b> component </b>: it will create an instance role representing a component; this keyword is available for IS, ES diagrams at System, Logical and Physical Level.
+			</li>
+			<li>
+				<b> configuration_item </b>: it will create an instance role representing a configuration item; this keyword is available for IS diagrams at EPBS Level.
+			</li>
+			<li>
+				<b> entity </b>: it will create an instance role representing an entity; this keyword is available for OES diagrams at Operational Level.
+			</li>
+			<li>
+				<b> role </b>: it will create an instance role representing a role; this keyword is available for OES diagrams at Operational Level.
+			</li>
+			<li>
+				<b> function </b>: it will create an instance role representing a function; this keyword is available for FS diagrams.
+			</li>
+			<li>
+				<b> activity </b>: it will create an instance role representing an activity; this keyword is available for OAS diagrams.
+			</li>
+		</ul>
+		<h4 id="Examples">Examples</h4>
+		<p>
+			<img align="middle" border="0" src="Images/Keywords_Participants_Examples.png"/>
+		</p>
+		<h3 id="Adding_Messages">Adding Messages</h3>
+		<p>The user can create messages between participants assuming the fact that the exchange already exists.</p>
+		<ul>
+			<li>
+				<b> sequence messages </b>: it will add a sequence messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
+				<ul>
+					<li>
+						<b> source_ir" -&gt; "target_ir" : "msg" </b>
+					</li>
+					<li>example:
+						<dl>
+							<dd>"A 1" -&gt; "A 2" : "exec" </dd>
+						</dl>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<b> activate execution </b>: in Capella, we always activate an execution after each sequence message 
+				<b>' -&gt; </b>'; each sequence message implies an activation 
+			</li>
+			<li>
+				<b> deactivate execution </b>: the 
+				<b>' deactivate </b>' keyword is used to deactivate a message; if we have a simple sequence message which ends immediately, the deactivation keyword is not required; if we have a sequence messages that ends later, we shall add the 
+				<b>' withExecution </b>' keyword and it is mandatory to deactivate the message when needed.
+				<ul>
+					<li>example:
+						<dl>
+							<dd>"A 1" -&gt; "A 2" 
+								<b> withExecution </b> : "exec"
+							</dd>
+							<dd>"A 2" -&gt; "A 3"</dd>
+							<dd>
+								<b>deactivate</b> "A 2"
+							</dd>
+						</dl>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<b> create messages </b>: it will add a create messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
+				<ul>
+					<li>
+						<b> "source_ir" -&gt;+ "target_ir" : "msg" </b>
+					</li>
+					<li>example:
+						<dl>
+							<dd>"A 1" -&gt;+ "A 2" : "msg" </dd>
+						</dl>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<b> delete messages </b>: it will add a delete messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
+				<ul>
+					<li>
+						<b> "source_ir" -&gt;x "target_ir" : "msg" </b>
+					</li>
+					<li>example:
+						<dl>
+							<dd>"A 1" -&gt;x "A 2" : "msg" </dd>
+						</dl>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h4 id="Examples_2">Examples</h4>
+		<p>
+			<img align="middle" border="0" src="Images/IS_System_SeqMessages.png"/>
+
+			<br/>
+
+			<br/>
+
+			<img align="middle" border="0" src="Images/IS_System_SeqMessages_FE.png"/>
+
+			<br/>
+
+			<br/>
+
+			<img align="middle" border="0" src="Images/OAS_OA_SeqMessages_Interaction.png"/>
+		</p>
+	</body>
+</html>
