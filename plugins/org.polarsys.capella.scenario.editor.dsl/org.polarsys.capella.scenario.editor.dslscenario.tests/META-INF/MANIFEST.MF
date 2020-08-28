@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.polarsys.capella.scenario.editor.dslscenario.tests
+Bundle-ManifestVersion: 2
+Bundle-Name: org.polarsys.capella.scenario.editor.dslscenario.tests
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.polarsys.capella.scenario.editor.dslscenario.tests; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.polarsys.capella.scenario.editor.dslscenario,
+ org.junit.jupiter.api;bundle-version="[5.0.0,6.0.0)",
+ org.eclipse.xtext.testing,
+ org.eclipse.xtext.xbase.testing,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.polarsys.capella.scenario.editor.dslscenario.tests;x-internal=true

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package 
+			uri = "http://www.polarsys.org/capella/scenario/editor/dslscenario/Dsl"
+			class = "org.polarsys.capella.scenario.editor.dslscenario.dsl.DslPackage"
+			genModel = "model/generated/Dsl.genmodel" />
+	</extension>
+</plugin>

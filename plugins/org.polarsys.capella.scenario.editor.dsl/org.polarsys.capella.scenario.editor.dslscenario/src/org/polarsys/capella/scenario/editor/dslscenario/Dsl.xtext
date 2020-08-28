@@ -1,0 +1,90 @@
+grammar org.polarsys.capella.scenario.editor.dslscenario.Dsl with org.eclipse.xtext.common.Terminals
+
+generate dsl "http://www.polarsys.org/capella/scenario/editor/dslscenario/Dsl"
+
+Model:
+       'scenario' begin = '{' participants+=Participant* 
+        (messagesOrReferences+=(Message|Reference))* 
+        end = '}';
+
+Participant: 
+	 GenericComponent | GenericFunction
+; 
+
+ParticipantUncalled returns Participant: id=ID;
+
+GenericComponent:
+	Entity | Actor | Component | ConfigurationItem | Role
+;
+
+GenericFunction:
+	Function | Activity
+;
+
+Actor:
+	keyword = 'actor' name=STRING
+; 
+
+Component:
+	keyword = 'component' name=STRING (nature = ('unset' | 'behavior' | 'node'))?
+;
+
+ConfigurationItem:
+	keyword = 'configuration_item' name=STRING
+;
+
+Function:
+	keyword = 'function' name=STRING
+;  
+
+Activity:
+	keyword = 'activity' name=STRING
+;  
+
+Entity:
+	keyword = 'entity' name=STRING
+;
+
+Role: 
+	keyword = 'role' name=STRING
+;
+
+Message:
+    SequenceMessageType | ArmTimerMessage | ParticipantDeactivation
+;
+
+MessageUncalled returns Message: id=ID;
+
+SequenceMessageType:
+	(SequenceMessage | CreateMessage | DeleteMessage)
+	(return=ReturnMessage)?
+;
+
+SequenceMessage:
+	source=STRING '->' target=STRING ':' name=STRING 
+;
+
+CreateMessage:
+	source=STRING '->+' target=STRING ':' name=STRING 
+;
+
+DeleteMessage:
+	source=STRING '->x' target=STRING ':' name=STRING 
+;
+
+ReturnMessage:
+	target=STRING '<--' source=STRING ':' name=STRING
+;
+
+ArmTimerMessage:
+	"->>" participant=STRING ':' name=STRING
+;
+
+ParticipantDeactivation:
+    keyword = 'deactivate' name=STRING	
+;
+
+Reference: 
+	keyword = 'ref' 'over' (timelines+=STRING)+ name=STRING
+;
+
