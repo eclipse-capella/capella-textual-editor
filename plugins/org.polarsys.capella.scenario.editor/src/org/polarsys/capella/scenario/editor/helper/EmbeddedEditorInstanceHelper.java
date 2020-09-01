@@ -59,6 +59,11 @@ public class EmbeddedEditorInstanceHelper {
     }
     return name;
   }
+  
+  public static String getScenarioType() {
+	    Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+	    return currentScenario.getKind().toString();
+	  }
 
   /**
    * get the names of the available exchanges

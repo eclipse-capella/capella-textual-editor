@@ -9,6 +9,12 @@ package org.polarsys.capella.scenario.editor.dslscenario.dsl;
  * A representation of the model object '<em><b>Sequence Message</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage#getExecution <em>Execution</em>}</li>
+ * </ul>
  *
  * @see org.polarsys.capella.scenario.editor.dslscenario.dsl.DslPackage#getSequenceMessage()
  * @model
@@ -16,4 +22,26 @@ package org.polarsys.capella.scenario.editor.dslscenario.dsl;
  */
 public interface SequenceMessage extends SequenceMessageType
 {
+  /**
+   * Returns the value of the '<em><b>Execution</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Execution</em>' attribute.
+   * @see #setExecution(String)
+   * @see org.polarsys.capella.scenario.editor.dslscenario.dsl.DslPackage#getSequenceMessage_Execution()
+   * @model
+   * @generated
+   */
+  String getExecution();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage#getExecution <em>Execution</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Execution</em>' attribute.
+   * @see #getExecution()
+   * @generated
+   */
+  void setExecution(String value);
+
 } // SequenceMessage

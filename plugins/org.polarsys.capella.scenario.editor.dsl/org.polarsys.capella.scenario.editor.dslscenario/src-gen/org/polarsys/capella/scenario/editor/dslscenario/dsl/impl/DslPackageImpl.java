@@ -547,6 +547,17 @@ public class DslPackageImpl extends EPackageImpl implements DslPackage
    * @generated
    */
   @Override
+  public EAttribute getSequenceMessage_Execution()
+  {
+    return (EAttribute)sequenceMessageEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getCreateMessage()
   {
     return createMessageEClass;
@@ -766,6 +777,7 @@ public class DslPackageImpl extends EPackageImpl implements DslPackage
     createEAttribute(sequenceMessageTypeEClass, SEQUENCE_MESSAGE_TYPE__TARGET);
 
     sequenceMessageEClass = createEClass(SEQUENCE_MESSAGE);
+    createEAttribute(sequenceMessageEClass, SEQUENCE_MESSAGE__EXECUTION);
 
     createMessageEClass = createEClass(CREATE_MESSAGE);
 
@@ -874,6 +886,7 @@ public class DslPackageImpl extends EPackageImpl implements DslPackage
     initEAttribute(getSequenceMessageType_Target(), ecorePackage.getEString(), "target", null, 0, 1, SequenceMessageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(sequenceMessageEClass, SequenceMessage.class, "SequenceMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getSequenceMessage_Execution(), ecorePackage.getEString(), "execution", null, 0, 1, SequenceMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(createMessageEClass, CreateMessage.class, "CreateMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

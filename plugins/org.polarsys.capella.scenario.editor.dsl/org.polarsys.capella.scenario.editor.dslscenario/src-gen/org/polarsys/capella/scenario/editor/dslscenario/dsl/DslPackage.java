@@ -738,13 +738,22 @@ public interface DslPackage extends EPackage
   int SEQUENCE_MESSAGE__TARGET = SEQUENCE_MESSAGE_TYPE__TARGET;
 
   /**
+   * The feature id for the '<em><b>Execution</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SEQUENCE_MESSAGE__EXECUTION = SEQUENCE_MESSAGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
    * The number of structural features of the '<em>Sequence Message</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SEQUENCE_MESSAGE_FEATURE_COUNT = SEQUENCE_MESSAGE_TYPE_FEATURE_COUNT + 0;
+  int SEQUENCE_MESSAGE_FEATURE_COUNT = SEQUENCE_MESSAGE_TYPE_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.CreateMessageImpl <em>Create Message</em>}' class.
@@ -1343,6 +1352,17 @@ public interface DslPackage extends EPackage
   EClass getSequenceMessage();
 
   /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage#getExecution <em>Execution</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Execution</em>'.
+   * @see org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage#getExecution()
+   * @see #getSequenceMessage()
+   * @generated
+   */
+  EAttribute getSequenceMessage_Execution();
+
+  /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.CreateMessage <em>Create Message</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1756,6 +1776,14 @@ public interface DslPackage extends EPackage
      * @generated
      */
     EClass SEQUENCE_MESSAGE = eINSTANCE.getSequenceMessage();
+
+    /**
+     * The meta object literal for the '<em><b>Execution</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SEQUENCE_MESSAGE__EXECUTION = eINSTANCE.getSequenceMessage_Execution();
 
     /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.CreateMessageImpl <em>Create Message</em>}' class.

@@ -16,6 +16,7 @@ package org.polarsys.capella.scenario.editor.dslscenario.validation;
 
 import java.util.HashSet;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.DslPackage;
@@ -23,6 +24,7 @@ import org.polarsys.capella.scenario.editor.dslscenario.dsl.Function;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Model;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage;
+import org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dslscenario.validation.AbstractDslValidator;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
@@ -36,6 +38,8 @@ public class DslValidator extends AbstractDslValidator {
   public static final String INVALID_NAME = "invalidName";
   
   public static final String DUPILCATED_NAME = "duplicatedName";
+  
+  public static final String DUPILCATED_MESSAGES_NAME = "duplicatedMessageName";
   
   @Check
   public void checkPartExists(final Participant participant) {
@@ -65,9 +69,9 @@ public class DslValidator extends AbstractDslValidator {
   
   @Check
   public void checkMessagesExist(final SequenceMessage message) {
-    boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), message.getTarget()).contains(message.getName());
-    boolean _not = (!_contains);
-    if (_not) {
+    if ((EmbeddedEditorInstanceHelper.getScenarioType().equals("INTERFACE") && 
+      (!EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), message.getTarget()).contains(
+        message.getName())))) {
       this.error("Message does not exist", DslPackage.Literals.MESSAGE__NAME);
     }
   }
@@ -79,11 +83,7 @@ public class DslValidator extends AbstractDslValidator {
     EList<Participant> _participants = model.getParticipants();
     for (final Participant p : _participants) {
       {
-        String _name = p.getName();
-        String _plus = (_name + ":");
-        String _id = p.getId();
-        String _plus_1 = (_plus + _id);
-        boolean _add = names.add(_plus_1);
+        boolean _add = names.add(this.getParticipantsMapKey(p));
         boolean _not = (!_add);
         if (_not) {
           this.error(
@@ -94,5 +94,44 @@ public class DslValidator extends AbstractDslValidator {
         index++;
       }
     }
+  }
+  
+  @Check
+  public void checkDuplicatedMessagesNames(final Model model) {
+    int index = 0;
+    final HashSet<String> names = CollectionLiterals.<String>newHashSet();
+    EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
+    for (final EObject p : _messagesOrReferences) {
+      {
+        if ((p instanceof SequenceMessageType)) {
+          boolean _add = names.add(this.getMessagesMapKey(((SequenceMessageType)p)));
+          boolean _not = (!_add);
+          if (_not) {
+            this.error(
+              "Multiple messages with the same name", 
+              DslPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, index, 
+              DslValidator.DUPILCATED_MESSAGES_NAME);
+          }
+        }
+        index++;
+      }
+    }
+  }
+  
+  public String getParticipantsMapKey(final Participant p) {
+    String _name = p.getName();
+    String _plus = (_name + ":");
+    String _keyword = p.getKeyword();
+    return (_plus + _keyword);
+  }
+  
+  public String getMessagesMapKey(final SequenceMessageType m) {
+    String _name = m.getName();
+    String _plus = (_name + ":");
+    String _source = m.getSource();
+    String _plus_1 = (_plus + _source);
+    String _plus_2 = (_plus_1 + ":");
+    String _target = m.getTarget();
+    return (_plus_2 + _target);
   }
 }
