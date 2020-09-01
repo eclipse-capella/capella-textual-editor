@@ -37,7 +37,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//SequenceMessageType/source"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//SequenceMessageType/target"/>
     </genClasses>
-    <genClasses ecoreClass="Dsl.ecore#//SequenceMessage"/>
+    <genClasses ecoreClass="Dsl.ecore#//SequenceMessage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//SequenceMessage/execution"/>
+    </genClasses>
     <genClasses ecoreClass="Dsl.ecore#//CreateMessage"/>
     <genClasses ecoreClass="Dsl.ecore#//DeleteMessage"/>
     <genClasses ecoreClass="Dsl.ecore#//ReturnMessage">

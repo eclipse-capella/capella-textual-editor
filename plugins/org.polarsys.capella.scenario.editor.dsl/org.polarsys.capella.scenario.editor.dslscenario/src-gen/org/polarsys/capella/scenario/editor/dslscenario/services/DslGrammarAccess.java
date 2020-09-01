@@ -453,15 +453,17 @@ public class DslGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cHyphenMinusGreaterThanSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cTargetAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cTargetSTRINGTerminalRuleCall_2_0 = (RuleCall)cTargetAssignment_2.eContents().get(0);
-		private final Keyword cColonKeyword_3 = (Keyword)cGroup.eContents().get(3);
-		private final Assignment cNameAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cNameSTRINGTerminalRuleCall_4_0 = (RuleCall)cNameAssignment_4.eContents().get(0);
+		private final Assignment cExecutionAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cExecutionWithExecutionKeyword_3_0 = (Keyword)cExecutionAssignment_3.eContents().get(0);
+		private final Keyword cColonKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cNameAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cNameSTRINGTerminalRuleCall_5_0 = (RuleCall)cNameAssignment_5.eContents().get(0);
 		
 		//SequenceMessage:
-		//	source=STRING '->' target=STRING ':' name=STRING;
+		//	source=STRING '->' target=STRING execution='withExecution'? ':' name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//source=STRING '->' target=STRING ':' name=STRING
+		//source=STRING '->' target=STRING execution='withExecution'? ':' name=STRING
 		public Group getGroup() { return cGroup; }
 		
 		//source=STRING
@@ -479,14 +481,20 @@ public class DslGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getTargetSTRINGTerminalRuleCall_2_0() { return cTargetSTRINGTerminalRuleCall_2_0; }
 		
+		//execution='withExecution'?
+		public Assignment getExecutionAssignment_3() { return cExecutionAssignment_3; }
+		
+		//'withExecution'
+		public Keyword getExecutionWithExecutionKeyword_3_0() { return cExecutionWithExecutionKeyword_3_0; }
+		
 		//':'
-		public Keyword getColonKeyword_3() { return cColonKeyword_3; }
+		public Keyword getColonKeyword_4() { return cColonKeyword_4; }
 		
 		//name=STRING
-		public Assignment getNameAssignment_4() { return cNameAssignment_4; }
+		public Assignment getNameAssignment_5() { return cNameAssignment_5; }
 		
 		//STRING
-		public RuleCall getNameSTRINGTerminalRuleCall_4_0() { return cNameSTRINGTerminalRuleCall_4_0; }
+		public RuleCall getNameSTRINGTerminalRuleCall_5_0() { return cNameSTRINGTerminalRuleCall_5_0; }
 	}
 	public class CreateMessageElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dslscenario.Dsl.CreateMessage");
@@ -956,7 +964,7 @@ public class DslGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//SequenceMessage:
-	//	source=STRING '->' target=STRING ':' name=STRING;
+	//	source=STRING '->' target=STRING execution='withExecution'? ':' name=STRING;
 	public SequenceMessageElements getSequenceMessageAccess() {
 		return pSequenceMessage;
 	}

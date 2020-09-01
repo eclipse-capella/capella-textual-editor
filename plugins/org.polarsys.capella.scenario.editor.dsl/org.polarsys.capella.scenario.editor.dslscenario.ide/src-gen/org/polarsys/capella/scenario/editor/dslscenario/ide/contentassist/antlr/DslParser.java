@@ -78,7 +78,8 @@ public class DslParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSequenceMessageTypeAccess().getReturnAssignment_1(), "rule__SequenceMessageType__ReturnAssignment_1");
 			builder.put(grammarAccess.getSequenceMessageAccess().getSourceAssignment_0(), "rule__SequenceMessage__SourceAssignment_0");
 			builder.put(grammarAccess.getSequenceMessageAccess().getTargetAssignment_2(), "rule__SequenceMessage__TargetAssignment_2");
-			builder.put(grammarAccess.getSequenceMessageAccess().getNameAssignment_4(), "rule__SequenceMessage__NameAssignment_4");
+			builder.put(grammarAccess.getSequenceMessageAccess().getExecutionAssignment_3(), "rule__SequenceMessage__ExecutionAssignment_3");
+			builder.put(grammarAccess.getSequenceMessageAccess().getNameAssignment_5(), "rule__SequenceMessage__NameAssignment_5");
 			builder.put(grammarAccess.getCreateMessageAccess().getSourceAssignment_0(), "rule__CreateMessage__SourceAssignment_0");
 			builder.put(grammarAccess.getCreateMessageAccess().getTargetAssignment_2(), "rule__CreateMessage__TargetAssignment_2");
 			builder.put(grammarAccess.getCreateMessageAccess().getNameAssignment_4(), "rule__CreateMessage__NameAssignment_4");

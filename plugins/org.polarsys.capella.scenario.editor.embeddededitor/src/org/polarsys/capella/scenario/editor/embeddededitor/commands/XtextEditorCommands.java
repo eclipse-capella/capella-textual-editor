@@ -15,6 +15,7 @@ package org.polarsys.capella.scenario.editor.embeddededitor.commands;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
@@ -63,28 +64,16 @@ import org.polarsys.capella.scenario.editor.dslscenario.dsl.Entity;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Function;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Model;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant;
+import org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Role;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.DslFactoryImpl;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.ModelImpl;
 import org.polarsys.capella.scenario.editor.dslscenario.ui.provider.DslscenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
+import org.polarsys.capella.scenario.editor.helper.DslConstants;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 public class XtextEditorCommands {
-
-  private static final String KEYWORD_DEACTIVATE = "deactivate";
-  private static final String KEYWORD_ACTOR = "actor";
-  private static final String KEYWORD_COMPONENT = "component";
-  private static final String KEYWORD_ENTITY = "entity";
-  private static final String KEYWORD_FUNCTION = "function";
-  private static final String KEYWORD_ACTIVITY = "activity";
-  private static final String KEYWORD_ROLE = "role";
-  private static final String KEYWORD_CONFIGURATION_ITEM = "configuration_item";
-
-  private static final String COMPONENT_NAME_SYSTEM = "System";
-  private static final String COMPONENT_NAME_PHYSICAL_SYSTEM = "Physical System";
-  private static final String COMPONENT_NAME_LOGICAL_SYSTEM = "Logical System";
-
   public static void xtextToDiagram(Scenario scenario, EmbeddedEditorView embeddedEditorViewPart) {
     if (embeddedEditorViewPart != null) {
       DslscenarioProvider p = embeddedEditorViewPart.getProvider();
@@ -233,6 +222,9 @@ public class XtextEditorCommands {
                 eventSentOperation.setOperation((AbstractEventOperation) exchanges.get(0));
               }
 
+              if(seqMessage.getExecution() == null) {
+            	  doDeactivationSequenceMessage(scenario, target, executionEndsToProcess);
+              }
               sequenceMessages.add(sequenceMessage);
             }
           } else {
@@ -240,28 +232,31 @@ public class XtextEditorCommands {
             // finished.
             // We must move the interaction fragment representing the execution end on the correct position in the
             // ownedInteractionFragments ordered list
-            org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation participantDeactivationMessage = (org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation) messageFromXtext;
+            ParticipantDeactivation participantDeactivationMessage = (ParticipantDeactivation) messageFromXtext;
 
-            // find the timeline (instance role) of the execution that has to end. Search by participant name (TODO -
-            // search by id)
+            // find the timeline (instance role) of the execution that has to end. Search by participant name
             InstanceRole instanceRole = EmbeddedEditorInstanceHelper
                 .getInstanceRole(participantDeactivationMessage.getName());
 
-            // search in the executionEndsToProcess list the last execution started on this timeline (instance role)
-            EList<InteractionFragment> fragments = scenario.getOwnedInteractionFragments();
-            InteractionFragment executionEnd = executionEndsToProcess.stream()
-                .filter(e -> e.getCoveredInstanceRoles().get(0).getName().equals(instanceRole.getName()))
-                .reduce((first, second) -> second).orElse(null);
-
-            // move execution end at the end of the interaction fragments list, then remove it from the processing list
-            if (executionEnd != null) {
-              fragments.move(fragments.size() - 1, executionEnd);
-              executionEndsToProcess.remove(executionEnd);
-            }
+            doDeactivationSequenceMessage(scenario, instanceRole, executionEndsToProcess);
           }
         }
       }
     });
+  }
+  
+  private static void doDeactivationSequenceMessage(Scenario scenario, InstanceRole instanceRole, ArrayList<InteractionFragment> executionEndsToProcess) {
+	// search in the executionEndsToProcess list the last execution started on this timeline (instance role)
+      EList<InteractionFragment> fragments = scenario.getOwnedInteractionFragments();
+      InteractionFragment executionEnd = executionEndsToProcess.stream()
+          .filter(e -> e.getCoveredInstanceRoles().get(0).getName().equals(instanceRole.getName()))
+          .reduce((first, second) -> second).orElse(null);
+
+      // move execution end at the end of the interaction fragments list, then remove it from the processing list
+      if (executionEnd != null) {
+        fragments.move(fragments.size() - 1, executionEnd);
+        executionEndsToProcess.remove(executionEnd);
+      }
   }
 
   /**
@@ -376,28 +371,28 @@ public class XtextEditorCommands {
   private static void addActor(String name, String id, EList<Participant> participants, DslFactory factory) {
     Actor actor = factory.createActor();
     actor.setName(name);
-    actor.setKeyword(KEYWORD_ACTOR);
+    actor.setKeyword(DslConstants.ACTOR);
     participants.add(actor);
   }
 
   private static void addActivity(String name, String id, EList<Participant> participants, DslFactory factory) {
     Activity activity = factory.createActivity();
     activity.setName(name);
-    activity.setKeyword(KEYWORD_ACTIVITY);
+    activity.setKeyword(DslConstants.ACTIVITY);
     participants.add(activity);
   }
 
   private static void addComponent(String name, String id, EList<Participant> participants, DslFactory factory) {
     org.polarsys.capella.scenario.editor.dslscenario.dsl.Component component = factory.createComponent();
     component.setName(name);
-    component.setKeyword(KEYWORD_COMPONENT);
+    component.setKeyword(DslConstants.COMPONENT);
     participants.add(component);
   }
 
   private static void addEntity(String name, String id, EList<Participant> participants, DslFactory factory) {
     Entity entity = factory.createEntity();
     entity.setName(name);
-    entity.setKeyword(KEYWORD_ENTITY);
+    entity.setKeyword(DslConstants.ENTITY);
     participants.add(entity);
   }
 
@@ -405,21 +400,21 @@ public class XtextEditorCommands {
     org.polarsys.capella.scenario.editor.dslscenario.dsl.ConfigurationItem configItem = factory
         .createConfigurationItem();
     configItem.setName(name);
-    configItem.setKeyword(KEYWORD_CONFIGURATION_ITEM);
+    configItem.setKeyword(DslConstants.CONFIGURATION_ITEM);
     participants.add(configItem);
   }
 
   private static void addFunction(String name, String id, EList<Participant> participants, DslFactory factory) {
     Function function = factory.createFunction();
     function.setName(name);
-    function.setKeyword(KEYWORD_FUNCTION);
+    function.setKeyword(DslConstants.FUNCTION);
     participants.add(function);
   }
 
   private static void addRole(String name, String id, EList<Participant> participants, DslFactory factory) {
     Role role = factory.createRole();
     role.setName(name);
-    role.setKeyword(KEYWORD_ROLE);
+    role.setKeyword(DslConstants.ROLE);
     participants.add(role);
   }
 
@@ -433,15 +428,28 @@ public class XtextEditorCommands {
     // and only one end of each execution (the one where execution ends). This means that we should skip
     // the receiving end for each message, so that we don't duplicate the generated xtext message.
     int i = 0;
+    Stack<org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage> messagesToDeactivate = new Stack();
     while (i < ends.length) {
       if (ends[i] instanceof MessageEnd) {
-        EObject seqMessage = copyMessageFromMsgEnd(ends[i], factory);
-        messagesOrReferences.add(seqMessage);
+        EObject message = copyMessageFromMsgEnd(ends[i], factory);
+        messagesOrReferences.add(message);
         // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
         i = i + 2;
+        if(ends[i] instanceof ExecutionEnd) {
+        	// sikp generating deactivate keyword if we have a simple message
+            i = i + 1;
+        }
+        else if(message instanceof org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage){
+        	messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) message);
+        }
       } else {
         EObject participantDeactivateMsg = getParticipantDeactivationMsgFromExecutionEnd(ends[i], factory);
         messagesOrReferences.add(participantDeactivateMsg);
+        
+        if(!messagesToDeactivate.isEmpty()) {
+        	org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage currentSequenceMessage = messagesToDeactivate.pop();
+        	currentSequenceMessage.setExecution(DslConstants.WITH_EXECUTION);
+        }
         i = i + 1;
       }
     }
@@ -461,11 +469,10 @@ public class XtextEditorCommands {
     SequenceMessage seqMessage = ExecutionEndExt.getMessage(end);
     String timelineToDeactivate = seqMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName();
 
-    EObject participantDeactivationMsg = factory.createParticipantDeactivation();
-    ((org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation) participantDeactivationMsg)
-        .setName(timelineToDeactivate);
-    ((org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation) participantDeactivationMsg)
-        .setKeyword(KEYWORD_DEACTIVATE);
+    ParticipantDeactivation participantDeactivationMsg = (ParticipantDeactivation)factory.createParticipantDeactivation();
+    participantDeactivationMsg.setName(timelineToDeactivate);
+    
+    participantDeactivationMsg.setKeyword(DslConstants.DEACTIVATE);
     return participantDeactivationMsg;
   }
 

@@ -61,7 +61,7 @@ SequenceMessageType:
 ;
 
 SequenceMessage:
-	source=STRING '->' target=STRING ':' name=STRING 
+    source=STRING '->' target=STRING (execution = 'withExecution')? ':' name=STRING 
 ;
 
 CreateMessage:
