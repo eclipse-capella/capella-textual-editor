@@ -93,6 +93,7 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
                 }
                 activePage.activate(eeView);
               }
+              eeView.refreshTitleBar(sc.getName());
               EmbeddedEditorInstance.setAssociatedScenarioDiagram(sc); // save the current scenario
               XtextEditorCommands.diagramToXtext(sc, eeView); // update the embedded editor text view
             }
