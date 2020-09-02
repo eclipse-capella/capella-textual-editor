@@ -11,8 +11,6 @@ Participant:
 	 GenericComponent | GenericFunction
 ; 
 
-ParticipantUncalled returns Participant: id=ID;
-
 GenericComponent:
 	Entity | Actor | Component | ConfigurationItem | Role
 ;
@@ -53,15 +51,13 @@ Message:
     SequenceMessageType | ArmTimerMessage | ParticipantDeactivation
 ;
 
-MessageUncalled returns Message: id=ID;
-
 SequenceMessageType:
 	(SequenceMessage | CreateMessage | DeleteMessage)
 	(return=ReturnMessage)?
 ;
 
 SequenceMessage:
-	source=STRING '->' target=STRING ':' name=STRING 
+    source=STRING '->' target=STRING (execution = 'withExecution')? ':' name=STRING 
 ;
 
 CreateMessage:

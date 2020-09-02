@@ -21,7 +21,6 @@ import org.polarsys.capella.scenario.editor.dslscenario.dsl.Message;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.MessageImpl#getId <em>Id</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.MessageImpl#getName <em>Name</em>}</li>
  * </ul>
  *
@@ -29,26 +28,6 @@ import org.polarsys.capella.scenario.editor.dslscenario.dsl.Message;
  */
 public class MessageImpl extends MinimalEObjectImpl.Container implements Message
 {
-  /**
-   * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getId()
-   * @generated
-   * @ordered
-   */
-  protected static final String ID_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getId()
-   * @generated
-   * @ordered
-   */
-  protected String id = ID_EDEFAULT;
-
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -96,31 +75,6 @@ public class MessageImpl extends MinimalEObjectImpl.Container implements Message
    * @generated
    */
   @Override
-  public String getId()
-  {
-    return id;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setId(String newId)
-  {
-    String oldId = id;
-    id = newId;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DslPackage.MESSAGE__ID, oldId, id));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public String getName()
   {
     return name;
@@ -150,8 +104,6 @@ public class MessageImpl extends MinimalEObjectImpl.Container implements Message
   {
     switch (featureID)
     {
-      case DslPackage.MESSAGE__ID:
-        return getId();
       case DslPackage.MESSAGE__NAME:
         return getName();
     }
@@ -168,9 +120,6 @@ public class MessageImpl extends MinimalEObjectImpl.Container implements Message
   {
     switch (featureID)
     {
-      case DslPackage.MESSAGE__ID:
-        setId((String)newValue);
-        return;
       case DslPackage.MESSAGE__NAME:
         setName((String)newValue);
         return;
@@ -188,9 +137,6 @@ public class MessageImpl extends MinimalEObjectImpl.Container implements Message
   {
     switch (featureID)
     {
-      case DslPackage.MESSAGE__ID:
-        setId(ID_EDEFAULT);
-        return;
       case DslPackage.MESSAGE__NAME:
         setName(NAME_EDEFAULT);
         return;
@@ -208,8 +154,6 @@ public class MessageImpl extends MinimalEObjectImpl.Container implements Message
   {
     switch (featureID)
     {
-      case DslPackage.MESSAGE__ID:
-        return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
       case DslPackage.MESSAGE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
@@ -227,9 +171,7 @@ public class MessageImpl extends MinimalEObjectImpl.Container implements Message
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (id: ");
-    result.append(id);
-    result.append(", name: ");
+    result.append(" (name: ");
     result.append(name);
     result.append(')');
     return result.toString();

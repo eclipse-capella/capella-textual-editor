@@ -20,4 +20,6 @@ public class DslConstants {
   public static final String FUNCTION = "function";
   public static final String ROLE = "role";
   public static final String CONFIGURATION_ITEM = "configuration_item";
+  public static final String DEACTIVATE = "deactivate";
+  public static final String WITH_EXECUTION = "withExecution";
 }

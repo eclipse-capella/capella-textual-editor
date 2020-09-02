@@ -864,15 +864,29 @@ ruleSequenceMessage returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_3=':'
+		(
+			(
+				lv_execution_3_0='withExecution'
+				{
+					newLeafNode(lv_execution_3_0, grammarAccess.getSequenceMessageAccess().getExecutionWithExecutionKeyword_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getSequenceMessageRule());
+					}
+					setWithLastConsumed($current, "execution", lv_execution_3_0, "withExecution");
+				}
+			)
+		)?
+		otherlv_4=':'
 		{
-			newLeafNode(otherlv_3, grammarAccess.getSequenceMessageAccess().getColonKeyword_3());
+			newLeafNode(otherlv_4, grammarAccess.getSequenceMessageAccess().getColonKeyword_4());
 		}
 		(
 			(
-				lv_name_4_0=RULE_STRING
+				lv_name_5_0=RULE_STRING
 				{
-					newLeafNode(lv_name_4_0, grammarAccess.getSequenceMessageAccess().getNameSTRINGTerminalRuleCall_4_0());
+					newLeafNode(lv_name_5_0, grammarAccess.getSequenceMessageAccess().getNameSTRINGTerminalRuleCall_5_0());
 				}
 				{
 					if ($current==null) {
@@ -881,7 +895,7 @@ ruleSequenceMessage returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_4_0,
+						lv_name_5_0,
 						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)

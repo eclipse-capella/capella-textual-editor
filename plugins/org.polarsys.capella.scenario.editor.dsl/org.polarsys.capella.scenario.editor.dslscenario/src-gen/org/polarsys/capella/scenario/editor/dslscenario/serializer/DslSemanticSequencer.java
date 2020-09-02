@@ -24,9 +24,7 @@ import org.polarsys.capella.scenario.editor.dslscenario.dsl.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.DslPackage;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Entity;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Function;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Message;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Model;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Reference;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.ReturnMessage;
@@ -91,14 +89,8 @@ public class DslSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DslPackage.FUNCTION:
 				sequence_Function(context, (Function) semanticObject); 
 				return; 
-			case DslPackage.MESSAGE:
-				sequence_MessageUncalled(context, (Message) semanticObject); 
-				return; 
 			case DslPackage.MODEL:
 				sequence_Model(context, (Model) semanticObject); 
-				return; 
-			case DslPackage.PARTICIPANT:
-				sequence_ParticipantUncalled(context, (Participant) semanticObject); 
 				return; 
 			case DslPackage.PARTICIPANT_DEACTIVATION:
 				sequence_ParticipantDeactivation(context, (ParticipantDeactivation) semanticObject); 
@@ -355,24 +347,6 @@ public class DslSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     MessageUncalled returns Message
-	 *
-	 * Constraint:
-	 *     id=ID
-	 */
-	protected void sequence_MessageUncalled(ISerializationContext context, Message semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, DslPackage.Literals.MESSAGE__ID) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DslPackage.Literals.MESSAGE__ID));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getMessageUncalledAccess().getIdIDTerminalRuleCall_0(), semanticObject.getId());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     Model returns Model
 	 *
 	 * Constraint:
@@ -401,24 +375,6 @@ public class DslSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getParticipantDeactivationAccess().getKeywordDeactivateKeyword_0_0(), semanticObject.getKeyword());
 		feeder.accept(grammarAccess.getParticipantDeactivationAccess().getNameSTRINGTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ParticipantUncalled returns Participant
-	 *
-	 * Constraint:
-	 *     id=ID
-	 */
-	protected void sequence_ParticipantUncalled(ISerializationContext context, Participant semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, DslPackage.Literals.PARTICIPANT__ID) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DslPackage.Literals.PARTICIPANT__ID));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getParticipantUncalledAccess().getIdIDTerminalRuleCall_0(), semanticObject.getId());
 		feeder.finish();
 	}
 	
@@ -487,22 +443,10 @@ public class DslSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     SequenceMessage returns SequenceMessage
 	 *
 	 * Constraint:
-	 *     (source=STRING target=STRING name=STRING)
+	 *     (source=STRING target=STRING execution='withExecution'? name=STRING)
 	 */
 	protected void sequence_SequenceMessage(ISerializationContext context, SequenceMessage semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, DslPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DslPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE));
-			if (transientValues.isValueTransient(semanticObject, DslPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DslPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET));
-			if (transientValues.isValueTransient(semanticObject, DslPackage.Literals.MESSAGE__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DslPackage.Literals.MESSAGE__NAME));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getSequenceMessageAccess().getSourceSTRINGTerminalRuleCall_0_0(), semanticObject.getSource());
-		feeder.accept(grammarAccess.getSequenceMessageAccess().getTargetSTRINGTerminalRuleCall_2_0(), semanticObject.getTarget());
-		feeder.accept(grammarAccess.getSequenceMessageAccess().getNameSTRINGTerminalRuleCall_4_0(), semanticObject.getName());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -512,7 +456,7 @@ public class DslSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     SequenceMessageType returns SequenceMessage
 	 *
 	 * Constraint:
-	 *     (source=STRING target=STRING name=STRING return=ReturnMessage?)
+	 *     (source=STRING target=STRING execution='withExecution'? name=STRING return=ReturnMessage?)
 	 */
 	protected void sequence_SequenceMessage_SequenceMessageType(ISerializationContext context, SequenceMessage semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
