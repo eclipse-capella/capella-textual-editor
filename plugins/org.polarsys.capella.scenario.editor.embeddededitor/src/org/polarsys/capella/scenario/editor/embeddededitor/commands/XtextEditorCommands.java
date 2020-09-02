@@ -28,8 +28,9 @@ import org.polarsys.capella.common.data.modellingcore.AbstractNamedElement;
 import org.polarsys.capella.common.data.modellingcore.AbstractType;
 import org.polarsys.capella.core.data.capellacore.CapellaElement;
 import org.polarsys.capella.core.data.cs.BlockArchitecture;
-import org.polarsys.capella.core.data.ctx.impl.SystemAnalysisImpl;
-import org.polarsys.capella.core.data.epbs.impl.EPBSArchitectureImpl;
+import org.polarsys.capella.core.data.cs.Component;
+import org.polarsys.capella.core.data.epbs.ConfigurationItem;
+import org.polarsys.capella.core.data.fa.AbstractFunction;
 import org.polarsys.capella.core.data.helpers.interaction.services.ExecutionEndExt;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.data.information.AbstractInstance;
@@ -48,24 +49,20 @@ import org.polarsys.capella.core.data.interaction.SequenceMessage;
 import org.polarsys.capella.core.data.interaction.properties.dialogs.sequenceMessage.model.SelectInvokedOperationModelForSharedDataAndEvent;
 import org.polarsys.capella.core.data.la.LogicalArchitecture;
 import org.polarsys.capella.core.data.la.impl.LogicalComponentImpl;
-import org.polarsys.capella.core.data.oa.impl.EntityImpl;
+import org.polarsys.capella.core.data.oa.Entity;
+import org.polarsys.capella.core.data.oa.OperationalActivity;
+import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.data.oa.impl.OperationalActivityImpl;
-import org.polarsys.capella.core.data.oa.impl.RoleImpl;
 import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
 import org.polarsys.capella.core.data.pa.impl.PhysicalComponentImpl;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt.Type;
 import org.polarsys.capella.core.sirius.analysis.SequenceDiagramServices;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Activity;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Actor;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.DslFactory;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Entity;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Function;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Model;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Role;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.DslFactoryImpl;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.ModelImpl;
 import org.polarsys.capella.scenario.editor.dslscenario.ui.provider.DslscenarioProvider;
@@ -117,7 +114,6 @@ public class XtextEditorCommands {
             instanceRole = InteractionFactory.eINSTANCE.createInstanceRole();
             instanceRole.setName(instanceName);
 
-            Type archLevel = BlockArchitectureExt.getBlockArchitectureType(blockArchitecture);
             String keyword = ((Participant) participant).getKeyword();
 
             EObject capellaParticipant = null;
@@ -222,8 +218,8 @@ public class XtextEditorCommands {
                 eventSentOperation.setOperation((AbstractEventOperation) exchanges.get(0));
               }
 
-              if(seqMessage.getExecution() == null) {
-            	  doDeactivationSequenceMessage(scenario, target, executionEndsToProcess);
+              if (seqMessage.getExecution() == null) {
+                doDeactivationSequenceMessage(scenario, target, executionEndsToProcess);
               }
               sequenceMessages.add(sequenceMessage);
             }
@@ -244,19 +240,20 @@ public class XtextEditorCommands {
       }
     });
   }
-  
-  private static void doDeactivationSequenceMessage(Scenario scenario, InstanceRole instanceRole, ArrayList<InteractionFragment> executionEndsToProcess) {
-	// search in the executionEndsToProcess list the last execution started on this timeline (instance role)
-      EList<InteractionFragment> fragments = scenario.getOwnedInteractionFragments();
-      InteractionFragment executionEnd = executionEndsToProcess.stream()
-          .filter(e -> e.getCoveredInstanceRoles().get(0).getName().equals(instanceRole.getName()))
-          .reduce((first, second) -> second).orElse(null);
 
-      // move execution end at the end of the interaction fragments list, then remove it from the processing list
-      if (executionEnd != null) {
-        fragments.move(fragments.size() - 1, executionEnd);
-        executionEndsToProcess.remove(executionEnd);
-      }
+  private static void doDeactivationSequenceMessage(Scenario scenario, InstanceRole instanceRole,
+      ArrayList<InteractionFragment> executionEndsToProcess) {
+    // search in the executionEndsToProcess list the last execution started on this timeline (instance role)
+    EList<InteractionFragment> fragments = scenario.getOwnedInteractionFragments();
+    InteractionFragment executionEnd = executionEndsToProcess.stream()
+        .filter(e -> e.getCoveredInstanceRoles().get(0).getName().equals(instanceRole.getName()))
+        .reduce((first, second) -> second).orElse(null);
+
+    // move execution end at the end of the interaction fragments list, then remove it from the processing list
+    if (executionEnd != null) {
+      fragments.move(fragments.size() - 1, executionEnd);
+      executionEndsToProcess.remove(executionEnd);
+    }
   }
 
   /**
@@ -295,88 +292,55 @@ public class XtextEditorCommands {
     // get all instance roles (actors) from diagram
     EList<InstanceRole> instanceRoleList = scenario.getOwnedInstanceRoles();
 
-    // ScenarioTypeAndParticipants type = domainModel.getScenarioType();
-
     // get all participants/actors from editor
     EList<Participant> participants = domainModel.getParticipants();
 
     // remove all participants
     participants.clear();
 
-    try {
-      EObject level = scenario.eContainer().eContainer().eContainer();
+    // recreate the list of participants
+    for (InstanceRole a : instanceRoleList) {
+      String id = a.getId();
+      AbstractType irType = a.getRepresentedInstance().getAbstractType();
 
-      // recreate the list of participants
-      for (InstanceRole a : instanceRoleList) {
-        String id = a.getId();
-        AbstractType irType = a.getRepresentedInstance().getAbstractType();
-        switch (scenario.getKind()) {
-        case DATA_FLOW:
-          if (level instanceof SystemAnalysisImpl) {
-            addActor(a.getName(), id, participants, factory);
-          } else if ((irType instanceof PhysicalComponentImpl && ((PhysicalComponentImpl) irType).isActor())
-              || irType instanceof LogicalComponentImpl && ((LogicalComponentImpl) irType).isActor()) {
+      if (irType != null) {
+        if (irType instanceof Entity) {
+          if (((Entity) irType).isActor()) {
             addActor(a.getName(), id, participants, factory);
           } else {
-            // PhysicalComponent
+            addEntity(a.getName(), id, participants, factory);
+          }
+        } else if (irType instanceof ConfigurationItem) {
+          addConfigItem(a.getName(), id, participants, factory);
+        } else if (irType instanceof Component) {
+          if (((Component) irType).isActor()) {
+            addActor(a.getName(), id, participants, factory);
+          } else {
             addComponent(a.getName(), id, participants, factory);
           }
-          break;
-        case INTERACTION:
-          if (irType instanceof EntityImpl) {
-            if (((EntityImpl) irType).isActor()) {
-              addActor(a.getName(), id, participants, factory);
-            } else {
-              addEntity(a.getName(), id, participants, factory);
-            }
-          } else if (a.getRepresentedInstance() instanceof RoleImpl) {
-            addRole(a.getName(), id, participants, factory);
-          } else if (a.getRepresentedInstance() instanceof OperationalActivityImpl) {
-            addActivity(a.getName(), id, participants, factory);
-          }
-          break;
-        case FUNCTIONAL:
+        }
+      } else {
+        if (a.getRepresentedInstance() instanceof OperationalActivity) {
+          addActivity(a.getName(), id, participants, factory);
+        } else if (a.getRepresentedInstance() instanceof Role) {
+          addRole(a.getName(), id, participants, factory);
+        } else if (a.getRepresentedInstance() instanceof AbstractFunction) {
           addFunction(a.getName(), id, participants, factory);
-          break;
-        case INTERFACE:
-          if (level instanceof LogicalArchitecture) {
-            if (((LogicalComponentImpl) irType).isActor()) {
-              addActor(a.getName(), id, participants, factory);
-            } else {
-              addComponent(a.getName(), id, participants, factory);
-            }
-          } else if (level instanceof PhysicalArchitecture) {
-            if (((PhysicalComponentImpl) irType).isActor()) {
-              addActor(a.getName(), id, participants, factory);
-            } else {
-              // PhysicalComponent
-              addComponent(a.getName(), id, participants, factory);
-            }
-          } else if (level instanceof EPBSArchitectureImpl) {
-            addConfigItem(a.getName(), id, participants, factory);
-          } else {
-            addActor(a.getName(), id, participants, factory);
-          }
-          break;
-        default:
-          break;
         }
       }
-    } catch (Error e) {
-
     }
 
   }
 
   private static void addActor(String name, String id, EList<Participant> participants, DslFactory factory) {
-    Actor actor = factory.createActor();
+    org.polarsys.capella.scenario.editor.dslscenario.dsl.Actor actor = factory.createActor();
     actor.setName(name);
     actor.setKeyword(DslConstants.ACTOR);
     participants.add(actor);
   }
 
   private static void addActivity(String name, String id, EList<Participant> participants, DslFactory factory) {
-    Activity activity = factory.createActivity();
+    org.polarsys.capella.scenario.editor.dslscenario.dsl.Activity activity = factory.createActivity();
     activity.setName(name);
     activity.setKeyword(DslConstants.ACTIVITY);
     participants.add(activity);
@@ -390,7 +354,7 @@ public class XtextEditorCommands {
   }
 
   private static void addEntity(String name, String id, EList<Participant> participants, DslFactory factory) {
-    Entity entity = factory.createEntity();
+    org.polarsys.capella.scenario.editor.dslscenario.dsl.Entity entity = factory.createEntity();
     entity.setName(name);
     entity.setKeyword(DslConstants.ENTITY);
     participants.add(entity);
@@ -405,14 +369,14 @@ public class XtextEditorCommands {
   }
 
   private static void addFunction(String name, String id, EList<Participant> participants, DslFactory factory) {
-    Function function = factory.createFunction();
+    org.polarsys.capella.scenario.editor.dslscenario.dsl.Function function = factory.createFunction();
     function.setName(name);
     function.setKeyword(DslConstants.FUNCTION);
     participants.add(function);
   }
 
   private static void addRole(String name, String id, EList<Participant> participants, DslFactory factory) {
-    Role role = factory.createRole();
+    org.polarsys.capella.scenario.editor.dslscenario.dsl.Role role = factory.createRole();
     role.setName(name);
     role.setKeyword(DslConstants.ROLE);
     participants.add(role);
@@ -435,20 +399,20 @@ public class XtextEditorCommands {
         messagesOrReferences.add(message);
         // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
         i = i + 2;
-        if(ends[i] instanceof ExecutionEnd) {
-        	// sikp generating deactivate keyword if we have a simple message
-            i = i + 1;
-        }
-        else if(message instanceof org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage){
-        	messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) message);
+        if (ends[i] instanceof ExecutionEnd) {
+          // sikp generating deactivate keyword if we have a simple message
+          i = i + 1;
+        } else if (message instanceof org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) {
+          messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) message);
         }
       } else {
         EObject participantDeactivateMsg = getParticipantDeactivationMsgFromExecutionEnd(ends[i], factory);
         messagesOrReferences.add(participantDeactivateMsg);
-        
-        if(!messagesToDeactivate.isEmpty()) {
-        	org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage currentSequenceMessage = messagesToDeactivate.pop();
-        	currentSequenceMessage.setExecution(DslConstants.WITH_EXECUTION);
+
+        if (!messagesToDeactivate.isEmpty()) {
+          org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage currentSequenceMessage = messagesToDeactivate
+              .pop();
+          currentSequenceMessage.setExecution(DslConstants.WITH_EXECUTION);
         }
         i = i + 1;
       }
@@ -469,9 +433,10 @@ public class XtextEditorCommands {
     SequenceMessage seqMessage = ExecutionEndExt.getMessage(end);
     String timelineToDeactivate = seqMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName();
 
-    ParticipantDeactivation participantDeactivationMsg = (ParticipantDeactivation)factory.createParticipantDeactivation();
+    ParticipantDeactivation participantDeactivationMsg = (ParticipantDeactivation) factory
+        .createParticipantDeactivation();
     participantDeactivationMsg.setName(timelineToDeactivate);
-    
+
     participantDeactivationMsg.setKeyword(DslConstants.DEACTIVATE);
     return participantDeactivationMsg;
   }
