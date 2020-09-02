@@ -25,6 +25,10 @@ import org.polarsys.capella.scenario.editor.dslscenario.dsl.Model
 import javax.xml.ws.handler.MessageContext
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Message
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessageType
+import org.polarsys.capella.scenario.editor.dslscenario.services.DslGrammarAccess.SequenceMessageElements
+import java.util.Stack
+import org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation
+import java.util.ArrayList
 
 /**
  * This class contains custom validation rules. 
@@ -65,6 +69,11 @@ class DslValidator extends AbstractDslValidator {
 		}
 	}
 
+	/*
+	 * Do not allow duplicated names, we have a combination of unique keyword + name
+	 * ex: not allowed: actor "A1", actor "A1"
+	 * ex: allowed: actor "A1", component "A1"
+	 */
 	@Check
 	def checkDuplicatedParticipantsNames(Model model) {
 		var index = 0
@@ -72,7 +81,7 @@ class DslValidator extends AbstractDslValidator {
 		for (p : model.participants) {
 			if (!names.add(getParticipantsMapKey(p))) {
 				error(
-					'Multiple participants with the same name', 
+					'Multiple participants with the same name',
 					DslPackage.Literals.MODEL__PARTICIPANTS,
 					index,
 					DUPILCATED_NAME
@@ -82,6 +91,11 @@ class DslValidator extends AbstractDslValidator {
 		}
 	}
 
+	/*
+	 * Do not allow duplicated messages between name source, target
+	 * ex: not allowed: "A1" -> "A2" : "MSG1", "A1" -> "A2" : "MSG1"
+	 * ex: allowed: "A1" -> "A2" : "MSG1", "A2" -> "A3" : "MSG1"
+	 */
 	@Check
 	def checkDuplicatedMessagesNames(Model model) {
 		var index = 0
@@ -100,11 +114,105 @@ class DslValidator extends AbstractDslValidator {
 			index++
 		}
 	}
-	
+
+	/*
+	 * Checks on deactivation keyword, check that we do not have dangling deactivations;
+	 * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
+	 */
+	@Check
+	def checkDeactivateMessages(Model model) {
+		var index = 0
+		var messages = new Stack()
+		for (obj : model.messagesOrReferences) {
+			if (obj instanceof SequenceMessage) {
+				// add the encountered SequenceMessages to a stack
+				messages.push(obj)
+			}
+			if (obj instanceof ParticipantDeactivation) {
+				var deactivation = obj as ParticipantDeactivation
+
+				// extract messages from the stack until stack is empty or we encounter a message to deactivate
+				while (!messages.isEmpty() && !(messages.peek as SequenceMessage).target.equals(deactivation.name)) {
+					messages.pop();
+				}
+				// if stack is not empty - pop (the peek it contains the message to deactivate)
+				// if stack is empty - error (we didn't found the message apply this deactivation)
+				if (messages.isEmpty) {
+					error(
+						'Deactivation keyword not expected',
+						DslPackage.Literals.MODEL__MESSAGES_OR_REFERENCES,
+						index
+					)
+					return
+				}
+				messages.pop()
+			}
+			index++
+		}
+	}
+
+	/*
+	 * Check that each withExecution message is closed by deactivation (on the proper target)
+	 */
+	@Check
+	def checkWithExecutionHasDeactivate(Model model) {
+		var messages = new Stack()
+		var unmatchedDeactivations = new ArrayList
+		var index = 0
+		for (obj : model.messagesOrReferences) {
+			if (obj instanceof SequenceMessage && (obj as SequenceMessage).execution !== null) {
+				// add the SequenceMessage with execution to a Stack
+				messages.push(obj)
+			}
+			if (obj instanceof ParticipantDeactivation) {
+				var deactivation = obj as ParticipantDeactivation
+				if (!messages.isEmpty()) {
+					// if the peek is a matching sequence message that we can deactivate - pop it
+					// if not, add the deactivation message to a list so we can check if we can match it later
+					if ((messages.peek as SequenceMessage).target.equals(deactivation.name)) {
+						messages.pop()
+					} else {
+						unmatchedDeactivations.add(deactivation)
+					}
+				}
+			}
+			index++
+		}
+		while (!messages.isEmpty()) {
+			var message = messages.pop as SequenceMessage
+			// check if the message can be matched with an deactivation from the unmatchedDeactivations list
+			var indexDeactivation = checkMatchingDeactivation(message, unmatchedDeactivations)
+			if (indexDeactivation < 0) {
+				error(
+					'Deactivation keyword expected for a withExecution message',
+					DslPackage.Literals.MODEL__MESSAGES_OR_REFERENCES,
+					model.messagesOrReferences.indexOf(message)
+				)
+
+			} else {
+				// if already matched, remove it from the list so we do not match it twice
+				unmatchedDeactivations.remove(indexDeactivation)
+			}
+		}
+	}
+
+	/*
+	 * returns >= 0 if a message is matched by a deactivation in the given list
+	 */
+	def checkMatchingDeactivation(SequenceMessage message, ArrayList<ParticipantDeactivation> deactivations) {
+		var index = 0
+		for (deactivation : deactivations) {
+			if (deactivation.name.equals(message.target))
+				return index
+			index++
+		}
+		return -1
+	}
+
 	def getParticipantsMapKey(Participant p) {
 		p.name + ":" + p.keyword
 	}
-	
+
 	def getMessagesMapKey(SequenceMessageType m) {
 		m.name + ":" + m.source + ":" + m.target
 	}

@@ -13,7 +13,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//Model/end"/>
     </genClasses>
     <genClasses ecoreClass="Dsl.ecore#//Participant">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//Participant/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//Participant/keyword"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//Participant/name"/>
     </genClasses>
@@ -29,7 +28,6 @@
     <genClasses ecoreClass="Dsl.ecore#//Entity"/>
     <genClasses ecoreClass="Dsl.ecore#//Role"/>
     <genClasses ecoreClass="Dsl.ecore#//Message">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//Message/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dsl.ecore#//Message/name"/>
     </genClasses>
     <genClasses ecoreClass="Dsl.ecore#//SequenceMessageType">

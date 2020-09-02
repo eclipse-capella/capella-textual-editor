@@ -123,22 +123,13 @@ public interface DslPackage extends EPackage
   int PARTICIPANT = 1;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PARTICIPANT__ID = 0;
-
-  /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PARTICIPANT__KEYWORD = 1;
+  int PARTICIPANT__KEYWORD = 0;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -147,7 +138,7 @@ public interface DslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PARTICIPANT__NAME = 2;
+  int PARTICIPANT__NAME = 1;
 
   /**
    * The number of structural features of the '<em>Participant</em>' class.
@@ -156,7 +147,7 @@ public interface DslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PARTICIPANT_FEATURE_COUNT = 3;
+  int PARTICIPANT_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.GenericComponentImpl <em>Generic Component</em>}' class.
@@ -167,15 +158,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   int GENERIC_COMPONENT = 2;
-
-  /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int GENERIC_COMPONENT__ID = PARTICIPANT__ID;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -215,15 +197,6 @@ public interface DslPackage extends EPackage
   int GENERIC_FUNCTION = 3;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int GENERIC_FUNCTION__ID = PARTICIPANT__ID;
-
-  /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -261,15 +234,6 @@ public interface DslPackage extends EPackage
   int ACTOR = 4;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ACTOR__ID = GENERIC_COMPONENT__ID;
-
-  /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -305,15 +269,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   int COMPONENT = 5;
-
-  /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int COMPONENT__ID = GENERIC_COMPONENT__ID;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -362,15 +317,6 @@ public interface DslPackage extends EPackage
   int CONFIGURATION_ITEM = 6;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONFIGURATION_ITEM__ID = GENERIC_COMPONENT__ID;
-
-  /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -406,15 +352,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   int FUNCTION = 7;
-
-  /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FUNCTION__ID = GENERIC_FUNCTION__ID;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -454,15 +391,6 @@ public interface DslPackage extends EPackage
   int ACTIVITY = 8;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ACTIVITY__ID = GENERIC_FUNCTION__ID;
-
-  /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -498,15 +426,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   int ENTITY = 9;
-
-  /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENTITY__ID = GENERIC_COMPONENT__ID;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -546,15 +465,6 @@ public interface DslPackage extends EPackage
   int ROLE = 10;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ROLE__ID = GENERIC_COMPONENT__ID;
-
-  /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -592,22 +502,13 @@ public interface DslPackage extends EPackage
   int MESSAGE = 11;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MESSAGE__ID = 0;
-
-  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MESSAGE__NAME = 1;
+  int MESSAGE__NAME = 0;
 
   /**
    * The number of structural features of the '<em>Message</em>' class.
@@ -616,7 +517,7 @@ public interface DslPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MESSAGE_FEATURE_COUNT = 2;
+  int MESSAGE_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.SequenceMessageTypeImpl <em>Sequence Message Type</em>}' class.
@@ -627,15 +528,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   int SEQUENCE_MESSAGE_TYPE = 12;
-
-  /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SEQUENCE_MESSAGE_TYPE__ID = MESSAGE__ID;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -691,15 +583,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   int SEQUENCE_MESSAGE = 13;
-
-  /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SEQUENCE_MESSAGE__ID = SEQUENCE_MESSAGE_TYPE__ID;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -766,15 +649,6 @@ public interface DslPackage extends EPackage
   int CREATE_MESSAGE = 14;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_MESSAGE__ID = SEQUENCE_MESSAGE_TYPE__ID;
-
-  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -828,15 +702,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   int DELETE_MESSAGE = 15;
-
-  /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DELETE_MESSAGE__ID = SEQUENCE_MESSAGE_TYPE__ID;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -940,15 +805,6 @@ public interface DslPackage extends EPackage
   int ARM_TIMER_MESSAGE = 17;
 
   /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ARM_TIMER_MESSAGE__ID = MESSAGE__ID;
-
-  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -984,15 +840,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   int PARTICIPANT_DEACTIVATION = 18;
-
-  /**
-   * The feature id for the '<em><b>Id</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PARTICIPANT_DEACTIVATION__ID = MESSAGE__ID;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1133,17 +980,6 @@ public interface DslPackage extends EPackage
   EClass getParticipant();
 
   /**
-   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant#getId <em>Id</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Id</em>'.
-   * @see org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant#getId()
-   * @see #getParticipant()
-   * @generated
-   */
-  EAttribute getParticipant_Id();
-
-  /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant#getKeyword <em>Keyword</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1275,17 +1111,6 @@ public interface DslPackage extends EPackage
    * @generated
    */
   EClass getMessage();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.Message#getId <em>Id</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Id</em>'.
-   * @see org.polarsys.capella.scenario.editor.dslscenario.dsl.Message#getId()
-   * @see #getMessage()
-   * @generated
-   */
-  EAttribute getMessage_Id();
 
   /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dslscenario.dsl.Message#getName <em>Name</em>}'.
@@ -1586,14 +1411,6 @@ public interface DslPackage extends EPackage
     EClass PARTICIPANT = eINSTANCE.getParticipant();
 
     /**
-     * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute PARTICIPANT__ID = eINSTANCE.getParticipant_Id();
-
-    /**
      * The meta object literal for the '<em><b>Keyword</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1716,14 +1533,6 @@ public interface DslPackage extends EPackage
      * @generated
      */
     EClass MESSAGE = eINSTANCE.getMessage();
-
-    /**
-     * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute MESSAGE__ID = eINSTANCE.getMessage_Id();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
