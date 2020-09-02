@@ -18,11 +18,14 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyTitle;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditor;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditorFactory;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
@@ -36,6 +39,7 @@ import com.google.inject.Injector;
  * EmbeddedEditorView will embed the xtext editor of the scenario
  */
 public class EmbeddedEditorView extends ViewPart {
+  private TabbedPropertyTitle scenarioTitle;
 
   /**
    * The ID of the view as specified by the extension.
@@ -68,8 +72,20 @@ public class EmbeddedEditorView extends ViewPart {
   public void createPartControl(Composite parent) {
     makeActions();
 
-    Composite top = new Composite(parent, SWT.NONE);
-    top.setLayout(new GridLayout());
+    // Creates the title composite
+    GridData titleLayoutData = new GridData(GridData.FILL_HORIZONTAL);
+    // Do grab excess vertical space.
+    titleLayoutData.grabExcessVerticalSpace = false;
+    scenarioTitle = new TabbedPropertyTitle(parent, new TabbedPropertySheetWidgetFactory());
+    scenarioTitle.setLayoutData(titleLayoutData);
+    // Sets a default name with no image
+    scenarioTitle.setTitle("Scenario editor", null);
+
+    GridLayout layout = new GridLayout();
+    // No blank space.
+    layout.verticalSpacing = 0;
+    layout.horizontalSpacing = 0;
+    parent.setLayout(layout);
 
     DslscenarioActivator activator = DslscenarioActivator.getInstance();
     Injector injector = activator
@@ -78,13 +94,21 @@ public class EmbeddedEditorView extends ViewPart {
     provider = injector.getInstance(DslscenarioProvider.class);
     EmbeddedEditorFactory factory = injector.getInstance(EmbeddedEditorFactory.class);
 
-    EmbeddedEditor editor = factory.newEditor(provider).withParent(top);
+    EmbeddedEditor editor = factory.newEditor(provider).withParent(parent);
     editor.createPartialEditor();
     EmbeddedEditorInstance.seteEditor(editor);
   }
 
   public DslscenarioProvider getProvider() {
     return provider;
+  }
+
+  public void refreshTitleBar(String title) {
+    if (!scenarioTitle.isDisposed()) {
+      scenarioTitle.setRedraw(false);
+      scenarioTitle.setTitle(title, null);
+      scenarioTitle.setRedraw(true);
+    }
   }
 
   private void makeActions() {
