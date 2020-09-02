@@ -58,7 +58,6 @@ public class DslParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getModelAccess().getParticipantsAssignment_2(), "rule__Model__ParticipantsAssignment_2");
 			builder.put(grammarAccess.getModelAccess().getMessagesOrReferencesAssignment_3(), "rule__Model__MessagesOrReferencesAssignment_3");
 			builder.put(grammarAccess.getModelAccess().getEndAssignment_4(), "rule__Model__EndAssignment_4");
-			builder.put(grammarAccess.getParticipantUncalledAccess().getIdAssignment(), "rule__ParticipantUncalled__IdAssignment");
 			builder.put(grammarAccess.getActorAccess().getKeywordAssignment_0(), "rule__Actor__KeywordAssignment_0");
 			builder.put(grammarAccess.getActorAccess().getNameAssignment_1(), "rule__Actor__NameAssignment_1");
 			builder.put(grammarAccess.getComponentAccess().getKeywordAssignment_0(), "rule__Component__KeywordAssignment_0");
@@ -74,7 +73,6 @@ public class DslParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getEntityAccess().getNameAssignment_1(), "rule__Entity__NameAssignment_1");
 			builder.put(grammarAccess.getRoleAccess().getKeywordAssignment_0(), "rule__Role__KeywordAssignment_0");
 			builder.put(grammarAccess.getRoleAccess().getNameAssignment_1(), "rule__Role__NameAssignment_1");
-			builder.put(grammarAccess.getMessageUncalledAccess().getIdAssignment(), "rule__MessageUncalled__IdAssignment");
 			builder.put(grammarAccess.getSequenceMessageTypeAccess().getReturnAssignment_1(), "rule__SequenceMessageType__ReturnAssignment_1");
 			builder.put(grammarAccess.getSequenceMessageAccess().getSourceAssignment_0(), "rule__SequenceMessage__SourceAssignment_0");
 			builder.put(grammarAccess.getSequenceMessageAccess().getTargetAssignment_2(), "rule__SequenceMessage__TargetAssignment_2");

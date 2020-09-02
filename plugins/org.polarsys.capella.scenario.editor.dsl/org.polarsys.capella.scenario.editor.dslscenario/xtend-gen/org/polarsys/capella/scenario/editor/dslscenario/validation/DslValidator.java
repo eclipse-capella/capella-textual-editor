@@ -14,7 +14,9 @@
  */
 package org.polarsys.capella.scenario.editor.dslscenario.validation;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Stack;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
@@ -23,6 +25,7 @@ import org.polarsys.capella.scenario.editor.dslscenario.dsl.DslPackage;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Function;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Model;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant;
+import org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dslscenario.validation.AbstractDslValidator;
@@ -76,6 +79,11 @@ public class DslValidator extends AbstractDslValidator {
     }
   }
   
+  /**
+   * Do not allow duplicated names, we have a combination of unique keyword + name
+   * ex: not allowed: actor "A1", actor "A1"
+   * ex: allowed: actor "A1", component "A1"
+   */
   @Check
   public void checkDuplicatedParticipantsNames(final Model model) {
     int index = 0;
@@ -96,6 +104,11 @@ public class DslValidator extends AbstractDslValidator {
     }
   }
   
+  /**
+   * Do not allow duplicated messages between name source, target
+   * ex: not allowed: "A1" -> "A2" : "MSG1", "A1" -> "A2" : "MSG1"
+   * ex: allowed: "A1" -> "A2" : "MSG1", "A2" -> "A3" : "MSG1"
+   */
   @Check
   public void checkDuplicatedMessagesNames(final Model model) {
     int index = 0;
@@ -116,6 +129,104 @@ public class DslValidator extends AbstractDslValidator {
         index++;
       }
     }
+  }
+  
+  /**
+   * Checks on deactivation keyword, check that we do not have dangling deactivations;
+   * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
+   */
+  @Check
+  public void checkDeactivateMessages(final Model model) {
+    int index = 0;
+    Stack<SequenceMessage> messages = new Stack<SequenceMessage>();
+    EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
+    for (final EObject obj : _messagesOrReferences) {
+      {
+        if ((obj instanceof SequenceMessage)) {
+          messages.push(((SequenceMessage)obj));
+        }
+        if ((obj instanceof ParticipantDeactivation)) {
+          ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
+          while (((!messages.isEmpty()) && (!((SequenceMessage) messages.peek()).getTarget().equals(deactivation.getName())))) {
+            messages.pop();
+          }
+          boolean _isEmpty = messages.isEmpty();
+          if (_isEmpty) {
+            this.error(
+              "Deactivation keyword not expected", 
+              DslPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, index);
+            return;
+          }
+          messages.pop();
+        }
+        index++;
+      }
+    }
+  }
+  
+  /**
+   * Check that each withExecution message is closed by deactivation (on the proper target)
+   */
+  @Check
+  public void checkWithExecutionHasDeactivate(final Model model) {
+    Stack<EObject> messages = new Stack<EObject>();
+    ArrayList<ParticipantDeactivation> unmatchedDeactivations = new ArrayList<ParticipantDeactivation>();
+    int index = 0;
+    EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
+    for (final EObject obj : _messagesOrReferences) {
+      {
+        if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
+          messages.push(obj);
+        }
+        if ((obj instanceof ParticipantDeactivation)) {
+          ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
+          boolean _isEmpty = messages.isEmpty();
+          boolean _not = (!_isEmpty);
+          if (_not) {
+            EObject _peek = messages.peek();
+            boolean _equals = ((SequenceMessage) _peek).getTarget().equals(deactivation.getName());
+            if (_equals) {
+              messages.pop();
+            } else {
+              unmatchedDeactivations.add(deactivation);
+            }
+          }
+        }
+        index++;
+      }
+    }
+    while ((!messages.isEmpty())) {
+      {
+        EObject _pop = messages.pop();
+        SequenceMessage message = ((SequenceMessage) _pop);
+        int indexDeactivation = this.checkMatchingDeactivation(message, unmatchedDeactivations);
+        if ((indexDeactivation < 0)) {
+          this.error(
+            "Deactivation keyword expected for a withExecution message", 
+            DslPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, 
+            model.getMessagesOrReferences().indexOf(message));
+        } else {
+          unmatchedDeactivations.remove(indexDeactivation);
+        }
+      }
+    }
+  }
+  
+  /**
+   * returns >= 0 if a message is matched by a deactivation in the given list
+   */
+  public int checkMatchingDeactivation(final SequenceMessage message, final ArrayList<ParticipantDeactivation> deactivations) {
+    int index = 0;
+    for (final ParticipantDeactivation deactivation : deactivations) {
+      {
+        boolean _equals = deactivation.getName().equals(message.getTarget());
+        if (_equals) {
+          return index;
+        }
+        index++;
+      }
+    }
+    return (-1);
   }
   
   public String getParticipantsMapKey(final Participant p) {
