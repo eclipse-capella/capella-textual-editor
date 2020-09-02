@@ -97,9 +97,8 @@ class DslProposalProvider extends AbstractDslProposalProvider {
 		ICompletionProposalAcceptor acceptor) {
 		for (EObject el : variablesDefinedBefore2(model as Model)) {
 			acceptor.accept(
-				createCompletionProposal("\"" + (el as Participant).name + "\"",
-					(el as Participant).name,
-					null, context))
+				createCompletionProposal("\"" + (el as Participant).name + "\"", (el as Participant).name, null,
+					context))
 		}
 	}
 
@@ -107,12 +106,11 @@ class DslProposalProvider extends AbstractDslProposalProvider {
 		ICompletionProposalAcceptor acceptor) {
 		for (EObject el : variablesDefinedBefore3(model as SequenceMessage)) {
 			acceptor.accept(
-				createCompletionProposal("\"" + (el as Participant).name + "\"", 
-					(el as Participant).name,
-					null, context))
+				createCompletionProposal("\"" + (el as Participant).name + "\"", (el as Participant).name, null,
+					context))
 		}
 	}
-	
+
 	override completeSequenceMessage_Name(EObject model, Assignment assignment, ContentAssistContext context,
 		ICompletionProposalAcceptor acceptor) {
 		for (String el : messagesDefinedBefore(model as SequenceMessage)) {

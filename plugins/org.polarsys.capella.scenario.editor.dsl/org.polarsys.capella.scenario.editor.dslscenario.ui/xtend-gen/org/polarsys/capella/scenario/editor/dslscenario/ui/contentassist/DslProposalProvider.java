@@ -109,9 +109,7 @@ public class DslProposalProvider extends AbstractDslProposalProvider {
       String _plus = ("\"" + _name);
       String _plus_1 = (_plus + "\"");
       acceptor.accept(
-        this.createCompletionProposal(_plus_1, 
-          ((Participant) el).getName(), 
-          null, context));
+        this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
     }
   }
   
@@ -123,9 +121,7 @@ public class DslProposalProvider extends AbstractDslProposalProvider {
       String _plus = ("\"" + _name);
       String _plus_1 = (_plus + "\"");
       acceptor.accept(
-        this.createCompletionProposal(_plus_1, 
-          ((Participant) el).getName(), 
-          null, context));
+        this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
     }
   }
   

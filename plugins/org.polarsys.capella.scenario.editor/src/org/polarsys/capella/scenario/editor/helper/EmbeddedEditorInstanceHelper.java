@@ -59,11 +59,11 @@ public class EmbeddedEditorInstanceHelper {
     }
     return name;
   }
-  
+
   public static String getScenarioType() {
-	    Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-	    return currentScenario.getKind().toString();
-	  }
+    Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+    return currentScenario.getKind().toString();
+  }
 
   /**
    * get the names of the available exchanges
@@ -280,7 +280,7 @@ public class EmbeddedEditorInstanceHelper {
     // IS and ES
     if (currentScenario.getKind() == ScenarioKind.INTERFACE || currentScenario.getKind() == ScenarioKind.DATA_FLOW) {
       if (blockArchitecture instanceof SystemAnalysis) {
-        return keyword.equals(DslConstants.ACTOR);
+        return keyword.equals(DslConstants.ACTOR) || keyword.equals(DslConstants.COMPONENT);
       }
       if (blockArchitecture instanceof LogicalArchitecture || blockArchitecture instanceof PhysicalArchitecture) {
         return keyword.equals(DslConstants.ACTOR) || keyword.equals(DslConstants.COMPONENT);
