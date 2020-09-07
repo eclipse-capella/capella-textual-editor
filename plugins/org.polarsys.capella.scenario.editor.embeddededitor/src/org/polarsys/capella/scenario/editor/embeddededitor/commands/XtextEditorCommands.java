@@ -216,7 +216,6 @@ public class XtextEditorCommands {
         SequenceMessage sequenceMessage;
         EList<SequenceMessage> sequenceMessages = scenario.getOwnedMessages();
         ArrayList<InteractionFragment> executionEndsToProcess = new ArrayList<InteractionFragment>();
-
         for (Iterator<EObject> iterator = messages.iterator(); iterator.hasNext();) {
           EObject messageFromXtext = iterator.next();
 
@@ -225,71 +224,78 @@ public class XtextEditorCommands {
             org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage seqMessage = (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) messageFromXtext;
             InstanceRole source = EmbeddedEditorInstanceHelper.getInstanceRole(seqMessage.getSource());
             InstanceRole target = EmbeddedEditorInstanceHelper.getInstanceRole(seqMessage.getTarget());
-            if (source != null && target != null) {
-              // create Capella SequenceMessage
-              sequenceMessage = InteractionFactory.eINSTANCE.createSequenceMessage();
-              sequenceMessage.setName(seqMessage.getName());
-              sequenceMessage.setKind(MessageKind.ASYNCHRONOUS_CALL);
+            List<SequenceMessage> msgsFilteredByNameTargetSource = sequenceMessages.stream()
+                .filter(x -> x.getName().equals(seqMessage.getName()))
+                .filter(x -> x.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(source.getName()))
+                .filter(x -> x.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(target.getName()))
+                .collect(Collectors.toList());
+            if (msgsFilteredByNameTargetSource.isEmpty()) {
+              if (source != null && target != null) {
+                // create Capella SequenceMessage
+                sequenceMessage = InteractionFactory.eINSTANCE.createSequenceMessage();
+                sequenceMessage.setName(seqMessage.getName());
+                sequenceMessage.setKind(MessageKind.ASYNCHRONOUS_CALL);
 
-              // sending end
-              MessageEnd sendingEnd = InteractionFactory.eINSTANCE.createMessageEnd();
-              sendingEnd.getCoveredInstanceRoles().add(source);
-              sequenceMessage.setSendingEnd(sendingEnd);
-              scenario.getOwnedInteractionFragments().add(sendingEnd);
+                // sending end
+                MessageEnd sendingEnd = InteractionFactory.eINSTANCE.createMessageEnd();
+                sendingEnd.getCoveredInstanceRoles().add(source);
+                sequenceMessage.setSendingEnd(sendingEnd);
+                scenario.getOwnedInteractionFragments().add(sendingEnd);
 
-              // receiving end
-              MessageEnd receivingEnd = InteractionFactory.eINSTANCE.createMessageEnd();
-              receivingEnd.getCoveredInstanceRoles().add(target);
-              sequenceMessage.setReceivingEnd(receivingEnd);
-              scenario.getOwnedInteractionFragments().add(receivingEnd);
+                // receiving end
+                MessageEnd receivingEnd = InteractionFactory.eINSTANCE.createMessageEnd();
+                receivingEnd.getCoveredInstanceRoles().add(target);
+                sequenceMessage.setReceivingEnd(receivingEnd);
+                scenario.getOwnedInteractionFragments().add(receivingEnd);
 
-              // execution end
-              ExecutionEnd executionEnd = InteractionFactory.eINSTANCE.createExecutionEnd();
-              scenario.getOwnedInteractionFragments().add(executionEnd);
-              executionEnd.getCoveredInstanceRoles().add(receivingEnd.getCoveredInstanceRoles().get(0));
-              // Adding this execution end to executionEndsToProcess list.
-              // We want to keep the order between interaction fragments consistent with the order in xtext scenario.
-              // To achieve this, the execution end will be processed when a corresponding "deactivate" message
-              // will be encountered in the xtext scenario.
-              // At that point, the execution end will be moved at its proper place in the ownedInteractionFragments
-              // list
-              // of the Capella scenario.
-              executionEndsToProcess.add(executionEnd);
+                // execution end
+                ExecutionEnd executionEnd = InteractionFactory.eINSTANCE.createExecutionEnd();
+                scenario.getOwnedInteractionFragments().add(executionEnd);
+                executionEnd.getCoveredInstanceRoles().add(receivingEnd.getCoveredInstanceRoles().get(0));
+                // Adding this execution end to executionEndsToProcess list.
+                // We want to keep the order between interaction fragments consistent with the order in xtext scenario.
+                // To achieve this, the execution end will be processed when a corresponding "deactivate" message
+                // will be encountered in the xtext scenario.
+                // At that point, the execution end will be moved at its proper place in the ownedInteractionFragments
+                // list
+                // of the Capella scenario.
+                executionEndsToProcess.add(executionEnd);
 
-              // execution
-              Execution execution = InteractionFactory.eINSTANCE.createExecution();
-              execution.setFinish(executionEnd);
-              execution.setStart(receivingEnd);
-              scenario.getOwnedTimeLapses().add(execution);
+                // execution
+                Execution execution = InteractionFactory.eINSTANCE.createExecution();
+                execution.setFinish(executionEnd);
+                execution.setStart(receivingEnd);
+                scenario.getOwnedTimeLapses().add(execution);
 
-              // EventSentOperation
-              EventSentOperation eventSentOperation = InteractionFactory.eINSTANCE.createEventSentOperation();
-              scenario.getOwnedEvents().add(eventSentOperation);
-              sendingEnd.setEvent(eventSentOperation);
+                // EventSentOperation
+                EventSentOperation eventSentOperation = InteractionFactory.eINSTANCE.createEventSentOperation();
+                scenario.getOwnedEvents().add(eventSentOperation);
+                sendingEnd.setEvent(eventSentOperation);
 
-              // EventReceiptOperation
-              EventReceiptOperation eventRecvOperation = InteractionFactory.eINSTANCE.createEventReceiptOperation();
-              scenario.getOwnedEvents().add(eventRecvOperation);
-              receivingEnd.setEvent(eventRecvOperation);
+                // EventReceiptOperation
+                EventReceiptOperation eventRecvOperation = InteractionFactory.eINSTANCE.createEventReceiptOperation();
+                scenario.getOwnedEvents().add(eventRecvOperation);
+                receivingEnd.setEvent(eventRecvOperation);
 
-              // execution event
-              ExecutionEvent executionEvent = InteractionFactory.eINSTANCE.createExecutionEvent();
-              executionEnd.setEvent(executionEvent);
-              scenario.getOwnedEvents().add(executionEvent);
+                // execution event
+                ExecutionEvent executionEvent = InteractionFactory.eINSTANCE.createExecutionEvent();
+                executionEnd.setEvent(executionEvent);
+                scenario.getOwnedEvents().add(executionEvent);
 
-              // get operation by name from the list of available exchanges
-              List<CapellaElement> exchanges = SelectInvokedOperationModelForSharedDataAndEvent
-                  .getAvailableExchangeItems(source, target, false);
-              exchanges.stream().filter(ex -> ((AbstractNamedElement) ex).getName().equals(seqMessage.getName()));
-              if (!exchanges.isEmpty()) {
-                eventRecvOperation.setOperation((AbstractEventOperation) exchanges.get(0));
-                eventSentOperation.setOperation((AbstractEventOperation) exchanges.get(0));
+                // get operation by name from the list of available exchanges
+                List<CapellaElement> exchanges = SelectInvokedOperationModelForSharedDataAndEvent
+                    .getAvailableExchangeItems(source, target, false);
+                exchanges.stream().filter(ex -> ((AbstractNamedElement) ex).getName().equals(seqMessage.getName()));
+                if (!exchanges.isEmpty()) {
+                  eventRecvOperation.setOperation((AbstractEventOperation) exchanges.get(0));
+                  eventSentOperation.setOperation((AbstractEventOperation) exchanges.get(0));
+                }
+
+                if (seqMessage.getExecution() == null) {
+                  doDeactivationSequenceMessage(scenario, target, executionEndsToProcess);
+                }
+                sequenceMessages.add(sequenceMessage);
               }
-
-              if (seqMessage.getExecution() == null) {
-                doDeactivationSequenceMessage(scenario, target, executionEndsToProcess);
-              }
-              sequenceMessages.add(sequenceMessage);
             }
           } else {
             // This is a ParticipantDeactivationMessage, this means that the execution on the corresponding timeline
@@ -306,6 +312,7 @@ public class XtextEditorCommands {
           }
         }
       }
+
     });
   }
 
