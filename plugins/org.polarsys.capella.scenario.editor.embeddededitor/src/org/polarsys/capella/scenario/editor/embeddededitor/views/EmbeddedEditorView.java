@@ -29,8 +29,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditor;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditorFactory;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
-import org.polarsys.capella.scenario.editor.dslscenario.ui.internal.DslscenarioActivator;
-import org.polarsys.capella.scenario.editor.dslscenario.ui.provider.DslscenarioProvider;
+import org.polarsys.capella.scenario.editor.dsl.ui.internal.DslActivator;
+import org.polarsys.capella.scenario.editor.dsl.ui.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.actions.XtextEditorActionFactory;
 
 import com.google.inject.Injector;
@@ -49,7 +49,7 @@ public class EmbeddedEditorView extends ViewPart {
   @Inject
   IWorkbench workbench;
 
-  DslscenarioProvider provider;
+  TextualScenarioProvider provider;
 
   class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
     @Override
@@ -87,11 +87,11 @@ public class EmbeddedEditorView extends ViewPart {
     layout.horizontalSpacing = 0;
     parent.setLayout(layout);
 
-    DslscenarioActivator activator = DslscenarioActivator.getInstance();
+    DslActivator activator = DslActivator.getInstance();
     Injector injector = activator
-        .getInjector(DslscenarioActivator.ORG_POLARSYS_CAPELLA_SCENARIO_EDITOR_DSLSCENARIO_DSL);
+        .getInjector(DslActivator.ORG_POLARSYS_CAPELLA_SCENARIO_EDITOR_DSL_TEXTUALSCENARIO);
 
-    provider = injector.getInstance(DslscenarioProvider.class);
+    provider = injector.getInstance(TextualScenarioProvider.class);
     EmbeddedEditorFactory factory = injector.getInstance(EmbeddedEditorFactory.class);
 
     EmbeddedEditor editor = factory.newEditor(provider).withParent(parent);
@@ -99,7 +99,7 @@ public class EmbeddedEditorView extends ViewPart {
     EmbeddedEditorInstance.seteEditor(editor);
   }
 
-  public DslscenarioProvider getProvider() {
+  public TextualScenarioProvider getProvider() {
     return provider;
   }
 

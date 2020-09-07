@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import javax.jws.WebParam.Mode;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -59,13 +61,12 @@ import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt.Type;
 import org.polarsys.capella.core.sirius.analysis.SequenceDiagramServices;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.DslFactory;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Model;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.Participant;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.ParticipantDeactivation;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.DslFactoryImpl;
-import org.polarsys.capella.scenario.editor.dslscenario.dsl.impl.ModelImpl;
-import org.polarsys.capella.scenario.editor.dslscenario.ui.provider.DslscenarioProvider;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioFactory;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioFactoryImpl;
+import org.polarsys.capella.scenario.editor.dsl.ui.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 import org.polarsys.capella.scenario.editor.helper.DslConstants;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
@@ -73,11 +74,11 @@ import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 public class XtextEditorCommands {
   public static void xtextToDiagram(Scenario scenario, EmbeddedEditorView embeddedEditorViewPart) {
     if (embeddedEditorViewPart != null) {
-      DslscenarioProvider p = embeddedEditorViewPart.getProvider();
+      TextualScenarioProvider p = embeddedEditorViewPart.getProvider();
       XtextResource resource = p.getResource();
       EList<EObject> content = resource.getContents();
 
-      ModelImpl domainModel = (ModelImpl) content.get(0);
+      Model domainModel = (Model) content.get(0);
       // get participants
       EList<Participant> participants = domainModel.getParticipants();
 
@@ -152,9 +153,9 @@ public class XtextEditorCommands {
         for (Iterator<EObject> iterator = messages.iterator(); iterator.hasNext();) {
           EObject messageFromXtext = iterator.next();
 
-          if (messageFromXtext instanceof org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) {
+          if (messageFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
 
-            org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage seqMessage = (org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) messageFromXtext;
+            org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage seqMessage = (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) messageFromXtext;
             InstanceRole source = EmbeddedEditorInstanceHelper.getInstanceRole(seqMessage.getSource());
             InstanceRole target = EmbeddedEditorInstanceHelper.getInstanceRole(seqMessage.getTarget());
             if (source != null && target != null) {
@@ -265,11 +266,11 @@ public class XtextEditorCommands {
    */
   public static void diagramToXtext(Scenario scenario, EmbeddedEditorView embeddedEditorViewPart) {
     if (embeddedEditorViewPart != null) {
-      DslscenarioProvider p = embeddedEditorViewPart.getProvider();
-      XtextResource resource = p.getResource();
+      TextualScenarioProvider textualScenarioProvider = embeddedEditorViewPart.getProvider();
+      XtextResource resource = textualScenarioProvider.getResource();
       EList<EObject> content = resource.getContents();
 
-      DslFactory factory = new DslFactoryImpl();
+      TextualScenarioFactory factory = new TextualScenarioFactoryImpl();
       Model domainModel = getModel(embeddedEditorViewPart);
       if (domainModel != null) {
         clearModel(domainModel);
@@ -288,7 +289,7 @@ public class XtextEditorCommands {
     }
   }
 
-  private static void generateActors(Model domainModel, Scenario scenario, DslFactory factory) {
+  private static void generateActors(Model domainModel, Scenario scenario, TextualScenarioFactory factory) {
     // get all instance roles (actors) from diagram
     EList<InstanceRole> instanceRoleList = scenario.getOwnedInstanceRoles();
 
@@ -332,57 +333,57 @@ public class XtextEditorCommands {
 
   }
 
-  private static void addActor(String name, String id, EList<Participant> participants, DslFactory factory) {
-    org.polarsys.capella.scenario.editor.dslscenario.dsl.Actor actor = factory.createActor();
+  private static void addActor(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.Actor actor = factory.createActor();
     actor.setName(name);
     actor.setKeyword(DslConstants.ACTOR);
     participants.add(actor);
   }
 
-  private static void addActivity(String name, String id, EList<Participant> participants, DslFactory factory) {
-    org.polarsys.capella.scenario.editor.dslscenario.dsl.Activity activity = factory.createActivity();
+  private static void addActivity(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.Activity activity = factory.createActivity();
     activity.setName(name);
     activity.setKeyword(DslConstants.ACTIVITY);
     participants.add(activity);
   }
 
-  private static void addComponent(String name, String id, EList<Participant> participants, DslFactory factory) {
-    org.polarsys.capella.scenario.editor.dslscenario.dsl.Component component = factory.createComponent();
+  private static void addComponent(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.Component component = factory.createComponent();
     component.setName(name);
     component.setKeyword(DslConstants.COMPONENT);
     participants.add(component);
   }
 
-  private static void addEntity(String name, String id, EList<Participant> participants, DslFactory factory) {
-    org.polarsys.capella.scenario.editor.dslscenario.dsl.Entity entity = factory.createEntity();
+  private static void addEntity(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.Entity entity = factory.createEntity();
     entity.setName(name);
     entity.setKeyword(DslConstants.ENTITY);
     participants.add(entity);
   }
 
-  private static void addConfigItem(String name, String id, EList<Participant> participants, DslFactory factory) {
-    org.polarsys.capella.scenario.editor.dslscenario.dsl.ConfigurationItem configItem = factory
+  private static void addConfigItem(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.ConfigurationItem configItem = factory
         .createConfigurationItem();
     configItem.setName(name);
     configItem.setKeyword(DslConstants.CONFIGURATION_ITEM);
     participants.add(configItem);
   }
 
-  private static void addFunction(String name, String id, EList<Participant> participants, DslFactory factory) {
-    org.polarsys.capella.scenario.editor.dslscenario.dsl.Function function = factory.createFunction();
+  private static void addFunction(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.Function function = factory.createFunction();
     function.setName(name);
     function.setKeyword(DslConstants.FUNCTION);
     participants.add(function);
   }
 
-  private static void addRole(String name, String id, EList<Participant> participants, DslFactory factory) {
-    org.polarsys.capella.scenario.editor.dslscenario.dsl.Role role = factory.createRole();
+  private static void addRole(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.Role role = factory.createRole();
     role.setName(name);
     role.setKeyword(DslConstants.ROLE);
     participants.add(role);
   }
 
-  private static void generateSequenceMessages(Model domainModel, Scenario scenario, DslFactory factory) {
+  private static void generateSequenceMessages(Model domainModel, Scenario scenario, TextualScenarioFactory factory) {
     EList<EObject> messagesOrReferences = domainModel.getMessagesOrReferences();
 
     List<InteractionFragment> fragments = SequenceDiagramServices.getOrderedInteractionFragments(scenario);
@@ -392,7 +393,7 @@ public class XtextEditorCommands {
     // and only one end of each execution (the one where execution ends). This means that we should skip
     // the receiving end for each message, so that we don't duplicate the generated xtext message.
     int i = 0;
-    Stack<org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage> messagesToDeactivate = new Stack();
+    Stack<org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage> messagesToDeactivate = new Stack();
     while (i < ends.length) {
       if (ends[i] instanceof MessageEnd) {
         EObject message = copyMessageFromMsgEnd(ends[i], factory);
@@ -402,15 +403,15 @@ public class XtextEditorCommands {
         if (ends[i] instanceof ExecutionEnd) {
           // sikp generating deactivate keyword if we have a simple message
           i = i + 1;
-        } else if (message instanceof org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) {
-          messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) message);
+        } else if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
+          messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
         }
       } else {
         EObject participantDeactivateMsg = getParticipantDeactivationMsgFromExecutionEnd(ends[i], factory);
         messagesOrReferences.add(participantDeactivateMsg);
 
         if (!messagesToDeactivate.isEmpty()) {
-          org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage currentSequenceMessage = messagesToDeactivate
+          org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage currentSequenceMessage = messagesToDeactivate
               .pop();
           currentSequenceMessage.setExecution(DslConstants.WITH_EXECUTION);
         }
@@ -428,7 +429,7 @@ public class XtextEditorCommands {
    *          - this is the factory to create ParticipantDeactivation type of message
    * @return - EObject containing the ParticipantDeactivation message
    */
-  private static EObject getParticipantDeactivationMsgFromExecutionEnd(Object object, DslFactory factory) {
+  private static EObject getParticipantDeactivationMsgFromExecutionEnd(Object object, TextualScenarioFactory factory) {
     ExecutionEnd end = (ExecutionEnd) object;
     SequenceMessage seqMessage = ExecutionEndExt.getMessage(end);
     String timelineToDeactivate = seqMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName();
@@ -441,7 +442,7 @@ public class XtextEditorCommands {
     return participantDeactivationMsg;
   }
 
-  private static EObject copyMessageFromMsgEnd(Object object, DslFactory factory) {
+  private static EObject copyMessageFromMsgEnd(Object object, TextualScenarioFactory factory) {
     EObject seqMessage;
     MessageEnd end = (MessageEnd) object;
     SequenceMessage sequenceMessage = end.getMessage();
@@ -449,63 +450,63 @@ public class XtextEditorCommands {
     switch (sequenceMessage.getKind()) {
     case ASYNCHRONOUS_CALL:
       seqMessage = factory.createSequenceMessage();
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setName(sequenceMessage.getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setSource(sequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setTarget(sequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
       break;
     case SYNCHRONOUS_CALL:
       seqMessage = factory.createSequenceMessage();
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setName(sequenceMessage.getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setSource(sequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setTarget(sequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
       break;
     case CREATE:
       seqMessage = factory.createCreateMessage();
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.CreateMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage) seqMessage)
           .setName(sequenceMessage.getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.CreateMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage) seqMessage)
           .setSource(sequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.CreateMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage) seqMessage)
           .setTarget(sequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
       break;
     case DELETE:
       seqMessage = factory.createDeleteMessage();
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.DeleteMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage) seqMessage)
           .setName(sequenceMessage.getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.DeleteMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage) seqMessage)
           .setSource(sequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.DeleteMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage) seqMessage)
           .setTarget(sequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
       break;
     case REPLY:
       seqMessage = factory.createReturnMessage();
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.ReturnMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ReturnMessage) seqMessage)
           .setName(sequenceMessage.getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.ReturnMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ReturnMessage) seqMessage)
           .setSource(sequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.ReturnMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ReturnMessage) seqMessage)
           .setTarget(sequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
       break;
     case TIMER:
       seqMessage = factory.createArmTimerMessage();
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.ArmTimerMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) seqMessage)
           .setName(sequenceMessage.getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.ArmTimerMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) seqMessage)
           .setParticipant(sequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
       break;
     default:
       seqMessage = factory.createSequenceMessage();
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setName(sequenceMessage.getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setSource(sequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
-      ((org.polarsys.capella.scenario.editor.dslscenario.dsl.SequenceMessage) seqMessage)
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage)
           .setTarget(sequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
       break;
     }
@@ -513,7 +514,7 @@ public class XtextEditorCommands {
   }
 
   private static Model getModel(EmbeddedEditorView embeddedEditorViewPart) {
-    DslscenarioProvider p = embeddedEditorViewPart.getProvider();
+    TextualScenarioProvider p = embeddedEditorViewPart.getProvider();
     XtextResource resource = p.getResource();
     EList<EObject> content = resource.getContents();
     Model domainModel = null;
