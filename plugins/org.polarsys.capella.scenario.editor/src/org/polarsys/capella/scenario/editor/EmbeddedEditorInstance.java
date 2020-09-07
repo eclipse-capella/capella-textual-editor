@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.polarsys.capella.scenario.editor;
 
+import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditor;
 import org.polarsys.capella.core.data.interaction.Scenario;
 
@@ -20,7 +22,7 @@ import org.polarsys.capella.core.data.interaction.Scenario;
  */
 public class EmbeddedEditorInstance {
   private static EmbeddedEditor eEditor;
-  private static Scenario associatedScenarioDiagram;
+  private static DDiagram diagram;
 
   private static EmbeddedEditorInstance eINSTANCE;
 
@@ -43,10 +45,16 @@ public class EmbeddedEditorInstance {
   }
 
   public static Scenario getAssociatedScenarioDiagram() {
-    return associatedScenarioDiagram;
+
+    return (Scenario) ((SequenceDDiagram) diagram).getTarget();
   }
 
-  public static void setAssociatedScenarioDiagram(Scenario associatedScenarioDiagram) {
-    EmbeddedEditorInstance.associatedScenarioDiagram = associatedScenarioDiagram;
+  public static DDiagram getDDiagram() {
+    return diagram;
   }
+
+  public static void setDDiagram(DDiagram ddiagram) {
+    EmbeddedEditorInstance.diagram = ddiagram;
+  }
+
 }

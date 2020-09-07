@@ -18,13 +18,17 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-import javax.jws.WebParam.Mode;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.gmf.runtime.notation.Diagram;
+import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
+import org.eclipse.sirius.diagram.sequence.business.internal.operation.SynchronizeGraphicalOrderingOperation;
+import org.eclipse.sirius.diagram.ui.business.internal.operation.AbstractModelChangeOperation;
+import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.xtext.resource.XtextResource;
 import org.polarsys.capella.common.data.modellingcore.AbstractNamedElement;
 import org.polarsys.capella.common.data.modellingcore.AbstractType;
@@ -49,16 +53,10 @@ import org.polarsys.capella.core.data.interaction.MessageKind;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.SequenceMessage;
 import org.polarsys.capella.core.data.interaction.properties.dialogs.sequenceMessage.model.SelectInvokedOperationModelForSharedDataAndEvent;
-import org.polarsys.capella.core.data.la.LogicalArchitecture;
-import org.polarsys.capella.core.data.la.impl.LogicalComponentImpl;
 import org.polarsys.capella.core.data.oa.Entity;
 import org.polarsys.capella.core.data.oa.OperationalActivity;
 import org.polarsys.capella.core.data.oa.Role;
-import org.polarsys.capella.core.data.oa.impl.OperationalActivityImpl;
-import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
-import org.polarsys.capella.core.data.pa.impl.PhysicalComponentImpl;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
-import org.polarsys.capella.core.model.helpers.BlockArchitectureExt.Type;
 import org.polarsys.capella.core.sirius.analysis.SequenceDiagramServices;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
@@ -130,8 +128,77 @@ public class XtextEditorCommands {
             instanceRoles.add(instanceRole);
           }
         }
+
+        removeParticipantsFromDiagram(instanceRoles, participants);
+
+        if (reorderParticipants(instanceRoles, participants)) {
+          syncGraphicalOrdering();
+        }
       }
     });
+  }
+
+  /**
+   * If a participant is in diagram, but not in editor, delete it
+   * 
+   * @param instanceRoles
+   *          Instance roles from diagram
+   * @param participants
+   *          Participants from editor
+   */
+  private static void removeParticipantsFromDiagram(List<InstanceRole> instanceRoles, EList<Participant> participants) {
+    List<InstanceRole> irToRemove = new ArrayList<InstanceRole>();
+    for (InstanceRole ir : instanceRoles) {
+      List<String> participantsName = participants.stream().map(x -> x.getName()).collect(Collectors.toList());
+      if (!participantsName.contains(ir.getName())) {
+        irToRemove.add(ir);
+      }
+    }
+    for (InstanceRole ir : irToRemove) {
+      instanceRoles.remove(ir);
+    }
+  }
+
+  /**
+   * Switch participants in diagram if they are not in the same order as they are in editor
+   * 
+   * @param instanceRoles
+   *          Instance roles from diagram
+   * @param participants
+   *          Participant from editor
+   * @return true if the order was changed, false if not
+   */
+  private static boolean reorderParticipants(List<InstanceRole> instanceRoles, EList<Participant> participants) {
+    boolean updateNeeded = false;
+    for (int i = 0; i < instanceRoles.size(); i++) {
+      if (!instanceRoles.get(i).getName().equals(participants.get(i).getName())) {
+        for (int j = 0; j < participants.size(); j++) {
+          if (instanceRoles.get(i).getName().equals(participants.get(j).getName())) {
+            ((EList<InstanceRole>) instanceRoles).move(j, instanceRoles.get(i));
+            updateNeeded = true;
+          }
+        }
+      }
+    }
+    return updateNeeded;
+  }
+
+  /**
+   * Synchronize graphical ordering in diagram
+   */
+  private static void syncGraphicalOrdering() {
+    DDiagram dDiagram = EmbeddedEditorInstance.getDDiagram();
+    ((SequenceDDiagram) dDiagram).getTarget();
+    EList<AnnotationEntry> ownedAnnotationEntries = dDiagram.getOwnedAnnotationEntries();
+    EObject data = null;
+    for (AnnotationEntry annotationEntry : ownedAnnotationEntries) {
+      if ((annotationEntry != null) && (annotationEntry.getData() instanceof Diagram)) {
+        data = annotationEntry.getData();
+      }
+    }
+    AbstractModelChangeOperation<Boolean> synchronizeGraphicalOrderingOperation = new SynchronizeGraphicalOrderingOperation(
+        (Diagram) data, true);
+    synchronizeGraphicalOrderingOperation.execute();
   }
 
   private static void doEditingOnMessages(Scenario scenario, BlockArchitecture blockArchitecture,
@@ -333,35 +400,40 @@ public class XtextEditorCommands {
 
   }
 
-  private static void addActor(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+  private static void addActor(String name, String id, EList<Participant> participants,
+      TextualScenarioFactory factory) {
     org.polarsys.capella.scenario.editor.dsl.textualScenario.Actor actor = factory.createActor();
     actor.setName(name);
     actor.setKeyword(DslConstants.ACTOR);
     participants.add(actor);
   }
 
-  private static void addActivity(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+  private static void addActivity(String name, String id, EList<Participant> participants,
+      TextualScenarioFactory factory) {
     org.polarsys.capella.scenario.editor.dsl.textualScenario.Activity activity = factory.createActivity();
     activity.setName(name);
     activity.setKeyword(DslConstants.ACTIVITY);
     participants.add(activity);
   }
 
-  private static void addComponent(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+  private static void addComponent(String name, String id, EList<Participant> participants,
+      TextualScenarioFactory factory) {
     org.polarsys.capella.scenario.editor.dsl.textualScenario.Component component = factory.createComponent();
     component.setName(name);
     component.setKeyword(DslConstants.COMPONENT);
     participants.add(component);
   }
 
-  private static void addEntity(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+  private static void addEntity(String name, String id, EList<Participant> participants,
+      TextualScenarioFactory factory) {
     org.polarsys.capella.scenario.editor.dsl.textualScenario.Entity entity = factory.createEntity();
     entity.setName(name);
     entity.setKeyword(DslConstants.ENTITY);
     participants.add(entity);
   }
 
-  private static void addConfigItem(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+  private static void addConfigItem(String name, String id, EList<Participant> participants,
+      TextualScenarioFactory factory) {
     org.polarsys.capella.scenario.editor.dsl.textualScenario.ConfigurationItem configItem = factory
         .createConfigurationItem();
     configItem.setName(name);
@@ -369,7 +441,8 @@ public class XtextEditorCommands {
     participants.add(configItem);
   }
 
-  private static void addFunction(String name, String id, EList<Participant> participants, TextualScenarioFactory factory) {
+  private static void addFunction(String name, String id, EList<Participant> participants,
+      TextualScenarioFactory factory) {
     org.polarsys.capella.scenario.editor.dsl.textualScenario.Function function = factory.createFunction();
     function.setName(name);
     function.setKeyword(DslConstants.FUNCTION);
