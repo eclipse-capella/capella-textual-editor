@@ -196,22 +196,20 @@ public class DiagramToXtextCommands {
         
         if (i < ends.length && ends[i] instanceof ExecutionEnd) {
           SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[i - 2]).getMessage();
-            SequenceMessage seqMessFromExecutionEnd = ExecutionEndExt.getMessage((ExecutionEnd) ends[i]);
+          SequenceMessage seqMessFromExecutionEnd = ExecutionEndExt.getMessage((ExecutionEnd) ends[i]);
             
-            if (seqMessFromMessageEnd.equals(seqMessFromExecutionEnd)) {
-              //nothing to do, skip this execution end
-              i = i + 1;
+          if (seqMessFromMessageEnd.equals(seqMessFromExecutionEnd)) {
+            //nothing to do, skip this execution end
+            i = i + 1;
+          } else {
+            if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
+              messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
             }
-            else {
-              if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-                    messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
-                }
-            }
-        } 
-        else {
+          }
+        } else {
           if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-                messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
-            }
+            messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
+          }
         }
       } else {
         EObject participantDeactivateMsg = getParticipantDeactivationMsgFromExecutionEnd(ends[i], factory);
