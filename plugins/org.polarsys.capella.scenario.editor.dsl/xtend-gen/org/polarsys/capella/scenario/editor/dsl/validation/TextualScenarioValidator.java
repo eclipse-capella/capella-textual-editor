@@ -12,8 +12,9 @@
  */
 package org.polarsys.capella.scenario.editor.dsl.validation;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -50,7 +51,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       if ((participant instanceof Function)) {
         this.error("Function does not exist", TextualScenarioPackage.Literals.PARTICIPANT__NAME, TextualScenarioValidator.INVALID_NAME);
       } else {
-        this.error("Represented part does not exist", TextualScenarioPackage.Literals.PARTICIPANT__NAME, TextualScenarioValidator.INVALID_NAME);
+        this.error("Represented part does not exist", TextualScenarioPackage.Literals.PARTICIPANT__NAME, 
+          TextualScenarioValidator.INVALID_NAME);
       }
     }
   }
@@ -167,64 +169,28 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkWithExecutionHasDeactivate(final Model model) {
-    Stack<EObject> messages = new Stack<EObject>();
-    ArrayList<ParticipantDeactivation> unmatchedDeactivations = new ArrayList<ParticipantDeactivation>();
+    HashMap<String, Integer> messagesWithExecution = CollectionLiterals.<String, Integer>newHashMap();
     int index = 0;
     EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
     for (final EObject obj : _messagesOrReferences) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
-          messages.push(obj);
+          messagesWithExecution.put(((SequenceMessage) obj).getTarget(), Integer.valueOf(index));
         }
         if ((obj instanceof ParticipantDeactivation)) {
           ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
-          boolean _isEmpty = messages.isEmpty();
-          boolean _not = (!_isEmpty);
-          if (_not) {
-            EObject _peek = messages.peek();
-            boolean _equals = ((SequenceMessage) _peek).getTarget().equals(deactivation.getName());
-            if (_equals) {
-              messages.pop();
-            } else {
-              unmatchedDeactivations.add(deactivation);
-            }
-          }
+          messagesWithExecution.remove(deactivation.getName());
         }
         index++;
       }
     }
-    while ((!messages.isEmpty())) {
-      {
-        EObject _pop = messages.pop();
-        SequenceMessage message = ((SequenceMessage) _pop);
-        int indexDeactivation = this.checkMatchingDeactivation(message, unmatchedDeactivations);
-        if ((indexDeactivation < 0)) {
-          this.error(
-            "Deactivation keyword expected for a withExecution message", 
-            TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, 
-            model.getMessagesOrReferences().indexOf(message));
-        } else {
-          unmatchedDeactivations.remove(indexDeactivation);
-        }
-      }
+    Set<String> _keySet = messagesWithExecution.keySet();
+    for (final String element : _keySet) {
+      this.error(
+        "Deactivation keyword expected for a withExecution message", 
+        TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, 
+        model.getMessagesOrReferences().indexOf(messagesWithExecution.get(element)));
     }
-  }
-  
-  /**
-   * returns >= 0 if a message is matched by a deactivation in the given list
-   */
-  public int checkMatchingDeactivation(final SequenceMessage message, final ArrayList<ParticipantDeactivation> deactivations) {
-    int index = 0;
-    for (final ParticipantDeactivation deactivation : deactivations) {
-      {
-        boolean _equals = deactivation.getName().equals(message.getTarget());
-        if (_equals) {
-          return index;
-        }
-        index++;
-      }
-    }
-    return (-1);
   }
   
   public String getParticipantsMapKey(final Participant p) {
