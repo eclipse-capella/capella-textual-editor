@@ -17,7 +17,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
-import org.polarsys.capella.scenario.editor.embeddededitor.commands.XtextEditorCommands;
+import org.polarsys.capella.scenario.editor.embeddededitor.commands.XtextToDiagramCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 
@@ -33,6 +33,6 @@ public class SaveAction extends Action {
     EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
     Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
 
-    XtextEditorCommands.xtextToDiagram(scenarioDiagram, eeView);
+    XtextToDiagramCommands.process(scenarioDiagram, eeView);
   }
 }
