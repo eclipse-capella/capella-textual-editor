@@ -220,9 +220,6 @@ public class XtextToDiagramCommands {
                 SequenceMessage sequenceMessage = createCapellaSequenceMessage(scenario, source, target, seqMessage,
                     executionEndsToProcess);
 
-                if (seqMessage.getExecution() == null) {
-                  doDeactivationSequenceMessage(scenario, target, executionEndsToProcess);
-                }
                 sequenceMessages.add(sequenceMessage);
               }
             }
@@ -280,7 +277,10 @@ public class XtextToDiagramCommands {
     // At that point, the execution end will be moved at its proper place in the ownedInteractionFragments
     // list
     // of the Capella scenario.
-    executionEndsToProcess.add(executionEnd);
+    // Execution end has to be processed only for withExecution messages. Nothing to do for simple messages.
+    if (seqMessage.getExecution() != null) {
+      executionEndsToProcess.add(executionEnd);
+    }
 
     // execution
     Execution execution = InteractionFactory.eINSTANCE.createExecution();

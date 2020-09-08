@@ -193,11 +193,23 @@ public class DiagramToXtextCommands {
         messagesOrReferences.add(message);
         // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
         i = i + 2;
-        if (ends[i] instanceof ExecutionEnd) {
-          // sikp generating deactivate keyword if we have a simple message
-          i = i + 1;
-        } else if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-          messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
+        
+        if (i < ends.length && ends[i] instanceof ExecutionEnd) {
+          SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[i - 2]).getMessage();
+          SequenceMessage seqMessFromExecutionEnd = ExecutionEndExt.getMessage((ExecutionEnd) ends[i]);
+            
+          if (seqMessFromMessageEnd.equals(seqMessFromExecutionEnd)) {
+            //nothing to do, skip this execution end
+            i = i + 1;
+          } else {
+            if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
+              messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
+            }
+          }
+        } else {
+          if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
+            messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
+          }
         }
       } else {
         EObject participantDeactivateMsg = getParticipantDeactivationMsgFromExecutionEnd(ends[i], factory);
