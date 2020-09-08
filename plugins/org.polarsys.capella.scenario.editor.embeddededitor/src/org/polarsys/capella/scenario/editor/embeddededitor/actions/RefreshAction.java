@@ -17,7 +17,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
-import org.polarsys.capella.scenario.editor.embeddededitor.commands.XtextEditorCommands;
+import org.polarsys.capella.scenario.editor.embeddededitor.commands.DiagramToXtextCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 
@@ -36,6 +36,6 @@ public class RefreshAction extends Action {
     EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
     Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
 
-    XtextEditorCommands.diagramToXtext(scenarioDiagram, eeView);
+    DiagramToXtextCommands.process(scenarioDiagram, eeView);
   }
 }

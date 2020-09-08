@@ -96,7 +96,7 @@ public class EmbeddedEditorView extends ViewPart {
 
     EmbeddedEditor editor = factory.newEditor(provider).withParent(parent);
     editor.createPartialEditor();
-    EmbeddedEditorInstance.seteEditor(editor);
+    EmbeddedEditorInstance.setEmbeddedEditor(editor);
   }
 
   public TextualScenarioProvider getProvider() {

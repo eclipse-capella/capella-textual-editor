@@ -25,6 +25,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant
+import org.polarsys.capella.core.model.helpers.CapellaElementExt
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -87,9 +88,10 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 		ICompletionProposalAcceptor acceptor
 	) {
 		for (el : EmbeddedEditorInstanceHelper.getAvailableElements(keyword)) {
+			var elementName = CapellaElementExt.getName(el)
 			// create the proposal
-			var proposal = createCompletionProposal("\"" + EmbeddedEditorInstanceHelper.getName(el) + "\"",
-				EmbeddedEditorInstanceHelper.getName(el), null, context) as ConfigurableCompletionProposal
+			var proposal = createCompletionProposal("\"" + elementName + "\"", elementName, null,
+				context) as ConfigurableCompletionProposal
 			acceptor.accept(proposal);
 		}
 	}

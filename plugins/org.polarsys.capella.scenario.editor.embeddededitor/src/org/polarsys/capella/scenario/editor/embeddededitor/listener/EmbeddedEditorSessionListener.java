@@ -29,7 +29,7 @@ import org.eclipse.ui.PlatformUI;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
-import org.polarsys.capella.scenario.editor.embeddededitor.commands.XtextEditorCommands;
+import org.polarsys.capella.scenario.editor.embeddededitor.commands.DiagramToXtextCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 
@@ -99,7 +99,7 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
                 activePage.activate(eeView);
               }
               eeView.refreshTitleBar(sc.getName());
-              XtextEditorCommands.diagramToXtext(sc, eeView); // update the embedded editor text view
+              DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
             }
           }
         }
