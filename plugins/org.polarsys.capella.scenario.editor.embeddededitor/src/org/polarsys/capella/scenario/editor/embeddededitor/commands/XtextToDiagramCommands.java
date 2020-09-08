@@ -220,9 +220,6 @@ public class XtextToDiagramCommands {
                 SequenceMessage sequenceMessage = createCapellaSequenceMessage(scenario, source, target, seqMessage,
                     executionEndsToProcess);
 
-//                if (seqMessage.getExecution() == null) {
-//                  doDeactivationSequenceMessage(scenario, target, executionEndsToProcess);
-//                }
                 sequenceMessages.add(sequenceMessage);
               }
             }
