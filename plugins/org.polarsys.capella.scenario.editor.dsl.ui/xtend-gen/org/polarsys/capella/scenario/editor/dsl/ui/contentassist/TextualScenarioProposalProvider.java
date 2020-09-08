@@ -22,6 +22,7 @@ import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.polarsys.capella.core.model.helpers.CapellaElementExt;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
@@ -89,11 +90,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     Collection<? extends EObject> _availableElements = EmbeddedEditorInstanceHelper.getAvailableElements(keyword);
     for (final EObject el : _availableElements) {
       {
-        String _name = EmbeddedEditorInstanceHelper.getName(el);
-        String _plus = ("\"" + _name);
-        String _plus_1 = (_plus + "\"");
-        ICompletionProposal _createCompletionProposal = this.createCompletionProposal(_plus_1, 
-          EmbeddedEditorInstanceHelper.getName(el), null, context);
+        String elementName = CapellaElementExt.getName(el);
+        ICompletionProposal _createCompletionProposal = this.createCompletionProposal((("\"" + elementName) + "\""), elementName, null, context);
         ConfigurableCompletionProposal proposal = ((ConfigurableCompletionProposal) _createCompletionProposal);
         acceptor.accept(proposal);
       }

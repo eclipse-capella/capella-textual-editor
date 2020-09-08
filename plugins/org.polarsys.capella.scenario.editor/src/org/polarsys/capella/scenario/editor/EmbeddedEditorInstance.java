@@ -21,7 +21,7 @@ import org.polarsys.capella.core.data.interaction.Scenario;
  * EmbeddedEditorInstance class keeps references to both the current embedded editor and the Capella scenario diagram
  */
 public class EmbeddedEditorInstance {
-  private static EmbeddedEditor eEditor;
+  private static EmbeddedEditor embeddedEditor;
   private static DDiagram diagram;
 
   private static EmbeddedEditorInstance eINSTANCE;
@@ -36,16 +36,15 @@ public class EmbeddedEditorInstance {
     return eINSTANCE;
   }
 
-  public static EmbeddedEditor geteEditor() {
-    return eEditor;
+  public static EmbeddedEditor getEmbeddedEditor() {
+    return embeddedEditor;
   }
 
-  public static void seteEditor(EmbeddedEditor eEditor) {
-    EmbeddedEditorInstance.eEditor = eEditor;
+  public static void setEmbeddedEditor(EmbeddedEditor eEditor) {
+    EmbeddedEditorInstance.embeddedEditor = eEditor;
   }
 
   public static Scenario getAssociatedScenarioDiagram() {
-
     return (Scenario) ((SequenceDDiagram) diagram).getTarget();
   }
 

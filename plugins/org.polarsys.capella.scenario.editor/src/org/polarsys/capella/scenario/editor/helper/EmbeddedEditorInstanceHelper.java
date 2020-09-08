@@ -52,14 +52,6 @@ public class EmbeddedEditorInstanceHelper {
     return currentScenario.getOwnedInstanceRoles();
   }
 
-  public static String getName(EObject element) {
-    String name = "";
-    if (element instanceof AbstractNamedElement) {
-      name = ((AbstractNamedElement) element).getName();
-    }
-    return name;
-  }
-
   public static String getScenarioType() {
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return currentScenario.getKind().toString();
@@ -165,7 +157,57 @@ public class EmbeddedEditorInstanceHelper {
     }
     return partNames;
   }
+  
+  /**
+   * returns the list of available abstract functions that could be inserted on the current scenario
+   * 
+   * @return collection of elements
+   *
+   */
+  public static Collection<? extends EObject> getAvailableAbstractFunctions() {
+    Collection<? extends EObject> elements = FaServices.getFaServices()
+        .getAllAbstractFunctions(BlockArchitectureExt.getRootBlockArchitecture(EmbeddedEditorInstance.getAssociatedScenarioDiagram()));
+    return elements;
+  }
+  
+  /**
+   * returns the list of available components that could be inserted on the current scenario
+   * 
+   * @return collection of elements
+   *
+   */
+  public static Collection<? extends EObject> getAvailableComponents() {
+    Collection<? extends EObject> elements = (new InteractionServices())
+        .getESScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+    return elements;
+  }
 
+  /**
+   * returns the list of available actors that could be inserted on the current scenario
+   * 
+   * @return collection of elements
+   *
+   */
+  public static Collection<? extends EObject> getAvailableActors() {
+    Collection<? extends EObject> elements = (new InteractionServices()).getESScopeInsertActors(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+    return elements;
+  }
+  
+  /**
+   * returns the list of available roles that could be inserted on the current scenario
+   * 
+   * @return collection of elements
+   *
+   */
+  public static Collection<? extends EObject> getAvailableRoles() {
+    Collection<? extends EObject> elements = OAServices.getService()
+        .getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram()).stream()
+        .filter(x -> x instanceof Role).collect(Collectors.toList());
+    ;
+    return elements;
+  }
+
+  
   /**
    * returns the list of available elements that could be inserted for the given keyword (which can be actor, component,
    * function, entity, role, activity, configuration_item)
@@ -175,31 +217,18 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableElements(String keyword) {
-    List<? extends EObject> elementsForKeyword = new ArrayList();
-
-    Collection<? extends EObject> elements = getAvailableElements();
-
     switch (keyword) {
     case DslConstants.ACTIVITY:
     case DslConstants.FUNCTION:
-      elementsForKeyword = elements.stream().filter(x -> x instanceof AbstractFunction).collect(Collectors.toList());
-      break;
+     return getAvailableAbstractFunctions();
     case DslConstants.ROLE:
-      elementsForKeyword = elements.stream().filter(x -> x instanceof Role).collect(Collectors.toList());
-      break;
+      return getAvailableRoles();
     case DslConstants.ACTOR:
-      elementsForKeyword = elements.stream().filter(x -> x instanceof Part
-          && ((Part) x).getAbstractType() instanceof Component && ((Component) ((Part) x).getAbstractType()).isActor())
-          .collect(Collectors.toList());
-      break;
+      return getAvailableActors();
     default:
       // gets all the components (non actors)
-      elementsForKeyword = elements.stream().filter(x -> x instanceof Part
-          && ((Part) x).getAbstractType() instanceof Component && !((Component) ((Part) x).getAbstractType()).isActor())
-          .collect(Collectors.toList());
-      break;
+      return getAvailableComponents();
     }
-    return elementsForKeyword;
   }
 
   /**
@@ -222,41 +251,7 @@ public class EmbeddedEditorInstanceHelper {
     }
     return instanceRole;
   }
-
-  /**
-   * returns the list of available elements that could be inserted on the current scenario
-   * 
-   * @return collection of elements
-   *
-   */
-  public static Collection<? extends EObject> getAvailableElements() {
-    Collection<? extends EObject> elements = new ArrayList();
-    Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-    switch (currentScenario.getKind()) {
-    case INTERACTION:
-      Collection<EObject> elements1 = OAServices.getService().getOESScopeInsertEntitiesRoles(currentScenario);
-      Collection<AbstractFunction> elements2 = FaServices.getFaServices()
-          .getAllAbstractFunctions(BlockArchitectureExt.getRootBlockArchitecture(currentScenario));
-      elements1.addAll(elements2);
-      elements = elements1;
-      break;
-    case DATA_FLOW:
-    case INTERFACE:
-      List<Part> elements3 = (new InteractionServices()).getESScopeInsertComponents(currentScenario);
-      List<Part> elements4 = (new InteractionServices()).getESScopeInsertActors(currentScenario);
-      elements3.addAll(elements4);
-      elements = elements3;
-      break;
-    case FUNCTIONAL:
-      elements = FaServices.getFaServices()
-          .getAllAbstractFunctions(BlockArchitectureExt.getRootBlockArchitecture(currentScenario));
-      break;
-    default:
-      break;
-    }
-    return elements;
-  }
-
+  
   /**
    * helper function that validates that a keyword typed in a text scenario is valid, based on scenario type and
    * architecture level
@@ -279,10 +274,8 @@ public class EmbeddedEditorInstanceHelper {
     }
     // IS and ES
     if (currentScenario.getKind() == ScenarioKind.INTERFACE || currentScenario.getKind() == ScenarioKind.DATA_FLOW) {
-      if (blockArchitecture instanceof SystemAnalysis) {
-        return keyword.equals(DslConstants.ACTOR) || keyword.equals(DslConstants.COMPONENT);
-      }
-      if (blockArchitecture instanceof LogicalArchitecture || blockArchitecture instanceof PhysicalArchitecture) {
+      if (blockArchitecture instanceof SystemAnalysis || blockArchitecture instanceof LogicalArchitecture
+          || blockArchitecture instanceof PhysicalArchitecture) {
         return keyword.equals(DslConstants.ACTOR) || keyword.equals(DslConstants.COMPONENT);
       }
       if (blockArchitecture instanceof EPBSArchitecture) {
