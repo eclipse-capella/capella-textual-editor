@@ -71,5 +71,7 @@ The user can create messages between participants assuming the fact that the exc
 <br>
 <br>
 [[Image:Images/IS_System_SeqMessages_FE.png|center]]
-
+<br>
+<br>
+[[Image:Images/OAS_OA_SeqMessages_Interaction.png|center]]
 
