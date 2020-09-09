@@ -32,8 +32,10 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.polarsys.capella.common.data.modellingcore.AbstractNamedElement;
 import org.polarsys.capella.core.data.capellacore.CapellaElement;
 import org.polarsys.capella.core.data.cs.BlockArchitecture;
+import org.polarsys.capella.core.data.helpers.interaction.services.SequenceMessageExt;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.data.information.AbstractInstance;
+import org.polarsys.capella.core.data.interaction.Event;
 import org.polarsys.capella.core.data.interaction.EventReceiptOperation;
 import org.polarsys.capella.core.data.interaction.EventSentOperation;
 import org.polarsys.capella.core.data.interaction.Execution;
@@ -46,6 +48,7 @@ import org.polarsys.capella.core.data.interaction.MessageEnd;
 import org.polarsys.capella.core.data.interaction.MessageKind;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.SequenceMessage;
+import org.polarsys.capella.core.data.interaction.TimeLapse;
 import org.polarsys.capella.core.data.interaction.properties.dialogs.sequenceMessage.model.SelectInvokedOperationModelForSharedDataAndEvent;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
@@ -196,9 +199,7 @@ public class XtextToDiagramCommands {
 
       @Override
       protected void doExecute() {
-        // Implement your write operations here,
-        // for example: set a new name
-        // element.eSet(element.eClass().getEStructuralFeature("name"), "aNewName");
+        cleanUpMessages(scenario, messages);
 
         EList<SequenceMessage> sequenceMessages = scenario.getOwnedMessages();
         ArrayList<InteractionFragment> executionEndsToProcess = new ArrayList<InteractionFragment>();
@@ -240,6 +241,76 @@ public class XtextToDiagramCommands {
       }
 
     });
+  }
+  
+  private static void cleanUpMessages(Scenario scenario, EList<EObject> messages) {
+    // Delete all diagram messages that don't appear in the xtext scenario
+
+    EList<SequenceMessage> sequenceMessages = scenario.getOwnedMessages();
+    List<SequenceMessage> messagesToBeDeleted = 
+        sequenceMessages.stream().filter(sm -> !foundMsgInXText(sm, messages)).collect(Collectors.toList());
+    
+    for (SequenceMessage sequenceMessage : messagesToBeDeleted) {
+      // Remove message from Capella scenario, together with execution, interaction fragments and events related to this message
+      removeMessageFromScenario(scenario, sequenceMessage);
+    }
+  }
+
+  private static void removeMessageFromScenario(Scenario scenario, SequenceMessage sequenceMessage) {
+    // Remove execution - time lapse
+    Execution execution = null;
+    MessageEnd re = sequenceMessage.getReceivingEnd();
+    for (TimeLapse tl : scenario.getOwnedTimeLapses()) {
+      if (tl instanceof Execution) {
+        Execution exec = (Execution) tl;
+        if (exec.getStart() != null && exec.getStart().equals(re)) {
+          execution = exec;
+        }
+      }
+    }
+    scenario.getOwnedTimeLapses().remove(execution);
+    
+    // Remove interaction fragments for sending end, receiving end and execution end
+    MessageEnd sendingEnd = sequenceMessage.getSendingEnd();
+    MessageEnd receivingEnd = sequenceMessage.getReceivingEnd();
+    InteractionFragment executionEnd = execution.getFinish();
+    scenario.getOwnedInteractionFragments().remove(sendingEnd);
+    scenario.getOwnedInteractionFragments().remove(receivingEnd);
+    scenario.getOwnedInteractionFragments().remove(executionEnd);
+    
+    // Remove events: send, receive, execution
+    AbstractEventOperation operation = SequenceMessageExt.getOperation(sequenceMessage);
+    Event eventSendOp = sendingEnd.getEvent();
+    Event eventReveivOp = receivingEnd.getEvent();
+    scenario.getOwnedEvents().remove(operation);
+    scenario.getOwnedEvents().remove(eventSendOp);
+    scenario.getOwnedEvents().remove(eventReveivOp);
+    
+    // Remove sequence message
+    scenario.getOwnedMessages().remove(sequenceMessage);
+  }
+
+  private static boolean foundMsgInXText(SequenceMessage sm, EList<EObject> messages) {
+    for (EObject message : messages) {
+      if (isSameMessage(message, sm)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean isSameMessage(EObject m, SequenceMessage seqMessage) {
+    if (!(m instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage)) {
+      return false;
+    }
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage message = 
+        (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) m;
+    if (message.getSource().equals(seqMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName()) &&
+      message.getTarget().equals(seqMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName()) &&
+      message.getName().equals(seqMessage.getName())) {
+      return true;
+    }
+    return false;
   }
 
   /*
