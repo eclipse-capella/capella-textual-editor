@@ -1,6 +1,8 @@
-scenario Logical IS "ScenarioName"
-	actor "Actor 1" as act1
-	actor "Actor 2" as act2
-	component "Component1" as comp1
-	act1 -> act2 : "Message"
-end scenario
+scenario {
+	component "LC 1"
+	component "LC 2"
+	actor "LA 2"
+	"LC 1" -> "LC 2" withExecution : "new component exchange"
+	"LC 2" -> "LA 2" : "new component exchange 2"
+	deactivate "LC 2"
+}
