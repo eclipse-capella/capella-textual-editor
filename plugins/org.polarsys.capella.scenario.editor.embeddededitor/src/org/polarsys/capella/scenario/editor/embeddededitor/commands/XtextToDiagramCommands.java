@@ -199,10 +199,6 @@ public class XtextToDiagramCommands {
 
       @Override
       protected void doExecute() {
-        // Implement your write operations here,
-        // for example: set a new name
-        // element.eSet(element.eClass().getEStructuralFeature("name"), "aNewName");
-        
         cleanUpMessages(scenario, messages);
 
         EList<SequenceMessage> sequenceMessages = scenario.getOwnedMessages();
@@ -262,9 +258,7 @@ public class XtextToDiagramCommands {
 
   private static void removeMessageFromScenario(Scenario scenario, SequenceMessage sequenceMessage) {
     // Remove execution - time lapse
-    Execution execution = null;//= org.polarsys.capella.core.model.helpers.SequenceMessageExt.getStartedExecution(sequenceMessage);
-    //TODO - above line should work, but start/finish are null. Investigate why start and finish of execution are null
-    // replacing call with the lines below, to determine current execution
+    Execution execution = null;
     MessageEnd re = sequenceMessage.getReceivingEnd();
     for (TimeLapse tl : scenario.getOwnedTimeLapses()) {
       if (tl instanceof Execution) {
