@@ -1,5 +1,9 @@
-scenario System ES "ScenarioName"
-	actor "Actor 1" as act1
-	actor "Actor 2" as act2
-	act1 -> act2 : "Message"
-end scenario
+scenario {
+	component "System"
+	actor "SA 23"
+	actor "SA 24"
+	actor "SA 25"
+	"SA 23" -> "SA 24" withExecution : "new functional exchange"
+	"SA 24" -> "SA 25" : "new functional exchange 2"
+	deactivate "SA 24"
+} 
