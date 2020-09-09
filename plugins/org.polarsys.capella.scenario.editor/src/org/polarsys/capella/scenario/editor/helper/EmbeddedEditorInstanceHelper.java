@@ -157,7 +157,7 @@ public class EmbeddedEditorInstanceHelper {
     }
     return partNames;
   }
-  
+
   /**
    * returns the list of available abstract functions that could be inserted on the current scenario
    * 
@@ -165,11 +165,11 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableAbstractFunctions() {
-    Collection<? extends EObject> elements = FaServices.getFaServices()
-        .getAllAbstractFunctions(BlockArchitectureExt.getRootBlockArchitecture(EmbeddedEditorInstance.getAssociatedScenarioDiagram()));
+    Collection<? extends EObject> elements = FaServices.getFaServices().getAllAbstractFunctions(
+        BlockArchitectureExt.getRootBlockArchitecture(EmbeddedEditorInstance.getAssociatedScenarioDiagram()));
     return elements;
   }
-  
+
   /**
    * returns the list of available components that could be inserted on the current scenario
    * 
@@ -189,10 +189,11 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableActors() {
-    Collection<? extends EObject> elements = (new InteractionServices()).getESScopeInsertActors(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+    Collection<? extends EObject> elements = (new InteractionServices())
+        .getESScopeInsertActors(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
     return elements;
   }
-  
+
   /**
    * returns the list of available roles that could be inserted on the current scenario
    * 
@@ -207,7 +208,6 @@ public class EmbeddedEditorInstanceHelper {
     return elements;
   }
 
-  
   /**
    * returns the list of available elements that could be inserted for the given keyword (which can be actor, component,
    * function, entity, role, activity, configuration_item)
@@ -220,7 +220,7 @@ public class EmbeddedEditorInstanceHelper {
     switch (keyword) {
     case DslConstants.ACTIVITY:
     case DslConstants.FUNCTION:
-     return getAvailableAbstractFunctions();
+      return getAvailableAbstractFunctions();
     case DslConstants.ROLE:
       return getAvailableRoles();
     case DslConstants.ACTOR:
@@ -251,7 +251,7 @@ public class EmbeddedEditorInstanceHelper {
     }
     return instanceRole;
   }
-  
+
   /**
    * helper function that validates that a keyword typed in a text scenario is valid, based on scenario type and
    * architecture level
@@ -264,6 +264,9 @@ public class EmbeddedEditorInstanceHelper {
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     BlockArchitecture blockArchitecture = BlockArchitectureExt.getRootBlockArchitecture(currentScenario);
 
+    if (keyword.equals("withExecution") || keyword.equals("deactivate")) {
+      return true;
+    }
     if (currentScenario.getKind() == ScenarioKind.INTERACTION) {
       if (ScenarioExt.isFunctionalScenario(currentScenario)) {
         return keyword.equals(DslConstants.ACTIVITY);
