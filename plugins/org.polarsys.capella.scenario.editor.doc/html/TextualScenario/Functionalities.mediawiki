@@ -17,7 +17,7 @@ Once the Textual Scenario Add-On is installed, you will be able to edit scenario
 
 ==Textual Scenario View==
 
-When creating a new scenario diagram (OES, OAS, IS, FS, ES), the scenario editor is displayed as a separate view. The user shall be able to edit a textual scenario in the embedded Textual Scenario Editor. If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.
+When creating a new scenario diagram (OES, OAS, IS, FS, ES), the scenario editor is displayed as a separate view. The user shall be able to edit a scenario in the embedded Textual Scenario Editor. If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.
 
 ===Consistency of the data===
 In order to maintain consistency between diagram and text, two buttons are available:
@@ -37,7 +37,7 @@ Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture le
 * ''' entity ''': it will create an instance role representing an entity; this keyword is available for OES diagrams at Operational Level.
 * ''' role ''': it will create an instance role representing a role; this keyword is available for OES diagrams at Operational Level.
 * ''' function ''': it will create an instance role representing a function; this keyword is available for FS diagrams.
-* ''' activity ''': it will create an instance role representing a function; this keyword is available for OAS diagrams.
+* ''' activity ''': it will create an instance role representing an activity; this keyword is available for OAS diagrams.
 
 ====Examples====
 
