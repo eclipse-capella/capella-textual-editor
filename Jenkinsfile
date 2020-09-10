@@ -25,7 +25,7 @@ pipeline {
 		        	currentBuild.description = BUILD_KEY
 		        	
 		        	sh 'env'
-		        	sh 'mvn clean verify -f releng/org.polarsys.capella.scenario.editor.target/pom.xml'
+		        	sh 'mvn clean verify -f releng/org.polarsys.capella.scenario.editor.update/pom.xml'
 	       		}         
 	     	}
 	    }
@@ -49,7 +49,8 @@ pipeline {
 					
 					deployer.addonNightlyDropins("${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/*-dropins-*.zip", deploymentDirName)
 					deployer.addonNightlyUpdateSite("${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/*-updateSite-*.zip", deploymentDirName)					
-
+					currentBuild.description = "${deploymentDirName} - <a href=\"https://download.eclipse.org/capella/addons/textualscenario/dropins/nightly/${deploymentDirName}\">drop-in</a> - <a href=\"https://download.eclipse.org/capella/addons/textualscenario/updates/nightly/${deploymentDirName}\">update-site</a>"
+	       		
 	       		}         
 	     	}
 	    }

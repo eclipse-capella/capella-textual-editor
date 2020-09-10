@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: org.polarsys.capella.scenario.editor.dsl
 Bundle-ManifestVersion: 2
 Bundle-Name: org.polarsys.capella.scenario.editor.dsl
-Bundle-Vendor: My Company
+Bundle-Vendor: Eclipse.org
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.polarsys.capella.scenario.editor.dsl; singleton:=true
 Bundle-ActivationPolicy: lazy

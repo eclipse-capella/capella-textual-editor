@@ -22,3 +22,4 @@ Export-Package: org.polarsys.capella.scenario.editor.embeddededitor.commands,
  org.polarsys.capella.scenario.editor.embeddededitor.helper,
  org.polarsys.capella.scenario.editor.embeddededitor.listener,
  org.polarsys.capella.scenario.editor.embeddededitor.views
+Bundle-Vendor: Eclipse.org
