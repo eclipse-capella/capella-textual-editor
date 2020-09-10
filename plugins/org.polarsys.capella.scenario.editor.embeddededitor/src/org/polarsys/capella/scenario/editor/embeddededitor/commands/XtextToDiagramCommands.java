@@ -308,11 +308,11 @@ public class XtextToDiagramCommands {
   
   private static Execution getExecutionForSequenceMessage(Scenario scenario, SequenceMessage sequenceMessage) {
     Execution execution = null;
-    MessageEnd re = sequenceMessage.getReceivingEnd();
-    for (TimeLapse tl : scenario.getOwnedTimeLapses()) {
-      if (tl instanceof Execution) {
-        Execution exec = (Execution) tl;
-        if (exec.getStart() != null && exec.getStart().equals(re)) {
+    MessageEnd receivingEnd = sequenceMessage.getReceivingEnd();
+    for (TimeLapse timeLapse : scenario.getOwnedTimeLapses()) {
+      if (timeLapse instanceof Execution) {
+        Execution exec = (Execution) timeLapse;
+        if (exec.getStart() != null && exec.getStart().equals(receivingEnd)) {
           execution = exec;
         }
       }
