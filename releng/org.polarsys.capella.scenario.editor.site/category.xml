@@ -3,13 +3,6 @@
    <feature id="org.polarsys.capella.scenario.editor.feature.source" version="1.0.0.qualifier">
       <category name="org.polarsys.capella.scenario.editor"/>
    </feature>
-   <feature id="org.polarsys.capella.scenario.editor.cdo.feature.source" version="1.0.0.qualifier">
-      <category name="org.polarsys.capella.scenario.editor.collaboration"/>
-   </feature>
-   <feature id="org.polarsys.capella.scenario.editor.tests.feature">
-      <category name="org.polarsys.capella.scenario.editor.tests"/>
-   </feature>
    <category-def name="org.polarsys.capella.scenario.editor" label="TextualScenarioEditor"/>
-   <category-def name="org.polarsys.capella.scenario.editor.collaboration" label="TextualScenarioEditor Collaboration"/>
-   <category-def name="org.polarsys.capella.scenario.editor.tests" label="Textual Scenario Tests"/>
+   
 </site>
