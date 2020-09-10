@@ -11,5 +11,5 @@
    </feature>
    <category-def name="org.polarsys.capella.scenario.editor" label="TextualScenarioEditor"/>
    <category-def name="org.polarsys.capella.scenario.editor.collaboration" label="TextualScenarioEditor Collaboration"/>
-   <category-def name="org.polarsys.capella.scenario.editor.tests" label="Filtering Tests"/>
+   <category-def name="org.polarsys.capella.scenario.editor.tests" label="Textual Scenario Tests"/>
 </site>

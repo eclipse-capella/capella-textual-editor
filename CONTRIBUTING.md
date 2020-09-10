@@ -32,6 +32,7 @@ The project maintains the following source code repositories
 * http://git.polarsys.org/c/capella/capella-tools.git
 * http://git.polarsys.org/c/capella/capella-xhtml-docgen.git
 * http://git.polarsys.org/c/capella/capella-xmlpivot.git
+* https://github.com/eclipse/capella-textual-editor.git
 
 This project uses Bugzilla to track ongoing development and issues.
 
