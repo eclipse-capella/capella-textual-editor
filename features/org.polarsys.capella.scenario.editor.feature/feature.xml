@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2017, 2020 THALES GLOBAL SERVICES.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Public License v1.0
-  which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/epl-v10.html
+ Copyright (c) 2020 THALES GLOBAL SERVICES.
 
-  Contributors:
-       Thales - initial API and implementation
+ This program and the accompanying materials are made available under the
+ terms of the Eclipse Public License 2.0 which is available at
+ http://www.eclipse.org/legal/epl-2.0
+
+ Contributors:
+    Thales - initial API and implementation
 -->
 <feature
-      id="org.polarsys.kitalpha.vp.requirements.feature"
+      id="org.polarsys.capella.scenario.editor.feature"
       label="%featureName"
-      version="0.11.1.qualifier"
+      version="1.0.0.qualifier"
       provider-name="%providerName">
 
    <description url="http://www.example.com/description">
@@ -27,55 +27,43 @@
       %license
    </license>
 
-   <includes
-         id="org.polarsys.kitalpha.vp.requirements.af.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.polarsys.kitalpha.vp.requirements.representation.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.polarsys.kitalpha.vp.requirements.ui.feature"
-         version="0.0.0"/>
-
    <plugin
-         id="org.polarsys.kitalpha.vp.requirements.model"
+         id="org.polarsys.capella.scenario.editor"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.polarsys.kitalpha.vp.requirements.model.edit"
+         id="org.polarsys.capella.scenario.editor.doc"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.polarsys.kitalpha.vp.requirements.vpdsl"
+         id="org.polarsys.capella.scenario.editor.dsl"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.polarsys.kitalpha.vp.requirements"
+         id="org.polarsys.capella.scenario.editor.dsl.ide"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.polarsys.kitalpha.vp.requirements.model.edit.decorators"
+         id="org.polarsys.capella.scenario.editor.dsl.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.polarsys.kitalpha.vp.requirements.model.helpers"
+         id="org.polarsys.capella.scenario.editor.embeddededitor"
          download-size="0"
          install-size="0"
          version="0.0.0"
