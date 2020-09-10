@@ -211,7 +211,7 @@ public class DiagramToXtextCommands {
             messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
           }
         }
-      } else {
+      } else if (ends[i] instanceof ExecutionEnd) {
         EObject participantDeactivateMsg = getParticipantDeactivationMsgFromExecutionEnd(ends[i], factory);
         messagesOrReferences.add(participantDeactivateMsg);
 
@@ -220,6 +220,8 @@ public class DiagramToXtextCommands {
               .pop();
           currentSequenceMessage.setExecution(DslConstants.WITH_EXECUTION);
         }
+        i = i + 1;
+      } else {
         i = i + 1;
       }
     }
