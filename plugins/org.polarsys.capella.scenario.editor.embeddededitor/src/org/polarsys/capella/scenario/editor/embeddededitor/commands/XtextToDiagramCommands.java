@@ -316,7 +316,7 @@ public class XtextToDiagramCommands {
           execution = exec;
         }
       }
-    }
+    } 
     return execution;
   }
   
