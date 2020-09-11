@@ -22,7 +22,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeact
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage
 import org.eclipse.xtext.validation.Check
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
-import java.util.Stack
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function
 
@@ -113,36 +112,34 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	}
 
 	/*
-	 * Checks on deactivation keyword, check that we do not have dangling deactivations;
+	 * Checks on deactivation keyword
 	 * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
 	 */
 	@Check
 	def checkDeactivateMessages(Model model) {
 		var index = 0
-		var messages = new Stack()
+		// a message shall occur before a deactivation
+		// keep this array with the targets of each encountered message to check that the message happens before deactivation
+		var messageTargets = newLinkedList
 		for (obj : model.messagesOrReferences) {
 			if (obj instanceof SequenceMessage) {
-				// add the encountered SequenceMessages to a stack
-				messages.push(obj)
+				// add the already encountered messages to the list
+				messageTargets.add((obj as SequenceMessage).target)
 			}
 			if (obj instanceof ParticipantDeactivation) {
 				var deactivation = obj as ParticipantDeactivation
 
-				// extract messages from the stack until stack is empty or we encounter a message to deactivate
-				while (!messages.isEmpty() && !(messages.peek as SequenceMessage).target.equals(deactivation.name)) {
-					messages.pop();
-				}
-				// if stack is not empty - pop (the peek it contains the message to deactivate)
-				// if stack is empty - error (we didn't found the message apply this deactivation)
-				if (messages.isEmpty) {
+				// if we already encountered a message with target ad deactivation.name, 
+				// we will remove the message from the messages list, because this message is matched with a deactivation
+				var removed = messageTargets.remove(deactivation.name)
+				if (!removed) {
+					// if the deactivation is not matched in a previous message, display an error
 					error(
 						'Deactivation keyword not expected',
 						TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES,
 						index
 					)
-					return
 				}
-				messages.pop()
 			}
 			index++
 		}
@@ -153,24 +150,34 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 */
 	@Check
 	def checkWithExecutionHasDeactivate(Model model) {
-		var messagesWithExecution = newHashMap
+		// keep a list with the target of the messages that contains the withExecution keyword
+		// keep also a list with the index on which withExecution message is found, to know on which line to show an error
+		var messageWithExecutionTargets = newLinkedList
+		var messageWithExecutionTargetsIndex = newLinkedList
 		var index = 0
 		for (obj : model.messagesOrReferences) {
 			if (obj instanceof SequenceMessage && (obj as SequenceMessage).execution !== null) {
-				// add the SequenceMessage with execution to a Stack
-				messagesWithExecution.put((obj as SequenceMessage).target, index)
+				// add the SequenceMessage with execution to a list
+				messageWithExecutionTargets.add((obj as SequenceMessage).target)
+				messageWithExecutionTargetsIndex.add(index)
 			}
 			if (obj instanceof ParticipantDeactivation) {
-				var deactivation = obj as ParticipantDeactivation
-				messagesWithExecution.remove(deactivation.name)
+				var targetName = (obj as ParticipantDeactivation).name
+				var indexOfTarget = messageWithExecutionTargets.indexOf(targetName)
+				if (indexOfTarget >= 0) {
+					messageWithExecutionTargets.remove(indexOfTarget)
+					messageWithExecutionTargetsIndex.remove(indexOfTarget)
+				}
 			}
 			index++
 		}
-		for (element : messagesWithExecution.keySet) {
+		// if not all withExecution messages were matched with a deactivation, show an error
+		// use the index list to know on which message to display the error
+		for (var i = 0; i < messageWithExecutionTargets.size; i++) {
 			error(
 				'Deactivation keyword expected for a withExecution message',
 				TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES,
-				model.messagesOrReferences.indexOf(messagesWithExecution.get(element))
+				messageWithExecutionTargetsIndex.get(i)
 			)
 		}
 	}
