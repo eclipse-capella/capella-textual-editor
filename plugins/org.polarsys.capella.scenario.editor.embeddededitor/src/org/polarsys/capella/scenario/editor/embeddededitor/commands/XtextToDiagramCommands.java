@@ -74,18 +74,9 @@ public class XtextToDiagramCommands {
       // get messages
       EList<EObject> messages = domainModel.getMessagesOrReferences();
 
-      // get instance roles
-      EList<InstanceRole> instanceRoles = scenario.getOwnedInstanceRoles();
-
       doEditingOnParticipants(scenario, participants, messages);
 
       doEditingOnMessages(scenario, messages);
-
-      // do instance roles reorder if they do not match the order of the editor participants
-      // if reorder is done, a diagram sync is needed
-      if (reorderParticipants(instanceRoles, participants)) {
-        syncGraphicalOrdering();
-      }
 
       // do refresh - when the messages associated with the removed actors are deleted too,
       // a refresh is needed to update also the editor
@@ -139,6 +130,8 @@ public class XtextToDiagramCommands {
         for (InstanceRole ir : removedIR) {
           removeEditorMessages(messages, ir.getName());
         }
+        // do instance roles reorder if they do not match the order of the editor participants
+        reorderParticipants(instanceRoles, participants);
       }
     });
   }
@@ -441,7 +434,9 @@ public class XtextToDiagramCommands {
       return false;
     }
     org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage message = (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) m;
-    if (message.getSource().equals(seqMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName())
+    if (!seqMessage.getSendingEnd().getCoveredInstanceRoles().isEmpty()
+        && message.getSource().equals(seqMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName())
+        && !seqMessage.getReceivingEnd().getCoveredInstanceRoles().isEmpty()
         && message.getTarget().equals(seqMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName())
         && message.getName().equals(seqMessage.getName())) {
       return true;
