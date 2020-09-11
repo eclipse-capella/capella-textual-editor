@@ -74,9 +74,18 @@ public class XtextToDiagramCommands {
       // get messages
       EList<EObject> messages = domainModel.getMessagesOrReferences();
 
+      // get instance roles
+      EList<InstanceRole> instanceRoles = scenario.getOwnedInstanceRoles();
+
       doEditingOnParticipants(scenario, participants, messages);
 
       doEditingOnMessages(scenario, messages);
+
+      // do instance roles reorder if they do not match the order of the editor participants
+      // if reorder is done, a diagram sync is needed
+      if (reorderParticipants(instanceRoles, participants)) {
+        syncGraphicalOrdering();
+      }
 
       // do refresh - when the messages associated with the removed actors are deleted too,
       // a refresh is needed to update also the editor
@@ -130,11 +139,6 @@ public class XtextToDiagramCommands {
         for (InstanceRole ir : removedIR) {
           removeEditorMessages(messages, ir.getName());
         }
-
-        // reorder participants and if there was any change, do graphical synchronization
-        if (reorderParticipants(instanceRoles, participants)) {
-          syncGraphicalOrdering();
-        }
       }
     });
   }
@@ -146,8 +150,7 @@ public class XtextToDiagramCommands {
    *          Instance roles from diagram
    * @param participants
    *          Participants from editor
-   * @return 
-   *          Return the list of the removed participants     
+   * @return Return the list of the removed participants
    */
   private static List<InstanceRole> removeParticipantsFromDiagram(List<InstanceRole> instanceRoles,
       EList<Participant> participants) {
