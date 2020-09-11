@@ -12,10 +12,8 @@
  */
 package org.polarsys.capella.scenario.editor.dsl.validation;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.LinkedList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
@@ -132,32 +130,27 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   /**
-   * Checks on deactivation keyword, check that we do not have dangling deactivations;
+   * Checks on deactivation keyword
    * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
    */
   @Check
   public void checkDeactivateMessages(final Model model) {
     int index = 0;
-    Stack<SequenceMessage> messages = new Stack<SequenceMessage>();
+    LinkedList<String> messageTargets = CollectionLiterals.<String>newLinkedList();
     EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
     for (final EObject obj : _messagesOrReferences) {
       {
         if ((obj instanceof SequenceMessage)) {
-          messages.push(((SequenceMessage)obj));
+          messageTargets.add(((SequenceMessage) obj).getTarget());
         }
         if ((obj instanceof ParticipantDeactivation)) {
           ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
-          while (((!messages.isEmpty()) && (!((SequenceMessage) messages.peek()).getTarget().equals(deactivation.getName())))) {
-            messages.pop();
-          }
-          boolean _isEmpty = messages.isEmpty();
-          if (_isEmpty) {
+          boolean removed = messageTargets.remove(deactivation.getName());
+          if ((!removed)) {
             this.error(
               "Deactivation keyword not expected", 
               TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, index);
-            return;
           }
-          messages.pop();
         }
         index++;
       }
@@ -169,27 +162,32 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkWithExecutionHasDeactivate(final Model model) {
-    HashMap<String, Integer> messagesWithExecution = CollectionLiterals.<String, Integer>newHashMap();
+    LinkedList<String> messageWithExecutionTargets = CollectionLiterals.<String>newLinkedList();
+    LinkedList<Integer> messageWithExecutionTargetsIndex = CollectionLiterals.<Integer>newLinkedList();
     int index = 0;
     EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
     for (final EObject obj : _messagesOrReferences) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
-          messagesWithExecution.put(((SequenceMessage) obj).getTarget(), Integer.valueOf(index));
+          messageWithExecutionTargets.add(((SequenceMessage) obj).getTarget());
+          messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
         }
         if ((obj instanceof ParticipantDeactivation)) {
-          ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
-          messagesWithExecution.remove(deactivation.getName());
+          String targetName = ((ParticipantDeactivation) obj).getName();
+          int indexOfTarget = messageWithExecutionTargets.indexOf(targetName);
+          if ((indexOfTarget >= 0)) {
+            messageWithExecutionTargets.remove(indexOfTarget);
+            messageWithExecutionTargetsIndex.remove(indexOfTarget);
+          }
         }
         index++;
       }
     }
-    Set<String> _keySet = messagesWithExecution.keySet();
-    for (final String element : _keySet) {
+    for (int i = 0; (i < messageWithExecutionTargets.size()); i++) {
       this.error(
         "Deactivation keyword expected for a withExecution message", 
         TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, 
-        model.getMessagesOrReferences().indexOf(messagesWithExecution.get(element)));
+        (messageWithExecutionTargetsIndex.get(i)).intValue());
     }
   }
   
