@@ -266,7 +266,7 @@ public class DiagramToXtextCommands {
       seqMessage = factory.createDeleteMessage();
       break;
     case REPLY:
-      seqMessage = factory.createReturnMessage();
+      //seqMessage = factory.createReturnMessage();
       break;
     case TIMER:
       seqMessage = factory.createArmTimerMessage();
