@@ -1,9 +1,8 @@
 '->'=24
-'->+'=27
+'->+'=28
 '->>'=30
-'->x'=28
-':'=26
-'<--'=29
+'->x'=29
+':'=27
 'activity'=21
 'actor'=14
 'behavior'=17
@@ -19,6 +18,7 @@
 'scenario'=11
 'unset'=16
 'withExecution'=25
+'withReturn'=26
 '{'=12
 '}'=13
 RULE_ANY_OTHER=10

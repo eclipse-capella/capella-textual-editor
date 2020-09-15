@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package 
+			uri = "http://www.polarsys.org/capella/scenario/editor/dsl/TextualScenario"
+			class = "org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage"
+			genModel = "model/generated/TextualScenario.genmodel" />
+	</extension>
+</plugin>
