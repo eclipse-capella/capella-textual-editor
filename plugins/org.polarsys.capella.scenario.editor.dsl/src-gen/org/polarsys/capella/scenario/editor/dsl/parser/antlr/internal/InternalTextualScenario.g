@@ -758,53 +758,32 @@ ruleSequenceMessageType returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		(
-			{
-				newCompositeNode(grammarAccess.getSequenceMessageTypeAccess().getSequenceMessageParserRuleCall_0_0());
-			}
-			this_SequenceMessage_0=ruleSequenceMessage
-			{
-				$current = $this_SequenceMessage_0.current;
-				afterParserOrEnumRuleCall();
-			}
-			    |
-			{
-				newCompositeNode(grammarAccess.getSequenceMessageTypeAccess().getCreateMessageParserRuleCall_0_1());
-			}
-			this_CreateMessage_1=ruleCreateMessage
-			{
-				$current = $this_CreateMessage_1.current;
-				afterParserOrEnumRuleCall();
-			}
-			    |
-			{
-				newCompositeNode(grammarAccess.getSequenceMessageTypeAccess().getDeleteMessageParserRuleCall_0_2());
-			}
-			this_DeleteMessage_2=ruleDeleteMessage
-			{
-				$current = $this_DeleteMessage_2.current;
-				afterParserOrEnumRuleCall();
-			}
-		)
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getSequenceMessageTypeAccess().getReturnReturnMessageParserRuleCall_1_0());
-				}
-				lv_return_3_0=ruleReturnMessage
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getSequenceMessageTypeRule());
-					}
-					set(
-						$current,
-						"return",
-						lv_return_3_0,
-						"org.polarsys.capella.scenario.editor.dsl.TextualScenario.ReturnMessage");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)?
+		{
+			newCompositeNode(grammarAccess.getSequenceMessageTypeAccess().getSequenceMessageParserRuleCall_0());
+		}
+		this_SequenceMessage_0=ruleSequenceMessage
+		{
+			$current = $this_SequenceMessage_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getSequenceMessageTypeAccess().getCreateMessageParserRuleCall_1());
+		}
+		this_CreateMessage_1=ruleCreateMessage
+		{
+			$current = $this_CreateMessage_1.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getSequenceMessageTypeAccess().getDeleteMessageParserRuleCall_2());
+		}
+		this_DeleteMessage_2=ruleDeleteMessage
+		{
+			$current = $this_DeleteMessage_2.current;
+			afterParserOrEnumRuleCall();
+		}
 	)
 ;
 
@@ -878,15 +857,29 @@ ruleSequenceMessage returns [EObject current=null]
 				}
 			)
 		)?
-		otherlv_4=':'
+		(
+			(
+				lv_return_4_0='withReturn'
+				{
+					newLeafNode(lv_return_4_0, grammarAccess.getSequenceMessageAccess().getReturnWithReturnKeyword_4_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getSequenceMessageRule());
+					}
+					setWithLastConsumed($current, "return", lv_return_4_0, "withReturn");
+				}
+			)
+		)?
+		otherlv_5=':'
 		{
-			newLeafNode(otherlv_4, grammarAccess.getSequenceMessageAccess().getColonKeyword_4());
+			newLeafNode(otherlv_5, grammarAccess.getSequenceMessageAccess().getColonKeyword_5());
 		}
 		(
 			(
-				lv_name_5_0=RULE_STRING
+				lv_name_6_0=RULE_STRING
 				{
-					newLeafNode(lv_name_5_0, grammarAccess.getSequenceMessageAccess().getNameSTRINGTerminalRuleCall_5_0());
+					newLeafNode(lv_name_6_0, grammarAccess.getSequenceMessageAccess().getNameSTRINGTerminalRuleCall_6_0());
 				}
 				{
 					if ($current==null) {
@@ -895,7 +888,7 @@ ruleSequenceMessage returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_5_0,
+						lv_name_6_0,
 						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)
@@ -1053,87 +1046,6 @@ ruleDeleteMessage returns [EObject current=null]
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getDeleteMessageRule());
-					}
-					setWithLastConsumed(
-						$current,
-						"name",
-						lv_name_4_0,
-						"org.eclipse.xtext.common.Terminals.STRING");
-				}
-			)
-		)
-	)
-;
-
-// Entry rule entryRuleReturnMessage
-entryRuleReturnMessage returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getReturnMessageRule()); }
-	iv_ruleReturnMessage=ruleReturnMessage
-	{ $current=$iv_ruleReturnMessage.current; }
-	EOF;
-
-// Rule ReturnMessage
-ruleReturnMessage returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			(
-				lv_target_0_0=RULE_STRING
-				{
-					newLeafNode(lv_target_0_0, grammarAccess.getReturnMessageAccess().getTargetSTRINGTerminalRuleCall_0_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getReturnMessageRule());
-					}
-					setWithLastConsumed(
-						$current,
-						"target",
-						lv_target_0_0,
-						"org.eclipse.xtext.common.Terminals.STRING");
-				}
-			)
-		)
-		otherlv_1='<--'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getReturnMessageAccess().getLessThanSignHyphenMinusHyphenMinusKeyword_1());
-		}
-		(
-			(
-				lv_source_2_0=RULE_STRING
-				{
-					newLeafNode(lv_source_2_0, grammarAccess.getReturnMessageAccess().getSourceSTRINGTerminalRuleCall_2_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getReturnMessageRule());
-					}
-					setWithLastConsumed(
-						$current,
-						"source",
-						lv_source_2_0,
-						"org.eclipse.xtext.common.Terminals.STRING");
-				}
-			)
-		)
-		otherlv_3=':'
-		{
-			newLeafNode(otherlv_3, grammarAccess.getReturnMessageAccess().getColonKeyword_3());
-		}
-		(
-			(
-				lv_name_4_0=RULE_STRING
-				{
-					newLeafNode(lv_name_4_0, grammarAccess.getReturnMessageAccess().getNameSTRINGTerminalRuleCall_4_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getReturnMessageRule());
 					}
 					setWithLastConsumed(
 						$current,

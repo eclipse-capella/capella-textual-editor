@@ -65,11 +65,10 @@ Message:
 
 SequenceMessageType:
 	(SequenceMessage | CreateMessage | DeleteMessage)
-	(return=ReturnMessage)?
 ;
 
 SequenceMessage:
-    source=STRING '->' target=STRING (execution = 'withExecution')? ':' name=STRING 
+    source=STRING '->' target=STRING (execution = 'withExecution')? (return='withReturn')? ':' name=STRING 
 ;
 
 CreateMessage:
@@ -78,10 +77,6 @@ CreateMessage:
 
 DeleteMessage:
 	source=STRING '->x' target=STRING ':' name=STRING 
-;
-
-ReturnMessage:
-	target=STRING '<--' source=STRING ':' name=STRING
 ;
 
 ArmTimerMessage:
