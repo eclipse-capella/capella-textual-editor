@@ -22,4 +22,5 @@ public class DslConstants {
   public static final String CONFIGURATION_ITEM = "configuration_item";
   public static final String DEACTIVATE = "deactivate";
   public static final String WITH_EXECUTION = "withExecution";
+  public static final String WITH_RETURN = "withReturn";
 }

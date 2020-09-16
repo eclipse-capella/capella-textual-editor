@@ -23,15 +23,18 @@ import org.polarsys.capella.core.data.cs.Component;
 import org.polarsys.capella.core.data.epbs.ConfigurationItem;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
 import org.polarsys.capella.core.data.helpers.interaction.services.ExecutionEndExt;
+import org.polarsys.capella.core.data.helpers.interaction.services.SequenceMessageExt;
 import org.polarsys.capella.core.data.interaction.ExecutionEnd;
 import org.polarsys.capella.core.data.interaction.InstanceRole;
 import org.polarsys.capella.core.data.interaction.InteractionFragment;
 import org.polarsys.capella.core.data.interaction.MessageEnd;
+import org.polarsys.capella.core.data.interaction.MessageKind;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.SequenceMessage;
 import org.polarsys.capella.core.data.oa.Entity;
 import org.polarsys.capella.core.data.oa.OperationalActivity;
 import org.polarsys.capella.core.data.oa.Role;
+import org.polarsys.capella.core.model.helpers.ScenarioExt;
 import org.polarsys.capella.core.sirius.analysis.SequenceDiagramServices;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
@@ -187,39 +190,66 @@ public class DiagramToXtextCommands {
     // the receiving end for each message, so that we don't duplicate the generated xtext message.
     int i = 0;
     Stack<org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage> messagesToDeactivate = new Stack();
+    
     while (i < ends.length) {
       if (ends[i] instanceof MessageEnd) {
-        EObject message = copyMessageFromMsgEnd(ends[i], factory);
-        messagesOrReferences.add(message);
-        // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
-        i = i + 2;
+        SequenceMessage currentSequenceMessage = ((MessageEnd) ends[i]).getMessage(); 
         
-        if (i < ends.length && ends[i] instanceof ExecutionEnd) {
-          SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[i - 2]).getMessage();
-          SequenceMessage seqMessFromExecutionEnd = ExecutionEndExt.getMessage((ExecutionEnd) ends[i]);
-            
-          if (seqMessFromMessageEnd.equals(seqMessFromExecutionEnd)) {
-            //nothing to do, skip this execution end
-            i = i + 1;
-          } else {
-            if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-              messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
-            }
-          }
+        if (currentSequenceMessage.getKind() == MessageKind.REPLY) {
+          // this is the reply message for currentSequenceMessage, at the end of the current execution
+          EObject participantDeactivateMsg = getParticipantDeactivationMsgFromMessageEnd(ends[i], factory);
+          messagesOrReferences.add(participantDeactivateMsg);
+          updateMessagesToDeactivate(messagesToDeactivate);
+          
+          // skip another end, because it will be the corresponding receiving end of the REPLY message
+          i = i + 2;
         } else {
-          if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-            messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
+          // this is a sequence message without return branch or the first part of a sequence message with return branch
+          EObject message = copyMessageFromMsgEnd(ends[i], factory);
+          
+          //if this sequence message has return branch, add return to the xtext message
+          currentSequenceMessage = ((MessageEnd) ends[i]).getMessage();
+          if (ScenarioExt.hasReply(currentSequenceMessage)) {
+            ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message).setReturn(DslConstants.WITH_RETURN);
           }
+          messagesOrReferences.add(message);
+          // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
+          i = i + 2;
+          
+          // check to see if this is a simple message (in this case, the next fragment will be its own execution end
+          // or its own reply message)
+          if (i < ends.length && ends[i] instanceof ExecutionEnd) {
+            //check if end is its own execution end
+            SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[i - 2]).getMessage();
+            SequenceMessage seqMessFromExecutionEnd = ExecutionEndExt.getMessage((ExecutionEnd) ends[i]);
+              
+            if (seqMessFromMessageEnd.equals(seqMessFromExecutionEnd)) {
+              //nothing to do, skip this execution end
+              i = i + 1;
+            } else {
+              addMessageToDeactivate(messagesToDeactivate, message);
+            }
+          } else if (i < ends.length && ends[i] instanceof MessageEnd) {
+            // check if end is its own reply message
+            SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[i - 2]).getMessage();
+            SequenceMessage seqMessFromNextMessageEnd = ((MessageEnd) ends[i]).getMessage();              
+            SequenceMessage replyMessage = seqMessFromNextMessageEnd.getKind() == MessageKind.REPLY ?
+                SequenceMessageExt.findReplySequenceMessage(seqMessFromMessageEnd) : null;
+
+            if (replyMessage != null && replyMessage.equals(seqMessFromNextMessageEnd)) {
+              //nothing to do, skip this message end and the next one, they belong to the same message
+              i = i + 2;
+            } else {
+              addMessageToDeactivate(messagesToDeactivate, message);
+            }            
+          } else {
+            addMessageToDeactivate(messagesToDeactivate, message);
+          }          
         }
       } else if (ends[i] instanceof ExecutionEnd) {
         EObject participantDeactivateMsg = getParticipantDeactivationMsgFromExecutionEnd(ends[i], factory);
         messagesOrReferences.add(participantDeactivateMsg);
-
-        if (!messagesToDeactivate.isEmpty()) {
-          org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage currentSequenceMessage = messagesToDeactivate
-              .pop();
-          currentSequenceMessage.setExecution(DslConstants.WITH_EXECUTION);
-        }
+        updateMessagesToDeactivate(messagesToDeactivate);
         i = i + 1;
       } else {
         i = i + 1;
@@ -227,6 +257,45 @@ public class DiagramToXtextCommands {
     }
   }
 
+  private static void addMessageToDeactivate(
+      Stack<org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage> messagesToDeactivate,
+      EObject message) {
+    if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
+      messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message);
+    }
+  }
+
+  private static void updateMessagesToDeactivate(
+      Stack<org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage> messagesToDeactivate) {
+    if (!messagesToDeactivate.isEmpty()) {
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage currentSequenceMessage = 
+          messagesToDeactivate.pop();
+      currentSequenceMessage.setExecution(DslConstants.WITH_EXECUTION);
+    }
+  }
+
+  /**
+   * generates the ParticipantDeactivation message with input from the MessageEnd in the Capella diagram
+   * 
+   * @param object
+   *          - this is the MessageEnd
+   * @param factory
+   *          - this is the factory to create ParticipantDeactivation type of message
+   * @return - EObject containing the ParticipantDeactivation message
+   */
+  private static EObject getParticipantDeactivationMsgFromMessageEnd(Object object, TextualScenarioFactory factory) {
+    MessageEnd end = (MessageEnd) object;
+    SequenceMessage seqMessage = end.getMessage();
+    String timeLineToDeactivate = null;
+    if (seqMessage.getKind() == MessageKind.REPLY ) {
+      timeLineToDeactivate = seqMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName();
+    } else {
+      timeLineToDeactivate = seqMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName();
+    }
+    ParticipantDeactivation participantDeactivationMsg = createDeactivationMessage(factory, timeLineToDeactivate);
+    return participantDeactivationMsg;
+  }
+  
   /**
    * generates the ParticipantDeactivation message with input from the ExecutionEnd in the Capella diagram
    * 
@@ -239,8 +308,19 @@ public class DiagramToXtextCommands {
   private static EObject getParticipantDeactivationMsgFromExecutionEnd(Object object, TextualScenarioFactory factory) {
     ExecutionEnd end = (ExecutionEnd) object;
     SequenceMessage seqMessage = ExecutionEndExt.getMessage(end);
+    ParticipantDeactivation participantDeactivationMsg = createDeactivationMessage(factory, seqMessage);
+    return participantDeactivationMsg;
+  }
+
+  private static ParticipantDeactivation createDeactivationMessage(TextualScenarioFactory factory,
+      SequenceMessage seqMessage) {
     String timelineToDeactivate = seqMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName();
 
+    return createDeactivationMessage(factory, timelineToDeactivate);
+  }
+
+  private static ParticipantDeactivation createDeactivationMessage(TextualScenarioFactory factory,
+      String timelineToDeactivate) {
     ParticipantDeactivation participantDeactivationMsg = (ParticipantDeactivation) factory
         .createParticipantDeactivation();
     participantDeactivationMsg.setName(timelineToDeactivate);
