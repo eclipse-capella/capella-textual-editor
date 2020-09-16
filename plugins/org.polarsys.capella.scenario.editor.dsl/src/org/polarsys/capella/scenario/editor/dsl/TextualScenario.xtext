@@ -100,5 +100,5 @@ ElseBlock:
 ;
 
 Block:
-	begin="{" (messages+= Message | references+= Reference)* end="}"
+	begin="{" (messages+= Message | references+= Reference | conditions+= Alt)* end="}"
 ;

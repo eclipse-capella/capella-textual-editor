@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
@@ -47,6 +48,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.BlockImpl#getBegin <em>Begin</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.BlockImpl#getMessages <em>Messages</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.BlockImpl#getReferences <em>References</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.BlockImpl#getConditions <em>Conditions</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.BlockImpl#getEnd <em>End</em>}</li>
  * </ul>
  *
@@ -93,6 +95,16 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
    * @ordered
    */
   protected EList<Reference> references;
+
+  /**
+   * The cached value of the '{@link #getConditions() <em>Conditions</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getConditions()
+   * @generated
+   * @ordered
+   */
+  protected EList<Alt> conditions;
 
   /**
    * The default value of the '{@link #getEnd() <em>End</em>}' attribute.
@@ -196,6 +208,21 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
    * @generated
    */
   @Override
+  public EList<Alt> getConditions()
+  {
+    if (conditions == null)
+    {
+      conditions = new EObjectContainmentEList<Alt>(Alt.class, this, TextualScenarioPackage.BLOCK__CONDITIONS);
+    }
+    return conditions;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public String getEnd()
   {
     return end;
@@ -229,6 +256,8 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
         return ((InternalEList<?>)getMessages()).basicRemove(otherEnd, msgs);
       case TextualScenarioPackage.BLOCK__REFERENCES:
         return ((InternalEList<?>)getReferences()).basicRemove(otherEnd, msgs);
+      case TextualScenarioPackage.BLOCK__CONDITIONS:
+        return ((InternalEList<?>)getConditions()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -249,6 +278,8 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
         return getMessages();
       case TextualScenarioPackage.BLOCK__REFERENCES:
         return getReferences();
+      case TextualScenarioPackage.BLOCK__CONDITIONS:
+        return getConditions();
       case TextualScenarioPackage.BLOCK__END:
         return getEnd();
     }
@@ -277,6 +308,10 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
         getReferences().clear();
         getReferences().addAll((Collection<? extends Reference>)newValue);
         return;
+      case TextualScenarioPackage.BLOCK__CONDITIONS:
+        getConditions().clear();
+        getConditions().addAll((Collection<? extends Alt>)newValue);
+        return;
       case TextualScenarioPackage.BLOCK__END:
         setEnd((String)newValue);
         return;
@@ -303,6 +338,9 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
       case TextualScenarioPackage.BLOCK__REFERENCES:
         getReferences().clear();
         return;
+      case TextualScenarioPackage.BLOCK__CONDITIONS:
+        getConditions().clear();
+        return;
       case TextualScenarioPackage.BLOCK__END:
         setEnd(END_EDEFAULT);
         return;
@@ -326,6 +364,8 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
         return messages != null && !messages.isEmpty();
       case TextualScenarioPackage.BLOCK__REFERENCES:
         return references != null && !references.isEmpty();
+      case TextualScenarioPackage.BLOCK__CONDITIONS:
+        return conditions != null && !conditions.isEmpty();
       case TextualScenarioPackage.BLOCK__END:
         return END_EDEFAULT == null ? end != null : !END_EDEFAULT.equals(end);
     }

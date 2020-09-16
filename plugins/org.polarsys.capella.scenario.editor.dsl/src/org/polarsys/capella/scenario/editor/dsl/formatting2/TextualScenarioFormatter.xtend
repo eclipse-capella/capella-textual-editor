@@ -20,6 +20,9 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ElseBlock
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 
 class TextualScenarioFormatter extends AbstractFormatter2 {
 	
@@ -35,6 +38,7 @@ class TextualScenarioFormatter extends AbstractFormatter2 {
 		// call formatting function for each participant and message or references
 		model.participants.forEach[ element | element.format ]
 		model.messagesOrReferences.forEach[ element | element.format ]
+		model.conditions.forEach[ element | element.format ]
 	}
 
 	def dispatch void format(Message message, extension IFormattableDocument document) {
@@ -46,5 +50,27 @@ class TextualScenarioFormatter extends AbstractFormatter2 {
 		// each participant definition on a separate line
 		val p = participant.regionFor.feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME)
 		participant.regionFor.feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME).append[newLine]
+	}
+	
+	def dispatch void format(Alt condition, extension IFormattableDocument document) {
+		format(condition.block, document)
+		condition.elseBlocks.forEach[ element | element.format ]
+		condition.append[newLine]
+	}
+	
+	def dispatch void format(ElseBlock elseBlock, extension IFormattableDocument document) {
+		format(elseBlock.block, document)
+	}
+	
+	def dispatch void format(Block block, extension IFormattableDocument document) {
+		val begin = block.regionFor.feature(TextualScenarioPackage.Literals.BLOCK__BEGIN)
+		val end = block.regionFor.feature(TextualScenarioPackage.Literals.BLOCK__END)
+		
+		begin.append[newLine]
+		interior(begin, end)[indent]
+		
+		block.messages.forEach[ element | element.format ]
+		block.references.forEach[ element | element.format ]
+		block.conditions.forEach[ element | element.format ]
 	}
 }

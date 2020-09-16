@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getBegin <em>Begin</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getMessages <em>Messages</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getReferences <em>References</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getConditions <em>Conditions</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getEnd <em>End</em>}</li>
  * </ul>
  *
@@ -85,6 +86,18 @@ public interface Block extends EObject
    * @generated
    */
   EList<Reference> getReferences();
+
+  /**
+   * Returns the value of the '<em><b>Conditions</b></em>' containment reference list.
+   * The list contents are of type {@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Conditions</em>' containment reference list.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getBlock_Conditions()
+   * @model containment="true"
+   * @generated
+   */
+  EList<Alt> getConditions();
 
   /**
    * Returns the value of the '<em><b>End</b></em>' attribute.

@@ -1001,13 +1001,22 @@ public interface TextualScenarioPackage extends EPackage
   int BLOCK__REFERENCES = 2;
 
   /**
+   * The feature id for the '<em><b>Conditions</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BLOCK__CONDITIONS = 3;
+
+  /**
    * The feature id for the '<em><b>End</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BLOCK__END = 3;
+  int BLOCK__END = 4;
 
   /**
    * The number of structural features of the '<em>Block</em>' class.
@@ -1016,7 +1025,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BLOCK_FEATURE_COUNT = 4;
+  int BLOCK_FEATURE_COUNT = 5;
 
 
   /**
@@ -1548,6 +1557,17 @@ public interface TextualScenarioPackage extends EPackage
   EReference getBlock_References();
 
   /**
+   * Returns the meta object for the containment reference list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getConditions <em>Conditions</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Conditions</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getConditions()
+   * @see #getBlock()
+   * @generated
+   */
+  EReference getBlock_Conditions();
+
+  /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getEnd <em>End</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2024,6 +2044,14 @@ public interface TextualScenarioPackage extends EPackage
      * @generated
      */
     EReference BLOCK__REFERENCES = eINSTANCE.getBlock_References();
+
+    /**
+     * The meta object literal for the '<em><b>Conditions</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BLOCK__CONDITIONS = eINSTANCE.getBlock_Conditions();
 
     /**
      * The meta object literal for the '<em><b>End</b></em>' attribute feature.
