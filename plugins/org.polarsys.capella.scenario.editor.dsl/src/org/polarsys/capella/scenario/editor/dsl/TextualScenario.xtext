@@ -16,7 +16,7 @@ generate textualScenario "http://www.polarsys.org/capella/scenario/editor/dsl/Te
 
 Model:
        'scenario' begin = '{' participants+=Participant* 
-        (messagesOrReferences+=(Message|Reference))* 
+        (messagesOrReferences+=(Message|Reference) | conditions+=Alt)* 
         end = '}';
 
 Participant: 
@@ -91,4 +91,14 @@ Reference:
 	keyword = 'ref' 'over' (timelines+=STRING)+ name=STRING
 ;
 
+Alt: 
+	keyword = 'alt' condition=STRING 'over' (timelines+=STRING)+ block=Block (elseBlocks+=ElseBlock)*
+;
 
+ElseBlock:
+	'else' condition=STRING block=Block
+;
+
+Block:
+	begin="{" (messages+= Message | references+= Reference)* end="}"
+;

@@ -116,35 +116,57 @@ ruleModel returns [EObject current=null]
 		(
 			(
 				(
+					(
+						{
+							newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesMessageParserRuleCall_3_0_0_0());
+						}
+						lv_messagesOrReferences_3_1=ruleMessage
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getModelRule());
+							}
+							add(
+								$current,
+								"messagesOrReferences",
+								lv_messagesOrReferences_3_1,
+								"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Message");
+							afterParserOrEnumRuleCall();
+						}
+						    |
+						{
+							newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesReferenceParserRuleCall_3_0_0_1());
+						}
+						lv_messagesOrReferences_3_2=ruleReference
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getModelRule());
+							}
+							add(
+								$current,
+								"messagesOrReferences",
+								lv_messagesOrReferences_3_2,
+								"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+			)
+			    |
+			(
+				(
 					{
-						newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesMessageParserRuleCall_3_0_0());
+						newCompositeNode(grammarAccess.getModelAccess().getConditionsAltParserRuleCall_3_1_0());
 					}
-					lv_messagesOrReferences_3_1=ruleMessage
+					lv_conditions_4_0=ruleAlt
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getModelRule());
 						}
 						add(
 							$current,
-							"messagesOrReferences",
-							lv_messagesOrReferences_3_1,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Message");
-						afterParserOrEnumRuleCall();
-					}
-					    |
-					{
-						newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesReferenceParserRuleCall_3_0_1());
-					}
-					lv_messagesOrReferences_3_2=ruleReference
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getModelRule());
-						}
-						add(
-							$current,
-							"messagesOrReferences",
-							lv_messagesOrReferences_3_2,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
+							"conditions",
+							lv_conditions_4_0,
+							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Alt");
 						afterParserOrEnumRuleCall();
 					}
 				)
@@ -152,15 +174,15 @@ ruleModel returns [EObject current=null]
 		)*
 		(
 			(
-				lv_end_4_0='}'
+				lv_end_5_0='}'
 				{
-					newLeafNode(lv_end_4_0, grammarAccess.getModelAccess().getEndRightCurlyBracketKeyword_4_0());
+					newLeafNode(lv_end_5_0, grammarAccess.getModelAccess().getEndRightCurlyBracketKeyword_4_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getModelRule());
 					}
-					setWithLastConsumed($current, "end", lv_end_4_0, "}");
+					setWithLastConsumed($current, "end", lv_end_5_0, "}");
 				}
 			)
 		)
@@ -1239,6 +1261,265 @@ ruleReference returns [EObject current=null]
 						"name",
 						lv_name_3_0,
 						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleAlt
+entryRuleAlt returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getAltRule()); }
+	iv_ruleAlt=ruleAlt
+	{ $current=$iv_ruleAlt.current; }
+	EOF;
+
+// Rule Alt
+ruleAlt returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				lv_keyword_0_0='alt'
+				{
+					newLeafNode(lv_keyword_0_0, grammarAccess.getAltAccess().getKeywordAltKeyword_0_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAltRule());
+					}
+					setWithLastConsumed($current, "keyword", lv_keyword_0_0, "alt");
+				}
+			)
+		)
+		(
+			(
+				lv_condition_1_0=RULE_STRING
+				{
+					newLeafNode(lv_condition_1_0, grammarAccess.getAltAccess().getConditionSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAltRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"condition",
+						lv_condition_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_2='over'
+		{
+			newLeafNode(otherlv_2, grammarAccess.getAltAccess().getOverKeyword_2());
+		}
+		(
+			(
+				lv_timelines_3_0=RULE_STRING
+				{
+					newLeafNode(lv_timelines_3_0, grammarAccess.getAltAccess().getTimelinesSTRINGTerminalRuleCall_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAltRule());
+					}
+					addWithLastConsumed(
+						$current,
+						"timelines",
+						lv_timelines_3_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)+
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getAltAccess().getBlockBlockParserRuleCall_4_0());
+				}
+				lv_block_4_0=ruleBlock
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getAltRule());
+					}
+					set(
+						$current,
+						"block",
+						lv_block_4_0,
+						"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Block");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getAltAccess().getElseBlocksElseBlockParserRuleCall_5_0());
+				}
+				lv_elseBlocks_5_0=ruleElseBlock
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getAltRule());
+					}
+					add(
+						$current,
+						"elseBlocks",
+						lv_elseBlocks_5_0,
+						"org.polarsys.capella.scenario.editor.dsl.TextualScenario.ElseBlock");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)*
+	)
+;
+
+// Entry rule entryRuleElseBlock
+entryRuleElseBlock returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElseBlockRule()); }
+	iv_ruleElseBlock=ruleElseBlock
+	{ $current=$iv_ruleElseBlock.current; }
+	EOF;
+
+// Rule ElseBlock
+ruleElseBlock returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='else'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getElseBlockAccess().getElseKeyword_0());
+		}
+		(
+			(
+				lv_condition_1_0=RULE_STRING
+				{
+					newLeafNode(lv_condition_1_0, grammarAccess.getElseBlockAccess().getConditionSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getElseBlockRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"condition",
+						lv_condition_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getElseBlockAccess().getBlockBlockParserRuleCall_2_0());
+				}
+				lv_block_2_0=ruleBlock
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getElseBlockRule());
+					}
+					set(
+						$current,
+						"block",
+						lv_block_2_0,
+						"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Block");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleBlock
+entryRuleBlock returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getBlockRule()); }
+	iv_ruleBlock=ruleBlock
+	{ $current=$iv_ruleBlock.current; }
+	EOF;
+
+// Rule Block
+ruleBlock returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				lv_begin_0_0='{'
+				{
+					newLeafNode(lv_begin_0_0, grammarAccess.getBlockAccess().getBeginLeftCurlyBracketKeyword_0_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getBlockRule());
+					}
+					setWithLastConsumed($current, "begin", lv_begin_0_0, "{");
+				}
+			)
+		)
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getBlockAccess().getMessagesMessageParserRuleCall_1_0_0());
+					}
+					lv_messages_1_0=ruleMessage
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getBlockRule());
+						}
+						add(
+							$current,
+							"messages",
+							lv_messages_1_0,
+							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Message");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getBlockAccess().getReferencesReferenceParserRuleCall_1_1_0());
+					}
+					lv_references_2_0=ruleReference
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getBlockRule());
+						}
+						add(
+							$current,
+							"references",
+							lv_references_2_0,
+							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)*
+		(
+			(
+				lv_end_3_0='}'
+				{
+					newLeafNode(lv_end_3_0, grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getBlockRule());
+					}
+					setWithLastConsumed($current, "end", lv_end_3_0, "}");
 				}
 			)
 		)

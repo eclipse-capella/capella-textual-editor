@@ -8,7 +8,7 @@
  *  SPDX-License-Identifier: EPL-2.0
  *  
  *  Contributors:
- *       Thales - initial API and implementation
+ *     Thales - initial API and implementation
  ******************************************************************************/
 package org.polarsys.capella.scenario.editor.dsl.ui.provider;
 
