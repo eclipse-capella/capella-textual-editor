@@ -201,7 +201,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Block returns Block
 	 *
 	 * Constraint:
-	 *     (begin='{' (messages+=Message | references+=Reference)* end='}')
+	 *     (begin='{' (messages+=Message | references+=Reference | conditions+=Alt)* end='}')
 	 */
 	protected void sequence_Block(ISerializationContext context, Block semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

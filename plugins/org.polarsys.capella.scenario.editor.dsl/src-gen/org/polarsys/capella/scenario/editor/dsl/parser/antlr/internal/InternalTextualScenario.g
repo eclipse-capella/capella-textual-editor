@@ -1508,18 +1508,38 @@ ruleBlock returns [EObject current=null]
 					}
 				)
 			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getBlockAccess().getConditionsAltParserRuleCall_1_2_0());
+					}
+					lv_conditions_3_0=ruleAlt
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getBlockRule());
+						}
+						add(
+							$current,
+							"conditions",
+							lv_conditions_3_0,
+							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Alt");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
 		)*
 		(
 			(
-				lv_end_3_0='}'
+				lv_end_4_0='}'
 				{
-					newLeafNode(lv_end_3_0, grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0());
+					newLeafNode(lv_end_4_0, grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getBlockRule());
 					}
-					setWithLastConsumed($current, "end", lv_end_3_0, "}");
+					setWithLastConsumed($current, "end", lv_end_4_0, "}");
 				}
 			)
 		)

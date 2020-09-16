@@ -3649,26 +3649,28 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleBlock"
-    // InternalTextualScenario.g:1449:1: ruleBlock returns [EObject current=null] : ( ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) )* ( (lv_end_3_0= '}' ) ) ) ;
+    // InternalTextualScenario.g:1449:1: ruleBlock returns [EObject current=null] : ( ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) | ( (lv_conditions_3_0= ruleAlt ) ) )* ( (lv_end_4_0= '}' ) ) ) ;
     public final EObject ruleBlock() throws RecognitionException {
         EObject current = null;
 
         Token lv_begin_0_0=null;
-        Token lv_end_3_0=null;
+        Token lv_end_4_0=null;
         EObject lv_messages_1_0 = null;
 
         EObject lv_references_2_0 = null;
+
+        EObject lv_conditions_3_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalTextualScenario.g:1455:2: ( ( ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) )* ( (lv_end_3_0= '}' ) ) ) )
-            // InternalTextualScenario.g:1456:2: ( ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) )* ( (lv_end_3_0= '}' ) ) )
+            // InternalTextualScenario.g:1455:2: ( ( ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) | ( (lv_conditions_3_0= ruleAlt ) ) )* ( (lv_end_4_0= '}' ) ) ) )
+            // InternalTextualScenario.g:1456:2: ( ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) | ( (lv_conditions_3_0= ruleAlt ) ) )* ( (lv_end_4_0= '}' ) ) )
             {
-            // InternalTextualScenario.g:1456:2: ( ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) )* ( (lv_end_3_0= '}' ) ) )
-            // InternalTextualScenario.g:1457:3: ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) )* ( (lv_end_3_0= '}' ) )
+            // InternalTextualScenario.g:1456:2: ( ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) | ( (lv_conditions_3_0= ruleAlt ) ) )* ( (lv_end_4_0= '}' ) ) )
+            // InternalTextualScenario.g:1457:3: ( (lv_begin_0_0= '{' ) ) ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) | ( (lv_conditions_3_0= ruleAlt ) ) )* ( (lv_end_4_0= '}' ) )
             {
             // InternalTextualScenario.g:1457:3: ( (lv_begin_0_0= '{' ) )
             // InternalTextualScenario.g:1458:4: (lv_begin_0_0= '{' )
@@ -3676,7 +3678,7 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
             // InternalTextualScenario.g:1458:4: (lv_begin_0_0= '{' )
             // InternalTextualScenario.g:1459:5: lv_begin_0_0= '{'
             {
-            lv_begin_0_0=(Token)match(input,12,FOLLOW_17); 
+            lv_begin_0_0=(Token)match(input,12,FOLLOW_5); 
 
             					newLeafNode(lv_begin_0_0, grammarAccess.getBlockAccess().getBeginLeftCurlyBracketKeyword_0_0());
             				
@@ -3692,19 +3694,30 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalTextualScenario.g:1471:3: ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) )*
+            // InternalTextualScenario.g:1471:3: ( ( (lv_messages_1_0= ruleMessage ) ) | ( (lv_references_2_0= ruleReference ) ) | ( (lv_conditions_3_0= ruleAlt ) ) )*
             loop16:
             do {
-                int alt16=3;
-                int LA16_0 = input.LA(1);
-
-                if ( (LA16_0==RULE_STRING||(LA16_0>=30 && LA16_0<=31)) ) {
+                int alt16=4;
+                switch ( input.LA(1) ) {
+                case RULE_STRING:
+                case 30:
+                case 31:
+                    {
                     alt16=1;
-                }
-                else if ( (LA16_0==32) ) {
+                    }
+                    break;
+                case 32:
+                    {
                     alt16=2;
-                }
+                    }
+                    break;
+                case 34:
+                    {
+                    alt16=3;
+                    }
+                    break;
 
+                }
 
                 switch (alt16) {
             	case 1 :
@@ -3719,7 +3732,7 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
 
             	    						newCompositeNode(grammarAccess.getBlockAccess().getMessagesMessageParserRuleCall_1_0_0());
             	    					
-            	    pushFollow(FOLLOW_17);
+            	    pushFollow(FOLLOW_5);
             	    lv_messages_1_0=ruleMessage();
 
             	    state._fsp--;
@@ -3756,7 +3769,7 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
 
             	    						newCompositeNode(grammarAccess.getBlockAccess().getReferencesReferenceParserRuleCall_1_1_0());
             	    					
-            	    pushFollow(FOLLOW_17);
+            	    pushFollow(FOLLOW_5);
             	    lv_references_2_0=ruleReference();
 
             	    state._fsp--;
@@ -3781,27 +3794,64 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
 
             	    }
             	    break;
+            	case 3 :
+            	    // InternalTextualScenario.g:1512:4: ( (lv_conditions_3_0= ruleAlt ) )
+            	    {
+            	    // InternalTextualScenario.g:1512:4: ( (lv_conditions_3_0= ruleAlt ) )
+            	    // InternalTextualScenario.g:1513:5: (lv_conditions_3_0= ruleAlt )
+            	    {
+            	    // InternalTextualScenario.g:1513:5: (lv_conditions_3_0= ruleAlt )
+            	    // InternalTextualScenario.g:1514:6: lv_conditions_3_0= ruleAlt
+            	    {
+
+            	    						newCompositeNode(grammarAccess.getBlockAccess().getConditionsAltParserRuleCall_1_2_0());
+            	    					
+            	    pushFollow(FOLLOW_5);
+            	    lv_conditions_3_0=ruleAlt();
+
+            	    state._fsp--;
+
+
+            	    						if (current==null) {
+            	    							current = createModelElementForParent(grammarAccess.getBlockRule());
+            	    						}
+            	    						add(
+            	    							current,
+            	    							"conditions",
+            	    							lv_conditions_3_0,
+            	    							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Alt");
+            	    						afterParserOrEnumRuleCall();
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
 
             	default :
             	    break loop16;
                 }
             } while (true);
 
-            // InternalTextualScenario.g:1512:3: ( (lv_end_3_0= '}' ) )
-            // InternalTextualScenario.g:1513:4: (lv_end_3_0= '}' )
+            // InternalTextualScenario.g:1532:3: ( (lv_end_4_0= '}' ) )
+            // InternalTextualScenario.g:1533:4: (lv_end_4_0= '}' )
             {
-            // InternalTextualScenario.g:1513:4: (lv_end_3_0= '}' )
-            // InternalTextualScenario.g:1514:5: lv_end_3_0= '}'
+            // InternalTextualScenario.g:1533:4: (lv_end_4_0= '}' )
+            // InternalTextualScenario.g:1534:5: lv_end_4_0= '}'
             {
-            lv_end_3_0=(Token)match(input,13,FOLLOW_2); 
+            lv_end_4_0=(Token)match(input,13,FOLLOW_2); 
 
-            					newLeafNode(lv_end_3_0, grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0());
+            					newLeafNode(lv_end_4_0, grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0());
             				
 
             					if (current==null) {
             						current = createModelElement(grammarAccess.getBlockRule());
             					}
-            					setWithLastConsumed(current, "end", lv_end_3_0, "}");
+            					setWithLastConsumed(current, "end", lv_end_4_0, "}");
             				
 
             }
@@ -3851,6 +3901,5 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_14 = new BitSet(new long[]{0x0000000200000000L});
     public static final BitSet FOLLOW_15 = new BitSet(new long[]{0x0000000000001010L});
     public static final BitSet FOLLOW_16 = new BitSet(new long[]{0x0000000800000002L});
-    public static final BitSet FOLLOW_17 = new BitSet(new long[]{0x00000001C0002010L});
 
 }

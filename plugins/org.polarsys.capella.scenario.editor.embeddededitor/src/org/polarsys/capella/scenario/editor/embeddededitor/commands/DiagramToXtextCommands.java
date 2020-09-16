@@ -19,14 +19,19 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.resource.XtextResource;
 import org.polarsys.capella.common.data.modellingcore.AbstractType;
+import org.polarsys.capella.common.data.modellingcore.ValueSpecification;
+import org.polarsys.capella.core.data.capellacore.Constraint;
 import org.polarsys.capella.core.data.cs.Component;
 import org.polarsys.capella.core.data.epbs.ConfigurationItem;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
 import org.polarsys.capella.core.data.helpers.interaction.services.ExecutionEndExt;
 import org.polarsys.capella.core.data.helpers.interaction.services.SequenceMessageExt;
+import org.polarsys.capella.core.data.information.datavalue.OpaqueExpression;
 import org.polarsys.capella.core.data.interaction.ExecutionEnd;
+import org.polarsys.capella.core.data.interaction.FragmentEnd;
 import org.polarsys.capella.core.data.interaction.InstanceRole;
 import org.polarsys.capella.core.data.interaction.InteractionFragment;
+import org.polarsys.capella.core.data.interaction.InteractionOperand;
 import org.polarsys.capella.core.data.interaction.MessageEnd;
 import org.polarsys.capella.core.data.interaction.MessageKind;
 import org.polarsys.capella.core.data.interaction.Scenario;
@@ -37,6 +42,10 @@ import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
 import org.polarsys.capella.core.sirius.analysis.SequenceDiagramServices;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ElseBlock;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
@@ -190,6 +199,8 @@ public class DiagramToXtextCommands {
     // the receiving end for each message, so that we don't duplicate the generated xtext message.
     int i = 0;
     Stack<org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage> messagesToDeactivate = new Stack();
+    Stack<Alt> conditions = new Stack();
+    Stack<Block> blockConditons = new Stack();
     
     while (i < ends.length) {
       if (ends[i] instanceof MessageEnd) {
@@ -198,7 +209,14 @@ public class DiagramToXtextCommands {
         if (currentSequenceMessage.getKind() == MessageKind.REPLY) {
           // this is the reply message for currentSequenceMessage, at the end of the current execution
           EObject participantDeactivateMsg = getParticipantDeactivationMsgFromMessageEnd(ends[i], factory);
-          messagesOrReferences.add(participantDeactivateMsg);
+          
+          // add the deactivation, to the model, or to a block
+          if(blockConditons.isEmpty()) {
+            messagesOrReferences.add(participantDeactivateMsg);
+          }
+          else {
+            blockConditons.peek().getMessages().add((Message) participantDeactivateMsg);
+          }
           updateMessagesToDeactivate(messagesToDeactivate);
           
           // skip another end, because it will be the corresponding receiving end of the REPLY message
@@ -212,7 +230,15 @@ public class DiagramToXtextCommands {
           if (ScenarioExt.hasReply(currentSequenceMessage)) {
             ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) message).setReturn(DslConstants.WITH_RETURN);
           }
-          messagesOrReferences.add(message);
+          
+          // add the sequence message, to the model, or to a block
+          if(blockConditons.isEmpty()) {
+            messagesOrReferences.add(message);
+          }
+          else {
+            blockConditons.peek().getMessages().add((Message) message);
+          }
+          
           // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
           i = i + 2;
           
@@ -248,10 +274,55 @@ public class DiagramToXtextCommands {
         }
       } else if (ends[i] instanceof ExecutionEnd) {
         EObject participantDeactivateMsg = getParticipantDeactivationMsgFromExecutionEnd(ends[i], factory);
-        messagesOrReferences.add(participantDeactivateMsg);
+        
+        // add the deactivation, to the model, or to a block
+        if(blockConditons.isEmpty()) {
+          messagesOrReferences.add(participantDeactivateMsg);
+        }
+        else {
+          blockConditons.peek().getMessages().add((Message) participantDeactivateMsg);
+        }
+        
         updateMessagesToDeactivate(messagesToDeactivate);
         i = i + 1;
-      } else {
+      } else if (ends[i] instanceof FragmentEnd) {
+        if(ends.length > i+1 && ends[i+1] instanceof InteractionOperand) {
+          // when we encounter a combination of FragmentEnd + Interaction operand, generate alt sequence
+          Alt alt = createAlt(factory, (InteractionOperand)ends[i+1]);
+          conditions.push(alt);
+          
+          // add the new encountered alt, to the model, or to a block
+          if(blockConditons.isEmpty()) {
+            domainModel.getConditions().add(alt);
+          }
+          else {
+            blockConditons.peek().getConditions().add(alt);
+          }
+          
+          Block altBlock = createBlock(factory);
+          blockConditons.push(altBlock);
+          alt.setBlock(altBlock);
+         
+          i++;
+        }
+        else {
+          // here is the end of the alt sequence, extract the last processed alt and its last block
+          conditions.pop();
+          blockConditons.pop();
+        }
+        i++;
+      } else if(ends[i] instanceof InteractionOperand) {
+        // the previous operation block is ended, extract it from the stack, we are done with it
+        blockConditons.pop();
+        
+        // generate a new branch for alt (else sequence)
+        Block altBlock = addAltBlock(factory, conditions.peek(), (InteractionOperand)ends[i]);
+        
+        blockConditons.push(altBlock);
+        
+        i++;
+      }
+      else {
         i = i + 1;
       }
     }
@@ -400,5 +471,48 @@ public class DiagramToXtextCommands {
     if (domainModel != null && domainModel.getMessagesOrReferences() != null) {
       domainModel.getMessagesOrReferences().clear();
     }
+    
+    if (domainModel != null && domainModel.getConditions() != null) {
+      domainModel.getConditions().clear();
+    }
+  }
+  
+  private static Alt createAlt(TextualScenarioFactory factory, InteractionOperand operand) {
+    Alt alt = factory.createAlt();
+    alt.setKeyword(DslConstants.ALT);
+    EList<InstanceRole> coveredInstanceRoles = operand.getCoveredInstanceRoles();
+    for(InstanceRole ir : coveredInstanceRoles) {
+      alt.getTimelines().add(ir.getName());
+    }
+    alt.setCondition(getConditionText(operand));
+    return alt;
+  }
+  
+  private static Block addAltBlock(TextualScenarioFactory factory, Alt alt, InteractionOperand operand) {
+    ElseBlock elseBlock = factory.createElseBlock();
+    elseBlock.setCondition(getConditionText(operand));
+    alt.getElseBlocks().add(elseBlock);
+    
+    Block altBlock = createBlock(factory);
+    elseBlock.setBlock(altBlock);
+    
+    return altBlock;
+  }
+  
+  private static Block createBlock(TextualScenarioFactory factory) {
+    Block block = factory.createBlock();
+    block.setBegin("{");
+    block.setEnd("}");
+    
+    return block;
+  }
+  
+  private static String getConditionText(InteractionOperand operand) {
+    Constraint guard = operand.getGuard();
+    if (guard != null) {
+      OpaqueExpression expression = (OpaqueExpression) guard.getOwnedSpecification();
+      return expression.getBodies().isEmpty() ? "" : expression.getBodies().get(0);
+    }
+    return "";
   }
 }
