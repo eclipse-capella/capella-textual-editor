@@ -828,9 +828,20 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
+  public EReference getBlock_Conditions()
+  {
+    return (EReference)blockEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EAttribute getBlock_End()
   {
-    return (EAttribute)blockEClass.getEStructuralFeatures().get(3);
+    return (EAttribute)blockEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -935,6 +946,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     createEAttribute(blockEClass, BLOCK__BEGIN);
     createEReference(blockEClass, BLOCK__MESSAGES);
     createEReference(blockEClass, BLOCK__REFERENCES);
+    createEReference(blockEClass, BLOCK__CONDITIONS);
     createEAttribute(blockEClass, BLOCK__END);
   }
 
@@ -1055,6 +1067,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     initEAttribute(getBlock_Begin(), ecorePackage.getEString(), "begin", null, 0, 1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBlock_Messages(), this.getMessage(), null, "messages", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBlock_References(), this.getReference(), null, "references", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBlock_Conditions(), this.getAlt(), null, "conditions", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getBlock_End(), ecorePackage.getEString(), "end", null, 0, 1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource

@@ -67,6 +67,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Block/begin"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Block/messages"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Block/references"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Block/conditions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Block/end"/>
     </genClasses>
   </genPackages>

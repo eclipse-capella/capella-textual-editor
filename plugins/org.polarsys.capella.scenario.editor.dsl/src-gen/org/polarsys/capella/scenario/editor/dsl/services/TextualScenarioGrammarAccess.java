@@ -768,14 +768,16 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cMessagesMessageParserRuleCall_1_0_0 = (RuleCall)cMessagesAssignment_1_0.eContents().get(0);
 		private final Assignment cReferencesAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
 		private final RuleCall cReferencesReferenceParserRuleCall_1_1_0 = (RuleCall)cReferencesAssignment_1_1.eContents().get(0);
+		private final Assignment cConditionsAssignment_1_2 = (Assignment)cAlternatives_1.eContents().get(2);
+		private final RuleCall cConditionsAltParserRuleCall_1_2_0 = (RuleCall)cConditionsAssignment_1_2.eContents().get(0);
 		private final Assignment cEndAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final Keyword cEndRightCurlyBracketKeyword_2_0 = (Keyword)cEndAssignment_2.eContents().get(0);
 		
 		//Block:
-		//	begin="{" (messages+=Message | references+=Reference)* end="}";
+		//	begin="{" (messages+=Message | references+=Reference | conditions+=Alt)* end="}";
 		@Override public ParserRule getRule() { return rule; }
 		
-		//begin="{" (messages+=Message | references+=Reference)* end="}"
+		//begin="{" (messages+=Message | references+=Reference | conditions+=Alt)* end="}"
 		public Group getGroup() { return cGroup; }
 		
 		//begin="{"
@@ -784,7 +786,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getBeginLeftCurlyBracketKeyword_0_0() { return cBeginLeftCurlyBracketKeyword_0_0; }
 		
-		//(messages+=Message | references+=Reference)*
+		//(messages+=Message | references+=Reference | conditions+=Alt)*
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
 		//messages+=Message
@@ -798,6 +800,12 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Reference
 		public RuleCall getReferencesReferenceParserRuleCall_1_1_0() { return cReferencesReferenceParserRuleCall_1_1_0; }
+		
+		//conditions+=Alt
+		public Assignment getConditionsAssignment_1_2() { return cConditionsAssignment_1_2; }
+		
+		//Alt
+		public RuleCall getConditionsAltParserRuleCall_1_2_0() { return cConditionsAltParserRuleCall_1_2_0; }
 		
 		//end="}"
 		public Assignment getEndAssignment_2() { return cEndAssignment_2; }
@@ -1102,7 +1110,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Block:
-	//	begin="{" (messages+=Message | references+=Reference)* end="}";
+	//	begin="{" (messages+=Message | references+=Reference | conditions+=Alt)* end="}";
 	public BlockElements getBlockAccess() {
 		return pBlock;
 	}

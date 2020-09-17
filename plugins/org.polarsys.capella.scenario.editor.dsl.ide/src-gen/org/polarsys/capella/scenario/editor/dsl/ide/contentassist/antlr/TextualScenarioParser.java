@@ -117,6 +117,7 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getBlockAccess().getBeginAssignment_0(), "rule__Block__BeginAssignment_0");
 			builder.put(grammarAccess.getBlockAccess().getMessagesAssignment_1_0(), "rule__Block__MessagesAssignment_1_0");
 			builder.put(grammarAccess.getBlockAccess().getReferencesAssignment_1_1(), "rule__Block__ReferencesAssignment_1_1");
+			builder.put(grammarAccess.getBlockAccess().getConditionsAssignment_1_2(), "rule__Block__ConditionsAssignment_1_2");
 			builder.put(grammarAccess.getBlockAccess().getEndAssignment_2(), "rule__Block__EndAssignment_2");
 		}
 	}

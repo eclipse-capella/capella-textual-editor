@@ -819,6 +819,12 @@ rule__Block__Alternatives_1
 		(rule__Block__ReferencesAssignment_1_1)
 		{ after(grammarAccess.getBlockAccess().getReferencesAssignment_1_1()); }
 	)
+	|
+	(
+		{ before(grammarAccess.getBlockAccess().getConditionsAssignment_1_2()); }
+		(rule__Block__ConditionsAssignment_1_2)
+		{ after(grammarAccess.getBlockAccess().getConditionsAssignment_1_2()); }
+	)
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -3205,6 +3211,21 @@ rule__Block__ReferencesAssignment_1_1
 		{ before(grammarAccess.getBlockAccess().getReferencesReferenceParserRuleCall_1_1_0()); }
 		ruleReference
 		{ after(grammarAccess.getBlockAccess().getReferencesReferenceParserRuleCall_1_1_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Block__ConditionsAssignment_1_2
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getBlockAccess().getConditionsAltParserRuleCall_1_2_0()); }
+		ruleAlt
+		{ after(grammarAccess.getBlockAccess().getConditionsAltParserRuleCall_1_2_0()); }
 	)
 ;
 finally {
