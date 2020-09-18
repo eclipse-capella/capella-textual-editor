@@ -89,12 +89,28 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 	) {
 		for (el : EmbeddedEditorInstanceHelper.getAvailableElements(keyword)) {
 			var elementName = CapellaElementExt.getName(el)
-			// create the proposal
-			var proposal = createCompletionProposal("\"" + elementName + "\"", elementName, null,
-				context) as ConfigurableCompletionProposal
-			acceptor.accept(proposal);
+			
+			// if the name is already inserted in the text, do not propose it
+			if (!participantAlreadyInserted(context.rootModel as Model, elementName, keyword)) {
+				// create the proposal
+				var proposal = createCompletionProposal("\"" + elementName + "\"", elementName, null,
+					context) as ConfigurableCompletionProposal
+				acceptor.accept(proposal);
+			}
 		}
 	}
+
+	/*
+	 * check if a participant is already used in the text
+	 */
+	def participantAlreadyInserted(Model model, String name, String keyword) {
+		for(participant : model.participants) {
+			if(participant.keyword == keyword && participant.name == name)
+				return true
+		}
+		return false
+	}
+
 
 	override completeSequenceMessage_Source(EObject model, Assignment assignment, ContentAssistContext context,
 		ICompletionProposalAcceptor acceptor) {
@@ -116,10 +132,29 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 
 	override completeSequenceMessage_Name(EObject model, Assignment assignment, ContentAssistContext context,
 		ICompletionProposalAcceptor acceptor) {
+		var sequenceMessage = model as SequenceMessage;
+		
 		for (String el : messagesDefinedBefore(model as SequenceMessage)) {
-			acceptor.accept(createCompletionProposal("\"" + el + "\"", "\"" + el + "\"", null, context))
-
+			(context.rootModel as Model).messagesOrReferences
+			if (!messageAlreadyInserted(context.rootModel as Model, sequenceMessage.source, sequenceMessage.target,
+				el)) {
+				acceptor.accept(createCompletionProposal("\"" + el + "\"", "\"" + el + "\"", null, context))
+			}
 		}
+	}
+	
+	/*
+	 * check if a message is already used in the text
+	 */
+	def messageAlreadyInserted(Model model, String source, String target, String name) {
+		for(element : model.messagesOrReferences) {
+			if(element instanceof SequenceMessage) {
+				var message = element as SequenceMessage
+				if(message.name == name && message.source == source && message.target == target)
+					return true
+			}
+		}
+		return false
 	}
 
 	def messagesDefinedBefore(SequenceMessage message) {
@@ -128,12 +163,10 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 
 	def variablesDefinedBefore(Participant sc) {
 		return sc
-
 	}
 
 	def variablesDefinedBefore2(Model m) {
 		return m.participants
-
 	}
 
 	def variablesDefinedBefore3(SequenceMessage seq) {

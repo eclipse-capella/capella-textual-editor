@@ -12,6 +12,7 @@
  */
 package org.polarsys.capella.scenario.editor.dsl.ui.contentassist;
 
+import com.google.common.base.Objects;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
@@ -91,11 +92,29 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     for (final EObject el : _availableElements) {
       {
         String elementName = CapellaElementExt.getName(el);
-        ICompletionProposal _createCompletionProposal = this.createCompletionProposal((("\"" + elementName) + "\""), elementName, null, context);
-        ConfigurableCompletionProposal proposal = ((ConfigurableCompletionProposal) _createCompletionProposal);
-        acceptor.accept(proposal);
+        EObject _rootModel = context.getRootModel();
+        boolean _participantAlreadyInserted = this.participantAlreadyInserted(((Model) _rootModel), elementName, keyword);
+        boolean _not = (!_participantAlreadyInserted);
+        if (_not) {
+          ICompletionProposal _createCompletionProposal = this.createCompletionProposal((("\"" + elementName) + "\""), elementName, null, context);
+          ConfigurableCompletionProposal proposal = ((ConfigurableCompletionProposal) _createCompletionProposal);
+          acceptor.accept(proposal);
+        }
       }
     }
+  }
+  
+  /**
+   * check if a participant is already used in the text
+   */
+  public boolean participantAlreadyInserted(final Model model, final String name, final String keyword) {
+    EList<Participant> _participants = model.getParticipants();
+    for (final Participant participant : _participants) {
+      if ((Objects.equal(participant.getKeyword(), keyword) && Objects.equal(participant.getName(), name))) {
+        return true;
+      }
+    }
+    return false;
   }
   
   @Override
@@ -124,10 +143,36 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeSequenceMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    SequenceMessage sequenceMessage = ((SequenceMessage) model);
     List<String> _messagesDefinedBefore = this.messagesDefinedBefore(((SequenceMessage) model));
     for (final String el : _messagesDefinedBefore) {
-      acceptor.accept(this.createCompletionProposal((("\"" + el) + "\""), (("\"" + el) + "\""), null, context));
+      {
+        EObject _rootModel = context.getRootModel();
+        ((Model) _rootModel).getMessagesOrReferences();
+        EObject _rootModel_1 = context.getRootModel();
+        boolean _messageAlreadyInserted = this.messageAlreadyInserted(((Model) _rootModel_1), sequenceMessage.getSource(), sequenceMessage.getTarget(), el);
+        boolean _not = (!_messageAlreadyInserted);
+        if (_not) {
+          acceptor.accept(this.createCompletionProposal((("\"" + el) + "\""), (("\"" + el) + "\""), null, context));
+        }
+      }
     }
+  }
+  
+  /**
+   * check if a message is already used in the text
+   */
+  public boolean messageAlreadyInserted(final Model model, final String source, final String target, final String name) {
+    EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
+    for (final EObject element : _messagesOrReferences) {
+      if ((element instanceof SequenceMessage)) {
+        SequenceMessage message = ((SequenceMessage) element);
+        if (((Objects.equal(message.getName(), name) && Objects.equal(message.getSource(), source)) && Objects.equal(message.getTarget(), target))) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   
   public List<String> messagesDefinedBefore(final SequenceMessage message) {
