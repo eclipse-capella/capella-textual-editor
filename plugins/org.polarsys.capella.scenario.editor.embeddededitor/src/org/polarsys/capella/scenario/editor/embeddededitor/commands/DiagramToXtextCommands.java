@@ -222,7 +222,7 @@ public class DiagramToXtextCommands {
           // skip another end, because it will be the corresponding receiving end of the REPLY message
           i = i + 2;
         } else {
-          // this is a sequence message without return branch or the first part of a sequence message with return branch
+          // this is a sequence message without return branch OR the first part of a sequence message with return branch
           EObject message = copyMessageFromMsgEnd(ends[i], factory);
           
           //if this sequence message has return branch, add return to the xtext message
@@ -259,8 +259,8 @@ public class DiagramToXtextCommands {
             // check if end is its own reply message
             SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[i - 2]).getMessage();
             SequenceMessage seqMessFromNextMessageEnd = ((MessageEnd) ends[i]).getMessage();              
-            SequenceMessage replyMessage = seqMessFromNextMessageEnd.getKind() == MessageKind.REPLY ?
-                SequenceMessageExt.findReplySequenceMessage(seqMessFromMessageEnd) : null;
+            SequenceMessage replyMessage = seqMessFromNextMessageEnd != null && seqMessFromNextMessageEnd.getKind() == MessageKind.REPLY ?
+                SequenceMessageExt.getOppositeSequenceMessage(seqMessFromMessageEnd) : null;
 
             if (replyMessage != null && replyMessage.equals(seqMessFromNextMessageEnd)) {
               //nothing to do, skip this message end and the next one, they belong to the same message
