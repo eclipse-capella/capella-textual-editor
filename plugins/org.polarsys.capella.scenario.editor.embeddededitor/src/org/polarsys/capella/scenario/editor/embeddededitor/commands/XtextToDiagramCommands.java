@@ -416,21 +416,17 @@ public class XtextToDiagramCommands {
     scenario.getOwnedInteractionFragments().remove(receivingEnd);
     scenario.getOwnedInteractionFragments().remove(executionEnd);
 
-    if (sequenceMessage.getKind() == MessageKind.REPLY || ScenarioExt.hasReply(sequenceMessage)) {
-      // Remove events: send, receive events for sequence message with return (including the return message)
-      Event eventSendOp = sendingEnd.getEvent();
-      Event eventReveivOp = receivingEnd.getEvent();
-      scenario.getOwnedEvents().remove(eventSendOp);
-      scenario.getOwnedEvents().remove(eventReveivOp);
-    } else {
-      // Remove events: send, receive, execution for normal sequence message
+    // Remove events
+    Event eventSendOp = sendingEnd.getEvent();
+    Event eventReveivOp = receivingEnd.getEvent();
+    scenario.getOwnedEvents().remove(eventSendOp);
+    scenario.getOwnedEvents().remove(eventReveivOp);
+    
+    if (sequenceMessage.getKind() != MessageKind.REPLY && !ScenarioExt.hasReply(sequenceMessage)) {
+      // Remove execution event for normal sequence message
       Event executionEvent = executionEnd instanceof ExecutionEnd ? 
           (Event) ExecutionEndExt.getOperation((ExecutionEnd) executionEnd) : null;
-      Event eventSendOp = sendingEnd.getEvent();
-      Event eventReveivOp = receivingEnd.getEvent();
-      scenario.getOwnedEvents().remove(executionEvent);
-      scenario.getOwnedEvents().remove(eventSendOp);
-      scenario.getOwnedEvents().remove(eventReveivOp);
+      scenario.getOwnedEvents().remove(executionEvent);      
     }
 
     // Remove sequence message
