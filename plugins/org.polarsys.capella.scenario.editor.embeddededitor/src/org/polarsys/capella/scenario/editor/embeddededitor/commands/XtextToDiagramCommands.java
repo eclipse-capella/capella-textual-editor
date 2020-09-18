@@ -30,28 +30,41 @@ import org.eclipse.sirius.diagram.ui.business.internal.operation.AbstractModelCh
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.xtext.resource.XtextResource;
 import org.polarsys.capella.common.data.modellingcore.AbstractNamedElement;
+import org.polarsys.capella.common.menu.dynamic.CreationHelper;
 import org.polarsys.capella.core.data.capellacore.CapellaElement;
+import org.polarsys.capella.core.data.capellacore.CapellacoreFactory;
+import org.polarsys.capella.core.data.capellacore.Constraint;
 import org.polarsys.capella.core.data.helpers.interaction.services.ExecutionEndExt;
 import org.polarsys.capella.core.data.helpers.interaction.services.SequenceMessageExt;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.data.information.AbstractInstance;
+import org.polarsys.capella.core.data.information.datavalue.DatavalueFactory;
+import org.polarsys.capella.core.data.information.datavalue.OpaqueExpression;
+import org.polarsys.capella.core.data.interaction.CombinedFragment;
 import org.polarsys.capella.core.data.interaction.Event;
 import org.polarsys.capella.core.data.interaction.EventReceiptOperation;
 import org.polarsys.capella.core.data.interaction.EventSentOperation;
 import org.polarsys.capella.core.data.interaction.Execution;
 import org.polarsys.capella.core.data.interaction.ExecutionEnd;
 import org.polarsys.capella.core.data.interaction.ExecutionEvent;
+import org.polarsys.capella.core.data.interaction.FragmentEnd;
 import org.polarsys.capella.core.data.interaction.InstanceRole;
 import org.polarsys.capella.core.data.interaction.InteractionFactory;
 import org.polarsys.capella.core.data.interaction.InteractionFragment;
+import org.polarsys.capella.core.data.interaction.InteractionOperand;
+import org.polarsys.capella.core.data.interaction.InteractionOperatorKind;
 import org.polarsys.capella.core.data.interaction.MessageEnd;
 import org.polarsys.capella.core.data.interaction.MessageKind;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.SequenceMessage;
 import org.polarsys.capella.core.data.interaction.TimeLapse;
 import org.polarsys.capella.core.data.interaction.properties.dialogs.sequenceMessage.model.SelectInvokedOperationModelForSharedDataAndEvent;
+import org.polarsys.capella.core.model.helpers.ConstraintExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ElseBlock;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
@@ -77,6 +90,8 @@ public class XtextToDiagramCommands {
       doEditingOnParticipants(scenario, participants, messages);
 
       doEditingOnMessages(scenario, messages);
+      
+      doEditingOnBlocks(scenario, domainModel);
 
       // do refresh - when the messages associated with the removed actors are deleted too,
       // a refresh is needed to update also the editor
@@ -570,5 +585,111 @@ public class XtextToDiagramCommands {
         .filter(e -> e.getCoveredInstanceRoles().get(0).getName().equals(instanceRole.getName()))
         .reduce((first, second) -> second).orElse(null);
     return executionEnd;
+  }
+  
+  private static void doEditingOnBlocks(Scenario scenario, Model model) {
+    model.getConditions().forEach(alt -> {
+      createCapellaAltSequence(scenario, model, alt);
+    });
+  }
+  
+  /*
+   * Display in diagram, the elements of an alt sequence
+   */
+  private static void createCapellaAltSequence(Scenario scenario, Model model, Alt condition) {
+
+    TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(scenario);
+    domain.getCommandStack().execute(new RecordingCommand(domain) {
+
+      @Override
+      protected void doExecute() {
+        // generate CombinedFragment, FramentEnd, FragmentEnd, IntreationOperands from alt
+        FragmentEnd start = InteractionFactory.eINSTANCE.createFragmentEnd();
+        FragmentEnd finish = InteractionFactory.eINSTANCE.createFragmentEnd();
+
+        condition.getTimelines().forEach(timeline -> {
+          InstanceRole instanceRole = EmbeddedEditorInstanceHelper.getInstanceRole(timeline);
+          start.getCoveredInstanceRoles().add(instanceRole);
+          finish.getCoveredInstanceRoles().add(instanceRole);
+        });
+
+        start.setName("start");
+        finish.setName("end");
+        
+        scenario.getOwnedInteractionFragments().add(start);
+        scenario.getOwnedInteractionFragments().add(finish);
+        InteractionFragment lastFragment = lastInteractionFragment(scenario, model);
+        if (lastFragment != null)
+          ScenarioExt.moveEndOnBeginingOfScenario(lastFragment);
+        else
+          ScenarioExt.moveEndOnBeginingOfScenario(start);
+        
+        CombinedFragment combinedFragment = addCombinedFragment(start, finish, InteractionOperatorKind.ALT);
+        scenario.getOwnedTimeLapses().add(combinedFragment);
+
+        Block firstBlock = condition.getBlock();
+        if (firstBlock != null) {
+          InteractionOperand operand = addInteractionOperand(start.getCoveredInstanceRoles(), condition.getCondition());
+          combinedFragment.getReferencedOperands().add(operand);
+          scenario.getOwnedInteractionFragments().add(operand);
+          
+          ScenarioExt.moveEndOnScenario(operand, start);
+
+          InteractionOperand prevEnd = operand;
+          for(ElseBlock elseBlock: condition.getElseBlocks()) {
+            InteractionOperand operand2 = addInteractionOperand(start.getCoveredInstanceRoles(), elseBlock.getCondition());
+            combinedFragment.getReferencedOperands().add(operand2);
+            scenario.getOwnedInteractionFragments().add(operand2);
+            ScenarioExt.moveEndOnScenario(operand2, prevEnd);
+            prevEnd = operand2;
+          }
+        }
+      }
+    });
+  }
+  
+  private static InteractionOperand addInteractionOperand(EList<InstanceRole> coveredInstanceRoles, String condition) {
+    InteractionOperand operand = InteractionFactory.eINSTANCE.createInteractionOperand();
+    operand.setName("operand");
+    operand.getCoveredInstanceRoles().addAll(coveredInstanceRoles);
+    
+    Constraint constraint = CapellacoreFactory.eINSTANCE.createConstraint();
+    OpaqueExpression expression = DatavalueFactory.eINSTANCE.createOpaqueExpression();
+    
+    constraint.setOwnedSpecification(expression);
+    operand.getOwnedConstraints().add(constraint);
+    CreationHelper.performContributionCommands(constraint, operand);
+    
+    expression.getLanguages().add(ConstraintExt.OPAQUE_EXPRESSION_LINKED_TEXT);
+    expression.getBodies().add(condition);
+    
+    operand.setGuard(constraint);
+    return operand;
+  }
+  
+  private static CombinedFragment addCombinedFragment(InteractionFragment start, InteractionFragment finish, InteractionOperatorKind kind) {
+    CombinedFragment combinedFragment = InteractionFactory.eINSTANCE.createCombinedFragment();
+    combinedFragment.setOperator(kind);
+    combinedFragment.setStart(start);
+    combinedFragment.setFinish(finish);
+    combinedFragment.setName("combined fragment");
+    
+    return combinedFragment;
+  }
+  
+  private static InteractionFragment lastInteractionFragment(Scenario scenario, Model model) {
+    List<EObject> messages = 
+        model.getMessagesOrReferences().stream().filter(x -> x instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage).collect(Collectors.toList());
+    
+    if(!messages.isEmpty()) {
+      EObject lastMessage = messages.get(messages.size() - 1);
+      if(lastMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
+        SequenceMessage capellaSequenceMessage = getCorrespondingCapellaSequenceMessage(scenario, (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) lastMessage);
+        if(capellaSequenceMessage != null)
+          return capellaSequenceMessage.getReceivingEnd();
+      }
+    }
+
+    return null;
   }
 }

@@ -307,13 +307,13 @@ public class DiagramToXtextCommands {
         }
         else {
           // here is the end of the alt sequence, extract the last processed alt and its last block
-          conditions.pop();
-          blockConditons.pop();
+          if(!conditions.empty()) conditions.pop();
+          if(!blockConditons.empty()) blockConditons.pop();
         }
         i++;
       } else if(ends[i] instanceof InteractionOperand) {
         // the previous operation block is ended, extract it from the stack, we are done with it
-        blockConditons.pop();
+        if(!blockConditons.empty()) blockConditons.pop();
         
         // generate a new branch for alt (else sequence)
         Block altBlock = addAltBlock(factory, conditions.peek(), (InteractionOperand)ends[i]);
