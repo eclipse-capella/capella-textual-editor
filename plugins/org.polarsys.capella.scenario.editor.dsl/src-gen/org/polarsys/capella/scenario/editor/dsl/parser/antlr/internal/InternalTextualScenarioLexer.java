@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 package org.polarsys.capella.scenario.editor.dsl.parser.antlr.internal;
 
 // Hack: Use our own Lexer superclass by means of import. 
@@ -598,10 +586,10 @@ public class InternalTextualScenarioLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTextualScenario.g:1549:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // InternalTextualScenario.g:1549:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalTextualScenario.g:1560:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // InternalTextualScenario.g:1560:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
-            // InternalTextualScenario.g:1549:11: ( '^' )?
+            // InternalTextualScenario.g:1560:11: ( '^' )?
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -610,7 +598,7 @@ public class InternalTextualScenarioLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // InternalTextualScenario.g:1549:11: '^'
+                    // InternalTextualScenario.g:1560:11: '^'
                     {
                     match('^'); 
 
@@ -628,7 +616,7 @@ public class InternalTextualScenarioLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalTextualScenario.g:1549:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalTextualScenario.g:1560:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop2:
             do {
                 int alt2=2;
@@ -677,10 +665,10 @@ public class InternalTextualScenarioLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTextualScenario.g:1551:10: ( ( '0' .. '9' )+ )
-            // InternalTextualScenario.g:1551:12: ( '0' .. '9' )+
+            // InternalTextualScenario.g:1562:10: ( ( '0' .. '9' )+ )
+            // InternalTextualScenario.g:1562:12: ( '0' .. '9' )+
             {
-            // InternalTextualScenario.g:1551:12: ( '0' .. '9' )+
+            // InternalTextualScenario.g:1562:12: ( '0' .. '9' )+
             int cnt3=0;
             loop3:
             do {
@@ -694,7 +682,7 @@ public class InternalTextualScenarioLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // InternalTextualScenario.g:1551:13: '0' .. '9'
+            	    // InternalTextualScenario.g:1562:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -726,10 +714,10 @@ public class InternalTextualScenarioLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTextualScenario.g:1553:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // InternalTextualScenario.g:1553:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalTextualScenario.g:1564:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
+            // InternalTextualScenario.g:1564:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             {
-            // InternalTextualScenario.g:1553:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalTextualScenario.g:1564:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -747,10 +735,10 @@ public class InternalTextualScenarioLexer extends Lexer {
             }
             switch (alt6) {
                 case 1 :
-                    // InternalTextualScenario.g:1553:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // InternalTextualScenario.g:1564:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
                     {
                     match('\"'); 
-                    // InternalTextualScenario.g:1553:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // InternalTextualScenario.g:1564:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop4:
                     do {
                         int alt4=3;
@@ -766,7 +754,7 @@ public class InternalTextualScenarioLexer extends Lexer {
 
                         switch (alt4) {
                     	case 1 :
-                    	    // InternalTextualScenario.g:1553:21: '\\\\' .
+                    	    // InternalTextualScenario.g:1564:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -774,7 +762,7 @@ public class InternalTextualScenarioLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalTextualScenario.g:1553:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // InternalTextualScenario.g:1564:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -799,10 +787,10 @@ public class InternalTextualScenarioLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalTextualScenario.g:1553:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // InternalTextualScenario.g:1564:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
                     {
                     match('\''); 
-                    // InternalTextualScenario.g:1553:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // InternalTextualScenario.g:1564:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop5:
                     do {
                         int alt5=3;
@@ -818,7 +806,7 @@ public class InternalTextualScenarioLexer extends Lexer {
 
                         switch (alt5) {
                     	case 1 :
-                    	    // InternalTextualScenario.g:1553:54: '\\\\' .
+                    	    // InternalTextualScenario.g:1564:54: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -826,7 +814,7 @@ public class InternalTextualScenarioLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalTextualScenario.g:1553:61: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // InternalTextualScenario.g:1564:61: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -869,12 +857,12 @@ public class InternalTextualScenarioLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTextualScenario.g:1555:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalTextualScenario.g:1555:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // InternalTextualScenario.g:1566:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalTextualScenario.g:1566:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // InternalTextualScenario.g:1555:24: ( options {greedy=false; } : . )*
+            // InternalTextualScenario.g:1566:24: ( options {greedy=false; } : . )*
             loop7:
             do {
                 int alt7=2;
@@ -899,7 +887,7 @@ public class InternalTextualScenarioLexer extends Lexer {
 
                 switch (alt7) {
             	case 1 :
-            	    // InternalTextualScenario.g:1555:52: .
+            	    // InternalTextualScenario.g:1566:52: .
             	    {
             	    matchAny(); 
 
@@ -929,12 +917,12 @@ public class InternalTextualScenarioLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTextualScenario.g:1557:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalTextualScenario.g:1557:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalTextualScenario.g:1568:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalTextualScenario.g:1568:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // InternalTextualScenario.g:1557:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // InternalTextualScenario.g:1568:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop8:
             do {
                 int alt8=2;
@@ -947,7 +935,7 @@ public class InternalTextualScenarioLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // InternalTextualScenario.g:1557:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalTextualScenario.g:1568:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -967,7 +955,7 @@ public class InternalTextualScenarioLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalTextualScenario.g:1557:40: ( ( '\\r' )? '\\n' )?
+            // InternalTextualScenario.g:1568:40: ( ( '\\r' )? '\\n' )?
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -976,9 +964,9 @@ public class InternalTextualScenarioLexer extends Lexer {
             }
             switch (alt10) {
                 case 1 :
-                    // InternalTextualScenario.g:1557:41: ( '\\r' )? '\\n'
+                    // InternalTextualScenario.g:1568:41: ( '\\r' )? '\\n'
                     {
-                    // InternalTextualScenario.g:1557:41: ( '\\r' )?
+                    // InternalTextualScenario.g:1568:41: ( '\\r' )?
                     int alt9=2;
                     int LA9_0 = input.LA(1);
 
@@ -987,7 +975,7 @@ public class InternalTextualScenarioLexer extends Lexer {
                     }
                     switch (alt9) {
                         case 1 :
-                            // InternalTextualScenario.g:1557:41: '\\r'
+                            // InternalTextualScenario.g:1568:41: '\\r'
                             {
                             match('\r'); 
 
@@ -1019,10 +1007,10 @@ public class InternalTextualScenarioLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTextualScenario.g:1559:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // InternalTextualScenario.g:1559:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalTextualScenario.g:1570:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // InternalTextualScenario.g:1570:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // InternalTextualScenario.g:1559:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalTextualScenario.g:1570:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt11=0;
             loop11:
             do {
@@ -1076,8 +1064,8 @@ public class InternalTextualScenarioLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTextualScenario.g:1561:16: ( . )
-            // InternalTextualScenario.g:1561:18: .
+            // InternalTextualScenario.g:1572:16: ( . )
+            // InternalTextualScenario.g:1572:18: .
             {
             matchAny(); 
 

@@ -89,10 +89,8 @@ public class XtextToDiagramCommands {
 
       doEditingOnParticipants(scenario, participants, messages);
 
-      doEditingOnMessages(scenario, messages);
+      doEditingOnElements(scenario, messages);
       
-      doEditingOnBlocks(scenario, domainModel);
-
       // do refresh - when the messages associated with the removed actors are deleted too,
       // a refresh is needed to update also the editor
       EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
@@ -241,54 +239,23 @@ public class XtextToDiagramCommands {
     synchronizeGraphicalOrderingOperation.execute();
   }
 
-  private static void doEditingOnMessages(Scenario scenario, EList<EObject> messages) {
+  private static void doEditingOnElements(Scenario scenario, EList<EObject> elements) {
     // Make sure your element is attached to a resource, otherwise this will return null
     TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(scenario);
     domain.getCommandStack().execute(new RecordingCommand(domain) {
 
       @Override
       protected void doExecute() {
-        cleanUpMessages(scenario, messages);
+        // remove messages that appear in diagram and do not appear in text
+        cleanUpMessages(scenario, elements);
 
-        EList<SequenceMessage> sequenceMessages = scenario.getOwnedMessages();
-        for (Iterator<EObject> iterator = messages.iterator(); iterator.hasNext();) {
-          EObject messageFromXtext = iterator.next();
-
-          if (messageFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-            // This is a sequence message, it can be with execution and/or with return
-            org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage seqMessage 
-                = (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) messageFromXtext;
-            InstanceRole source = EmbeddedEditorInstanceHelper.getInstanceRole(seqMessage.getSource());
-            InstanceRole target = EmbeddedEditorInstanceHelper.getInstanceRole(seqMessage.getTarget());
-            
-            List<SequenceMessage> msgsFilteredByNameTargetSource = sequenceMessages.stream()
-                .filter(x -> x.getName().equals(seqMessage.getName()))
-                .filter(x -> x.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(source.getName()))
-                .filter(x -> x.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(target.getName()))
-                .collect(Collectors.toList());
-            
-            if (msgsFilteredByNameTargetSource.isEmpty()) {
-              if (source != null && target != null) {
-                SequenceMessage sequenceMessage = createCapellaSequenceMessage(scenario, source, target, seqMessage);
-                sequenceMessages.add(sequenceMessage);
-                
-                //if message has return branch, create corresponding Capella return message
-                if (seqMessage.getReturn() != null) {
-                  SequenceMessage opposingSequenceMessage = createCapellaSequenceMessage(scenario, target, source, seqMessage, true);
-                  Execution execution = getExecutionForSequenceMessage(scenario, sequenceMessage);
-                  execution.setFinish(opposingSequenceMessage.getSendingEnd());
-                  sequenceMessages.add(opposingSequenceMessage);
-                }
-
-              }
-            }
-          } 
-        }
+        editElements(scenario, elements);
         
+        // fix this
         // Reorder scenario, this means reordering the interaction fragments and sequence messages lists
-        reorderCapellaScenario(scenario, messages);
+        // reorderCapellaScenario(scenario, elements);
         // refresh visual editor
-        syncGraphicalOrdering();
+        //syncGraphicalOrdering();
       }
 
       /**
@@ -343,7 +310,7 @@ public class XtextToDiagramCommands {
                 executionEndsToProcess.add(execution.getFinish()); 
               }
             }
-          } else {
+          } else if(messageFromXtext instanceof ParticipantDeactivation) {
             // This is a ParticipantDeactivationMessage, so the execution on the corresponding timeline finished.
             // We must move the interaction fragment representing the execution end on the correct position in the
             // ownedInteractionFragments ordered list
@@ -366,6 +333,50 @@ public class XtextToDiagramCommands {
       }
 
     });
+  }
+  
+  private static void editElements(Scenario scenario, EList<EObject> elements) {
+    EList<SequenceMessage> sequenceMessages = scenario.getOwnedMessages();
+    for (Iterator<EObject> iterator = elements.iterator(); iterator.hasNext();) {
+      EObject xtextElement = iterator.next();
+
+      if (xtextElement instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
+        // This is a sequence message, it can be with execution and/or with return
+        org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage seqMessage 
+            = (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) xtextElement;
+        InstanceRole source = EmbeddedEditorInstanceHelper.getInstanceRole(seqMessage.getSource());
+        InstanceRole target = EmbeddedEditorInstanceHelper.getInstanceRole(seqMessage.getTarget());
+        
+        List<SequenceMessage> msgsFilteredByNameTargetSource = sequenceMessages.stream()
+            .filter(x -> x.getName().equals(seqMessage.getName()))
+            .filter(x -> x.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(source.getName()))
+            .filter(x -> x.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(target.getName()))
+            .collect(Collectors.toList());
+        
+        if (msgsFilteredByNameTargetSource.isEmpty()) {
+          if (source != null && target != null) {
+            SequenceMessage sequenceMessage = createCapellaSequenceMessage(scenario, source, target, seqMessage);
+            sequenceMessages.add(sequenceMessage);
+            
+            //if message has return branch, create corresponding Capella return message
+            if (seqMessage.getReturn() != null) {
+              SequenceMessage opposingSequenceMessage = createCapellaSequenceMessage(scenario, target, source, seqMessage, true);
+              Execution execution = getExecutionForSequenceMessage(scenario, sequenceMessage);
+              execution.setFinish(opposingSequenceMessage.getSendingEnd());
+              sequenceMessages.add(opposingSequenceMessage);
+            }
+
+          }
+        }
+      } else if(xtextElement instanceof Alt) {
+        InteractionFragment lastInteractionFragment = null;
+        if(!sequenceMessages.isEmpty()) {
+          SequenceMessage lastSequenceMessage = sequenceMessages.get(sequenceMessages.size() - 1);
+          lastInteractionFragment = lastSequenceMessage.getReceivingEnd();
+        }
+        createCapellaAltSequence(scenario, (Alt) xtextElement, lastInteractionFragment);
+      }
+    }
   }
 
   private static Execution getExecutionForSequenceMessage(Scenario scenario, SequenceMessage sequenceMessage) {
@@ -587,16 +598,10 @@ public class XtextToDiagramCommands {
     return executionEnd;
   }
   
-  private static void doEditingOnBlocks(Scenario scenario, Model model) {
-    model.getConditions().forEach(alt -> {
-      createCapellaAltSequence(scenario, model, alt);
-    });
-  }
-  
   /*
    * Display in diagram, the elements of an alt sequence
    */
-  private static void createCapellaAltSequence(Scenario scenario, Model model, Alt condition) {
+  private static void createCapellaAltSequence(Scenario scenario, Alt condition, InteractionFragment lastInteractionFragment) {
 
     TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(scenario);
     domain.getCommandStack().execute(new RecordingCommand(domain) {
@@ -618,9 +623,9 @@ public class XtextToDiagramCommands {
         
         scenario.getOwnedInteractionFragments().add(start);
         scenario.getOwnedInteractionFragments().add(finish);
-        InteractionFragment lastFragment = lastInteractionFragment(scenario, model);
-        if (lastFragment != null)
-          ScenarioExt.moveEndOnBeginingOfScenario(lastFragment);
+
+        if(lastInteractionFragment != null)
+          ScenarioExt.moveEndOnBeginingOfScenario(lastInteractionFragment);
         else
           ScenarioExt.moveEndOnBeginingOfScenario(start);
         
@@ -632,8 +637,9 @@ public class XtextToDiagramCommands {
           InteractionOperand operand = addInteractionOperand(start.getCoveredInstanceRoles(), condition.getCondition());
           combinedFragment.getReferencedOperands().add(operand);
           scenario.getOwnedInteractionFragments().add(operand);
-          
           ScenarioExt.moveEndOnScenario(operand, start);
+          
+          editElements(scenario,  firstBlock.getBlockElements());
 
           InteractionOperand prevEnd = operand;
           for(ElseBlock elseBlock: condition.getElseBlocks()) {
@@ -642,6 +648,8 @@ public class XtextToDiagramCommands {
             scenario.getOwnedInteractionFragments().add(operand2);
             ScenarioExt.moveEndOnScenario(operand2, prevEnd);
             prevEnd = operand2;
+            
+            editElements(scenario,  elseBlock.getBlock().getBlockElements());
           }
         }
       }
@@ -675,21 +683,5 @@ public class XtextToDiagramCommands {
     combinedFragment.setName("combined fragment");
     
     return combinedFragment;
-  }
-  
-  private static InteractionFragment lastInteractionFragment(Scenario scenario, Model model) {
-    List<EObject> messages = 
-        model.getMessagesOrReferences().stream().filter(x -> x instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage).collect(Collectors.toList());
-    
-    if(!messages.isEmpty()) {
-      EObject lastMessage = messages.get(messages.size() - 1);
-      if(lastMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-        SequenceMessage capellaSequenceMessage = getCorrespondingCapellaSequenceMessage(scenario, (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) lastMessage);
-        if(capellaSequenceMessage != null)
-          return capellaSequenceMessage.getReceivingEnd();
-      }
-    }
-
-    return null;
   }
 }

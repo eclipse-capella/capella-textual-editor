@@ -30,7 +30,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.ElseBlock;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
 
 @SuppressWarnings("all")
@@ -62,10 +61,6 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       document.<EObject>format(element);
     };
     model.getMessagesOrReferences().forEach(_function_4);
-    final Consumer<Alt> _function_5 = (Alt element) -> {
-      document.<Alt>format(element);
-    };
-    model.getConditions().forEach(_function_5);
   }
   
   protected void _format(final Message message, @Extension final IFormattableDocument document) {
@@ -110,18 +105,10 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       it.indent();
     };
     document.<ISemanticRegion, ISemanticRegion>interior(begin, end, _function_1);
-    final Consumer<Message> _function_2 = (Message element) -> {
-      document.<Message>format(element);
+    final Consumer<EObject> _function_2 = (EObject element) -> {
+      document.<EObject>format(element);
     };
-    block.getMessages().forEach(_function_2);
-    final Consumer<Reference> _function_3 = (Reference element) -> {
-      document.<Reference>format(element);
-    };
-    block.getReferences().forEach(_function_3);
-    final Consumer<Alt> _function_4 = (Alt element) -> {
-      document.<Alt>format(element);
-    };
-    block.getConditions().forEach(_function_4);
+    block.getBlockElements().forEach(_function_2);
   }
   
   public void format(final Object condition, final IFormattableDocument document) {
