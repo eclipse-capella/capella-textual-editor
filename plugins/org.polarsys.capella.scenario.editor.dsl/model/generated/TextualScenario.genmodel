@@ -10,7 +10,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Model/begin"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Model/participants"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Model/messagesOrReferences"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Model/conditions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Model/end"/>
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//Participant">
@@ -52,6 +51,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/timelines"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/name"/>
     </genClasses>
+    <genClasses ecoreClass="TextualScenario.ecore#//CombinedFragment"/>
     <genClasses ecoreClass="TextualScenario.ecore#//Alt">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Alt/keyword"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Alt/condition"/>
@@ -65,9 +65,7 @@
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//Block">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Block/begin"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Block/messages"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Block/references"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Block/conditions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Block/blockElements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Block/end"/>
     </genClasses>
   </genPackages>

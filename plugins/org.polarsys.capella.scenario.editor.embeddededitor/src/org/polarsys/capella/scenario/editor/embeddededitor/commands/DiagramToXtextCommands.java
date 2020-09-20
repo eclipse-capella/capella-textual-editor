@@ -215,7 +215,7 @@ public class DiagramToXtextCommands {
             messagesOrReferences.add(participantDeactivateMsg);
           }
           else {
-            blockConditons.peek().getMessages().add((Message) participantDeactivateMsg);
+            blockConditons.peek().getBlockElements().add((Message) participantDeactivateMsg);
           }
           updateMessagesToDeactivate(messagesToDeactivate);
           
@@ -236,7 +236,7 @@ public class DiagramToXtextCommands {
             messagesOrReferences.add(message);
           }
           else {
-            blockConditons.peek().getMessages().add((Message) message);
+            blockConditons.peek().getBlockElements().add((Message) message);
           }
           
           // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
@@ -280,7 +280,7 @@ public class DiagramToXtextCommands {
           messagesOrReferences.add(participantDeactivateMsg);
         }
         else {
-          blockConditons.peek().getMessages().add((Message) participantDeactivateMsg);
+          blockConditons.peek().getBlockElements().add((Message) participantDeactivateMsg);
         }
         
         updateMessagesToDeactivate(messagesToDeactivate);
@@ -293,10 +293,10 @@ public class DiagramToXtextCommands {
           
           // add the new encountered alt, to the model, or to a block
           if(blockConditons.isEmpty()) {
-            domainModel.getConditions().add(alt);
+            domainModel.getMessagesOrReferences().add(alt);
           }
           else {
-            blockConditons.peek().getConditions().add(alt);
+            blockConditons.peek().getBlockElements().add(alt);
           }
           
           Block altBlock = createBlock(factory);
@@ -470,10 +470,6 @@ public class DiagramToXtextCommands {
     }
     if (domainModel != null && domainModel.getMessagesOrReferences() != null) {
       domainModel.getMessagesOrReferences().clear();
-    }
-    
-    if (domainModel != null && domainModel.getConditions() != null) {
-      domainModel.getConditions().clear();
     }
   }
   
