@@ -624,27 +624,27 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Model__MessagesOrReferencesAlternatives_3_0
+rule__Model__ElementsAlternatives_3_0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getModelAccess().getMessagesOrReferencesMessageParserRuleCall_3_0_0()); }
+		{ before(grammarAccess.getModelAccess().getElementsMessageParserRuleCall_3_0_0()); }
 		ruleMessage
-		{ after(grammarAccess.getModelAccess().getMessagesOrReferencesMessageParserRuleCall_3_0_0()); }
+		{ after(grammarAccess.getModelAccess().getElementsMessageParserRuleCall_3_0_0()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getModelAccess().getMessagesOrReferencesReferenceParserRuleCall_3_0_1()); }
+		{ before(grammarAccess.getModelAccess().getElementsReferenceParserRuleCall_3_0_1()); }
 		ruleReference
-		{ after(grammarAccess.getModelAccess().getMessagesOrReferencesReferenceParserRuleCall_3_0_1()); }
+		{ after(grammarAccess.getModelAccess().getElementsReferenceParserRuleCall_3_0_1()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getModelAccess().getMessagesOrReferencesCombinedFragmentParserRuleCall_3_0_2()); }
+		{ before(grammarAccess.getModelAccess().getElementsCombinedFragmentParserRuleCall_3_0_2()); }
 		ruleCombinedFragment
-		{ after(grammarAccess.getModelAccess().getMessagesOrReferencesCombinedFragmentParserRuleCall_3_0_2()); }
+		{ after(grammarAccess.getModelAccess().getElementsCombinedFragmentParserRuleCall_3_0_2()); }
 	)
 ;
 finally {
@@ -939,9 +939,9 @@ rule__Model__Group__3__Impl
 	}
 :
 (
-	{ before(grammarAccess.getModelAccess().getMessagesOrReferencesAssignment_3()); }
-	(rule__Model__MessagesOrReferencesAssignment_3)*
-	{ after(grammarAccess.getModelAccess().getMessagesOrReferencesAssignment_3()); }
+	{ before(grammarAccess.getModelAccess().getElementsAssignment_3()); }
+	(rule__Model__ElementsAssignment_3)*
+	{ after(grammarAccess.getModelAccess().getElementsAssignment_3()); }
 )
 ;
 finally {
@@ -2481,15 +2481,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Model__MessagesOrReferencesAssignment_3
+rule__Model__ElementsAssignment_3
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getModelAccess().getMessagesOrReferencesAlternatives_3_0()); }
-		(rule__Model__MessagesOrReferencesAlternatives_3_0)
-		{ after(grammarAccess.getModelAccess().getMessagesOrReferencesAlternatives_3_0()); }
+		{ before(grammarAccess.getModelAccess().getElementsAlternatives_3_0()); }
+		(rule__Model__ElementsAlternatives_3_0)
+		{ after(grammarAccess.getModelAccess().getElementsAlternatives_3_0()); }
 	)
 ;
 finally {

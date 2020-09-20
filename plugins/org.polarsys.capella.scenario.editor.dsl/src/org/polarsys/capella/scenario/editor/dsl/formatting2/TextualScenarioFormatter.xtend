@@ -37,7 +37,7 @@ class TextualScenarioFormatter extends AbstractFormatter2 {
 		
 		// call formatting function for each participant and message or references
 		model.participants.forEach[ element | element.format ]
-		model.messagesOrReferences.forEach[ element | element.format ]
+		model.elements.forEach[ element | element.format ]
 	}
 
 	def dispatch void format(Message message, extension IFormattableDocument document) {
