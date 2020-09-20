@@ -16,7 +16,7 @@ generate textualScenario "http://www.polarsys.org/capella/scenario/editor/dsl/Te
 
 Model:
        'scenario' begin = '{' participants+=Participant* 
-        (messagesOrReferences+=(Message|Reference|CombinedFragment))* 
+        (elements+=(Message|Reference|CombinedFragment))* 
         end = '}';
 
 Participant: 

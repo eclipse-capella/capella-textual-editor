@@ -9,7 +9,7 @@
     <genClasses ecoreClass="TextualScenario.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Model/begin"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Model/participants"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Model/messagesOrReferences"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Model/elements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Model/end"/>
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//Participant">

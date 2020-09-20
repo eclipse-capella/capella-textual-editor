@@ -60,7 +60,7 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     final Consumer<EObject> _function_4 = (EObject element) -> {
       document.<EObject>format(element);
     };
-    model.getMessagesOrReferences().forEach(_function_4);
+    model.getElements().forEach(_function_4);
   }
   
   protected void _format(final Message message, @Extension final IFormattableDocument document) {

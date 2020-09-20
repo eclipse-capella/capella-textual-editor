@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0
+ *  
+ *  SPDX-License-Identifier: EPL-2.0
+ *  
+ *  Contributors:
+ *     Thales - initial API and implementation
+ ******************************************************************************/
 package org.polarsys.capella.scenario.editor.dsl.parser.antlr.internal;
 
 import org.eclipse.xtext.*;
@@ -133,7 +145,7 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleModel"
-    // InternalTextualScenario.g:71:1: ruleModel returns [EObject current=null] : (otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) ) ) ;
+    // InternalTextualScenario.g:71:1: ruleModel returns [EObject current=null] : (otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) ) ) ;
     public final EObject ruleModel() throws RecognitionException {
         EObject current = null;
 
@@ -142,22 +154,22 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
         Token lv_end_4_0=null;
         EObject lv_participants_2_0 = null;
 
-        EObject lv_messagesOrReferences_3_1 = null;
+        EObject lv_elements_3_1 = null;
 
-        EObject lv_messagesOrReferences_3_2 = null;
+        EObject lv_elements_3_2 = null;
 
-        EObject lv_messagesOrReferences_3_3 = null;
+        EObject lv_elements_3_3 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalTextualScenario.g:77:2: ( (otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) ) ) )
-            // InternalTextualScenario.g:78:2: (otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) ) )
+            // InternalTextualScenario.g:77:2: ( (otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) ) ) )
+            // InternalTextualScenario.g:78:2: (otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) ) )
             {
-            // InternalTextualScenario.g:78:2: (otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) ) )
-            // InternalTextualScenario.g:79:3: otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) )
+            // InternalTextualScenario.g:78:2: (otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) ) )
+            // InternalTextualScenario.g:79:3: otherlv_0= 'scenario' ( (lv_begin_1_0= '{' ) ) ( (lv_participants_2_0= ruleParticipant ) )* ( ( (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment ) ) )* ( (lv_end_4_0= '}' ) )
             {
             otherlv_0=(Token)match(input,11,FOLLOW_3); 
 
@@ -234,7 +246,7 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
                 }
             } while (true);
 
-            // InternalTextualScenario.g:116:3: ( ( (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment ) ) )*
+            // InternalTextualScenario.g:116:3: ( ( (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment ) ) )*
             loop3:
             do {
                 int alt3=2;
@@ -247,12 +259,12 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
 
                 switch (alt3) {
             	case 1 :
-            	    // InternalTextualScenario.g:117:4: ( (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment ) )
+            	    // InternalTextualScenario.g:117:4: ( (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment ) )
             	    {
-            	    // InternalTextualScenario.g:117:4: ( (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment ) )
-            	    // InternalTextualScenario.g:118:5: (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment )
+            	    // InternalTextualScenario.g:117:4: ( (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment ) )
+            	    // InternalTextualScenario.g:118:5: (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment )
             	    {
-            	    // InternalTextualScenario.g:118:5: (lv_messagesOrReferences_3_1= ruleMessage | lv_messagesOrReferences_3_2= ruleReference | lv_messagesOrReferences_3_3= ruleCombinedFragment )
+            	    // InternalTextualScenario.g:118:5: (lv_elements_3_1= ruleMessage | lv_elements_3_2= ruleReference | lv_elements_3_3= ruleCombinedFragment )
             	    int alt2=3;
             	    switch ( input.LA(1) ) {
             	    case RULE_STRING:
@@ -281,13 +293,13 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
 
             	    switch (alt2) {
             	        case 1 :
-            	            // InternalTextualScenario.g:119:6: lv_messagesOrReferences_3_1= ruleMessage
+            	            // InternalTextualScenario.g:119:6: lv_elements_3_1= ruleMessage
             	            {
 
-            	            						newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesMessageParserRuleCall_3_0_0());
+            	            						newCompositeNode(grammarAccess.getModelAccess().getElementsMessageParserRuleCall_3_0_0());
             	            					
             	            pushFollow(FOLLOW_5);
-            	            lv_messagesOrReferences_3_1=ruleMessage();
+            	            lv_elements_3_1=ruleMessage();
 
             	            state._fsp--;
 
@@ -297,8 +309,8 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
             	            						}
             	            						add(
             	            							current,
-            	            							"messagesOrReferences",
-            	            							lv_messagesOrReferences_3_1,
+            	            							"elements",
+            	            							lv_elements_3_1,
             	            							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Message");
             	            						afterParserOrEnumRuleCall();
             	            					
@@ -306,13 +318,13 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
             	            }
             	            break;
             	        case 2 :
-            	            // InternalTextualScenario.g:135:6: lv_messagesOrReferences_3_2= ruleReference
+            	            // InternalTextualScenario.g:135:6: lv_elements_3_2= ruleReference
             	            {
 
-            	            						newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesReferenceParserRuleCall_3_0_1());
+            	            						newCompositeNode(grammarAccess.getModelAccess().getElementsReferenceParserRuleCall_3_0_1());
             	            					
             	            pushFollow(FOLLOW_5);
-            	            lv_messagesOrReferences_3_2=ruleReference();
+            	            lv_elements_3_2=ruleReference();
 
             	            state._fsp--;
 
@@ -322,8 +334,8 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
             	            						}
             	            						add(
             	            							current,
-            	            							"messagesOrReferences",
-            	            							lv_messagesOrReferences_3_2,
+            	            							"elements",
+            	            							lv_elements_3_2,
             	            							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
             	            						afterParserOrEnumRuleCall();
             	            					
@@ -331,13 +343,13 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
             	            }
             	            break;
             	        case 3 :
-            	            // InternalTextualScenario.g:151:6: lv_messagesOrReferences_3_3= ruleCombinedFragment
+            	            // InternalTextualScenario.g:151:6: lv_elements_3_3= ruleCombinedFragment
             	            {
 
-            	            						newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesCombinedFragmentParserRuleCall_3_0_2());
+            	            						newCompositeNode(grammarAccess.getModelAccess().getElementsCombinedFragmentParserRuleCall_3_0_2());
             	            					
             	            pushFollow(FOLLOW_5);
-            	            lv_messagesOrReferences_3_3=ruleCombinedFragment();
+            	            lv_elements_3_3=ruleCombinedFragment();
 
             	            state._fsp--;
 
@@ -347,8 +359,8 @@ public class InternalTextualScenarioParser extends AbstractInternalAntlrParser {
             	            						}
             	            						add(
             	            							current,
-            	            							"messagesOrReferences",
-            	            							lv_messagesOrReferences_3_3,
+            	            							"elements",
+            	            							lv_elements_3_3,
             	            							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.CombinedFragment");
             	            						afterParserOrEnumRuleCall();
             	            					

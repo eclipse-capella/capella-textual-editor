@@ -85,7 +85,7 @@ public class XtextToDiagramCommands {
       EList<Participant> participants = domainModel.getParticipants();
 
       // get messages
-      EList<EObject> messages = domainModel.getMessagesOrReferences();
+      EList<EObject> messages = domainModel.getElements();
 
       doEditingOnParticipants(scenario, participants, messages);
 

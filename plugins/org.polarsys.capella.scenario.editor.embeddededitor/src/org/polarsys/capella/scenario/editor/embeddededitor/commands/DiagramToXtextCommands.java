@@ -189,7 +189,7 @@ public class DiagramToXtextCommands {
   }
 
   private static void generateSequenceMessages(Model domainModel, Scenario scenario, TextualScenarioFactory factory) {
-    EList<EObject> messagesOrReferences = domainModel.getMessagesOrReferences();
+    EList<EObject> messagesOrReferences = domainModel.getElements();
 
     List<InteractionFragment> fragments = SequenceDiagramServices.getOrderedInteractionFragments(scenario);
     Object[] ends = fragments.toArray();
@@ -293,7 +293,7 @@ public class DiagramToXtextCommands {
           
           // add the new encountered alt, to the model, or to a block
           if(blockConditons.isEmpty()) {
-            domainModel.getMessagesOrReferences().add(alt);
+            domainModel.getElements().add(alt);
           }
           else {
             blockConditons.peek().getBlockElements().add(alt);
@@ -468,8 +468,8 @@ public class DiagramToXtextCommands {
     if (domainModel != null && domainModel.getParticipants() != null) {
       domainModel.getParticipants().clear();
     }
-    if (domainModel != null && domainModel.getMessagesOrReferences() != null) {
-      domainModel.getMessagesOrReferences().clear();
+    if (domainModel != null && domainModel.getElements() != null) {
+      domainModel.getElements().clear();
     }
   }
   

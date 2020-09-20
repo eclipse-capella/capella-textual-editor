@@ -117,49 +117,49 @@ ruleModel returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesMessageParserRuleCall_3_0_0());
+						newCompositeNode(grammarAccess.getModelAccess().getElementsMessageParserRuleCall_3_0_0());
 					}
-					lv_messagesOrReferences_3_1=ruleMessage
+					lv_elements_3_1=ruleMessage
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getModelRule());
 						}
 						add(
 							$current,
-							"messagesOrReferences",
-							lv_messagesOrReferences_3_1,
+							"elements",
+							lv_elements_3_1,
 							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Message");
 						afterParserOrEnumRuleCall();
 					}
 					    |
 					{
-						newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesReferenceParserRuleCall_3_0_1());
+						newCompositeNode(grammarAccess.getModelAccess().getElementsReferenceParserRuleCall_3_0_1());
 					}
-					lv_messagesOrReferences_3_2=ruleReference
+					lv_elements_3_2=ruleReference
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getModelRule());
 						}
 						add(
 							$current,
-							"messagesOrReferences",
-							lv_messagesOrReferences_3_2,
+							"elements",
+							lv_elements_3_2,
 							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
 						afterParserOrEnumRuleCall();
 					}
 					    |
 					{
-						newCompositeNode(grammarAccess.getModelAccess().getMessagesOrReferencesCombinedFragmentParserRuleCall_3_0_2());
+						newCompositeNode(grammarAccess.getModelAccess().getElementsCombinedFragmentParserRuleCall_3_0_2());
 					}
-					lv_messagesOrReferences_3_3=ruleCombinedFragment
+					lv_elements_3_3=ruleCombinedFragment
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getModelRule());
 						}
 						add(
 							$current,
-							"messagesOrReferences",
-							lv_messagesOrReferences_3_3,
+							"elements",
+							lv_elements_3_3,
 							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.CombinedFragment");
 						afterParserOrEnumRuleCall();
 					}
