@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.ui.editor.model.XtextDocument;
+import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.polarsys.capella.common.data.behavior.AbstractEvent;
 import org.polarsys.capella.common.data.modellingcore.AbstractNamedElement;
 import org.polarsys.capella.core.data.capellacore.CapellaElement;
@@ -293,5 +296,20 @@ public class EmbeddedEditorInstanceHelper {
       }
     }
     return false;
+  }
+  
+  public static void updateModel(String content) {
+    XtextDocument document = EmbeddedEditorInstance.getEmbeddedEditor().getDocument();
+    document.set(content);
+    document.readOnly(new IUnitOfWork.Void<XtextResource>() {
+      @Override
+      public void process(XtextResource state) throws Exception {
+      }
+    });
+  }
+  
+  public static String getModelContent() {
+    XtextDocument document = EmbeddedEditorInstance.getEmbeddedEditor().getDocument();
+    return document.get();
   }
 }

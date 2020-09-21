@@ -143,16 +143,36 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeSequenceMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nThe method or field messagesOrReferences is undefined for the type Model");
+    SequenceMessage sequenceMessage = ((SequenceMessage) model);
+    List<String> _messagesDefinedBefore = this.messagesDefinedBefore(((SequenceMessage) model));
+    for (final String el : _messagesDefinedBefore) {
+      {
+        EObject _rootModel = context.getRootModel();
+        ((Model) _rootModel).getElements();
+        EObject _rootModel_1 = context.getRootModel();
+        boolean _messageAlreadyInserted = this.messageAlreadyInserted(((Model) _rootModel_1), sequenceMessage.getSource(), sequenceMessage.getTarget(), el);
+        boolean _not = (!_messageAlreadyInserted);
+        if (_not) {
+          acceptor.accept(this.createCompletionProposal((("\"" + el) + "\""), (("\"" + el) + "\""), null, context));
+        }
+      }
+    }
   }
   
   /**
    * check if a message is already used in the text
    */
   public boolean messageAlreadyInserted(final Model model, final String source, final String target, final String name) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nThe method or field messagesOrReferences is undefined for the type Model");
+    EList<EObject> _elements = model.getElements();
+    for (final EObject element : _elements) {
+      if ((element instanceof SequenceMessage)) {
+        SequenceMessage message = ((SequenceMessage) element);
+        if (((Objects.equal(message.getName(), name) && Objects.equal(message.getSource(), source)) && Objects.equal(message.getTarget(), target))) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   
   public List<String> messagesDefinedBefore(final SequenceMessage message) {
