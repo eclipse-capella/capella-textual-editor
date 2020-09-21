@@ -17,8 +17,6 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Alt</b></em>'.
@@ -39,7 +37,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Alt extends EObject
+public interface Alt extends CombinedFragment
 {
   /**
    * Returns the value of the '<em><b>Keyword</b></em>' attribute.

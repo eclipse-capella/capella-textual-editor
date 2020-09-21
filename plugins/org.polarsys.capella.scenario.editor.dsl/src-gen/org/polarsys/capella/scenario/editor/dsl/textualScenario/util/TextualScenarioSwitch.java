@@ -243,10 +243,18 @@ public class TextualScenarioSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case TextualScenarioPackage.COMBINED_FRAGMENT:
+      {
+        CombinedFragment combinedFragment = (CombinedFragment)theEObject;
+        T result = caseCombinedFragment(combinedFragment);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case TextualScenarioPackage.ALT:
       {
         Alt alt = (Alt)theEObject;
         T result = caseAlt(alt);
+        if (result == null) result = caseCombinedFragment(alt);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -568,6 +576,22 @@ public class TextualScenarioSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseReference(Reference object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Combined Fragment</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Combined Fragment</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseCombinedFragment(CombinedFragment object)
   {
     return null;
   }

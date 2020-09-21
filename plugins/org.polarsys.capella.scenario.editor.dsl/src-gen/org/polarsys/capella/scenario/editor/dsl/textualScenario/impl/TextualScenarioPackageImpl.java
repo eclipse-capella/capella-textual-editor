@@ -27,6 +27,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Actor;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Component;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ConfigurationItem;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
@@ -193,6 +194,13 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass combinedFragmentEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass altEClass = null;
 
   /**
@@ -311,7 +319,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EReference getModel_MessagesOrReferences()
+  public EReference getModel_Elements()
   {
     return (EReference)modelEClass.getEStructuralFeatures().get(2);
   }
@@ -322,20 +330,9 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EReference getModel_Conditions()
-  {
-    return (EReference)modelEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EAttribute getModel_End()
   {
-    return (EAttribute)modelEClass.getEStructuralFeatures().get(4);
+    return (EAttribute)modelEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -685,6 +682,17 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
+  public EClass getCombinedFragment()
+  {
+    return combinedFragmentEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getAlt()
   {
     return altEClass;
@@ -806,7 +814,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EReference getBlock_Messages()
+  public EReference getBlock_BlockElements()
   {
     return (EReference)blockEClass.getEStructuralFeatures().get(1);
   }
@@ -817,31 +825,9 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EReference getBlock_References()
-  {
-    return (EReference)blockEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getBlock_Conditions()
-  {
-    return (EReference)blockEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EAttribute getBlock_End()
   {
-    return (EAttribute)blockEClass.getEStructuralFeatures().get(4);
+    return (EAttribute)blockEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -878,8 +864,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     modelEClass = createEClass(MODEL);
     createEAttribute(modelEClass, MODEL__BEGIN);
     createEReference(modelEClass, MODEL__PARTICIPANTS);
-    createEReference(modelEClass, MODEL__MESSAGES_OR_REFERENCES);
-    createEReference(modelEClass, MODEL__CONDITIONS);
+    createEReference(modelEClass, MODEL__ELEMENTS);
     createEAttribute(modelEClass, MODEL__END);
 
     participantEClass = createEClass(PARTICIPANT);
@@ -931,6 +916,8 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     createEAttribute(referenceEClass, REFERENCE__TIMELINES);
     createEAttribute(referenceEClass, REFERENCE__NAME);
 
+    combinedFragmentEClass = createEClass(COMBINED_FRAGMENT);
+
     altEClass = createEClass(ALT);
     createEAttribute(altEClass, ALT__KEYWORD);
     createEAttribute(altEClass, ALT__CONDITION);
@@ -944,9 +931,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     blockEClass = createEClass(BLOCK);
     createEAttribute(blockEClass, BLOCK__BEGIN);
-    createEReference(blockEClass, BLOCK__MESSAGES);
-    createEReference(blockEClass, BLOCK__REFERENCES);
-    createEReference(blockEClass, BLOCK__CONDITIONS);
+    createEReference(blockEClass, BLOCK__BLOCK_ELEMENTS);
     createEAttribute(blockEClass, BLOCK__END);
   }
 
@@ -994,13 +979,13 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     deleteMessageEClass.getESuperTypes().add(this.getSequenceMessageType());
     armTimerMessageEClass.getESuperTypes().add(this.getMessage());
     participantDeactivationEClass.getESuperTypes().add(this.getMessage());
+    altEClass.getESuperTypes().add(this.getCombinedFragment());
 
     // Initialize classes and features; add operations and parameters
     initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getModel_Begin(), ecorePackage.getEString(), "begin", null, 0, 1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getModel_Participants(), this.getParticipant(), null, "participants", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getModel_MessagesOrReferences(), ecorePackage.getEObject(), null, "messagesOrReferences", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getModel_Conditions(), this.getAlt(), null, "conditions", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getModel_Elements(), ecorePackage.getEObject(), null, "elements", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getModel_End(), ecorePackage.getEString(), "end", null, 0, 1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(participantEClass, Participant.class, "Participant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1052,6 +1037,8 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     initEAttribute(getReference_Timelines(), ecorePackage.getEString(), "timelines", null, 0, -1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getReference_Name(), ecorePackage.getEString(), "name", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(combinedFragmentEClass, CombinedFragment.class, "CombinedFragment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
     initEClass(altEClass, Alt.class, "Alt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAlt_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, Alt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getAlt_Condition(), ecorePackage.getEString(), "condition", null, 0, 1, Alt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1065,9 +1052,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     initEClass(blockEClass, Block.class, "Block", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getBlock_Begin(), ecorePackage.getEString(), "begin", null, 0, 1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBlock_Messages(), this.getMessage(), null, "messages", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBlock_References(), this.getReference(), null, "references", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBlock_Conditions(), this.getAlt(), null, "conditions", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBlock_BlockElements(), ecorePackage.getEObject(), null, "blockElements", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getBlock_End(), ecorePackage.getEString(), "end", null, 0, 1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource

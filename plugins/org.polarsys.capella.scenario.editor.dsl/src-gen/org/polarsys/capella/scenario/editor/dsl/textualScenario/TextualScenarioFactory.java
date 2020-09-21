@@ -207,6 +207,15 @@ public interface TextualScenarioFactory extends EFactory
   Reference createReference();
 
   /**
+   * Returns a new object of class '<em>Combined Fragment</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Combined Fragment</em>'.
+   * @generated
+   */
+  CombinedFragment createCombinedFragment();
+
+  /**
    * Returns a new object of class '<em>Alt</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

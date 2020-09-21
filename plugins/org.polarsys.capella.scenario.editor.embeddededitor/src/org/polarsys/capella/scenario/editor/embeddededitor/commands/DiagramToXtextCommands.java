@@ -189,7 +189,7 @@ public class DiagramToXtextCommands {
   }
 
   private static void generateSequenceMessages(Model domainModel, Scenario scenario, TextualScenarioFactory factory) {
-    EList<EObject> messagesOrReferences = domainModel.getMessagesOrReferences();
+    EList<EObject> messagesOrReferences = domainModel.getElements();
 
     List<InteractionFragment> fragments = SequenceDiagramServices.getOrderedInteractionFragments(scenario);
     Object[] ends = fragments.toArray();
@@ -215,7 +215,7 @@ public class DiagramToXtextCommands {
             messagesOrReferences.add(participantDeactivateMsg);
           }
           else {
-            blockConditons.peek().getMessages().add((Message) participantDeactivateMsg);
+            blockConditons.peek().getBlockElements().add((Message) participantDeactivateMsg);
           }
           updateMessagesToDeactivate(messagesToDeactivate);
           
@@ -236,7 +236,7 @@ public class DiagramToXtextCommands {
             messagesOrReferences.add(message);
           }
           else {
-            blockConditons.peek().getMessages().add((Message) message);
+            blockConditons.peek().getBlockElements().add((Message) message);
           }
           
           // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
@@ -280,7 +280,7 @@ public class DiagramToXtextCommands {
           messagesOrReferences.add(participantDeactivateMsg);
         }
         else {
-          blockConditons.peek().getMessages().add((Message) participantDeactivateMsg);
+          blockConditons.peek().getBlockElements().add((Message) participantDeactivateMsg);
         }
         
         updateMessagesToDeactivate(messagesToDeactivate);
@@ -293,10 +293,10 @@ public class DiagramToXtextCommands {
           
           // add the new encountered alt, to the model, or to a block
           if(blockConditons.isEmpty()) {
-            domainModel.getConditions().add(alt);
+            domainModel.getElements().add(alt);
           }
           else {
-            blockConditons.peek().getConditions().add(alt);
+            blockConditons.peek().getBlockElements().add(alt);
           }
           
           Block altBlock = createBlock(factory);
@@ -307,13 +307,13 @@ public class DiagramToXtextCommands {
         }
         else {
           // here is the end of the alt sequence, extract the last processed alt and its last block
-          conditions.pop();
-          blockConditons.pop();
+          if(!conditions.empty()) conditions.pop();
+          if(!blockConditons.empty()) blockConditons.pop();
         }
         i++;
       } else if(ends[i] instanceof InteractionOperand) {
         // the previous operation block is ended, extract it from the stack, we are done with it
-        blockConditons.pop();
+        if(!blockConditons.empty()) blockConditons.pop();
         
         // generate a new branch for alt (else sequence)
         Block altBlock = addAltBlock(factory, conditions.peek(), (InteractionOperand)ends[i]);
@@ -468,12 +468,8 @@ public class DiagramToXtextCommands {
     if (domainModel != null && domainModel.getParticipants() != null) {
       domainModel.getParticipants().clear();
     }
-    if (domainModel != null && domainModel.getMessagesOrReferences() != null) {
-      domainModel.getMessagesOrReferences().clear();
-    }
-    
-    if (domainModel != null && domainModel.getConditions() != null) {
-      domainModel.getConditions().clear();
+    if (domainModel != null && domainModel.getElements() != null) {
+      domainModel.getElements().clear();
     }
   }
   

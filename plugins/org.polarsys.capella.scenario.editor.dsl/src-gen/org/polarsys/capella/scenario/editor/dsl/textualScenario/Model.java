@@ -30,8 +30,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getBegin <em>Begin</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getParticipants <em>Participants</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getMessagesOrReferences <em>Messages Or References</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getConditions <em>Conditions</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getElements <em>Elements</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getEnd <em>End</em>}</li>
  * </ul>
  *
@@ -76,28 +75,16 @@ public interface Model extends EObject
   EList<Participant> getParticipants();
 
   /**
-   * Returns the value of the '<em><b>Messages Or References</b></em>' containment reference list.
+   * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Messages Or References</em>' containment reference list.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getModel_MessagesOrReferences()
+   * @return the value of the '<em>Elements</em>' containment reference list.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getModel_Elements()
    * @model containment="true"
    * @generated
    */
-  EList<EObject> getMessagesOrReferences();
-
-  /**
-   * Returns the value of the '<em><b>Conditions</b></em>' containment reference list.
-   * The list contents are of type {@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Conditions</em>' containment reference list.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getModel_Conditions()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Alt> getConditions();
+  EList<EObject> getElements();
 
   /**
    * Returns the value of the '<em><b>End</b></em>' attribute.

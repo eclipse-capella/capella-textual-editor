@@ -37,8 +37,7 @@ class TextualScenarioFormatter extends AbstractFormatter2 {
 		
 		// call formatting function for each participant and message or references
 		model.participants.forEach[ element | element.format ]
-		model.messagesOrReferences.forEach[ element | element.format ]
-		model.conditions.forEach[ element | element.format ]
+		model.elements.forEach[ element | element.format ]
 	}
 
 	def dispatch void format(Message message, extension IFormattableDocument document) {
@@ -69,8 +68,6 @@ class TextualScenarioFormatter extends AbstractFormatter2 {
 		begin.append[newLine]
 		interior(begin, end)[indent]
 		
-		block.messages.forEach[ element | element.format ]
-		block.references.forEach[ element | element.format ]
-		block.conditions.forEach[ element | element.format ]
+		block.blockElements.forEach[ element | element.format ]
 	}
 }

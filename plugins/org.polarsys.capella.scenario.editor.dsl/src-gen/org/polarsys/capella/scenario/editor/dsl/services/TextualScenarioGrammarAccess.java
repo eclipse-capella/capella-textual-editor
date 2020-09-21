@@ -42,22 +42,21 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cBeginLeftCurlyBracketKeyword_1_0 = (Keyword)cBeginAssignment_1.eContents().get(0);
 		private final Assignment cParticipantsAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cParticipantsParticipantParserRuleCall_2_0 = (RuleCall)cParticipantsAssignment_2.eContents().get(0);
-		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
-		private final Assignment cMessagesOrReferencesAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
-		private final Alternatives cMessagesOrReferencesAlternatives_3_0_0 = (Alternatives)cMessagesOrReferencesAssignment_3_0.eContents().get(0);
-		private final RuleCall cMessagesOrReferencesMessageParserRuleCall_3_0_0_0 = (RuleCall)cMessagesOrReferencesAlternatives_3_0_0.eContents().get(0);
-		private final RuleCall cMessagesOrReferencesReferenceParserRuleCall_3_0_0_1 = (RuleCall)cMessagesOrReferencesAlternatives_3_0_0.eContents().get(1);
-		private final Assignment cConditionsAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
-		private final RuleCall cConditionsAltParserRuleCall_3_1_0 = (RuleCall)cConditionsAssignment_3_1.eContents().get(0);
+		private final Assignment cElementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Alternatives cElementsAlternatives_3_0 = (Alternatives)cElementsAssignment_3.eContents().get(0);
+		private final RuleCall cElementsMessageParserRuleCall_3_0_0 = (RuleCall)cElementsAlternatives_3_0.eContents().get(0);
+		private final RuleCall cElementsReferenceParserRuleCall_3_0_1 = (RuleCall)cElementsAlternatives_3_0.eContents().get(1);
+		private final RuleCall cElementsCombinedFragmentParserRuleCall_3_0_2 = (RuleCall)cElementsAlternatives_3_0.eContents().get(2);
 		private final Assignment cEndAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final Keyword cEndRightCurlyBracketKeyword_4_0 = (Keyword)cEndAssignment_4.eContents().get(0);
 		
 		//Model:
-		//	'scenario' begin='{' participants+=Participant* (messagesOrReferences+=(Message | Reference) | conditions+=Alt)*
+		//	'scenario' begin='{' participants+=Participant*
+		//	elements+=(Message | Reference | CombinedFragment)*
 		//	end='}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'scenario' begin='{' participants+=Participant* (messagesOrReferences+=(Message | Reference) | conditions+=Alt)* end='}'
+		//'scenario' begin='{' participants+=Participant* elements+=(Message | Reference | CombinedFragment)* end='}'
 		public Group getGroup() { return cGroup; }
 		
 		//'scenario'
@@ -75,26 +74,20 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//Participant
 		public RuleCall getParticipantsParticipantParserRuleCall_2_0() { return cParticipantsParticipantParserRuleCall_2_0; }
 		
-		//(messagesOrReferences+=(Message | Reference) | conditions+=Alt)*
-		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+		//elements+=(Message | Reference | CombinedFragment)*
+		public Assignment getElementsAssignment_3() { return cElementsAssignment_3; }
 		
-		//messagesOrReferences+=(Message | Reference)
-		public Assignment getMessagesOrReferencesAssignment_3_0() { return cMessagesOrReferencesAssignment_3_0; }
-		
-		//(Message | Reference)
-		public Alternatives getMessagesOrReferencesAlternatives_3_0_0() { return cMessagesOrReferencesAlternatives_3_0_0; }
+		//(Message | Reference | CombinedFragment)
+		public Alternatives getElementsAlternatives_3_0() { return cElementsAlternatives_3_0; }
 		
 		//Message
-		public RuleCall getMessagesOrReferencesMessageParserRuleCall_3_0_0_0() { return cMessagesOrReferencesMessageParserRuleCall_3_0_0_0; }
+		public RuleCall getElementsMessageParserRuleCall_3_0_0() { return cElementsMessageParserRuleCall_3_0_0; }
 		
 		//Reference
-		public RuleCall getMessagesOrReferencesReferenceParserRuleCall_3_0_0_1() { return cMessagesOrReferencesReferenceParserRuleCall_3_0_0_1; }
+		public RuleCall getElementsReferenceParserRuleCall_3_0_1() { return cElementsReferenceParserRuleCall_3_0_1; }
 		
-		//conditions+=Alt
-		public Assignment getConditionsAssignment_3_1() { return cConditionsAssignment_3_1; }
-		
-		//Alt
-		public RuleCall getConditionsAltParserRuleCall_3_1_0() { return cConditionsAltParserRuleCall_3_1_0; }
+		//CombinedFragment
+		public RuleCall getElementsCombinedFragmentParserRuleCall_3_0_2() { return cElementsCombinedFragmentParserRuleCall_3_0_2; }
 		
 		//end='}'
 		public Assignment getEndAssignment_4() { return cEndAssignment_4; }
@@ -672,6 +665,17 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getNameSTRINGTerminalRuleCall_3_0() { return cNameSTRINGTerminalRuleCall_3_0; }
 	}
+	public class CombinedFragmentElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.CombinedFragment");
+		private final RuleCall cAltParserRuleCall = (RuleCall)rule.eContents().get(1);
+		
+		//CombinedFragment:
+		//	Alt;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//Alt
+		public RuleCall getAltParserRuleCall() { return cAltParserRuleCall; }
+	}
 	public class AltElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.Alt");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -763,21 +767,19 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cBeginAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cBeginLeftCurlyBracketKeyword_0_0 = (Keyword)cBeginAssignment_0.eContents().get(0);
-		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
-		private final Assignment cMessagesAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
-		private final RuleCall cMessagesMessageParserRuleCall_1_0_0 = (RuleCall)cMessagesAssignment_1_0.eContents().get(0);
-		private final Assignment cReferencesAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
-		private final RuleCall cReferencesReferenceParserRuleCall_1_1_0 = (RuleCall)cReferencesAssignment_1_1.eContents().get(0);
-		private final Assignment cConditionsAssignment_1_2 = (Assignment)cAlternatives_1.eContents().get(2);
-		private final RuleCall cConditionsAltParserRuleCall_1_2_0 = (RuleCall)cConditionsAssignment_1_2.eContents().get(0);
+		private final Assignment cBlockElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Alternatives cBlockElementsAlternatives_1_0 = (Alternatives)cBlockElementsAssignment_1.eContents().get(0);
+		private final RuleCall cBlockElementsMessageParserRuleCall_1_0_0 = (RuleCall)cBlockElementsAlternatives_1_0.eContents().get(0);
+		private final RuleCall cBlockElementsReferenceParserRuleCall_1_0_1 = (RuleCall)cBlockElementsAlternatives_1_0.eContents().get(1);
+		private final RuleCall cBlockElementsCombinedFragmentParserRuleCall_1_0_2 = (RuleCall)cBlockElementsAlternatives_1_0.eContents().get(2);
 		private final Assignment cEndAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final Keyword cEndRightCurlyBracketKeyword_2_0 = (Keyword)cEndAssignment_2.eContents().get(0);
 		
 		//Block:
-		//	begin="{" (messages+=Message | references+=Reference | conditions+=Alt)* end="}";
+		//	begin="{" blockElements+=(Message | Reference | CombinedFragment)* end="}";
 		@Override public ParserRule getRule() { return rule; }
 		
-		//begin="{" (messages+=Message | references+=Reference | conditions+=Alt)* end="}"
+		//begin="{" blockElements+=(Message | Reference | CombinedFragment)* end="}"
 		public Group getGroup() { return cGroup; }
 		
 		//begin="{"
@@ -786,26 +788,20 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getBeginLeftCurlyBracketKeyword_0_0() { return cBeginLeftCurlyBracketKeyword_0_0; }
 		
-		//(messages+=Message | references+=Reference | conditions+=Alt)*
-		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+		//blockElements+=(Message | Reference | CombinedFragment)*
+		public Assignment getBlockElementsAssignment_1() { return cBlockElementsAssignment_1; }
 		
-		//messages+=Message
-		public Assignment getMessagesAssignment_1_0() { return cMessagesAssignment_1_0; }
+		//(Message | Reference | CombinedFragment)
+		public Alternatives getBlockElementsAlternatives_1_0() { return cBlockElementsAlternatives_1_0; }
 		
 		//Message
-		public RuleCall getMessagesMessageParserRuleCall_1_0_0() { return cMessagesMessageParserRuleCall_1_0_0; }
-		
-		//references+=Reference
-		public Assignment getReferencesAssignment_1_1() { return cReferencesAssignment_1_1; }
+		public RuleCall getBlockElementsMessageParserRuleCall_1_0_0() { return cBlockElementsMessageParserRuleCall_1_0_0; }
 		
 		//Reference
-		public RuleCall getReferencesReferenceParserRuleCall_1_1_0() { return cReferencesReferenceParserRuleCall_1_1_0; }
+		public RuleCall getBlockElementsReferenceParserRuleCall_1_0_1() { return cBlockElementsReferenceParserRuleCall_1_0_1; }
 		
-		//conditions+=Alt
-		public Assignment getConditionsAssignment_1_2() { return cConditionsAssignment_1_2; }
-		
-		//Alt
-		public RuleCall getConditionsAltParserRuleCall_1_2_0() { return cConditionsAltParserRuleCall_1_2_0; }
+		//CombinedFragment
+		public RuleCall getBlockElementsCombinedFragmentParserRuleCall_1_0_2() { return cBlockElementsCombinedFragmentParserRuleCall_1_0_2; }
 		
 		//end="}"
 		public Assignment getEndAssignment_2() { return cEndAssignment_2; }
@@ -834,6 +830,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	private final ArmTimerMessageElements pArmTimerMessage;
 	private final ParticipantDeactivationElements pParticipantDeactivation;
 	private final ReferenceElements pReference;
+	private final CombinedFragmentElements pCombinedFragment;
 	private final AltElements pAlt;
 	private final ElseBlockElements pElseBlock;
 	private final BlockElements pBlock;
@@ -866,6 +863,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		this.pArmTimerMessage = new ArmTimerMessageElements();
 		this.pParticipantDeactivation = new ParticipantDeactivationElements();
 		this.pReference = new ReferenceElements();
+		this.pCombinedFragment = new CombinedFragmentElements();
 		this.pAlt = new AltElements();
 		this.pElseBlock = new ElseBlockElements();
 		this.pBlock = new BlockElements();
@@ -899,7 +897,8 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//Model:
-	//	'scenario' begin='{' participants+=Participant* (messagesOrReferences+=(Message | Reference) | conditions+=Alt)*
+	//	'scenario' begin='{' participants+=Participant*
+	//	elements+=(Message | Reference | CombinedFragment)*
 	//	end='}';
 	public ModelElements getModelAccess() {
 		return pModel;
@@ -1089,6 +1088,16 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		return getReferenceAccess().getRule();
 	}
 	
+	//CombinedFragment:
+	//	Alt;
+	public CombinedFragmentElements getCombinedFragmentAccess() {
+		return pCombinedFragment;
+	}
+	
+	public ParserRule getCombinedFragmentRule() {
+		return getCombinedFragmentAccess().getRule();
+	}
+	
 	//Alt:
 	//	keyword='alt' condition=STRING 'over' timelines+=STRING+ block=Block elseBlocks+=ElseBlock*;
 	public AltElements getAltAccess() {
@@ -1110,7 +1119,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Block:
-	//	begin="{" (messages+=Message | references+=Reference | conditions+=Alt)* end="}";
+	//	begin="{" blockElements+=(Message | Reference | CombinedFragment)* end="}";
 	public BlockElements getBlockAccess() {
 		return pBlock;
 	}

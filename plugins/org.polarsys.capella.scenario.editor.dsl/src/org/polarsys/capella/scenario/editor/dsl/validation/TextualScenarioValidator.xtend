@@ -93,12 +93,12 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkDuplicatedMessagesNames(Model model) {
 		var index = 0
 		val names = newHashSet
-		for (p : model.messagesOrReferences) {
+		for (p : model.elements) {
 			if (p instanceof SequenceMessageType) {
 				if (!names.add(getMessagesMapKey(p))) {
 					error(
 						'Multiple messages with the same name',
-						TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES,
+						TextualScenarioPackage.Literals.MODEL__ELEMENTS,
 						index,
 						DUPILCATED_MESSAGES_NAME
 					)
@@ -118,7 +118,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		// a message shall occur before a deactivation
 		// keep this array with the targets of each encountered message to check that the message happens before deactivation
 		var messageTargets = newLinkedList
-		for (obj : model.messagesOrReferences) {
+		for (obj : model.elements) {
 			if (obj instanceof SequenceMessage) {
 				// add the already encountered messages to the list
 				messageTargets.add((obj as SequenceMessage).target)
@@ -133,7 +133,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 					// if the deactivation is not matched in a previous message, display an error
 					error(
 						'Deactivation keyword not expected',
-						TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES,
+						TextualScenarioPackage.Literals.MODEL__ELEMENTS,
 						index
 					)
 				}
@@ -152,7 +152,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		var messageWithExecutionTargets = newLinkedList
 		var messageWithExecutionTargetsIndex = newLinkedList
 		var index = 0
-		for (obj : model.messagesOrReferences) {
+		for (obj : model.elements) {
 			if (obj instanceof SequenceMessage && (obj as SequenceMessage).execution !== null) {
 				// add the SequenceMessage with execution to a list
 				messageWithExecutionTargets.add((obj as SequenceMessage).target)
@@ -173,7 +173,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		for (var i = 0; i < messageWithExecutionTargets.size; i++) {
 			error(
 				'Deactivation keyword expected for a withExecution message',
-				TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES,
+				TextualScenarioPackage.Literals.MODEL__ELEMENTS,
 				messageWithExecutionTargetsIndex.get(i)
 			)
 		}

@@ -32,7 +32,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
@@ -47,8 +46,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ModelImpl#getBegin <em>Begin</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ModelImpl#getParticipants <em>Participants</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ModelImpl#getMessagesOrReferences <em>Messages Or References</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ModelImpl#getConditions <em>Conditions</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ModelImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ModelImpl#getEnd <em>End</em>}</li>
  * </ul>
  *
@@ -87,24 +85,14 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
   protected EList<Participant> participants;
 
   /**
-   * The cached value of the '{@link #getMessagesOrReferences() <em>Messages Or References</em>}' containment reference list.
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getMessagesOrReferences()
+   * @see #getElements()
    * @generated
    * @ordered
    */
-  protected EList<EObject> messagesOrReferences;
-
-  /**
-   * The cached value of the '{@link #getConditions() <em>Conditions</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getConditions()
-   * @generated
-   * @ordered
-   */
-  protected EList<Alt> conditions;
+  protected EList<EObject> elements;
 
   /**
    * The default value of the '{@link #getEnd() <em>End</em>}' attribute.
@@ -193,28 +181,13 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
    * @generated
    */
   @Override
-  public EList<EObject> getMessagesOrReferences()
+  public EList<EObject> getElements()
   {
-    if (messagesOrReferences == null)
+    if (elements == null)
     {
-      messagesOrReferences = new EObjectContainmentEList<EObject>(EObject.class, this, TextualScenarioPackage.MODEL__MESSAGES_OR_REFERENCES);
+      elements = new EObjectContainmentEList<EObject>(EObject.class, this, TextualScenarioPackage.MODEL__ELEMENTS);
     }
-    return messagesOrReferences;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<Alt> getConditions()
-  {
-    if (conditions == null)
-    {
-      conditions = new EObjectContainmentEList<Alt>(Alt.class, this, TextualScenarioPackage.MODEL__CONDITIONS);
-    }
-    return conditions;
+    return elements;
   }
 
   /**
@@ -254,10 +227,8 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
     {
       case TextualScenarioPackage.MODEL__PARTICIPANTS:
         return ((InternalEList<?>)getParticipants()).basicRemove(otherEnd, msgs);
-      case TextualScenarioPackage.MODEL__MESSAGES_OR_REFERENCES:
-        return ((InternalEList<?>)getMessagesOrReferences()).basicRemove(otherEnd, msgs);
-      case TextualScenarioPackage.MODEL__CONDITIONS:
-        return ((InternalEList<?>)getConditions()).basicRemove(otherEnd, msgs);
+      case TextualScenarioPackage.MODEL__ELEMENTS:
+        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -276,10 +247,8 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
         return getBegin();
       case TextualScenarioPackage.MODEL__PARTICIPANTS:
         return getParticipants();
-      case TextualScenarioPackage.MODEL__MESSAGES_OR_REFERENCES:
-        return getMessagesOrReferences();
-      case TextualScenarioPackage.MODEL__CONDITIONS:
-        return getConditions();
+      case TextualScenarioPackage.MODEL__ELEMENTS:
+        return getElements();
       case TextualScenarioPackage.MODEL__END:
         return getEnd();
     }
@@ -304,13 +273,9 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
         getParticipants().clear();
         getParticipants().addAll((Collection<? extends Participant>)newValue);
         return;
-      case TextualScenarioPackage.MODEL__MESSAGES_OR_REFERENCES:
-        getMessagesOrReferences().clear();
-        getMessagesOrReferences().addAll((Collection<? extends EObject>)newValue);
-        return;
-      case TextualScenarioPackage.MODEL__CONDITIONS:
-        getConditions().clear();
-        getConditions().addAll((Collection<? extends Alt>)newValue);
+      case TextualScenarioPackage.MODEL__ELEMENTS:
+        getElements().clear();
+        getElements().addAll((Collection<? extends EObject>)newValue);
         return;
       case TextualScenarioPackage.MODEL__END:
         setEnd((String)newValue);
@@ -335,11 +300,8 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
       case TextualScenarioPackage.MODEL__PARTICIPANTS:
         getParticipants().clear();
         return;
-      case TextualScenarioPackage.MODEL__MESSAGES_OR_REFERENCES:
-        getMessagesOrReferences().clear();
-        return;
-      case TextualScenarioPackage.MODEL__CONDITIONS:
-        getConditions().clear();
+      case TextualScenarioPackage.MODEL__ELEMENTS:
+        getElements().clear();
         return;
       case TextualScenarioPackage.MODEL__END:
         setEnd(END_EDEFAULT);
@@ -362,10 +324,8 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
         return BEGIN_EDEFAULT == null ? begin != null : !BEGIN_EDEFAULT.equals(begin);
       case TextualScenarioPackage.MODEL__PARTICIPANTS:
         return participants != null && !participants.isEmpty();
-      case TextualScenarioPackage.MODEL__MESSAGES_OR_REFERENCES:
-        return messagesOrReferences != null && !messagesOrReferences.isEmpty();
-      case TextualScenarioPackage.MODEL__CONDITIONS:
-        return conditions != null && !conditions.isEmpty();
+      case TextualScenarioPackage.MODEL__ELEMENTS:
+        return elements != null && !elements.isEmpty();
       case TextualScenarioPackage.MODEL__END:
         return END_EDEFAULT == null ? end != null : !END_EDEFAULT.equals(end);
     }

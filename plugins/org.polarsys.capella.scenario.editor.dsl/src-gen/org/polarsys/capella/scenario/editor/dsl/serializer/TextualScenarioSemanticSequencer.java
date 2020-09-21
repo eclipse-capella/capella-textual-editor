@@ -164,6 +164,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     CombinedFragment returns Alt
 	 *     Alt returns Alt
 	 *
 	 * Constraint:
@@ -201,7 +202,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Block returns Block
 	 *
 	 * Constraint:
-	 *     (begin='{' (messages+=Message | references+=Reference | conditions+=Alt)* end='}')
+	 *     (begin='{' (blockElements+=Message | blockElements+=Reference | blockElements+=CombinedFragment)* end='}')
 	 */
 	protected void sequence_Block(ISerializationContext context, Block semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -369,7 +370,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Model returns Model
 	 *
 	 * Constraint:
-	 *     (begin='{' participants+=Participant* (messagesOrReferences+=Message | messagesOrReferences+=Reference | conditions+=Alt)* end='}')
+	 *     (begin='{' participants+=Participant* (elements+=Message | elements+=Reference | elements+=CombinedFragment)* end='}')
 	 */
 	protected void sequence_Model(ISerializationContext context, Model semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

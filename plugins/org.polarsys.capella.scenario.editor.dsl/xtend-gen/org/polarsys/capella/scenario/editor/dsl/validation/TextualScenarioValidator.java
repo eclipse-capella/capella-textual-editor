@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -123,8 +111,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public void checkDuplicatedMessagesNames(final Model model) {
     int index = 0;
     final HashSet<String> names = CollectionLiterals.<String>newHashSet();
-    EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
-    for (final EObject p : _messagesOrReferences) {
+    EList<EObject> _elements = model.getElements();
+    for (final EObject p : _elements) {
       {
         if ((p instanceof SequenceMessageType)) {
           boolean _add = names.add(this.getMessagesMapKey(((SequenceMessageType)p)));
@@ -132,7 +120,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           if (_not) {
             this.error(
               "Multiple messages with the same name", 
-              TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, index, 
+              TextualScenarioPackage.Literals.MODEL__ELEMENTS, index, 
               TextualScenarioValidator.DUPILCATED_MESSAGES_NAME);
           }
         }
@@ -149,8 +137,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public void checkDeactivateMessages(final Model model) {
     int index = 0;
     LinkedList<String> messageTargets = CollectionLiterals.<String>newLinkedList();
-    EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
-    for (final EObject obj : _messagesOrReferences) {
+    EList<EObject> _elements = model.getElements();
+    for (final EObject obj : _elements) {
       {
         if ((obj instanceof SequenceMessage)) {
           messageTargets.add(((SequenceMessage) obj).getTarget());
@@ -161,7 +149,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           if ((!removed)) {
             this.error(
               "Deactivation keyword not expected", 
-              TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, index);
+              TextualScenarioPackage.Literals.MODEL__ELEMENTS, index);
           }
         }
         index++;
@@ -177,8 +165,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     LinkedList<String> messageWithExecutionTargets = CollectionLiterals.<String>newLinkedList();
     LinkedList<Integer> messageWithExecutionTargetsIndex = CollectionLiterals.<Integer>newLinkedList();
     int index = 0;
-    EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
-    for (final EObject obj : _messagesOrReferences) {
+    EList<EObject> _elements = model.getElements();
+    for (final EObject obj : _elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageWithExecutionTargets.add(((SequenceMessage) obj).getTarget());
@@ -198,7 +186,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     for (int i = 0; (i < messageWithExecutionTargets.size()); i++) {
       this.error(
         "Deactivation keyword expected for a withExecution message", 
-        TextualScenarioPackage.Literals.MODEL__MESSAGES_OR_REFERENCES, 
+        TextualScenarioPackage.Literals.MODEL__ELEMENTS, 
         (messageWithExecutionTargetsIndex.get(i)).intValue());
     }
   }

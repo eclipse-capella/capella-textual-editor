@@ -96,6 +96,7 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
       case TextualScenarioPackage.ARM_TIMER_MESSAGE: return createArmTimerMessage();
       case TextualScenarioPackage.PARTICIPANT_DEACTIVATION: return createParticipantDeactivation();
       case TextualScenarioPackage.REFERENCE: return createReference();
+      case TextualScenarioPackage.COMBINED_FRAGMENT: return createCombinedFragment();
       case TextualScenarioPackage.ALT: return createAlt();
       case TextualScenarioPackage.ELSE_BLOCK: return createElseBlock();
       case TextualScenarioPackage.BLOCK: return createBlock();
@@ -330,6 +331,18 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
   {
     ReferenceImpl reference = new ReferenceImpl();
     return reference;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public CombinedFragment createCombinedFragment()
+  {
+    CombinedFragmentImpl combinedFragment = new CombinedFragmentImpl();
+    return combinedFragment;
   }
 
   /**

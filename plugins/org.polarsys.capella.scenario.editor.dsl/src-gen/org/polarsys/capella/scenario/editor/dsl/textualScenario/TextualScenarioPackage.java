@@ -98,22 +98,13 @@ public interface TextualScenarioPackage extends EPackage
   int MODEL__PARTICIPANTS = 1;
 
   /**
-   * The feature id for the '<em><b>Messages Or References</b></em>' containment reference list.
+   * The feature id for the '<em><b>Elements</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MODEL__MESSAGES_OR_REFERENCES = 2;
-
-  /**
-   * The feature id for the '<em><b>Conditions</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MODEL__CONDITIONS = 3;
+  int MODEL__ELEMENTS = 2;
 
   /**
    * The feature id for the '<em><b>End</b></em>' attribute.
@@ -122,7 +113,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MODEL__END = 4;
+  int MODEL__END = 3;
 
   /**
    * The number of structural features of the '<em>Model</em>' class.
@@ -131,7 +122,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MODEL_FEATURE_COUNT = 5;
+  int MODEL_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ParticipantImpl <em>Participant</em>}' class.
@@ -863,6 +854,25 @@ public interface TextualScenarioPackage extends EPackage
   int REFERENCE_FEATURE_COUNT = 3;
 
   /**
+   * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.CombinedFragmentImpl <em>Combined Fragment</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.CombinedFragmentImpl
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getCombinedFragment()
+   * @generated
+   */
+  int COMBINED_FRAGMENT = 19;
+
+  /**
+   * The number of structural features of the '<em>Combined Fragment</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMBINED_FRAGMENT_FEATURE_COUNT = 0;
+
+  /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.AltImpl <em>Alt</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -870,7 +880,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getAlt()
    * @generated
    */
-  int ALT = 19;
+  int ALT = 20;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -879,7 +889,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT__KEYWORD = 0;
+  int ALT__KEYWORD = COMBINED_FRAGMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' attribute.
@@ -888,7 +898,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT__CONDITION = 1;
+  int ALT__CONDITION = COMBINED_FRAGMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Timelines</b></em>' attribute list.
@@ -897,7 +907,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT__TIMELINES = 2;
+  int ALT__TIMELINES = COMBINED_FRAGMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Block</b></em>' containment reference.
@@ -906,7 +916,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT__BLOCK = 3;
+  int ALT__BLOCK = COMBINED_FRAGMENT_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Else Blocks</b></em>' containment reference list.
@@ -915,7 +925,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT__ELSE_BLOCKS = 4;
+  int ALT__ELSE_BLOCKS = COMBINED_FRAGMENT_FEATURE_COUNT + 4;
 
   /**
    * The number of structural features of the '<em>Alt</em>' class.
@@ -924,7 +934,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT_FEATURE_COUNT = 5;
+  int ALT_FEATURE_COUNT = COMBINED_FRAGMENT_FEATURE_COUNT + 5;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ElseBlockImpl <em>Else Block</em>}' class.
@@ -934,7 +944,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getElseBlock()
    * @generated
    */
-  int ELSE_BLOCK = 20;
+  int ELSE_BLOCK = 21;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' attribute.
@@ -971,7 +981,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getBlock()
    * @generated
    */
-  int BLOCK = 21;
+  int BLOCK = 22;
 
   /**
    * The feature id for the '<em><b>Begin</b></em>' attribute.
@@ -983,31 +993,13 @@ public interface TextualScenarioPackage extends EPackage
   int BLOCK__BEGIN = 0;
 
   /**
-   * The feature id for the '<em><b>Messages</b></em>' containment reference list.
+   * The feature id for the '<em><b>Block Elements</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BLOCK__MESSAGES = 1;
-
-  /**
-   * The feature id for the '<em><b>References</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BLOCK__REFERENCES = 2;
-
-  /**
-   * The feature id for the '<em><b>Conditions</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BLOCK__CONDITIONS = 3;
+  int BLOCK__BLOCK_ELEMENTS = 1;
 
   /**
    * The feature id for the '<em><b>End</b></em>' attribute.
@@ -1016,7 +1008,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BLOCK__END = 4;
+  int BLOCK__END = 2;
 
   /**
    * The number of structural features of the '<em>Block</em>' class.
@@ -1025,7 +1017,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int BLOCK_FEATURE_COUNT = 5;
+  int BLOCK_FEATURE_COUNT = 3;
 
 
   /**
@@ -1061,26 +1053,15 @@ public interface TextualScenarioPackage extends EPackage
   EReference getModel_Participants();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getMessagesOrReferences <em>Messages Or References</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getElements <em>Elements</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Messages Or References</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getMessagesOrReferences()
+   * @return the meta object for the containment reference list '<em>Elements</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getElements()
    * @see #getModel()
    * @generated
    */
-  EReference getModel_MessagesOrReferences();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getConditions <em>Conditions</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Conditions</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getConditions()
-   * @see #getModel()
-   * @generated
-   */
-  EReference getModel_Conditions();
+  EReference getModel_Elements();
 
   /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Model#getEnd <em>End</em>}'.
@@ -1417,6 +1398,16 @@ public interface TextualScenarioPackage extends EPackage
   EAttribute getReference_Name();
 
   /**
+   * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment <em>Combined Fragment</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Combined Fragment</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
+   * @generated
+   */
+  EClass getCombinedFragment();
+
+  /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt <em>Alt</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1535,37 +1526,15 @@ public interface TextualScenarioPackage extends EPackage
   EAttribute getBlock_Begin();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getMessages <em>Messages</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getBlockElements <em>Block Elements</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Messages</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getMessages()
+   * @return the meta object for the containment reference list '<em>Block Elements</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getBlockElements()
    * @see #getBlock()
    * @generated
    */
-  EReference getBlock_Messages();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getReferences <em>References</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>References</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getReferences()
-   * @see #getBlock()
-   * @generated
-   */
-  EReference getBlock_References();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getConditions <em>Conditions</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Conditions</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getConditions()
-   * @see #getBlock()
-   * @generated
-   */
-  EReference getBlock_Conditions();
+  EReference getBlock_BlockElements();
 
   /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getEnd <em>End</em>}'.
@@ -1628,20 +1597,12 @@ public interface TextualScenarioPackage extends EPackage
     EReference MODEL__PARTICIPANTS = eINSTANCE.getModel_Participants();
 
     /**
-     * The meta object literal for the '<em><b>Messages Or References</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MODEL__MESSAGES_OR_REFERENCES = eINSTANCE.getModel_MessagesOrReferences();
-
-    /**
-     * The meta object literal for the '<em><b>Conditions</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference MODEL__CONDITIONS = eINSTANCE.getModel_Conditions();
+    EReference MODEL__ELEMENTS = eINSTANCE.getModel_Elements();
 
     /**
      * The meta object literal for the '<em><b>End</b></em>' attribute feature.
@@ -1936,6 +1897,16 @@ public interface TextualScenarioPackage extends EPackage
     EAttribute REFERENCE__NAME = eINSTANCE.getReference_Name();
 
     /**
+     * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.CombinedFragmentImpl <em>Combined Fragment</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.CombinedFragmentImpl
+     * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getCombinedFragment()
+     * @generated
+     */
+    EClass COMBINED_FRAGMENT = eINSTANCE.getCombinedFragment();
+
+    /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.AltImpl <em>Alt</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2030,28 +2001,12 @@ public interface TextualScenarioPackage extends EPackage
     EAttribute BLOCK__BEGIN = eINSTANCE.getBlock_Begin();
 
     /**
-     * The meta object literal for the '<em><b>Messages</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Block Elements</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference BLOCK__MESSAGES = eINSTANCE.getBlock_Messages();
-
-    /**
-     * The meta object literal for the '<em><b>References</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference BLOCK__REFERENCES = eINSTANCE.getBlock_References();
-
-    /**
-     * The meta object literal for the '<em><b>Conditions</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference BLOCK__CONDITIONS = eINSTANCE.getBlock_Conditions();
+    EReference BLOCK__BLOCK_ELEMENTS = eINSTANCE.getBlock_BlockElements();
 
     /**
      * The meta object literal for the '<em><b>End</b></em>' attribute feature.

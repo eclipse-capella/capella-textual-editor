@@ -29,9 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getBegin <em>Begin</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getMessages <em>Messages</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getReferences <em>References</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getConditions <em>Conditions</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getBlockElements <em>Block Elements</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Block#getEnd <em>End</em>}</li>
  * </ul>
  *
@@ -64,40 +62,16 @@ public interface Block extends EObject
   void setBegin(String value);
 
   /**
-   * Returns the value of the '<em><b>Messages</b></em>' containment reference list.
-   * The list contents are of type {@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Message}.
+   * Returns the value of the '<em><b>Block Elements</b></em>' containment reference list.
+   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Messages</em>' containment reference list.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getBlock_Messages()
+   * @return the value of the '<em>Block Elements</em>' containment reference list.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getBlock_BlockElements()
    * @model containment="true"
    * @generated
    */
-  EList<Message> getMessages();
-
-  /**
-   * Returns the value of the '<em><b>References</b></em>' containment reference list.
-   * The list contents are of type {@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>References</em>' containment reference list.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getBlock_References()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Reference> getReferences();
-
-  /**
-   * Returns the value of the '<em><b>Conditions</b></em>' containment reference list.
-   * The list contents are of type {@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Conditions</em>' containment reference list.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getBlock_Conditions()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Alt> getConditions();
+  EList<EObject> getBlockElements();
 
   /**
    * Returns the value of the '<em><b>End</b></em>' attribute.
