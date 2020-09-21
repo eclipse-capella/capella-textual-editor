@@ -54,6 +54,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScen
 import org.polarsys.capella.scenario.editor.dsl.ui.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 import org.polarsys.capella.scenario.editor.helper.DslConstants;
+import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 public class DiagramToXtextCommands {
   /**
@@ -83,7 +84,7 @@ public class DiagramToXtextCommands {
         content.add(domainModel);
 
         String serialized = ((XtextResource) domainModel.eResource()).getSerializer().serialize(domainModel);
-        EmbeddedEditorInstance.getEmbeddedEditor().getDocument().set(serialized);
+        EmbeddedEditorInstanceHelper.updateModel(serialized);
       }
     }
   }
@@ -455,7 +456,7 @@ public class DiagramToXtextCommands {
     if (!content.isEmpty() && content.get(0) instanceof Model) {
       domainModel = (Model) resource.getContents().get(0);
     } else {
-      EmbeddedEditorInstance.getEmbeddedEditor().getDocument().set("scenario {}");
+      EmbeddedEditorInstanceHelper.updateModel("scenario {}");
       EList<EObject> content1 = resource.getContents();
       if (!content1.isEmpty() && content1.get(0) instanceof Model) {
         domainModel = (Model) resource.getContents().get(0);

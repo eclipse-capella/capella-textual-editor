@@ -135,7 +135,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 		var sequenceMessage = model as SequenceMessage;
 		
 		for (String el : messagesDefinedBefore(model as SequenceMessage)) {
-			(context.rootModel as Model).messagesOrReferences
+			(context.rootModel as Model).elements
 			if (!messageAlreadyInserted(context.rootModel as Model, sequenceMessage.source, sequenceMessage.target,
 				el)) {
 				acceptor.accept(createCompletionProposal("\"" + el + "\"", "\"" + el + "\"", null, context))
@@ -147,7 +147,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 	 * check if a message is already used in the text
 	 */
 	def messageAlreadyInserted(Model model, String source, String target, String name) {
-		for(element : model.messagesOrReferences) {
+		for(element : model.elements) {
 			if(element instanceof SequenceMessage) {
 				var message = element as SequenceMessage
 				if(message.name == name && message.source == source && message.target == target)

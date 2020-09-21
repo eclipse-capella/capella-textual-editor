@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2016, 2019 THALES GLOBAL SERVICES.
+  Copyright (c) 2020 THALES GLOBAL SERVICES.
   All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Public License v1.0
+  are made available under the terms of the Eclipse Public License v2.0
   which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/epl-v10.html
+  http://www.eclipse.org/legal/epl-2.0
 
   Contributors:
        Thales - initial API and implementation
@@ -37,7 +37,7 @@
 					<application>${capella-application-id}</application>
 					<useUIHarness>true</useUIHarness>
 					<useUIThread>true</useUIThread>
-					<testClass>org.polarsys.capella.scenario.editor.ju.testsuites.ScenarioEditorTestSuite</testClass>
+					<testClass>org.polarsys.capella.scenario.editor.ju.ScenarioEditorTestSuite</testClass>
 					<dependencies>
 						<!-- see https://bugs.eclipse.org/bugs/show_bug.cgi?id=462862 -->
 						<dependency>
