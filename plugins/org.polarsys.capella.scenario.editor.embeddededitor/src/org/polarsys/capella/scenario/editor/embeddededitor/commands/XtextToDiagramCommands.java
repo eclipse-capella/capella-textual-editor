@@ -253,9 +253,9 @@ public class XtextToDiagramCommands {
         
         // fix this
         // Reorder scenario, this means reordering the interaction fragments and sequence messages lists
-        // reorderCapellaScenario(scenario, elements);
+        reorderCapellaScenario(scenario, elements);
         // refresh visual editor
-        //syncGraphicalOrdering();
+        syncGraphicalOrdering();
       }
 
       /**
@@ -578,9 +578,9 @@ public class XtextToDiagramCommands {
       
       if (oppositeSequenceMessage != null) {
         // This message has return branch, so instead of execution end we must add the sending and receiving end of its reply message
-        fragments.add(oppositeSequenceMessage.getSendingEnd());
-        fragments.add(oppositeSequenceMessage.getReceivingEnd());
-        sequenceMessages.add(oppositeSequenceMessage);
+        fragments.add(sequenceMessage.getSendingEnd());
+        fragments.add(sequenceMessage.getReceivingEnd());
+        sequenceMessages.add(sequenceMessage);
       } else if (executionEnd != null) {
         fragments.add(executionEnd);
       }
