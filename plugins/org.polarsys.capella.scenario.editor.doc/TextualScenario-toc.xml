@@ -11,13 +11,13 @@
 	   Thales - initial API and implementation
 -->
 
-<toc label="Textual Scenario Editor">
-    <topic href="html/TextualScenario/Introduction.html" label="Introduction"></topic>
+<toc label="Textual Editor">
+    <topic href="html/TextualEditor/Introduction.html" label="Introduction"></topic>
 
-    <topic href="html/TextualScenario/Installation and Uninstall.html" label="Installation and Uninstall">
+    <topic href="html/TextualEditor/Installation and Uninstall.html" label="Installation and Uninstall">
     </topic>
 
-    <link toc="html/TextualScenario/Functionalities-toc.xml"/>
+    <link toc="html/TextualEditor/Functionalities-toc.xml"/>
     
     
     
