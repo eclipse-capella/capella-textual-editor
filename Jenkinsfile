@@ -49,7 +49,7 @@ pipeline {
 					
 					deployer.addonNightlyDropins("${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/*-dropins-*.zip", deploymentDirName)
 					deployer.addonNightlyUpdateSite("${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/*-updateSite-*.zip", deploymentDirName)					
-					currentBuild.description = "${deploymentDirName} - <a href=\"https://download.eclipse.org/capella/addons/textualscenario/dropins/nightly/${deploymentDirName}\">drop-in</a> - <a href=\"https://download.eclipse.org/capella/addons/textualscenario/updates/nightly/${deploymentDirName}\">update-site</a>"
+					currentBuild.description = "${deploymentDirName} - <a href=\"https://download.eclipse.org/capella/addons/textualeditor/dropins/nightly/${deploymentDirName}\">drop-in</a> - <a href=\"https://download.eclipse.org/capella/addons/textualeditor/updates/nightly/${deploymentDirName}\">update-site</a>"
 	       		
 	       		}         
 	     	}
