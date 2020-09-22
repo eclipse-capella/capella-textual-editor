@@ -47,16 +47,18 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cElementsMessageParserRuleCall_3_0_0 = (RuleCall)cElementsAlternatives_3_0.eContents().get(0);
 		private final RuleCall cElementsReferenceParserRuleCall_3_0_1 = (RuleCall)cElementsAlternatives_3_0.eContents().get(1);
 		private final RuleCall cElementsCombinedFragmentParserRuleCall_3_0_2 = (RuleCall)cElementsAlternatives_3_0.eContents().get(2);
+		private final RuleCall cElementsStateFragmentParserRuleCall_3_0_3 = (RuleCall)cElementsAlternatives_3_0.eContents().get(3);
 		private final Assignment cEndAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final Keyword cEndRightCurlyBracketKeyword_4_0 = (Keyword)cEndAssignment_4.eContents().get(0);
 		
 		//Model:
 		//	'scenario' begin='{' participants+=Participant*
-		//	elements+=(Message | Reference | CombinedFragment)*
+		//	elements+=(Message | Reference | CombinedFragment | StateFragment)*
 		//	end='}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'scenario' begin='{' participants+=Participant* elements+=(Message | Reference | CombinedFragment)* end='}'
+		//'scenario' begin='{' participants+=Participant* elements+=(Message | Reference | CombinedFragment | StateFragment)*
+		//end='}'
 		public Group getGroup() { return cGroup; }
 		
 		//'scenario'
@@ -74,10 +76,10 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//Participant
 		public RuleCall getParticipantsParticipantParserRuleCall_2_0() { return cParticipantsParticipantParserRuleCall_2_0; }
 		
-		//elements+=(Message | Reference | CombinedFragment)*
+		//elements+=(Message | Reference | CombinedFragment | StateFragment)*
 		public Assignment getElementsAssignment_3() { return cElementsAssignment_3; }
 		
-		//(Message | Reference | CombinedFragment)
+		//(Message | Reference | CombinedFragment | StateFragment)
 		public Alternatives getElementsAlternatives_3_0() { return cElementsAlternatives_3_0; }
 		
 		//Message
@@ -88,6 +90,9 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//CombinedFragment
 		public RuleCall getElementsCombinedFragmentParserRuleCall_3_0_2() { return cElementsCombinedFragmentParserRuleCall_3_0_2; }
+		
+		//StateFragment
+		public RuleCall getElementsStateFragmentParserRuleCall_3_0_3() { return cElementsStateFragmentParserRuleCall_3_0_3; }
 		
 		//end='}'
 		public Assignment getEndAssignment_4() { return cEndAssignment_4; }
@@ -631,17 +636,18 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cKeywordAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cKeywordRefKeyword_0_0 = (Keyword)cKeywordAssignment_0.eContents().get(0);
-		private final Keyword cOverKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cOverAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cOverOverKeyword_1_0 = (Keyword)cOverAssignment_1.eContents().get(0);
 		private final Assignment cTimelinesAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cTimelinesSTRINGTerminalRuleCall_2_0 = (RuleCall)cTimelinesAssignment_2.eContents().get(0);
 		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cNameSTRINGTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
 		
 		//Reference:
-		//	keyword='ref' 'over' timelines+=STRING+ name=STRING;
+		//	keyword='ref' over='over' timelines+=STRING+ name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//keyword='ref' 'over' timelines+=STRING+ name=STRING
+		//keyword='ref' over='over' timelines+=STRING+ name=STRING
 		public Group getGroup() { return cGroup; }
 		
 		//keyword='ref'
@@ -650,8 +656,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//'ref'
 		public Keyword getKeywordRefKeyword_0_0() { return cKeywordRefKeyword_0_0; }
 		
+		//over='over'
+		public Assignment getOverAssignment_1() { return cOverAssignment_1; }
+		
 		//'over'
-		public Keyword getOverKeyword_1() { return cOverKeyword_1; }
+		public Keyword getOverOverKeyword_1_0() { return cOverOverKeyword_1_0; }
 		
 		//timelines+=STRING+
 		public Assignment getTimelinesAssignment_2() { return cTimelinesAssignment_2; }
@@ -683,7 +692,8 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cKeywordAltKeyword_0_0 = (Keyword)cKeywordAssignment_0.eContents().get(0);
 		private final Assignment cConditionAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cConditionSTRINGTerminalRuleCall_1_0 = (RuleCall)cConditionAssignment_1.eContents().get(0);
-		private final Keyword cOverKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cOverAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cOverOverKeyword_2_0 = (Keyword)cOverAssignment_2.eContents().get(0);
 		private final Assignment cTimelinesAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cTimelinesSTRINGTerminalRuleCall_3_0 = (RuleCall)cTimelinesAssignment_3.eContents().get(0);
 		private final Assignment cBlockAssignment_4 = (Assignment)cGroup.eContents().get(4);
@@ -692,10 +702,10 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cElseBlocksElseBlockParserRuleCall_5_0 = (RuleCall)cElseBlocksAssignment_5.eContents().get(0);
 		
 		//Alt:
-		//	keyword='alt' condition=STRING 'over' timelines+=STRING+ block=Block elseBlocks+=ElseBlock*;
+		//	keyword='alt' condition=STRING over='over' timelines+=STRING+ block=Block elseBlocks+=ElseBlock*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//keyword='alt' condition=STRING 'over' timelines+=STRING+ block=Block elseBlocks+=ElseBlock*
+		//keyword='alt' condition=STRING over='over' timelines+=STRING+ block=Block elseBlocks+=ElseBlock*
 		public Group getGroup() { return cGroup; }
 		
 		//keyword='alt'
@@ -710,8 +720,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getConditionSTRINGTerminalRuleCall_1_0() { return cConditionSTRINGTerminalRuleCall_1_0; }
 		
+		//over='over'
+		public Assignment getOverAssignment_2() { return cOverAssignment_2; }
+		
 		//'over'
-		public Keyword getOverKeyword_2() { return cOverKeyword_2; }
+		public Keyword getOverOverKeyword_2_0() { return cOverOverKeyword_2_0; }
 		
 		//timelines+=STRING+
 		public Assignment getTimelinesAssignment_3() { return cTimelinesAssignment_3; }
@@ -809,6 +822,61 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//"}"
 		public Keyword getEndRightCurlyBracketKeyword_2_0() { return cEndRightCurlyBracketKeyword_2_0; }
 	}
+	public class StateFragmentElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.StateFragment");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cOnAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final Keyword cOnOnKeyword_0_0 = (Keyword)cOnAssignment_0.eContents().get(0);
+		private final Assignment cTimelineAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cTimelineSTRINGTerminalRuleCall_1_0 = (RuleCall)cTimelineAssignment_1.eContents().get(0);
+		private final Assignment cKeywordAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Alternatives cKeywordAlternatives_2_0 = (Alternatives)cKeywordAssignment_2.eContents().get(0);
+		private final Keyword cKeywordStateKeyword_2_0_0 = (Keyword)cKeywordAlternatives_2_0.eContents().get(0);
+		private final Keyword cKeywordModeKeyword_2_0_1 = (Keyword)cKeywordAlternatives_2_0.eContents().get(1);
+		private final Keyword cKeywordFunctionKeyword_2_0_2 = (Keyword)cKeywordAlternatives_2_0.eContents().get(2);
+		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cNameSTRINGTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
+		
+		//StateFragment:
+		//	on='on' timeline=STRING keyword=('state' | 'mode' | 'function') name=STRING;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//on='on' timeline=STRING keyword=('state' | 'mode' | 'function') name=STRING
+		public Group getGroup() { return cGroup; }
+		
+		//on='on'
+		public Assignment getOnAssignment_0() { return cOnAssignment_0; }
+		
+		//'on'
+		public Keyword getOnOnKeyword_0_0() { return cOnOnKeyword_0_0; }
+		
+		//timeline=STRING
+		public Assignment getTimelineAssignment_1() { return cTimelineAssignment_1; }
+		
+		//STRING
+		public RuleCall getTimelineSTRINGTerminalRuleCall_1_0() { return cTimelineSTRINGTerminalRuleCall_1_0; }
+		
+		//keyword=('state' | 'mode' | 'function')
+		public Assignment getKeywordAssignment_2() { return cKeywordAssignment_2; }
+		
+		//('state' | 'mode' | 'function')
+		public Alternatives getKeywordAlternatives_2_0() { return cKeywordAlternatives_2_0; }
+		
+		//'state'
+		public Keyword getKeywordStateKeyword_2_0_0() { return cKeywordStateKeyword_2_0_0; }
+		
+		//'mode'
+		public Keyword getKeywordModeKeyword_2_0_1() { return cKeywordModeKeyword_2_0_1; }
+		
+		//'function'
+		public Keyword getKeywordFunctionKeyword_2_0_2() { return cKeywordFunctionKeyword_2_0_2; }
+		
+		//name=STRING
+		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
+		
+		//STRING
+		public RuleCall getNameSTRINGTerminalRuleCall_3_0() { return cNameSTRINGTerminalRuleCall_3_0; }
+	}
 	
 	
 	private final ModelElements pModel;
@@ -834,6 +902,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	private final AltElements pAlt;
 	private final ElseBlockElements pElseBlock;
 	private final BlockElements pBlock;
+	private final StateFragmentElements pStateFragment;
 	
 	private final Grammar grammar;
 	
@@ -867,6 +936,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAlt = new AltElements();
 		this.pElseBlock = new ElseBlockElements();
 		this.pBlock = new BlockElements();
+		this.pStateFragment = new StateFragmentElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -898,7 +968,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Model:
 	//	'scenario' begin='{' participants+=Participant*
-	//	elements+=(Message | Reference | CombinedFragment)*
+	//	elements+=(Message | Reference | CombinedFragment | StateFragment)*
 	//	end='}';
 	public ModelElements getModelAccess() {
 		return pModel;
@@ -1079,7 +1149,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Reference:
-	//	keyword='ref' 'over' timelines+=STRING+ name=STRING;
+	//	keyword='ref' over='over' timelines+=STRING+ name=STRING;
 	public ReferenceElements getReferenceAccess() {
 		return pReference;
 	}
@@ -1099,7 +1169,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Alt:
-	//	keyword='alt' condition=STRING 'over' timelines+=STRING+ block=Block elseBlocks+=ElseBlock*;
+	//	keyword='alt' condition=STRING over='over' timelines+=STRING+ block=Block elseBlocks+=ElseBlock*;
 	public AltElements getAltAccess() {
 		return pAlt;
 	}
@@ -1126,6 +1196,16 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getBlockRule() {
 		return getBlockAccess().getRule();
+	}
+	
+	//StateFragment:
+	//	on='on' timeline=STRING keyword=('state' | 'mode' | 'function') name=STRING;
+	public StateFragmentElements getStateFragmentAccess() {
+		return pStateFragment;
+	}
+	
+	public ParserRule getStateFragmentRule() {
+		return getStateFragmentAccess().getRule();
 	}
 	
 	//terminal ID:

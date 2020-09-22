@@ -48,6 +48,7 @@
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//Reference">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/keyword"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/over"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/timelines"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/name"/>
     </genClasses>
@@ -55,6 +56,7 @@
     <genClasses ecoreClass="TextualScenario.ecore#//Alt">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Alt/keyword"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Alt/condition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Alt/over"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Alt/timelines"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Alt/block"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Alt/elseBlocks"/>
@@ -67,6 +69,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Block/begin"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TextualScenario.ecore#//Block/blockElements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Block/end"/>
+    </genClasses>
+    <genClasses ecoreClass="TextualScenario.ecore#//StateFragment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//StateFragment/on"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//StateFragment/timeline"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//StateFragment/keyword"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//StateFragment/name"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

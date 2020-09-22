@@ -100,6 +100,7 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
       case TextualScenarioPackage.ALT: return createAlt();
       case TextualScenarioPackage.ELSE_BLOCK: return createElseBlock();
       case TextualScenarioPackage.BLOCK: return createBlock();
+      case TextualScenarioPackage.STATE_FRAGMENT: return createStateFragment();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -379,6 +380,18 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
   {
     BlockImpl block = new BlockImpl();
     return block;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public StateFragment createStateFragment()
+  {
+    StateFragmentImpl stateFragment = new StateFragmentImpl();
+    return stateFragment;
   }
 
   /**

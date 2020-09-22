@@ -16,7 +16,7 @@ generate textualScenario "http://www.polarsys.org/capella/scenario/editor/dsl/Te
 
 Model:
        'scenario' begin = '{' participants+=Participant* 
-        (elements+=(Message|Reference|CombinedFragment))* 
+        (elements+=(Message | Reference | CombinedFragment | StateFragment))* 
         end = '}';
 
 Participant: 
@@ -88,7 +88,7 @@ ParticipantDeactivation:
 ;
 
 Reference: 
-	keyword = 'ref' 'over' (timelines+=STRING)+ name=STRING
+	keyword = 'ref' over='over' (timelines+=STRING)+ name=STRING
 ;
 
 CombinedFragment:
@@ -96,7 +96,7 @@ CombinedFragment:
 ;
 
 Alt: 
-	keyword = 'alt' condition=STRING 'over' (timelines+=STRING)+ block=Block (elseBlocks+=ElseBlock)*
+	keyword = 'alt' condition=STRING over='over' (timelines+=STRING)+ block=Block (elseBlocks+=ElseBlock)*
 ;
 
 ElseBlock:
@@ -105,4 +105,9 @@ ElseBlock:
 
 Block:
 	begin="{" (blockElements+=(Message|Reference|CombinedFragment))* end="}"
+;
+
+
+StateFragment:
+	on='on' timeline=STRING keyword=('state' | 'mode' | 'function') name=STRING
 ;

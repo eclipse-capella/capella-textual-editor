@@ -45,6 +45,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Role;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioFactory;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
 
@@ -216,6 +217,13 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   private EClass blockEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass stateFragmentEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -660,7 +668,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EAttribute getReference_Timelines()
+  public EAttribute getReference_Over()
   {
     return (EAttribute)referenceEClass.getEStructuralFeatures().get(1);
   }
@@ -671,9 +679,20 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EAttribute getReference_Name()
+  public EAttribute getReference_Timelines()
   {
     return (EAttribute)referenceEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getReference_Name()
+  {
+    return (EAttribute)referenceEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -726,7 +745,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EAttribute getAlt_Timelines()
+  public EAttribute getAlt_Over()
   {
     return (EAttribute)altEClass.getEStructuralFeatures().get(2);
   }
@@ -737,9 +756,20 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
+  public EAttribute getAlt_Timelines()
+  {
+    return (EAttribute)altEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EReference getAlt_Block()
   {
-    return (EReference)altEClass.getEStructuralFeatures().get(3);
+    return (EReference)altEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -750,7 +780,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
   @Override
   public EReference getAlt_ElseBlocks()
   {
-    return (EReference)altEClass.getEStructuralFeatures().get(4);
+    return (EReference)altEClass.getEStructuralFeatures().get(5);
   }
 
   /**
@@ -836,6 +866,61 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
+  public EClass getStateFragment()
+  {
+    return stateFragmentEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getStateFragment_On()
+  {
+    return (EAttribute)stateFragmentEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getStateFragment_Timeline()
+  {
+    return (EAttribute)stateFragmentEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getStateFragment_Keyword()
+  {
+    return (EAttribute)stateFragmentEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getStateFragment_Name()
+  {
+    return (EAttribute)stateFragmentEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public TextualScenarioFactory getTextualScenarioFactory()
   {
     return (TextualScenarioFactory)getEFactoryInstance();
@@ -913,6 +998,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     referenceEClass = createEClass(REFERENCE);
     createEAttribute(referenceEClass, REFERENCE__KEYWORD);
+    createEAttribute(referenceEClass, REFERENCE__OVER);
     createEAttribute(referenceEClass, REFERENCE__TIMELINES);
     createEAttribute(referenceEClass, REFERENCE__NAME);
 
@@ -921,6 +1007,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     altEClass = createEClass(ALT);
     createEAttribute(altEClass, ALT__KEYWORD);
     createEAttribute(altEClass, ALT__CONDITION);
+    createEAttribute(altEClass, ALT__OVER);
     createEAttribute(altEClass, ALT__TIMELINES);
     createEReference(altEClass, ALT__BLOCK);
     createEReference(altEClass, ALT__ELSE_BLOCKS);
@@ -933,6 +1020,12 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     createEAttribute(blockEClass, BLOCK__BEGIN);
     createEReference(blockEClass, BLOCK__BLOCK_ELEMENTS);
     createEAttribute(blockEClass, BLOCK__END);
+
+    stateFragmentEClass = createEClass(STATE_FRAGMENT);
+    createEAttribute(stateFragmentEClass, STATE_FRAGMENT__ON);
+    createEAttribute(stateFragmentEClass, STATE_FRAGMENT__TIMELINE);
+    createEAttribute(stateFragmentEClass, STATE_FRAGMENT__KEYWORD);
+    createEAttribute(stateFragmentEClass, STATE_FRAGMENT__NAME);
   }
 
   /**
@@ -1034,6 +1127,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     initEClass(referenceEClass, Reference.class, "Reference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getReference_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getReference_Over(), ecorePackage.getEString(), "over", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getReference_Timelines(), ecorePackage.getEString(), "timelines", null, 0, -1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getReference_Name(), ecorePackage.getEString(), "name", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1042,6 +1136,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     initEClass(altEClass, Alt.class, "Alt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAlt_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, Alt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getAlt_Condition(), ecorePackage.getEString(), "condition", null, 0, 1, Alt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getAlt_Over(), ecorePackage.getEString(), "over", null, 0, 1, Alt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getAlt_Timelines(), ecorePackage.getEString(), "timelines", null, 0, -1, Alt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAlt_Block(), this.getBlock(), null, "block", null, 0, 1, Alt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAlt_ElseBlocks(), this.getElseBlock(), null, "elseBlocks", null, 0, -1, Alt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1054,6 +1149,12 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     initEAttribute(getBlock_Begin(), ecorePackage.getEString(), "begin", null, 0, 1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBlock_BlockElements(), ecorePackage.getEObject(), null, "blockElements", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getBlock_End(), ecorePackage.getEString(), "end", null, 0, 1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(stateFragmentEClass, StateFragment.class, "StateFragment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getStateFragment_On(), ecorePackage.getEString(), "on", null, 0, 1, StateFragment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getStateFragment_Timeline(), ecorePackage.getEString(), "timeline", null, 0, 1, StateFragment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getStateFragment_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, StateFragment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getStateFragment_Name(), ecorePackage.getEString(), "name", null, 0, 1, StateFragment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

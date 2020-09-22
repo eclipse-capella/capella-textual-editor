@@ -46,6 +46,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.AltImpl#getKeyword <em>Keyword</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.AltImpl#getCondition <em>Condition</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.AltImpl#getOver <em>Over</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.AltImpl#getTimelines <em>Timelines</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.AltImpl#getBlock <em>Block</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.AltImpl#getElseBlocks <em>Else Blocks</em>}</li>
@@ -94,6 +95,26 @@ public class AltImpl extends CombinedFragmentImpl implements Alt
    * @ordered
    */
   protected String condition = CONDITION_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getOver() <em>Over</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getOver()
+   * @generated
+   * @ordered
+   */
+  protected static final String OVER_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getOver() <em>Over</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getOver()
+   * @generated
+   * @ordered
+   */
+  protected String over = OVER_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getTimelines() <em>Timelines</em>}' attribute list.
@@ -194,6 +215,31 @@ public class AltImpl extends CombinedFragmentImpl implements Alt
     condition = newCondition;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, TextualScenarioPackage.ALT__CONDITION, oldCondition, condition));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String getOver()
+  {
+    return over;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setOver(String newOver)
+  {
+    String oldOver = over;
+    over = newOver;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, TextualScenarioPackage.ALT__OVER, oldOver, over));
   }
 
   /**
@@ -308,6 +354,8 @@ public class AltImpl extends CombinedFragmentImpl implements Alt
         return getKeyword();
       case TextualScenarioPackage.ALT__CONDITION:
         return getCondition();
+      case TextualScenarioPackage.ALT__OVER:
+        return getOver();
       case TextualScenarioPackage.ALT__TIMELINES:
         return getTimelines();
       case TextualScenarioPackage.ALT__BLOCK:
@@ -334,6 +382,9 @@ public class AltImpl extends CombinedFragmentImpl implements Alt
         return;
       case TextualScenarioPackage.ALT__CONDITION:
         setCondition((String)newValue);
+        return;
+      case TextualScenarioPackage.ALT__OVER:
+        setOver((String)newValue);
         return;
       case TextualScenarioPackage.ALT__TIMELINES:
         getTimelines().clear();
@@ -366,6 +417,9 @@ public class AltImpl extends CombinedFragmentImpl implements Alt
       case TextualScenarioPackage.ALT__CONDITION:
         setCondition(CONDITION_EDEFAULT);
         return;
+      case TextualScenarioPackage.ALT__OVER:
+        setOver(OVER_EDEFAULT);
+        return;
       case TextualScenarioPackage.ALT__TIMELINES:
         getTimelines().clear();
         return;
@@ -393,6 +447,8 @@ public class AltImpl extends CombinedFragmentImpl implements Alt
         return KEYWORD_EDEFAULT == null ? keyword != null : !KEYWORD_EDEFAULT.equals(keyword);
       case TextualScenarioPackage.ALT__CONDITION:
         return CONDITION_EDEFAULT == null ? condition != null : !CONDITION_EDEFAULT.equals(condition);
+      case TextualScenarioPackage.ALT__OVER:
+        return OVER_EDEFAULT == null ? over != null : !OVER_EDEFAULT.equals(over);
       case TextualScenarioPackage.ALT__TIMELINES:
         return timelines != null && !timelines.isEmpty();
       case TextualScenarioPackage.ALT__BLOCK:
@@ -418,6 +474,8 @@ public class AltImpl extends CombinedFragmentImpl implements Alt
     result.append(keyword);
     result.append(", condition: ");
     result.append(condition);
+    result.append(", over: ");
+    result.append(over);
     result.append(", timelines: ");
     result.append(timelines);
     result.append(')');
