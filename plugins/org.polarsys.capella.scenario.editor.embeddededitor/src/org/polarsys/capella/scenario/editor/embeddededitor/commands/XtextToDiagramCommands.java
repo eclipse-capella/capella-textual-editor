@@ -34,6 +34,7 @@ import org.polarsys.capella.common.menu.dynamic.CreationHelper;
 import org.polarsys.capella.core.data.capellacore.CapellaElement;
 import org.polarsys.capella.core.data.capellacore.CapellacoreFactory;
 import org.polarsys.capella.core.data.capellacore.Constraint;
+import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
 import org.polarsys.capella.core.data.helpers.interaction.services.ExecutionEndExt;
 import org.polarsys.capella.core.data.helpers.interaction.services.SequenceMessageExt;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
@@ -553,7 +554,9 @@ public class XtextToDiagramCommands {
       exchanges = SelectInvokedOperationModelForSharedDataAndEvent.getAvailableExchangeItems(source,
           target, false);
     }
-    exchanges = exchanges.stream().filter(ex -> ((AbstractNamedElement) ex).getName().equals(seqMessage.getName())).collect(Collectors.toList());
+    exchanges = exchanges.stream()
+        .filter(ex -> ((ExchangeItemAllocation) ex).getAllocatedItem().getName().equals(seqMessage.getName()))
+        .collect(Collectors.toList());
     if (!exchanges.isEmpty()) {
       eventRecvOperation.setOperation((AbstractEventOperation) exchanges.get(0));
       eventSentOperation.setOperation((AbstractEventOperation) exchanges.get(0));
