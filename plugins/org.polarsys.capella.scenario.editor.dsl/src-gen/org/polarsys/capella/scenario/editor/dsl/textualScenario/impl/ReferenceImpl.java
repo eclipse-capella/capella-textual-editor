@@ -40,6 +40,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ReferenceImpl#getKeyword <em>Keyword</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ReferenceImpl#getOver <em>Over</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ReferenceImpl#getTimelines <em>Timelines</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ReferenceImpl#getName <em>Name</em>}</li>
  * </ul>
@@ -67,6 +68,26 @@ public class ReferenceImpl extends MinimalEObjectImpl.Container implements Refer
    * @ordered
    */
   protected String keyword = KEYWORD_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getOver() <em>Over</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getOver()
+   * @generated
+   * @ordered
+   */
+  protected static final String OVER_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getOver() <em>Over</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getOver()
+   * @generated
+   * @ordered
+   */
+  protected String over = OVER_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getTimelines() <em>Timelines</em>}' attribute list.
@@ -150,6 +171,31 @@ public class ReferenceImpl extends MinimalEObjectImpl.Container implements Refer
    * @generated
    */
   @Override
+  public String getOver()
+  {
+    return over;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setOver(String newOver)
+  {
+    String oldOver = over;
+    over = newOver;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, TextualScenarioPackage.REFERENCE__OVER, oldOver, over));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EList<String> getTimelines()
   {
     if (timelines == null)
@@ -196,6 +242,8 @@ public class ReferenceImpl extends MinimalEObjectImpl.Container implements Refer
     {
       case TextualScenarioPackage.REFERENCE__KEYWORD:
         return getKeyword();
+      case TextualScenarioPackage.REFERENCE__OVER:
+        return getOver();
       case TextualScenarioPackage.REFERENCE__TIMELINES:
         return getTimelines();
       case TextualScenarioPackage.REFERENCE__NAME:
@@ -217,6 +265,9 @@ public class ReferenceImpl extends MinimalEObjectImpl.Container implements Refer
     {
       case TextualScenarioPackage.REFERENCE__KEYWORD:
         setKeyword((String)newValue);
+        return;
+      case TextualScenarioPackage.REFERENCE__OVER:
+        setOver((String)newValue);
         return;
       case TextualScenarioPackage.REFERENCE__TIMELINES:
         getTimelines().clear();
@@ -242,6 +293,9 @@ public class ReferenceImpl extends MinimalEObjectImpl.Container implements Refer
       case TextualScenarioPackage.REFERENCE__KEYWORD:
         setKeyword(KEYWORD_EDEFAULT);
         return;
+      case TextualScenarioPackage.REFERENCE__OVER:
+        setOver(OVER_EDEFAULT);
+        return;
       case TextualScenarioPackage.REFERENCE__TIMELINES:
         getTimelines().clear();
         return;
@@ -264,6 +318,8 @@ public class ReferenceImpl extends MinimalEObjectImpl.Container implements Refer
     {
       case TextualScenarioPackage.REFERENCE__KEYWORD:
         return KEYWORD_EDEFAULT == null ? keyword != null : !KEYWORD_EDEFAULT.equals(keyword);
+      case TextualScenarioPackage.REFERENCE__OVER:
+        return OVER_EDEFAULT == null ? over != null : !OVER_EDEFAULT.equals(over);
       case TextualScenarioPackage.REFERENCE__TIMELINES:
         return timelines != null && !timelines.isEmpty();
       case TextualScenarioPackage.REFERENCE__NAME:
@@ -285,6 +341,8 @@ public class ReferenceImpl extends MinimalEObjectImpl.Container implements Refer
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (keyword: ");
     result.append(keyword);
+    result.append(", over: ");
+    result.append(over);
     result.append(", timelines: ");
     result.append(timelines);
     result.append(", name: ");

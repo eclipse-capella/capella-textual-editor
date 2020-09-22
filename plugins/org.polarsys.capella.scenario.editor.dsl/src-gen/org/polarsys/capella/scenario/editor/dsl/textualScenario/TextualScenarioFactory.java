@@ -243,6 +243,15 @@ public interface TextualScenarioFactory extends EFactory
   Block createBlock();
 
   /**
+   * Returns a new object of class '<em>State Fragment</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>State Fragment</em>'.
+   * @generated
+   */
+  StateFragment createStateFragment();
+
+  /**
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

@@ -143,36 +143,16 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeSequenceMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    SequenceMessage sequenceMessage = ((SequenceMessage) model);
-    List<String> _messagesDefinedBefore = this.messagesDefinedBefore(((SequenceMessage) model));
-    for (final String el : _messagesDefinedBefore) {
-      {
-        EObject _rootModel = context.getRootModel();
-        ((Model) _rootModel).getMessagesOrReferences();
-        EObject _rootModel_1 = context.getRootModel();
-        boolean _messageAlreadyInserted = this.messageAlreadyInserted(((Model) _rootModel_1), sequenceMessage.getSource(), sequenceMessage.getTarget(), el);
-        boolean _not = (!_messageAlreadyInserted);
-        if (_not) {
-          acceptor.accept(this.createCompletionProposal((("\"" + el) + "\""), (("\"" + el) + "\""), null, context));
-        }
-      }
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field messagesOrReferences is undefined for the type Model");
   }
   
   /**
    * check if a message is already used in the text
    */
   public boolean messageAlreadyInserted(final Model model, final String source, final String target, final String name) {
-    EList<EObject> _messagesOrReferences = model.getMessagesOrReferences();
-    for (final EObject element : _messagesOrReferences) {
-      if ((element instanceof SequenceMessage)) {
-        SequenceMessage message = ((SequenceMessage) element);
-        if (((Objects.equal(message.getName(), name) && Objects.equal(message.getSource(), source)) && Objects.equal(message.getTarget(), target))) {
-          return true;
-        }
-      }
-    }
-    return false;
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field messagesOrReferences is undefined for the type Model");
   }
   
   public List<String> messagesDefinedBefore(final SequenceMessage message) {

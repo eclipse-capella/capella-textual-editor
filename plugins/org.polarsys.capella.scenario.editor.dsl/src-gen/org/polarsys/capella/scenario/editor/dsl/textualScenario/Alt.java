@@ -28,6 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getKeyword <em>Keyword</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getCondition <em>Condition</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getOver <em>Over</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getTimelines <em>Timelines</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getBlock <em>Block</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getElseBlocks <em>Else Blocks</em>}</li>
@@ -82,6 +83,28 @@ public interface Alt extends CombinedFragment
    * @generated
    */
   void setCondition(String value);
+
+  /**
+   * Returns the value of the '<em><b>Over</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Over</em>' attribute.
+   * @see #setOver(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getAlt_Over()
+   * @model
+   * @generated
+   */
+  String getOver();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getOver <em>Over</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Over</em>' attribute.
+   * @see #getOver()
+   * @generated
+   */
+  void setOver(String value);
 
   /**
    * Returns the value of the '<em><b>Timelines</b></em>' attribute list.

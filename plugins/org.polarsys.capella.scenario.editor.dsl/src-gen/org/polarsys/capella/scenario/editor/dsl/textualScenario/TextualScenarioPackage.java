@@ -827,13 +827,22 @@ public interface TextualScenarioPackage extends EPackage
   int REFERENCE__KEYWORD = 0;
 
   /**
+   * The feature id for the '<em><b>Over</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REFERENCE__OVER = 1;
+
+  /**
    * The feature id for the '<em><b>Timelines</b></em>' attribute list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int REFERENCE__TIMELINES = 1;
+  int REFERENCE__TIMELINES = 2;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -842,7 +851,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int REFERENCE__NAME = 2;
+  int REFERENCE__NAME = 3;
 
   /**
    * The number of structural features of the '<em>Reference</em>' class.
@@ -851,7 +860,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int REFERENCE_FEATURE_COUNT = 3;
+  int REFERENCE_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.CombinedFragmentImpl <em>Combined Fragment</em>}' class.
@@ -901,13 +910,22 @@ public interface TextualScenarioPackage extends EPackage
   int ALT__CONDITION = COMBINED_FRAGMENT_FEATURE_COUNT + 1;
 
   /**
+   * The feature id for the '<em><b>Over</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ALT__OVER = COMBINED_FRAGMENT_FEATURE_COUNT + 2;
+
+  /**
    * The feature id for the '<em><b>Timelines</b></em>' attribute list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ALT__TIMELINES = COMBINED_FRAGMENT_FEATURE_COUNT + 2;
+  int ALT__TIMELINES = COMBINED_FRAGMENT_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Block</b></em>' containment reference.
@@ -916,7 +934,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT__BLOCK = COMBINED_FRAGMENT_FEATURE_COUNT + 3;
+  int ALT__BLOCK = COMBINED_FRAGMENT_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>Else Blocks</b></em>' containment reference list.
@@ -925,7 +943,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT__ELSE_BLOCKS = COMBINED_FRAGMENT_FEATURE_COUNT + 4;
+  int ALT__ELSE_BLOCKS = COMBINED_FRAGMENT_FEATURE_COUNT + 5;
 
   /**
    * The number of structural features of the '<em>Alt</em>' class.
@@ -934,7 +952,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ALT_FEATURE_COUNT = COMBINED_FRAGMENT_FEATURE_COUNT + 5;
+  int ALT_FEATURE_COUNT = COMBINED_FRAGMENT_FEATURE_COUNT + 6;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ElseBlockImpl <em>Else Block</em>}' class.
@@ -1018,6 +1036,61 @@ public interface TextualScenarioPackage extends EPackage
    * @ordered
    */
   int BLOCK_FEATURE_COUNT = 3;
+
+  /**
+   * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.StateFragmentImpl <em>State Fragment</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.StateFragmentImpl
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getStateFragment()
+   * @generated
+   */
+  int STATE_FRAGMENT = 23;
+
+  /**
+   * The feature id for the '<em><b>On</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STATE_FRAGMENT__ON = 0;
+
+  /**
+   * The feature id for the '<em><b>Timeline</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STATE_FRAGMENT__TIMELINE = 1;
+
+  /**
+   * The feature id for the '<em><b>Keyword</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STATE_FRAGMENT__KEYWORD = 2;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STATE_FRAGMENT__NAME = 3;
+
+  /**
+   * The number of structural features of the '<em>State Fragment</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STATE_FRAGMENT_FEATURE_COUNT = 4;
 
 
   /**
@@ -1376,6 +1449,17 @@ public interface TextualScenarioPackage extends EPackage
   EAttribute getReference_Keyword();
 
   /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getOver <em>Over</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Over</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getOver()
+   * @see #getReference()
+   * @generated
+   */
+  EAttribute getReference_Over();
+
+  /**
    * Returns the meta object for the attribute list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getTimelines <em>Timelines</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1438,6 +1522,17 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    */
   EAttribute getAlt_Condition();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getOver <em>Over</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Over</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getOver()
+   * @see #getAlt()
+   * @generated
+   */
+  EAttribute getAlt_Over();
 
   /**
    * Returns the meta object for the attribute list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Alt#getTimelines <em>Timelines</em>}'.
@@ -1546,6 +1641,60 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    */
   EAttribute getBlock_End();
+
+  /**
+   * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment <em>State Fragment</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>State Fragment</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment
+   * @generated
+   */
+  EClass getStateFragment();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment#getOn <em>On</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>On</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment#getOn()
+   * @see #getStateFragment()
+   * @generated
+   */
+  EAttribute getStateFragment_On();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment#getTimeline <em>Timeline</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Timeline</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment#getTimeline()
+   * @see #getStateFragment()
+   * @generated
+   */
+  EAttribute getStateFragment_Timeline();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment#getKeyword <em>Keyword</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Keyword</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment#getKeyword()
+   * @see #getStateFragment()
+   * @generated
+   */
+  EAttribute getStateFragment_Keyword();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment#getName()
+   * @see #getStateFragment()
+   * @generated
+   */
+  EAttribute getStateFragment_Name();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -1881,6 +2030,14 @@ public interface TextualScenarioPackage extends EPackage
     EAttribute REFERENCE__KEYWORD = eINSTANCE.getReference_Keyword();
 
     /**
+     * The meta object literal for the '<em><b>Over</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute REFERENCE__OVER = eINSTANCE.getReference_Over();
+
+    /**
      * The meta object literal for the '<em><b>Timelines</b></em>' attribute list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1931,6 +2088,14 @@ public interface TextualScenarioPackage extends EPackage
      * @generated
      */
     EAttribute ALT__CONDITION = eINSTANCE.getAlt_Condition();
+
+    /**
+     * The meta object literal for the '<em><b>Over</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ALT__OVER = eINSTANCE.getAlt_Over();
 
     /**
      * The meta object literal for the '<em><b>Timelines</b></em>' attribute list feature.
@@ -2015,6 +2180,48 @@ public interface TextualScenarioPackage extends EPackage
      * @generated
      */
     EAttribute BLOCK__END = eINSTANCE.getBlock_End();
+
+    /**
+     * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.StateFragmentImpl <em>State Fragment</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.StateFragmentImpl
+     * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getStateFragment()
+     * @generated
+     */
+    EClass STATE_FRAGMENT = eINSTANCE.getStateFragment();
+
+    /**
+     * The meta object literal for the '<em><b>On</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute STATE_FRAGMENT__ON = eINSTANCE.getStateFragment_On();
+
+    /**
+     * The meta object literal for the '<em><b>Timeline</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute STATE_FRAGMENT__TIMELINE = eINSTANCE.getStateFragment_Timeline();
+
+    /**
+     * The meta object literal for the '<em><b>Keyword</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute STATE_FRAGMENT__KEYWORD = eINSTANCE.getStateFragment_Keyword();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute STATE_FRAGMENT__NAME = eINSTANCE.getStateFragment_Name();
 
   }
 

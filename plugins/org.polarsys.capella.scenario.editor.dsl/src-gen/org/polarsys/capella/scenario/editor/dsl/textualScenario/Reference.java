@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getKeyword <em>Keyword</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getOver <em>Over</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getTimelines <em>Timelines</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getName <em>Name</em>}</li>
  * </ul>
@@ -60,6 +61,28 @@ public interface Reference extends EObject
    * @generated
    */
   void setKeyword(String value);
+
+  /**
+   * Returns the value of the '<em><b>Over</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Over</em>' attribute.
+   * @see #setOver(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getReference_Over()
+   * @model
+   * @generated
+   */
+  String getOver();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getOver <em>Over</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Over</em>' attribute.
+   * @see #getOver()
+   * @generated
+   */
+  void setOver(String value);
 
   /**
    * Returns the value of the '<em><b>Timelines</b></em>' attribute list.
