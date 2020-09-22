@@ -44,6 +44,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeact
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Role;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
 
 @SuppressWarnings("all")
@@ -111,6 +112,9 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 			case TextualScenarioPackage.SEQUENCE_MESSAGE:
 				sequence_SequenceMessage(context, (SequenceMessage) semanticObject); 
 				return; 
+			case TextualScenarioPackage.STATE_FRAGMENT:
+				sequence_StateFragment(context, (StateFragment) semanticObject); 
+				return; 
 			}
 		if (errorAcceptor != null)
 			errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
@@ -168,7 +172,14 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Alt returns Alt
 	 *
 	 * Constraint:
-	 *     (keyword='alt' condition=STRING timelines+=STRING+ block=Block elseBlocks+=ElseBlock*)
+	 *     (
+	 *         keyword='alt' 
+	 *         condition=STRING 
+	 *         over='over' 
+	 *         timelines+=STRING+ 
+	 *         block=Block 
+	 *         elseBlocks+=ElseBlock*
+	 *     )
 	 */
 	protected void sequence_Alt(ISerializationContext context, Alt semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -370,7 +381,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Model returns Model
 	 *
 	 * Constraint:
-	 *     (begin='{' participants+=Participant* (elements+=Message | elements+=Reference | elements+=CombinedFragment)* end='}')
+	 *     (begin='{' participants+=Participant* (elements+=Message | elements+=Reference | elements+=CombinedFragment | elements+=StateFragment)* end='}')
 	 */
 	protected void sequence_Model(ISerializationContext context, Model semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -404,7 +415,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Reference returns Reference
 	 *
 	 * Constraint:
-	 *     (keyword='ref' timelines+=STRING+ name=STRING)
+	 *     (keyword='ref' over='over' timelines+=STRING+ name=STRING)
 	 */
 	protected void sequence_Reference(ISerializationContext context, Reference semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -444,6 +455,18 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     (source=STRING target=STRING execution='withExecution'? return='withReturn'? name=STRING)
 	 */
 	protected void sequence_SequenceMessage(ISerializationContext context, SequenceMessage semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     StateFragment returns StateFragment
+	 *
+	 * Constraint:
+	 *     (on='on' timeline=STRING (keyword='state' | keyword='mode' | keyword='function') name=STRING)
+	 */
+	protected void sequence_StateFragment(ISerializationContext context, StateFragment semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

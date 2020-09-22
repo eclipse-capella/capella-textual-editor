@@ -163,6 +163,22 @@ ruleModel returns [EObject current=null]
 							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.CombinedFragment");
 						afterParserOrEnumRuleCall();
 					}
+					    |
+					{
+						newCompositeNode(grammarAccess.getModelAccess().getElementsStateFragmentParserRuleCall_3_0_3());
+					}
+					lv_elements_3_4=ruleStateFragment
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getModelRule());
+						}
+						add(
+							$current,
+							"elements",
+							lv_elements_3_4,
+							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.StateFragment");
+						afterParserOrEnumRuleCall();
+					}
 				)
 			)
 		)*
@@ -1218,10 +1234,20 @@ ruleReference returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_1='over'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getReferenceAccess().getOverKeyword_1());
-		}
+		(
+			(
+				lv_over_1_0='over'
+				{
+					newLeafNode(lv_over_1_0, grammarAccess.getReferenceAccess().getOverOverKeyword_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getReferenceRule());
+					}
+					setWithLastConsumed($current, "over", lv_over_1_0, "over");
+				}
+			)
+		)
 		(
 			(
 				lv_timelines_2_0=RULE_STRING
@@ -1334,10 +1360,20 @@ ruleAlt returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_2='over'
-		{
-			newLeafNode(otherlv_2, grammarAccess.getAltAccess().getOverKeyword_2());
-		}
+		(
+			(
+				lv_over_2_0='over'
+				{
+					newLeafNode(lv_over_2_0, grammarAccess.getAltAccess().getOverOverKeyword_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAltRule());
+					}
+					setWithLastConsumed($current, "over", lv_over_2_0, "over");
+				}
+			)
+		)
 		(
 			(
 				lv_timelines_3_0=RULE_STRING
@@ -1551,6 +1587,113 @@ ruleBlock returns [EObject current=null]
 						$current = createModelElement(grammarAccess.getBlockRule());
 					}
 					setWithLastConsumed($current, "end", lv_end_2_0, "}");
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleStateFragment
+entryRuleStateFragment returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getStateFragmentRule()); }
+	iv_ruleStateFragment=ruleStateFragment
+	{ $current=$iv_ruleStateFragment.current; }
+	EOF;
+
+// Rule StateFragment
+ruleStateFragment returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				lv_on_0_0='on'
+				{
+					newLeafNode(lv_on_0_0, grammarAccess.getStateFragmentAccess().getOnOnKeyword_0_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getStateFragmentRule());
+					}
+					setWithLastConsumed($current, "on", lv_on_0_0, "on");
+				}
+			)
+		)
+		(
+			(
+				lv_timeline_1_0=RULE_STRING
+				{
+					newLeafNode(lv_timeline_1_0, grammarAccess.getStateFragmentAccess().getTimelineSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getStateFragmentRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"timeline",
+						lv_timeline_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		(
+			(
+				(
+					lv_keyword_2_1='state'
+					{
+						newLeafNode(lv_keyword_2_1, grammarAccess.getStateFragmentAccess().getKeywordStateKeyword_2_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getStateFragmentRule());
+						}
+						setWithLastConsumed($current, "keyword", lv_keyword_2_1, null);
+					}
+					    |
+					lv_keyword_2_2='mode'
+					{
+						newLeafNode(lv_keyword_2_2, grammarAccess.getStateFragmentAccess().getKeywordModeKeyword_2_0_1());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getStateFragmentRule());
+						}
+						setWithLastConsumed($current, "keyword", lv_keyword_2_2, null);
+					}
+					    |
+					lv_keyword_2_3='function'
+					{
+						newLeafNode(lv_keyword_2_3, grammarAccess.getStateFragmentAccess().getKeywordFunctionKeyword_2_0_2());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getStateFragmentRule());
+						}
+						setWithLastConsumed($current, "keyword", lv_keyword_2_3, null);
+					}
+				)
+			)
+		)
+		(
+			(
+				lv_name_3_0=RULE_STRING
+				{
+					newLeafNode(lv_name_3_0, grammarAccess.getStateFragmentAccess().getNameSTRINGTerminalRuleCall_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getStateFragmentRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_3_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)
 		)

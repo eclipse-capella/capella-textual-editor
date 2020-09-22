@@ -51,6 +51,7 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getMessageAccess().getAlternatives(), "rule__Message__Alternatives");
 			builder.put(grammarAccess.getSequenceMessageTypeAccess().getAlternatives(), "rule__SequenceMessageType__Alternatives");
 			builder.put(grammarAccess.getBlockAccess().getBlockElementsAlternatives_1_0(), "rule__Block__BlockElementsAlternatives_1_0");
+			builder.put(grammarAccess.getStateFragmentAccess().getKeywordAlternatives_2_0(), "rule__StateFragment__KeywordAlternatives_2_0");
 			builder.put(grammarAccess.getModelAccess().getGroup(), "rule__Model__Group__0");
 			builder.put(grammarAccess.getActorAccess().getGroup(), "rule__Actor__Group__0");
 			builder.put(grammarAccess.getComponentAccess().getGroup(), "rule__Component__Group__0");
@@ -68,6 +69,7 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAltAccess().getGroup(), "rule__Alt__Group__0");
 			builder.put(grammarAccess.getElseBlockAccess().getGroup(), "rule__ElseBlock__Group__0");
 			builder.put(grammarAccess.getBlockAccess().getGroup(), "rule__Block__Group__0");
+			builder.put(grammarAccess.getStateFragmentAccess().getGroup(), "rule__StateFragment__Group__0");
 			builder.put(grammarAccess.getModelAccess().getBeginAssignment_1(), "rule__Model__BeginAssignment_1");
 			builder.put(grammarAccess.getModelAccess().getParticipantsAssignment_2(), "rule__Model__ParticipantsAssignment_2");
 			builder.put(grammarAccess.getModelAccess().getElementsAssignment_3(), "rule__Model__ElementsAssignment_3");
@@ -103,10 +105,12 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getKeywordAssignment_0(), "rule__ParticipantDeactivation__KeywordAssignment_0");
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getNameAssignment_1(), "rule__ParticipantDeactivation__NameAssignment_1");
 			builder.put(grammarAccess.getReferenceAccess().getKeywordAssignment_0(), "rule__Reference__KeywordAssignment_0");
+			builder.put(grammarAccess.getReferenceAccess().getOverAssignment_1(), "rule__Reference__OverAssignment_1");
 			builder.put(grammarAccess.getReferenceAccess().getTimelinesAssignment_2(), "rule__Reference__TimelinesAssignment_2");
 			builder.put(grammarAccess.getReferenceAccess().getNameAssignment_3(), "rule__Reference__NameAssignment_3");
 			builder.put(grammarAccess.getAltAccess().getKeywordAssignment_0(), "rule__Alt__KeywordAssignment_0");
 			builder.put(grammarAccess.getAltAccess().getConditionAssignment_1(), "rule__Alt__ConditionAssignment_1");
+			builder.put(grammarAccess.getAltAccess().getOverAssignment_2(), "rule__Alt__OverAssignment_2");
 			builder.put(grammarAccess.getAltAccess().getTimelinesAssignment_3(), "rule__Alt__TimelinesAssignment_3");
 			builder.put(grammarAccess.getAltAccess().getBlockAssignment_4(), "rule__Alt__BlockAssignment_4");
 			builder.put(grammarAccess.getAltAccess().getElseBlocksAssignment_5(), "rule__Alt__ElseBlocksAssignment_5");
@@ -115,6 +119,10 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getBlockAccess().getBeginAssignment_0(), "rule__Block__BeginAssignment_0");
 			builder.put(grammarAccess.getBlockAccess().getBlockElementsAssignment_1(), "rule__Block__BlockElementsAssignment_1");
 			builder.put(grammarAccess.getBlockAccess().getEndAssignment_2(), "rule__Block__EndAssignment_2");
+			builder.put(grammarAccess.getStateFragmentAccess().getOnAssignment_0(), "rule__StateFragment__OnAssignment_0");
+			builder.put(grammarAccess.getStateFragmentAccess().getTimelineAssignment_1(), "rule__StateFragment__TimelineAssignment_1");
+			builder.put(grammarAccess.getStateFragmentAccess().getKeywordAssignment_2(), "rule__StateFragment__KeywordAssignment_2");
+			builder.put(grammarAccess.getStateFragmentAccess().getNameAssignment_3(), "rule__StateFragment__NameAssignment_3");
 		}
 	}
 	

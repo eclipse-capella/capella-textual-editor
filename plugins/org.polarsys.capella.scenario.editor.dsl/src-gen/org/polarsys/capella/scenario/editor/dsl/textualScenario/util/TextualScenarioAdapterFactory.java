@@ -203,6 +203,11 @@ public class TextualScenarioAdapterFactory extends AdapterFactoryImpl
         return createBlockAdapter();
       }
       @Override
+      public Adapter caseStateFragment(StateFragment object)
+      {
+        return createStateFragmentAdapter();
+      }
+      @Override
       public Adapter defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -565,6 +570,21 @@ public class TextualScenarioAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createBlockAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment <em>State Fragment</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment
+   * @generated
+   */
+  public Adapter createStateFragmentAdapter()
   {
     return null;
   }
