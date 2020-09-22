@@ -246,6 +246,7 @@ public class XtextToDiagramCommands {
        * @param scenario
        * @param messages
        */
+      
       private void reorderCapellaScenario(Scenario scenario, EList<EObject> messages) {
         //compose new lists of sequence messages and interaction fragments, ordered based on xtext messages
         ArrayList<SequenceMessage> sequenceMessages = new ArrayList<SequenceMessage>();
