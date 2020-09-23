@@ -1,0 +1,13 @@
+scenario {
+	component "LC 2"
+	component "LC 1"
+	component "LC 4"
+	component "LC 5"
+	actor "LA 2"
+	actor "LA 3"
+	actor "LA 7"
+	actor "LA 8"
+	"LC 2" -> "LC 1" : "m1"
+	"LC 1" -> "LA 2" : "m2"
+	"LA 2" -> "LA 3" : "m3"
+}
