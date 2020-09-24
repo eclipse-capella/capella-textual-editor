@@ -9,6 +9,7 @@ pipeline {
 	}
   
 	environment {
+		BUILD_KEY_CAPELLA = (github.isPullRequest() ? CHANGE_TARGET : '1.4.x').replaceFirst(/^v/, '')
 		BUILD_KEY = (github.isPullRequest() ? CHANGE_TARGET : BRANCH_NAME).replaceFirst(/^v/, '')
 		CAPELLA_PRODUCT_PATH = "${WORKSPACE}/capella/capella"
   	}
@@ -64,7 +65,7 @@ pipeline {
       		
         	steps {
         		script {
-	        		def capellaURL = capella.getDownloadURL("${BUILD_KEY}", 'linux', '')
+	        		def capellaURL = capella.getDownloadURL("${BUILD_KEY_CAPELLA}", 'linux', '')
 	        		
 	        		sh "curl -k -o capella.zip ${capellaURL}"
 					sh "unzip -q capella.zip"
