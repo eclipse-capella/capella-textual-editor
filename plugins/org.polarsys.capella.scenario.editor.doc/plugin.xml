@@ -22,7 +22,7 @@
             primary="true">
       </toc>
        <toc
-            file="html/TextualScenario/Functionalities-toc.xml"
+            file="html/TextualEditor/Functionalities-toc.xml"
             primary="false">
       </toc>
    </extension>
