@@ -1,0 +1,10 @@
+scenario {
+	function "SystemFunction 2"
+	function "SystemFunction 1"
+	"SystemFunction 2" -> "SystemFunction 1" : "f1"
+	alt "123" over "SystemFunction 2" "SystemFunction 1" {
+		"SystemFunction 2" -> "SystemFunction 1" : "f2"
+	} else "456" {
+		"SystemFunction 1" -> "SystemFunction 2" : "fe1"
+	}
+}

@@ -1,0 +1,6 @@
+scenario {
+	component "System"
+	actor "SA 3"
+	actor "SA 2"
+	"SA 2" -> "SA 3" : "m1"
+}

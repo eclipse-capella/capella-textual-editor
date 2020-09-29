@@ -1,0 +1,8 @@
+scenario {
+	function "SystemFunction 1"
+	function "SystemFunction 2"
+	on "SystemFunction 1" state "State 1"
+	"SystemFunction 1" -> "SystemFunction 2" : "fe1"
+	on "SystemFunction 1" state "State 2"
+	on "SystemFunction 2" state "State 1"
+}
