@@ -1,0 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ * 
+ * Contributors:
+ *    Thales - initial API and implementation
+ *******************************************************************************/
+target "CapellaScenariosTextEditor"
+
+include "https://raw.githubusercontent.com/eclipse/capella/v1.4.x/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
+
+with source, requirements
+
+location capella-core-1.4.x "https://download.eclipse.org/capella/core/updates/nightly/1.4.x/org.polarsys.capella.rcp.site" {
+
+	org.polarsys.capella.rcp.feature.feature.group
+	org.polarsys.capella.cdo.mock.feature.feature.group
+}
+
+location capella-tests-1.4.x "https://download.eclipse.org/capella/core/updates/nightly/1.4.x/org.polarsys.capella.test.site" {
+
+	org.polarsys.capella.test.feature.feature.group
+}
+
+location "https://download.eclipse.org/modeling/emf/cdo/drops/R20180613-0111/" {
+    org.eclipse.emf.cdo.sdk.feature.group
+}
+
+location "http://download.eclipse.org/releases/2019-06/" {
+    org.eclipse.xtext.sdk.feature.group
+}

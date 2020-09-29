@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.polarsys.capella.scenario.editor.feature.source" version="1.0.0.qualifier">
+      <category name="org.polarsys.capella.scenario.editor"/>
+   </feature>
+   <category-def name="org.polarsys.capella.scenario.editor" label="TextualScenarioEditor"/>
+   
+</site>

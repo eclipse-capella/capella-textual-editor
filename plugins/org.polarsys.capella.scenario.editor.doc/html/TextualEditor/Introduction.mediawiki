@@ -1,0 +1,28 @@
+<!--
+	Copyright (c) 2020 THALES GLOBAL SERVICES.
+	
+	This program and the accompanying materials are made available under the
+	terms of the Eclipse Public License 2.0 which is available at
+	http://www.eclipse.org/legal/epl-2.0
+	
+	SPDX-License-Identifier: EPL-2.0
+	
+	Contributors:
+	   Thales - initial API and implementation
+-->
+=Introduction=
+
+Textual Scenario Editor is an addon that allows to edit Capella Scenarios in textual mode. The addon allows the user to use a simple language to write the scenarios in textual mode and enables two-way synchronization between the textual scenario and the diagram.
+
+===Features introduced in Textual Scenario Editor===
+
+* Simple language based on Capella semantic with a mapping as close as possible with PlantUML in order to import later PlantUML scripts within Capella
+* Textual edition of Capella scenarios
+* Propose auto-completion (CTRL+Space) of Capella elements.
+* Textual edition managing error detection (e.i invalid Capella model: e.g. non existing target role of specified lifeline)
+* Synchronization between textual edition and scenario display
+
+[[Image:Images/IS_System_TextualScenario.png|center|760px]]
+
+
+

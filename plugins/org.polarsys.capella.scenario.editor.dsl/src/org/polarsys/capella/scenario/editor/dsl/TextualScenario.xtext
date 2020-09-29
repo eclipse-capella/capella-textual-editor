@@ -1,0 +1,108 @@
+/*******************************************************************************
+* Copyright (c) 2020 THALES GLOBAL SERVICES.
+*  
+*  This program and the accompanying materials are made available under the
+*  terms of the Eclipse Public License 2.0 which is available at
+*  http://www.eclipse.org/legal/epl-2.0
+*  
+*  SPDX-License-Identifier: EPL-2.0
+*  
+*  Contributors:
+*     Thales - initial API and implementation
+*******************************************************************************/
+grammar org.polarsys.capella.scenario.editor.dsl.TextualScenario with org.eclipse.xtext.common.Terminals
+
+generate textualScenario "http://www.polarsys.org/capella/scenario/editor/dsl/TextualScenario"
+
+Model:
+       'scenario' begin = '{' participants+=Participant* 
+        (elements+=(Message | Reference | CombinedFragment | StateFragment))* 
+        end = '}';
+
+Participant: 
+	 GenericComponent | GenericFunction
+; 
+
+GenericComponent:
+	Entity | Actor | Component | ConfigurationItem | Role
+;
+
+GenericFunction:
+	Function | Activity
+;
+
+Actor:
+	keyword = 'actor' name=STRING
+; 
+
+Component:
+	keyword = 'component' name=STRING (nature = ('unset' | 'behavior' | 'node'))?
+;
+
+ConfigurationItem:
+	keyword = 'configuration_item' name=STRING
+;
+
+Function:
+	keyword = 'function' name=STRING
+;  
+
+Activity:
+	keyword = 'activity' name=STRING
+;  
+
+Entity:
+	keyword = 'entity' name=STRING
+;
+
+Role: 
+	keyword = 'role' name=STRING
+;
+
+Message:
+    SequenceMessageType | ArmTimerMessage | ParticipantDeactivation
+;
+
+SequenceMessageType:
+	(SequenceMessage | CreateMessage | DeleteMessage)
+;
+
+SequenceMessage:
+    source=STRING '->' target=STRING (execution = 'withExecution')? (return='withReturn')? ':' name=STRING 
+;
+
+CreateMessage:
+	source=STRING '->+' target=STRING ':' name=STRING 
+;
+
+DeleteMessage:
+	source=STRING '->x' target=STRING ':' name=STRING 
+;
+
+ArmTimerMessage:
+	"->>" participant=STRING ':' name=STRING
+;
+
+ParticipantDeactivation:
+    keyword = 'deactivate' name=STRING	
+;
+
+Reference: 
+	keyword = 'ref' over='over' (timelines+=STRING)+ name=STRING
+;
+
+CombinedFragment: 
+	keyword = ('alt'|'loop'|'par'|'assert'|'critical'|'ignore'|'neg'|'opt'|'seq'|'strict')? expression=STRING over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
+;
+
+Operand:
+	keyword='else'? expression=STRING block=Block
+;
+
+Block:
+	begin="{" (blockElements+=(Message | Reference | CombinedFragment | StateFragment))* end="}"
+;
+
+StateFragment:
+	on='on' timeline=STRING keyword=('state' | 'mode' | 'function') name=STRING
+;

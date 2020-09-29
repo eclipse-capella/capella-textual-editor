@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2020 THALES GLOBAL SERVICES.
+
+ This program and the accompanying materials are made available under the
+ terms of the Eclipse Public License 2.0 which is available at
+ http://www.eclipse.org/legal/epl-2.0
+
+ Contributors:
+    Thales - initial API and implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
+
+  <name>Capella Textual Editor Addon</name>
+  <groupId>org.polarsys</groupId>
+  <artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<tycho.version>1.4.0</tycho.version>
+		<tycho.extras.version>1.4.0</tycho.extras.version>
+		<antrun-version>1.7</antrun-version>
+		<rcptt-version>2.1.0</rcptt-version>
+		<rcptt-runner-version>2.1.0</rcptt-runner-version>
+		<sonar-version>3.0.2</sonar-version>
+		<jacoco-version>0.7.6.201602180812</jacoco-version>
+
+		<tycho.scmUrl>scm:git:https://github.com/eclipse/capella-textual-editor.git</tycho.scmUrl>
+
+		<!-- for packaging -->
+		<eclipse-repo.url>http://download.eclipse.org/releases/neon</eclipse-repo.url>
+
+		<!-- for junit -->
+		<capella-product-id>org.polarsys.capella.rcp.product</capella-product-id>
+		<capella-application-id>org.polarsys.capella.core.platform.sirius.ui.perspective.id</capella-application-id>
+		<tycho.testArgLine>-Xms256m -Xmx1024m</tycho.testArgLine>
+		<tests.ignoreFailures>true</tests.ignoreFailures>
+
+
+		<!-- for packaging -->
+		<platform-name>neon</platform-name>
+		<eclipse-repo.url>http://download.eclipse.org/releases/${platform-name}</eclipse-repo.url>
+		<packagedAddonName>TextualScenarioEditor</packagedAddonName>
+
+		<!-- for sonar -->
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.jacoco.itReportPath>${project.basedir}/../../target/jacoco-it.exec</sonar.jacoco.itReportPath>
+	</properties>
+
+	<modules>
+		<!-- features -->
+		<module>features</module>
+
+		<!-- plugins -->
+		<module>plugins</module>
+		<!--
+		<module>tests/org.polarsys.capella.scenario.editor.ju</module>
+		-->
+
+		<!-- Repository -->
+		<module>releng/org.polarsys.capella.scenario.editor.site</module>
+
+	</modules>
+
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>src</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<strictBinIncludes>false</strictBinIncludes>
+					<sourceReferences>
+						<generate>true</generate>
+					</sourceReferences>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-sourceref-jgit</artifactId>
+						<version>${tycho.extras.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>org.polarsys</groupId>
+							<artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
+							<version>1.0.0-SNAPSHOT</version>
+							<classifier>releng/org.polarsys.capella.scenario.editor.update/capella.target-definition</classifier>
+						</artifact>
+					</target>
+					<environments>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-version}</version>
+				<configuration>
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- enable source feature generation -->
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<version>${tycho.extras.version}</version>
+				<executions>
+					<execution>
+						<id>source-feature</id>
+						<phase>package</phase>
+						<goals>
+							<goal>source-feature</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<strictSrcIncludes>false</strictSrcIncludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<!-- These two should allow us not to get "duplicate artifact" warnings 
+						during the build. -->
+					<execution>
+						<!-- Don't attach (default) metadata before the source-feature execution. -->
+						<id>default-p2-metadata-default</id>
+						<configuration>
+							<attachP2Metadata>false</attachP2Metadata>
+						</configuration>
+					</execution>
+					<execution>
+						<!-- Do attach metadata after the source-feature execution. -->
+						<id>attach-p2-metadata</id>
+						<goals>
+							<goal>p2-metadata</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
+							<source>1.8</source>
+               				<target>1.8</target>
+					</configuration>
+				</plugin>
+
+				<!-- plugins only called if a descendant need them -->
+				<plugin>
+					<groupId>org.eclipse.tycho.extras</groupId>
+					<artifactId>tycho-eclipserun-plugin</artifactId>
+					<version>${tycho.extras.version}</version>
+					<configuration>
+						<repositories>
+							<repository>
+								<id>eclipse-releases-${platform-name}</id>
+								<layout>p2</layout>
+								<url>${eclipse-repo.url}</url>
+							</repository>
+						</repositories>
+						<dependencies>
+							<dependency>
+								<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
+								<type>eclipse-plugin</type>
+							</dependency>
+							<dependency>
+								<artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
+								<type>eclipse-feature</type>
+							</dependency>
+							<dependency>
+								<artifactId>org.eclipse.equinox.p2.extras.feature</artifactId>
+								<type>eclipse-feature</type>
+							</dependency>
+							<dependency>
+								<artifactId>org.eclipse.equinox.ds</artifactId>
+								<type>eclipse-plugin</type>
+							</dependency>
+						</dependencies>
+						<executionEnvironment>JavaSE-1.8</executionEnvironment>
+					</configuration>
+					<executions>
+						<execution>
+							<id>create-dropins</id>
+							<phase>package</phase>
+							<goals>
+								<goal>eclipse-run</goal>
+							</goals>
+							<configuration>
+								<appArgLine>-application org.eclipse.equinox.p2.repository.repo2runnable -source file:${project.build.directory}/repository -destination ${project.build.directory}/${packagedAddonName}/eclipse</appArgLine>
+								<executionEnvironment>JavaSE-1.8</executionEnvironment>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>${antrun-version}</version>
+					<executions>
+						<execution>
+							<id>package-dropins</id>
+							<phase>package</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<target>
+									<delete
+										file="${project.build.directory}/${packagedAddonName}/eclipse/artifacts.jar" />
+									<delete
+										file="${project.build.directory}/${packagedAddonName}/eclipse/content.jar" />
+									<delete includeemptydirs="true">
+										<fileset
+											dir="${project.build.directory}/${packagedAddonName}/eclipse/features"
+											includes="**/META-INF/**" />
+									</delete>
+																		
+									<!-- delete test feature (not included in dropins) -->
+									<delete includeemptydirs="true">
+										<fileset
+											dir="${project.build.directory}/${packagedAddonName}/eclipse/features"
+											includes="**/org.polarsys.capella.scenario.editor.site.tests*/**" />													  
+									</delete>
+									
+									
+									<!-- delete test plugin (not included in dropins) -->
+									<delete>
+										<fileset
+											dir="${project.build.directory}/${packagedAddonName}/eclipse/plugins"
+											includes="org.polarsys.capella.scenario.editor.site.tests.ju*" />
+									</delete>
+									
+									<zip
+										destfile="${project.build.directory}/${packagedAddonName}-dropins-${unqualifiedVersion}.${buildQualifier}.zip">
+										<fileset dir="${project.build.directory}">
+											<include name="${packagedAddonName}/**" />
+										</fileset>
+									</zip>
+								</target>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-repository-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<id>archive-repository</id>
+							<goals>
+								<goal>archive-repository</goal>
+							</goals>
+							<configuration>
+								<finalName>${packagedAddonName}-updateSite-${unqualifiedVersion}.${buildQualifier}</finalName>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>${sonar-version}</version>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
