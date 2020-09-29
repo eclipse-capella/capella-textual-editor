@@ -11,7 +11,8 @@ Require-Bundle: org.polarsys.capella.core.model.handler,
  org.eclipse.xtext.ui,
  org.polarsys.capella.core.model.helpers,
  org.polarsys.capella.core.sirius.analysis,
- org.polarsys.capella.core.data.interaction.properties
+ org.polarsys.capella.core.data.interaction.properties,
+ org.eclipse.core.runtime
 Import-Package: org.eclipse.xtext.ui.editor.embedded
 Export-Package: org.polarsys.capella.scenario.editor,
  org.polarsys.capella.scenario.editor.helper

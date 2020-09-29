@@ -66,7 +66,7 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
       if (selection instanceof IStructuredSelection) {
         IStructuredSelection selection_l = (IStructuredSelection) selection;
         Object firstElement = selection_l.getFirstElement();
-        result = CapellaAdapterHelper.resolveDescriptorOrBusinessObject(firstElement);
+        result = CapellaAdapterHelper.resolveSemanticObject(firstElement);
       }
     }
     return result;
