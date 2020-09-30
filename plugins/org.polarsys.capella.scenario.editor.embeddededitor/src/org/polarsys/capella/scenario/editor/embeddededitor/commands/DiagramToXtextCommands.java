@@ -58,7 +58,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeact
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioFactory;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioFactoryImpl;
-import org.polarsys.capella.scenario.editor.dsl.ui.provider.TextualScenarioProvider;
+import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 import org.polarsys.capella.scenario.editor.helper.DslConstants;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
@@ -307,10 +307,12 @@ public class DiagramToXtextCommands {
     if (!blockOperands.empty())
       blockOperands.pop();
 
-    // generate a new branch for combined fragment (else sequence)
-    Block block = addOperandBlock(factory, combinedFragments.peek(), operand);
+    if (!combinedFragments.isEmpty()) {
+      // generate a new branch for combined fragment (else sequence)
+      Block block = addOperandBlock(factory, combinedFragments.peek(), operand);
 
-    blockOperands.push(block);
+      blockOperands.push(block);
+    }
   }
 
   private static void generateDeactivatioOnMessages(ExecutionEnd executionEnd,
@@ -488,20 +490,25 @@ public class DiagramToXtextCommands {
     case ASYNCHRONOUS_CALL:
     case SYNCHRONOUS_CALL:
       seqMessage = factory.createSequenceMessage();
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) seqMessage).setArrow("->");
       break;
     case CREATE:
       seqMessage = factory.createCreateMessage();
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) seqMessage).setArrow("->+");
       break;
     case DELETE:
       seqMessage = factory.createDeleteMessage();
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) seqMessage).setArrow("->x");
       break;
     case REPLY:
       // seqMessage = factory.createReturnMessage();
       break;
     case TIMER:
       seqMessage = factory.createArmTimerMessage();
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) seqMessage).setArrow("->>");
       ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) seqMessage)
           .setName(sequenceMessage.getName());
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) seqMessage).setDoubleDot(":");
       if (sequenceMessage.getSendingEnd() != null
           && !sequenceMessage.getSendingEnd().getCoveredInstanceRoles().isEmpty())
         ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) seqMessage)
@@ -509,6 +516,7 @@ public class DiagramToXtextCommands {
       return seqMessage;
     default:
       seqMessage = factory.createSequenceMessage();
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) seqMessage).setArrow("->");
       break;
     }
     if (seqMessage != null) {
@@ -522,6 +530,7 @@ public class DiagramToXtextCommands {
           && !sequenceMessage.getReceivingEnd().getCoveredInstanceRoles().isEmpty())
         ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) seqMessage)
             .setTarget(sequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
+      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) seqMessage).setDoubleDot(":");
     }
     return seqMessage;
   }
@@ -569,6 +578,9 @@ public class DiagramToXtextCommands {
       InteractionOperand operand) {
     Operand operandBlock = factory.createOperand();
     operandBlock.setExpression(HelperCommands.getExpressionText(operand));
+    if(combinedFragment.getKeyword().equals(DslConstants.ALT)) {
+      operandBlock.setKeyword("else");
+    }
     combinedFragment.getOperands().add(operandBlock);
 
     Block block = createBlock(factory);

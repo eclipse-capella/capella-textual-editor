@@ -30,7 +30,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SequenceMessageType" eSuperTypes="#//Message">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="source" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arrow" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="target" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="doubleDot" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SequenceMessage" eSuperTypes="#//SequenceMessageType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="execution" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -39,7 +41,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="CreateMessage" eSuperTypes="#//SequenceMessageType"/>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteMessage" eSuperTypes="#//SequenceMessageType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArmTimerMessage" eSuperTypes="#//Message">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arrow" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="participant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="doubleDot" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParticipantDeactivation" eSuperTypes="#//Message">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="keyword" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

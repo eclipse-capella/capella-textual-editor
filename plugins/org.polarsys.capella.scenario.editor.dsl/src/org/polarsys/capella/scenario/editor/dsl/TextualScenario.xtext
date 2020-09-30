@@ -68,19 +68,19 @@ SequenceMessageType:
 ;
 
 SequenceMessage:
-    source=STRING '->' target=STRING (execution = 'withExecution')? (return='withReturn')? ':' name=STRING 
+    source=STRING arrow = '->' target=STRING (execution = 'withExecution')? (return='withReturn')? doubleDot = ':' name=STRING 
 ;
 
 CreateMessage:
-	source=STRING '->+' target=STRING ':' name=STRING 
+	source=STRING arrow = '->+' target=STRING doubleDot = ':' name=STRING 
 ;
 
 DeleteMessage:
-	source=STRING '->x' target=STRING ':' name=STRING 
+	source=STRING arrow = '->x' target=STRING doubleDot = ':' name=STRING 
 ;
 
 ArmTimerMessage:
-	"->>" participant=STRING ':' name=STRING
+	arrow = "->>" participant=STRING doubleDot = ':' name=STRING
 ;
 
 ParticipantDeactivation:

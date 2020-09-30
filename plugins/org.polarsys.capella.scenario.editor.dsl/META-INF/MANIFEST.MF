@@ -15,7 +15,9 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.emf.common,
  org.polarsys.capella.scenario.editor,
  org.eclipse.xtend.lib;bundle-version="2.14.0",
- org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
+ org.polarsys.capella.core.model.helpers,
+ org.eclipse.xtext.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.polarsys.capella.scenario.editor.dsl.generator,
  org.polarsys.capella.scenario.editor.dsl.formatting2,
@@ -28,5 +30,7 @@ Export-Package: org.polarsys.capella.scenario.editor.dsl.generator,
  org.polarsys.capella.scenario.editor.dsl.textualScenario.impl,
  org.polarsys.capella.scenario.editor.dsl.parser.antlr,
  org.polarsys.capella.scenario.editor.dsl,
- org.polarsys.capella.scenario.editor.dsl.validation
+ org.polarsys.capella.scenario.editor.dsl.validation,
+ org.polarsys.capella.scenario.editor.dsl.provider,
+ org.polarsys.capella.scenario.editor.dsl.helpers
 Import-Package: org.apache.log4j

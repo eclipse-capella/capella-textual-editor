@@ -13,8 +13,6 @@
 package org.polarsys.capella.scenario.editor.ju.testcases;
 
 import org.polarsys.capella.scenario.editor.ju.util.TextualScenarioTestFramework;
-import org.polarsys.capella.test.diagram.common.ju.context.DiagramContext;
-import org.polarsys.capella.test.diagram.common.ju.step.crud.OpenDiagramStep;
 
 public class ReloadDataFromDiagramToTextTestCase extends TextualScenarioTestFramework {
   @Override

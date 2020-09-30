@@ -528,9 +528,31 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EAttribute getSequenceMessageType_Target()
+  public EAttribute getSequenceMessageType_Arrow()
   {
     return (EAttribute)sequenceMessageTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getSequenceMessageType_Target()
+  {
+    return (EAttribute)sequenceMessageTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getSequenceMessageType_DoubleDot()
+  {
+    return (EAttribute)sequenceMessageTypeEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -605,9 +627,31 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EAttribute getArmTimerMessage_Participant()
+  public EAttribute getArmTimerMessage_Arrow()
   {
     return (EAttribute)armTimerMessageEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getArmTimerMessage_Participant()
+  {
+    return (EAttribute)armTimerMessageEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getArmTimerMessage_DoubleDot()
+  {
+    return (EAttribute)armTimerMessageEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -972,7 +1016,9 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     sequenceMessageTypeEClass = createEClass(SEQUENCE_MESSAGE_TYPE);
     createEAttribute(sequenceMessageTypeEClass, SEQUENCE_MESSAGE_TYPE__SOURCE);
+    createEAttribute(sequenceMessageTypeEClass, SEQUENCE_MESSAGE_TYPE__ARROW);
     createEAttribute(sequenceMessageTypeEClass, SEQUENCE_MESSAGE_TYPE__TARGET);
+    createEAttribute(sequenceMessageTypeEClass, SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT);
 
     sequenceMessageEClass = createEClass(SEQUENCE_MESSAGE);
     createEAttribute(sequenceMessageEClass, SEQUENCE_MESSAGE__EXECUTION);
@@ -983,7 +1029,9 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     deleteMessageEClass = createEClass(DELETE_MESSAGE);
 
     armTimerMessageEClass = createEClass(ARM_TIMER_MESSAGE);
+    createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__ARROW);
     createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__PARTICIPANT);
+    createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__DOUBLE_DOT);
 
     participantDeactivationEClass = createEClass(PARTICIPANT_DEACTIVATION);
     createEAttribute(participantDeactivationEClass, PARTICIPANT_DEACTIVATION__KEYWORD);
@@ -1099,7 +1147,9 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     initEClass(sequenceMessageTypeEClass, SequenceMessageType.class, "SequenceMessageType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSequenceMessageType_Source(), ecorePackage.getEString(), "source", null, 0, 1, SequenceMessageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSequenceMessageType_Arrow(), ecorePackage.getEString(), "arrow", null, 0, 1, SequenceMessageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getSequenceMessageType_Target(), ecorePackage.getEString(), "target", null, 0, 1, SequenceMessageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSequenceMessageType_DoubleDot(), ecorePackage.getEString(), "doubleDot", null, 0, 1, SequenceMessageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(sequenceMessageEClass, SequenceMessage.class, "SequenceMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSequenceMessage_Execution(), ecorePackage.getEString(), "execution", null, 0, 1, SequenceMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1110,7 +1160,9 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     initEClass(deleteMessageEClass, DeleteMessage.class, "DeleteMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(armTimerMessageEClass, ArmTimerMessage.class, "ArmTimerMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getArmTimerMessage_Arrow(), ecorePackage.getEString(), "arrow", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getArmTimerMessage_Participant(), ecorePackage.getEString(), "participant", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getArmTimerMessage_DoubleDot(), ecorePackage.getEString(), "doubleDot", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(participantDeactivationEClass, ParticipantDeactivation.class, "ParticipantDeactivation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getParticipantDeactivation_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, ParticipantDeactivation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

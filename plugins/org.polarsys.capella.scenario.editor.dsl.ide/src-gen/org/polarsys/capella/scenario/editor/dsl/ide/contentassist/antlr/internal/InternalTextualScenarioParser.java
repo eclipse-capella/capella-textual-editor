@@ -34,7 +34,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalTextualScenarioParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'unset'", "'behavior'", "'node'", "'alt'", "'loop'", "'par'", "'assert'", "'critical'", "'ignore'", "'neg'", "'opt'", "'seq'", "'strict'", "'state'", "'mode'", "'function'", "'scenario'", "'->'", "':'", "'->+'", "'->x'", "'->>'", "'{'", "'}'", "'actor'", "'component'", "'configuration_item'", "'activity'", "'entity'", "'role'", "'withExecution'", "'withReturn'", "'deactivate'", "'ref'", "'over'", "'else'", "'on'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'unset'", "'behavior'", "'node'", "'alt'", "'loop'", "'par'", "'assert'", "'critical'", "'ignore'", "'neg'", "'opt'", "'seq'", "'strict'", "'state'", "'mode'", "'function'", "'scenario'", "'{'", "'}'", "'actor'", "'component'", "'configuration_item'", "'activity'", "'entity'", "'role'", "'->'", "'withExecution'", "'withReturn'", "':'", "'->+'", "'->x'", "'->>'", "'deactivate'", "'ref'", "'over'", "'else'", "'on'"
     };
     public static final int T__19=19;
     public static final int T__15=15;
@@ -1905,7 +1905,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 if ( (LA1_1==45) ) {
                     alt1=3;
                 }
-                else if ( (LA1_1==28||(LA1_1>=30 && LA1_1<=31)) ) {
+                else if ( (LA1_1==36||(LA1_1>=40 && LA1_1<=41)) ) {
                     alt1=1;
                 }
                 else {
@@ -1916,7 +1916,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 }
                 }
                 break;
-            case 32:
+            case 42:
             case 43:
                 {
                 alt1=1;
@@ -2058,10 +2058,10 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             int alt2=2;
             int LA2_0 = input.LA(1);
 
-            if ( ((LA2_0>=35 && LA2_0<=37)||(LA2_0>=39 && LA2_0<=40)) ) {
+            if ( ((LA2_0>=30 && LA2_0<=32)||(LA2_0>=34 && LA2_0<=35)) ) {
                 alt2=1;
             }
-            else if ( (LA2_0==26||LA2_0==38) ) {
+            else if ( (LA2_0==26||LA2_0==33) ) {
                 alt2=2;
             }
             else {
@@ -2136,27 +2136,27 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:685:1: ( ( ruleEntity ) | ( ruleActor ) | ( ruleComponent ) | ( ruleConfigurationItem ) | ( ruleRole ) )
             int alt3=5;
             switch ( input.LA(1) ) {
-            case 39:
+            case 34:
                 {
                 alt3=1;
                 }
                 break;
-            case 35:
+            case 30:
                 {
                 alt3=2;
                 }
                 break;
-            case 36:
+            case 31:
                 {
                 alt3=3;
                 }
                 break;
-            case 37:
+            case 32:
                 {
                 alt3=4;
                 }
                 break;
-            case 40:
+            case 35:
                 {
                 alt3=5;
                 }
@@ -2295,7 +2295,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             if ( (LA4_0==26) ) {
                 alt4=1;
             }
-            else if ( (LA4_0==38) ) {
+            else if ( (LA4_0==33) ) {
                 alt4=2;
             }
             else {
@@ -2470,7 +2470,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 alt6=1;
                 }
                 break;
-            case 32:
+            case 42:
                 {
                 alt6=2;
                 }
@@ -2575,17 +2575,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
             if ( (LA7_0==RULE_STRING) ) {
                 switch ( input.LA(2) ) {
-                case 28:
-                    {
-                    alt7=1;
-                    }
-                    break;
-                case 30:
+                case 40:
                     {
                     alt7=2;
                     }
                     break;
-                case 31:
+                case 36:
+                    {
+                    alt7=1;
+                    }
+                    break;
+                case 41:
                     {
                     alt7=3;
                     }
@@ -2928,11 +2928,11 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 {
                 int LA9_1 = input.LA(2);
 
-                if ( (LA9_1==28||(LA9_1>=30 && LA9_1<=31)) ) {
-                    alt9=1;
-                }
-                else if ( (LA9_1==45) ) {
+                if ( (LA9_1==45) ) {
                     alt9=3;
+                }
+                else if ( (LA9_1==36||(LA9_1>=40 && LA9_1<=41)) ) {
+                    alt9=1;
                 }
                 else {
                     NoViableAltException nvae =
@@ -2942,7 +2942,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 }
                 }
                 break;
-            case 32:
+            case 42:
             case 43:
                 {
                 alt9=1;
@@ -3386,7 +3386,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 int alt11=2;
                 int LA11_0 = input.LA(1);
 
-                if ( (LA11_0==26||(LA11_0>=35 && LA11_0<=40)) ) {
+                if ( (LA11_0==26||(LA11_0>=30 && LA11_0<=35)) ) {
                     alt11=1;
                 }
 
@@ -3489,7 +3489,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 int alt12=2;
                 int LA12_0 = input.LA(1);
 
-                if ( (LA12_0==RULE_STRING||(LA12_0>=14 && LA12_0<=23)||LA12_0==32||(LA12_0>=43 && LA12_0<=44)||LA12_0==47) ) {
+                if ( (LA12_0==RULE_STRING||(LA12_0>=14 && LA12_0<=23)||(LA12_0>=42 && LA12_0<=44)||LA12_0==47) ) {
                     alt12=1;
                 }
 
@@ -4989,21 +4989,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__SequenceMessage__Group__1__Impl"
-    // InternalTextualScenario.g:1530:1: rule__SequenceMessage__Group__1__Impl : ( '->' ) ;
+    // InternalTextualScenario.g:1530:1: rule__SequenceMessage__Group__1__Impl : ( ( rule__SequenceMessage__ArrowAssignment_1 ) ) ;
     public final void rule__SequenceMessage__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:1534:1: ( ( '->' ) )
-            // InternalTextualScenario.g:1535:1: ( '->' )
+            // InternalTextualScenario.g:1534:1: ( ( ( rule__SequenceMessage__ArrowAssignment_1 ) ) )
+            // InternalTextualScenario.g:1535:1: ( ( rule__SequenceMessage__ArrowAssignment_1 ) )
             {
-            // InternalTextualScenario.g:1535:1: ( '->' )
-            // InternalTextualScenario.g:1536:2: '->'
+            // InternalTextualScenario.g:1535:1: ( ( rule__SequenceMessage__ArrowAssignment_1 ) )
+            // InternalTextualScenario.g:1536:2: ( rule__SequenceMessage__ArrowAssignment_1 )
             {
-             before(grammarAccess.getSequenceMessageAccess().getHyphenMinusGreaterThanSignKeyword_1()); 
-            match(input,28,FOLLOW_2); 
-             after(grammarAccess.getSequenceMessageAccess().getHyphenMinusGreaterThanSignKeyword_1()); 
+             before(grammarAccess.getSequenceMessageAccess().getArrowAssignment_1()); 
+            // InternalTextualScenario.g:1537:2: ( rule__SequenceMessage__ArrowAssignment_1 )
+            // InternalTextualScenario.g:1537:3: rule__SequenceMessage__ArrowAssignment_1
+            {
+            pushFollow(FOLLOW_2);
+            rule__SequenceMessage__ArrowAssignment_1();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getSequenceMessageAccess().getArrowAssignment_1()); 
 
             }
 
@@ -5166,7 +5176,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             int alt14=2;
             int LA14_0 = input.LA(1);
 
-            if ( (LA14_0==41) ) {
+            if ( (LA14_0==37) ) {
                 alt14=1;
             }
             switch (alt14) {
@@ -5262,7 +5272,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             int alt15=2;
             int LA15_0 = input.LA(1);
 
-            if ( (LA15_0==42) ) {
+            if ( (LA15_0==38) ) {
                 alt15=1;
             }
             switch (alt15) {
@@ -5341,21 +5351,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__SequenceMessage__Group__5__Impl"
-    // InternalTextualScenario.g:1638:1: rule__SequenceMessage__Group__5__Impl : ( ':' ) ;
+    // InternalTextualScenario.g:1638:1: rule__SequenceMessage__Group__5__Impl : ( ( rule__SequenceMessage__DoubleDotAssignment_5 ) ) ;
     public final void rule__SequenceMessage__Group__5__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:1642:1: ( ( ':' ) )
-            // InternalTextualScenario.g:1643:1: ( ':' )
+            // InternalTextualScenario.g:1642:1: ( ( ( rule__SequenceMessage__DoubleDotAssignment_5 ) ) )
+            // InternalTextualScenario.g:1643:1: ( ( rule__SequenceMessage__DoubleDotAssignment_5 ) )
             {
-            // InternalTextualScenario.g:1643:1: ( ':' )
-            // InternalTextualScenario.g:1644:2: ':'
+            // InternalTextualScenario.g:1643:1: ( ( rule__SequenceMessage__DoubleDotAssignment_5 ) )
+            // InternalTextualScenario.g:1644:2: ( rule__SequenceMessage__DoubleDotAssignment_5 )
             {
-             before(grammarAccess.getSequenceMessageAccess().getColonKeyword_5()); 
-            match(input,29,FOLLOW_2); 
-             after(grammarAccess.getSequenceMessageAccess().getColonKeyword_5()); 
+             before(grammarAccess.getSequenceMessageAccess().getDoubleDotAssignment_5()); 
+            // InternalTextualScenario.g:1645:2: ( rule__SequenceMessage__DoubleDotAssignment_5 )
+            // InternalTextualScenario.g:1645:3: rule__SequenceMessage__DoubleDotAssignment_5
+            {
+            pushFollow(FOLLOW_2);
+            rule__SequenceMessage__DoubleDotAssignment_5();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getSequenceMessageAccess().getDoubleDotAssignment_5()); 
 
             }
 
@@ -5581,21 +5601,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CreateMessage__Group__1__Impl"
-    // InternalTextualScenario.g:1719:1: rule__CreateMessage__Group__1__Impl : ( '->+' ) ;
+    // InternalTextualScenario.g:1719:1: rule__CreateMessage__Group__1__Impl : ( ( rule__CreateMessage__ArrowAssignment_1 ) ) ;
     public final void rule__CreateMessage__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:1723:1: ( ( '->+' ) )
-            // InternalTextualScenario.g:1724:1: ( '->+' )
+            // InternalTextualScenario.g:1723:1: ( ( ( rule__CreateMessage__ArrowAssignment_1 ) ) )
+            // InternalTextualScenario.g:1724:1: ( ( rule__CreateMessage__ArrowAssignment_1 ) )
             {
-            // InternalTextualScenario.g:1724:1: ( '->+' )
-            // InternalTextualScenario.g:1725:2: '->+'
+            // InternalTextualScenario.g:1724:1: ( ( rule__CreateMessage__ArrowAssignment_1 ) )
+            // InternalTextualScenario.g:1725:2: ( rule__CreateMessage__ArrowAssignment_1 )
             {
-             before(grammarAccess.getCreateMessageAccess().getHyphenMinusGreaterThanSignPlusSignKeyword_1()); 
-            match(input,30,FOLLOW_2); 
-             after(grammarAccess.getCreateMessageAccess().getHyphenMinusGreaterThanSignPlusSignKeyword_1()); 
+             before(grammarAccess.getCreateMessageAccess().getArrowAssignment_1()); 
+            // InternalTextualScenario.g:1726:2: ( rule__CreateMessage__ArrowAssignment_1 )
+            // InternalTextualScenario.g:1726:3: rule__CreateMessage__ArrowAssignment_1
+            {
+            pushFollow(FOLLOW_2);
+            rule__CreateMessage__ArrowAssignment_1();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getCreateMessageAccess().getArrowAssignment_1()); 
 
             }
 
@@ -5741,21 +5771,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CreateMessage__Group__3__Impl"
-    // InternalTextualScenario.g:1773:1: rule__CreateMessage__Group__3__Impl : ( ':' ) ;
+    // InternalTextualScenario.g:1773:1: rule__CreateMessage__Group__3__Impl : ( ( rule__CreateMessage__DoubleDotAssignment_3 ) ) ;
     public final void rule__CreateMessage__Group__3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:1777:1: ( ( ':' ) )
-            // InternalTextualScenario.g:1778:1: ( ':' )
+            // InternalTextualScenario.g:1777:1: ( ( ( rule__CreateMessage__DoubleDotAssignment_3 ) ) )
+            // InternalTextualScenario.g:1778:1: ( ( rule__CreateMessage__DoubleDotAssignment_3 ) )
             {
-            // InternalTextualScenario.g:1778:1: ( ':' )
-            // InternalTextualScenario.g:1779:2: ':'
+            // InternalTextualScenario.g:1778:1: ( ( rule__CreateMessage__DoubleDotAssignment_3 ) )
+            // InternalTextualScenario.g:1779:2: ( rule__CreateMessage__DoubleDotAssignment_3 )
             {
-             before(grammarAccess.getCreateMessageAccess().getColonKeyword_3()); 
-            match(input,29,FOLLOW_2); 
-             after(grammarAccess.getCreateMessageAccess().getColonKeyword_3()); 
+             before(grammarAccess.getCreateMessageAccess().getDoubleDotAssignment_3()); 
+            // InternalTextualScenario.g:1780:2: ( rule__CreateMessage__DoubleDotAssignment_3 )
+            // InternalTextualScenario.g:1780:3: rule__CreateMessage__DoubleDotAssignment_3
+            {
+            pushFollow(FOLLOW_2);
+            rule__CreateMessage__DoubleDotAssignment_3();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getCreateMessageAccess().getDoubleDotAssignment_3()); 
 
             }
 
@@ -5981,21 +6021,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__DeleteMessage__Group__1__Impl"
-    // InternalTextualScenario.g:1854:1: rule__DeleteMessage__Group__1__Impl : ( '->x' ) ;
+    // InternalTextualScenario.g:1854:1: rule__DeleteMessage__Group__1__Impl : ( ( rule__DeleteMessage__ArrowAssignment_1 ) ) ;
     public final void rule__DeleteMessage__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:1858:1: ( ( '->x' ) )
-            // InternalTextualScenario.g:1859:1: ( '->x' )
+            // InternalTextualScenario.g:1858:1: ( ( ( rule__DeleteMessage__ArrowAssignment_1 ) ) )
+            // InternalTextualScenario.g:1859:1: ( ( rule__DeleteMessage__ArrowAssignment_1 ) )
             {
-            // InternalTextualScenario.g:1859:1: ( '->x' )
-            // InternalTextualScenario.g:1860:2: '->x'
+            // InternalTextualScenario.g:1859:1: ( ( rule__DeleteMessage__ArrowAssignment_1 ) )
+            // InternalTextualScenario.g:1860:2: ( rule__DeleteMessage__ArrowAssignment_1 )
             {
-             before(grammarAccess.getDeleteMessageAccess().getXKeyword_1()); 
-            match(input,31,FOLLOW_2); 
-             after(grammarAccess.getDeleteMessageAccess().getXKeyword_1()); 
+             before(grammarAccess.getDeleteMessageAccess().getArrowAssignment_1()); 
+            // InternalTextualScenario.g:1861:2: ( rule__DeleteMessage__ArrowAssignment_1 )
+            // InternalTextualScenario.g:1861:3: rule__DeleteMessage__ArrowAssignment_1
+            {
+            pushFollow(FOLLOW_2);
+            rule__DeleteMessage__ArrowAssignment_1();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getDeleteMessageAccess().getArrowAssignment_1()); 
 
             }
 
@@ -6141,21 +6191,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__DeleteMessage__Group__3__Impl"
-    // InternalTextualScenario.g:1908:1: rule__DeleteMessage__Group__3__Impl : ( ':' ) ;
+    // InternalTextualScenario.g:1908:1: rule__DeleteMessage__Group__3__Impl : ( ( rule__DeleteMessage__DoubleDotAssignment_3 ) ) ;
     public final void rule__DeleteMessage__Group__3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:1912:1: ( ( ':' ) )
-            // InternalTextualScenario.g:1913:1: ( ':' )
+            // InternalTextualScenario.g:1912:1: ( ( ( rule__DeleteMessage__DoubleDotAssignment_3 ) ) )
+            // InternalTextualScenario.g:1913:1: ( ( rule__DeleteMessage__DoubleDotAssignment_3 ) )
             {
-            // InternalTextualScenario.g:1913:1: ( ':' )
-            // InternalTextualScenario.g:1914:2: ':'
+            // InternalTextualScenario.g:1913:1: ( ( rule__DeleteMessage__DoubleDotAssignment_3 ) )
+            // InternalTextualScenario.g:1914:2: ( rule__DeleteMessage__DoubleDotAssignment_3 )
             {
-             before(grammarAccess.getDeleteMessageAccess().getColonKeyword_3()); 
-            match(input,29,FOLLOW_2); 
-             after(grammarAccess.getDeleteMessageAccess().getColonKeyword_3()); 
+             before(grammarAccess.getDeleteMessageAccess().getDoubleDotAssignment_3()); 
+            // InternalTextualScenario.g:1915:2: ( rule__DeleteMessage__DoubleDotAssignment_3 )
+            // InternalTextualScenario.g:1915:3: rule__DeleteMessage__DoubleDotAssignment_3
+            {
+            pushFollow(FOLLOW_2);
+            rule__DeleteMessage__DoubleDotAssignment_3();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getDeleteMessageAccess().getDoubleDotAssignment_3()); 
 
             }
 
@@ -6296,21 +6356,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__ArmTimerMessage__Group__0__Impl"
-    // InternalTextualScenario.g:1962:1: rule__ArmTimerMessage__Group__0__Impl : ( '->>' ) ;
+    // InternalTextualScenario.g:1962:1: rule__ArmTimerMessage__Group__0__Impl : ( ( rule__ArmTimerMessage__ArrowAssignment_0 ) ) ;
     public final void rule__ArmTimerMessage__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:1966:1: ( ( '->>' ) )
-            // InternalTextualScenario.g:1967:1: ( '->>' )
+            // InternalTextualScenario.g:1966:1: ( ( ( rule__ArmTimerMessage__ArrowAssignment_0 ) ) )
+            // InternalTextualScenario.g:1967:1: ( ( rule__ArmTimerMessage__ArrowAssignment_0 ) )
             {
-            // InternalTextualScenario.g:1967:1: ( '->>' )
-            // InternalTextualScenario.g:1968:2: '->>'
+            // InternalTextualScenario.g:1967:1: ( ( rule__ArmTimerMessage__ArrowAssignment_0 ) )
+            // InternalTextualScenario.g:1968:2: ( rule__ArmTimerMessage__ArrowAssignment_0 )
             {
-             before(grammarAccess.getArmTimerMessageAccess().getHyphenMinusGreaterThanSignGreaterThanSignKeyword_0()); 
-            match(input,32,FOLLOW_2); 
-             after(grammarAccess.getArmTimerMessageAccess().getHyphenMinusGreaterThanSignGreaterThanSignKeyword_0()); 
+             before(grammarAccess.getArmTimerMessageAccess().getArrowAssignment_0()); 
+            // InternalTextualScenario.g:1969:2: ( rule__ArmTimerMessage__ArrowAssignment_0 )
+            // InternalTextualScenario.g:1969:3: rule__ArmTimerMessage__ArrowAssignment_0
+            {
+            pushFollow(FOLLOW_2);
+            rule__ArmTimerMessage__ArrowAssignment_0();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getArmTimerMessageAccess().getArrowAssignment_0()); 
 
             }
 
@@ -6456,21 +6526,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__ArmTimerMessage__Group__2__Impl"
-    // InternalTextualScenario.g:2016:1: rule__ArmTimerMessage__Group__2__Impl : ( ':' ) ;
+    // InternalTextualScenario.g:2016:1: rule__ArmTimerMessage__Group__2__Impl : ( ( rule__ArmTimerMessage__DoubleDotAssignment_2 ) ) ;
     public final void rule__ArmTimerMessage__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:2020:1: ( ( ':' ) )
-            // InternalTextualScenario.g:2021:1: ( ':' )
+            // InternalTextualScenario.g:2020:1: ( ( ( rule__ArmTimerMessage__DoubleDotAssignment_2 ) ) )
+            // InternalTextualScenario.g:2021:1: ( ( rule__ArmTimerMessage__DoubleDotAssignment_2 ) )
             {
-            // InternalTextualScenario.g:2021:1: ( ':' )
-            // InternalTextualScenario.g:2022:2: ':'
+            // InternalTextualScenario.g:2021:1: ( ( rule__ArmTimerMessage__DoubleDotAssignment_2 ) )
+            // InternalTextualScenario.g:2022:2: ( rule__ArmTimerMessage__DoubleDotAssignment_2 )
             {
-             before(grammarAccess.getArmTimerMessageAccess().getColonKeyword_2()); 
-            match(input,29,FOLLOW_2); 
-             after(grammarAccess.getArmTimerMessageAccess().getColonKeyword_2()); 
+             before(grammarAccess.getArmTimerMessageAccess().getDoubleDotAssignment_2()); 
+            // InternalTextualScenario.g:2023:2: ( rule__ArmTimerMessage__DoubleDotAssignment_2 )
+            // InternalTextualScenario.g:2023:3: rule__ArmTimerMessage__DoubleDotAssignment_2
+            {
+            pushFollow(FOLLOW_2);
+            rule__ArmTimerMessage__DoubleDotAssignment_2();
+
+            state._fsp--;
+
+
+            }
+
+             after(grammarAccess.getArmTimerMessageAccess().getDoubleDotAssignment_2()); 
 
             }
 
@@ -6993,7 +7073,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                     if ( (LA16_1==RULE_STRING) ) {
                         int LA16_2 = input.LA(3);
 
-                        if ( (LA16_2==EOF||LA16_2==RULE_STRING||(LA16_2>=14 && LA16_2<=23)||LA16_2==32||LA16_2==34||(LA16_2>=43 && LA16_2<=44)||LA16_2==47) ) {
+                        if ( (LA16_2==EOF||LA16_2==RULE_STRING||(LA16_2>=14 && LA16_2<=23)||LA16_2==29||(LA16_2>=42 && LA16_2<=44)||LA16_2==47) ) {
                             alt16=1;
                         }
 
@@ -7662,7 +7742,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 if ( (LA19_0==RULE_STRING) ) {
                     int LA19_2 = input.LA(2);
 
-                    if ( (LA19_2==33) ) {
+                    if ( (LA19_2==28) ) {
                         alt19=1;
                     }
 
@@ -8117,7 +8197,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 int alt21=2;
                 int LA21_0 = input.LA(1);
 
-                if ( (LA21_0==RULE_STRING||(LA21_0>=14 && LA21_0<=23)||LA21_0==32||(LA21_0>=43 && LA21_0<=44)||LA21_0==47) ) {
+                if ( (LA21_0==RULE_STRING||(LA21_0>=14 && LA21_0<=23)||(LA21_0>=42 && LA21_0<=44)||LA21_0==47) ) {
                     alt21=1;
                 }
 
@@ -8595,7 +8675,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2674:4: '{'
             {
              before(grammarAccess.getModelAccess().getBeginLeftCurlyBracketKeyword_1_0()); 
-            match(input,33,FOLLOW_2); 
+            match(input,28,FOLLOW_2); 
              after(grammarAccess.getModelAccess().getBeginLeftCurlyBracketKeyword_1_0()); 
 
             }
@@ -8728,7 +8808,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2723:4: '}'
             {
              before(grammarAccess.getModelAccess().getEndRightCurlyBracketKeyword_4_0()); 
-            match(input,34,FOLLOW_2); 
+            match(input,29,FOLLOW_2); 
              after(grammarAccess.getModelAccess().getEndRightCurlyBracketKeyword_4_0()); 
 
             }
@@ -8773,7 +8853,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2742:4: 'actor'
             {
              before(grammarAccess.getActorAccess().getKeywordActorKeyword_0_0()); 
-            match(input,35,FOLLOW_2); 
+            match(input,30,FOLLOW_2); 
              after(grammarAccess.getActorAccess().getKeywordActorKeyword_0_0()); 
 
             }
@@ -8855,7 +8935,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2776:4: 'component'
             {
              before(grammarAccess.getComponentAccess().getKeywordComponentKeyword_0_0()); 
-            match(input,36,FOLLOW_2); 
+            match(input,31,FOLLOW_2); 
              after(grammarAccess.getComponentAccess().getKeywordComponentKeyword_0_0()); 
 
             }
@@ -8984,7 +9064,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2825:4: 'configuration_item'
             {
              before(grammarAccess.getConfigurationItemAccess().getKeywordConfiguration_itemKeyword_0_0()); 
-            match(input,37,FOLLOW_2); 
+            match(input,32,FOLLOW_2); 
              after(grammarAccess.getConfigurationItemAccess().getKeywordConfiguration_itemKeyword_0_0()); 
 
             }
@@ -9148,7 +9228,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2893:4: 'activity'
             {
              before(grammarAccess.getActivityAccess().getKeywordActivityKeyword_0_0()); 
-            match(input,38,FOLLOW_2); 
+            match(input,33,FOLLOW_2); 
              after(grammarAccess.getActivityAccess().getKeywordActivityKeyword_0_0()); 
 
             }
@@ -9230,7 +9310,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2927:4: 'entity'
             {
              before(grammarAccess.getEntityAccess().getKeywordEntityKeyword_0_0()); 
-            match(input,39,FOLLOW_2); 
+            match(input,34,FOLLOW_2); 
              after(grammarAccess.getEntityAccess().getKeywordEntityKeyword_0_0()); 
 
             }
@@ -9312,7 +9392,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2961:4: 'role'
             {
              before(grammarAccess.getRoleAccess().getKeywordRoleKeyword_0_0()); 
-            match(input,40,FOLLOW_2); 
+            match(input,35,FOLLOW_2); 
              after(grammarAccess.getRoleAccess().getKeywordRoleKeyword_0_0()); 
 
             }
@@ -9413,18 +9493,63 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__SequenceMessage__SourceAssignment_0"
 
 
+    // $ANTLR start "rule__SequenceMessage__ArrowAssignment_1"
+    // InternalTextualScenario.g:3002:1: rule__SequenceMessage__ArrowAssignment_1 : ( ( '->' ) ) ;
+    public final void rule__SequenceMessage__ArrowAssignment_1() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3006:1: ( ( ( '->' ) ) )
+            // InternalTextualScenario.g:3007:2: ( ( '->' ) )
+            {
+            // InternalTextualScenario.g:3007:2: ( ( '->' ) )
+            // InternalTextualScenario.g:3008:3: ( '->' )
+            {
+             before(grammarAccess.getSequenceMessageAccess().getArrowHyphenMinusGreaterThanSignKeyword_1_0()); 
+            // InternalTextualScenario.g:3009:3: ( '->' )
+            // InternalTextualScenario.g:3010:4: '->'
+            {
+             before(grammarAccess.getSequenceMessageAccess().getArrowHyphenMinusGreaterThanSignKeyword_1_0()); 
+            match(input,36,FOLLOW_2); 
+             after(grammarAccess.getSequenceMessageAccess().getArrowHyphenMinusGreaterThanSignKeyword_1_0()); 
+
+            }
+
+             after(grammarAccess.getSequenceMessageAccess().getArrowHyphenMinusGreaterThanSignKeyword_1_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__SequenceMessage__ArrowAssignment_1"
+
+
     // $ANTLR start "rule__SequenceMessage__TargetAssignment_2"
-    // InternalTextualScenario.g:3002:1: rule__SequenceMessage__TargetAssignment_2 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3021:1: rule__SequenceMessage__TargetAssignment_2 : ( RULE_STRING ) ;
     public final void rule__SequenceMessage__TargetAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3006:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3007:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3025:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3026:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3007:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3008:3: RULE_STRING
+            // InternalTextualScenario.g:3026:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3027:3: RULE_STRING
             {
              before(grammarAccess.getSequenceMessageAccess().getTargetSTRINGTerminalRuleCall_2_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9451,24 +9576,24 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__SequenceMessage__ExecutionAssignment_3"
-    // InternalTextualScenario.g:3017:1: rule__SequenceMessage__ExecutionAssignment_3 : ( ( 'withExecution' ) ) ;
+    // InternalTextualScenario.g:3036:1: rule__SequenceMessage__ExecutionAssignment_3 : ( ( 'withExecution' ) ) ;
     public final void rule__SequenceMessage__ExecutionAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3021:1: ( ( ( 'withExecution' ) ) )
-            // InternalTextualScenario.g:3022:2: ( ( 'withExecution' ) )
+            // InternalTextualScenario.g:3040:1: ( ( ( 'withExecution' ) ) )
+            // InternalTextualScenario.g:3041:2: ( ( 'withExecution' ) )
             {
-            // InternalTextualScenario.g:3022:2: ( ( 'withExecution' ) )
-            // InternalTextualScenario.g:3023:3: ( 'withExecution' )
-            {
-             before(grammarAccess.getSequenceMessageAccess().getExecutionWithExecutionKeyword_3_0()); 
-            // InternalTextualScenario.g:3024:3: ( 'withExecution' )
-            // InternalTextualScenario.g:3025:4: 'withExecution'
+            // InternalTextualScenario.g:3041:2: ( ( 'withExecution' ) )
+            // InternalTextualScenario.g:3042:3: ( 'withExecution' )
             {
              before(grammarAccess.getSequenceMessageAccess().getExecutionWithExecutionKeyword_3_0()); 
-            match(input,41,FOLLOW_2); 
+            // InternalTextualScenario.g:3043:3: ( 'withExecution' )
+            // InternalTextualScenario.g:3044:4: 'withExecution'
+            {
+             before(grammarAccess.getSequenceMessageAccess().getExecutionWithExecutionKeyword_3_0()); 
+            match(input,37,FOLLOW_2); 
              after(grammarAccess.getSequenceMessageAccess().getExecutionWithExecutionKeyword_3_0()); 
 
             }
@@ -9496,24 +9621,24 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__SequenceMessage__ReturnAssignment_4"
-    // InternalTextualScenario.g:3036:1: rule__SequenceMessage__ReturnAssignment_4 : ( ( 'withReturn' ) ) ;
+    // InternalTextualScenario.g:3055:1: rule__SequenceMessage__ReturnAssignment_4 : ( ( 'withReturn' ) ) ;
     public final void rule__SequenceMessage__ReturnAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3040:1: ( ( ( 'withReturn' ) ) )
-            // InternalTextualScenario.g:3041:2: ( ( 'withReturn' ) )
+            // InternalTextualScenario.g:3059:1: ( ( ( 'withReturn' ) ) )
+            // InternalTextualScenario.g:3060:2: ( ( 'withReturn' ) )
             {
-            // InternalTextualScenario.g:3041:2: ( ( 'withReturn' ) )
-            // InternalTextualScenario.g:3042:3: ( 'withReturn' )
-            {
-             before(grammarAccess.getSequenceMessageAccess().getReturnWithReturnKeyword_4_0()); 
-            // InternalTextualScenario.g:3043:3: ( 'withReturn' )
-            // InternalTextualScenario.g:3044:4: 'withReturn'
+            // InternalTextualScenario.g:3060:2: ( ( 'withReturn' ) )
+            // InternalTextualScenario.g:3061:3: ( 'withReturn' )
             {
              before(grammarAccess.getSequenceMessageAccess().getReturnWithReturnKeyword_4_0()); 
-            match(input,42,FOLLOW_2); 
+            // InternalTextualScenario.g:3062:3: ( 'withReturn' )
+            // InternalTextualScenario.g:3063:4: 'withReturn'
+            {
+             before(grammarAccess.getSequenceMessageAccess().getReturnWithReturnKeyword_4_0()); 
+            match(input,38,FOLLOW_2); 
              after(grammarAccess.getSequenceMessageAccess().getReturnWithReturnKeyword_4_0()); 
 
             }
@@ -9540,18 +9665,63 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__SequenceMessage__ReturnAssignment_4"
 
 
+    // $ANTLR start "rule__SequenceMessage__DoubleDotAssignment_5"
+    // InternalTextualScenario.g:3074:1: rule__SequenceMessage__DoubleDotAssignment_5 : ( ( ':' ) ) ;
+    public final void rule__SequenceMessage__DoubleDotAssignment_5() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3078:1: ( ( ( ':' ) ) )
+            // InternalTextualScenario.g:3079:2: ( ( ':' ) )
+            {
+            // InternalTextualScenario.g:3079:2: ( ( ':' ) )
+            // InternalTextualScenario.g:3080:3: ( ':' )
+            {
+             before(grammarAccess.getSequenceMessageAccess().getDoubleDotColonKeyword_5_0()); 
+            // InternalTextualScenario.g:3081:3: ( ':' )
+            // InternalTextualScenario.g:3082:4: ':'
+            {
+             before(grammarAccess.getSequenceMessageAccess().getDoubleDotColonKeyword_5_0()); 
+            match(input,39,FOLLOW_2); 
+             after(grammarAccess.getSequenceMessageAccess().getDoubleDotColonKeyword_5_0()); 
+
+            }
+
+             after(grammarAccess.getSequenceMessageAccess().getDoubleDotColonKeyword_5_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__SequenceMessage__DoubleDotAssignment_5"
+
+
     // $ANTLR start "rule__SequenceMessage__NameAssignment_6"
-    // InternalTextualScenario.g:3055:1: rule__SequenceMessage__NameAssignment_6 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3093:1: rule__SequenceMessage__NameAssignment_6 : ( RULE_STRING ) ;
     public final void rule__SequenceMessage__NameAssignment_6() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3059:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3060:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3097:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3098:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3060:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3061:3: RULE_STRING
+            // InternalTextualScenario.g:3098:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3099:3: RULE_STRING
             {
              before(grammarAccess.getSequenceMessageAccess().getNameSTRINGTerminalRuleCall_6_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9578,17 +9748,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CreateMessage__SourceAssignment_0"
-    // InternalTextualScenario.g:3070:1: rule__CreateMessage__SourceAssignment_0 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3108:1: rule__CreateMessage__SourceAssignment_0 : ( RULE_STRING ) ;
     public final void rule__CreateMessage__SourceAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3074:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3075:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3112:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3113:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3075:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3076:3: RULE_STRING
+            // InternalTextualScenario.g:3113:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3114:3: RULE_STRING
             {
              before(grammarAccess.getCreateMessageAccess().getSourceSTRINGTerminalRuleCall_0_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9614,18 +9784,63 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__CreateMessage__SourceAssignment_0"
 
 
+    // $ANTLR start "rule__CreateMessage__ArrowAssignment_1"
+    // InternalTextualScenario.g:3123:1: rule__CreateMessage__ArrowAssignment_1 : ( ( '->+' ) ) ;
+    public final void rule__CreateMessage__ArrowAssignment_1() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3127:1: ( ( ( '->+' ) ) )
+            // InternalTextualScenario.g:3128:2: ( ( '->+' ) )
+            {
+            // InternalTextualScenario.g:3128:2: ( ( '->+' ) )
+            // InternalTextualScenario.g:3129:3: ( '->+' )
+            {
+             before(grammarAccess.getCreateMessageAccess().getArrowHyphenMinusGreaterThanSignPlusSignKeyword_1_0()); 
+            // InternalTextualScenario.g:3130:3: ( '->+' )
+            // InternalTextualScenario.g:3131:4: '->+'
+            {
+             before(grammarAccess.getCreateMessageAccess().getArrowHyphenMinusGreaterThanSignPlusSignKeyword_1_0()); 
+            match(input,40,FOLLOW_2); 
+             after(grammarAccess.getCreateMessageAccess().getArrowHyphenMinusGreaterThanSignPlusSignKeyword_1_0()); 
+
+            }
+
+             after(grammarAccess.getCreateMessageAccess().getArrowHyphenMinusGreaterThanSignPlusSignKeyword_1_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__CreateMessage__ArrowAssignment_1"
+
+
     // $ANTLR start "rule__CreateMessage__TargetAssignment_2"
-    // InternalTextualScenario.g:3085:1: rule__CreateMessage__TargetAssignment_2 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3142:1: rule__CreateMessage__TargetAssignment_2 : ( RULE_STRING ) ;
     public final void rule__CreateMessage__TargetAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3089:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3090:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3146:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3147:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3090:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3091:3: RULE_STRING
+            // InternalTextualScenario.g:3147:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3148:3: RULE_STRING
             {
              before(grammarAccess.getCreateMessageAccess().getTargetSTRINGTerminalRuleCall_2_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9651,18 +9866,63 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__CreateMessage__TargetAssignment_2"
 
 
+    // $ANTLR start "rule__CreateMessage__DoubleDotAssignment_3"
+    // InternalTextualScenario.g:3157:1: rule__CreateMessage__DoubleDotAssignment_3 : ( ( ':' ) ) ;
+    public final void rule__CreateMessage__DoubleDotAssignment_3() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3161:1: ( ( ( ':' ) ) )
+            // InternalTextualScenario.g:3162:2: ( ( ':' ) )
+            {
+            // InternalTextualScenario.g:3162:2: ( ( ':' ) )
+            // InternalTextualScenario.g:3163:3: ( ':' )
+            {
+             before(grammarAccess.getCreateMessageAccess().getDoubleDotColonKeyword_3_0()); 
+            // InternalTextualScenario.g:3164:3: ( ':' )
+            // InternalTextualScenario.g:3165:4: ':'
+            {
+             before(grammarAccess.getCreateMessageAccess().getDoubleDotColonKeyword_3_0()); 
+            match(input,39,FOLLOW_2); 
+             after(grammarAccess.getCreateMessageAccess().getDoubleDotColonKeyword_3_0()); 
+
+            }
+
+             after(grammarAccess.getCreateMessageAccess().getDoubleDotColonKeyword_3_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__CreateMessage__DoubleDotAssignment_3"
+
+
     // $ANTLR start "rule__CreateMessage__NameAssignment_4"
-    // InternalTextualScenario.g:3100:1: rule__CreateMessage__NameAssignment_4 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3176:1: rule__CreateMessage__NameAssignment_4 : ( RULE_STRING ) ;
     public final void rule__CreateMessage__NameAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3104:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3105:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3180:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3181:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3105:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3106:3: RULE_STRING
+            // InternalTextualScenario.g:3181:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3182:3: RULE_STRING
             {
              before(grammarAccess.getCreateMessageAccess().getNameSTRINGTerminalRuleCall_4_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9689,17 +9949,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__DeleteMessage__SourceAssignment_0"
-    // InternalTextualScenario.g:3115:1: rule__DeleteMessage__SourceAssignment_0 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3191:1: rule__DeleteMessage__SourceAssignment_0 : ( RULE_STRING ) ;
     public final void rule__DeleteMessage__SourceAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3119:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3120:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3195:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3196:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3120:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3121:3: RULE_STRING
+            // InternalTextualScenario.g:3196:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3197:3: RULE_STRING
             {
              before(grammarAccess.getDeleteMessageAccess().getSourceSTRINGTerminalRuleCall_0_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9725,18 +9985,63 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__DeleteMessage__SourceAssignment_0"
 
 
+    // $ANTLR start "rule__DeleteMessage__ArrowAssignment_1"
+    // InternalTextualScenario.g:3206:1: rule__DeleteMessage__ArrowAssignment_1 : ( ( '->x' ) ) ;
+    public final void rule__DeleteMessage__ArrowAssignment_1() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3210:1: ( ( ( '->x' ) ) )
+            // InternalTextualScenario.g:3211:2: ( ( '->x' ) )
+            {
+            // InternalTextualScenario.g:3211:2: ( ( '->x' ) )
+            // InternalTextualScenario.g:3212:3: ( '->x' )
+            {
+             before(grammarAccess.getDeleteMessageAccess().getArrowXKeyword_1_0()); 
+            // InternalTextualScenario.g:3213:3: ( '->x' )
+            // InternalTextualScenario.g:3214:4: '->x'
+            {
+             before(grammarAccess.getDeleteMessageAccess().getArrowXKeyword_1_0()); 
+            match(input,41,FOLLOW_2); 
+             after(grammarAccess.getDeleteMessageAccess().getArrowXKeyword_1_0()); 
+
+            }
+
+             after(grammarAccess.getDeleteMessageAccess().getArrowXKeyword_1_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__DeleteMessage__ArrowAssignment_1"
+
+
     // $ANTLR start "rule__DeleteMessage__TargetAssignment_2"
-    // InternalTextualScenario.g:3130:1: rule__DeleteMessage__TargetAssignment_2 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3225:1: rule__DeleteMessage__TargetAssignment_2 : ( RULE_STRING ) ;
     public final void rule__DeleteMessage__TargetAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3134:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3135:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3229:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3230:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3135:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3136:3: RULE_STRING
+            // InternalTextualScenario.g:3230:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3231:3: RULE_STRING
             {
              before(grammarAccess.getDeleteMessageAccess().getTargetSTRINGTerminalRuleCall_2_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9762,18 +10067,63 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__DeleteMessage__TargetAssignment_2"
 
 
+    // $ANTLR start "rule__DeleteMessage__DoubleDotAssignment_3"
+    // InternalTextualScenario.g:3240:1: rule__DeleteMessage__DoubleDotAssignment_3 : ( ( ':' ) ) ;
+    public final void rule__DeleteMessage__DoubleDotAssignment_3() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3244:1: ( ( ( ':' ) ) )
+            // InternalTextualScenario.g:3245:2: ( ( ':' ) )
+            {
+            // InternalTextualScenario.g:3245:2: ( ( ':' ) )
+            // InternalTextualScenario.g:3246:3: ( ':' )
+            {
+             before(grammarAccess.getDeleteMessageAccess().getDoubleDotColonKeyword_3_0()); 
+            // InternalTextualScenario.g:3247:3: ( ':' )
+            // InternalTextualScenario.g:3248:4: ':'
+            {
+             before(grammarAccess.getDeleteMessageAccess().getDoubleDotColonKeyword_3_0()); 
+            match(input,39,FOLLOW_2); 
+             after(grammarAccess.getDeleteMessageAccess().getDoubleDotColonKeyword_3_0()); 
+
+            }
+
+             after(grammarAccess.getDeleteMessageAccess().getDoubleDotColonKeyword_3_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__DeleteMessage__DoubleDotAssignment_3"
+
+
     // $ANTLR start "rule__DeleteMessage__NameAssignment_4"
-    // InternalTextualScenario.g:3145:1: rule__DeleteMessage__NameAssignment_4 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3259:1: rule__DeleteMessage__NameAssignment_4 : ( RULE_STRING ) ;
     public final void rule__DeleteMessage__NameAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3149:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3150:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3263:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3264:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3150:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3151:3: RULE_STRING
+            // InternalTextualScenario.g:3264:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3265:3: RULE_STRING
             {
              before(grammarAccess.getDeleteMessageAccess().getNameSTRINGTerminalRuleCall_4_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9799,18 +10149,63 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__DeleteMessage__NameAssignment_4"
 
 
+    // $ANTLR start "rule__ArmTimerMessage__ArrowAssignment_0"
+    // InternalTextualScenario.g:3274:1: rule__ArmTimerMessage__ArrowAssignment_0 : ( ( '->>' ) ) ;
+    public final void rule__ArmTimerMessage__ArrowAssignment_0() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3278:1: ( ( ( '->>' ) ) )
+            // InternalTextualScenario.g:3279:2: ( ( '->>' ) )
+            {
+            // InternalTextualScenario.g:3279:2: ( ( '->>' ) )
+            // InternalTextualScenario.g:3280:3: ( '->>' )
+            {
+             before(grammarAccess.getArmTimerMessageAccess().getArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0()); 
+            // InternalTextualScenario.g:3281:3: ( '->>' )
+            // InternalTextualScenario.g:3282:4: '->>'
+            {
+             before(grammarAccess.getArmTimerMessageAccess().getArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0()); 
+            match(input,42,FOLLOW_2); 
+             after(grammarAccess.getArmTimerMessageAccess().getArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0()); 
+
+            }
+
+             after(grammarAccess.getArmTimerMessageAccess().getArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__ArmTimerMessage__ArrowAssignment_0"
+
+
     // $ANTLR start "rule__ArmTimerMessage__ParticipantAssignment_1"
-    // InternalTextualScenario.g:3160:1: rule__ArmTimerMessage__ParticipantAssignment_1 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3293:1: rule__ArmTimerMessage__ParticipantAssignment_1 : ( RULE_STRING ) ;
     public final void rule__ArmTimerMessage__ParticipantAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3164:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3165:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3297:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3298:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3165:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3166:3: RULE_STRING
+            // InternalTextualScenario.g:3298:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3299:3: RULE_STRING
             {
              before(grammarAccess.getArmTimerMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9836,18 +10231,63 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__ArmTimerMessage__ParticipantAssignment_1"
 
 
+    // $ANTLR start "rule__ArmTimerMessage__DoubleDotAssignment_2"
+    // InternalTextualScenario.g:3308:1: rule__ArmTimerMessage__DoubleDotAssignment_2 : ( ( ':' ) ) ;
+    public final void rule__ArmTimerMessage__DoubleDotAssignment_2() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3312:1: ( ( ( ':' ) ) )
+            // InternalTextualScenario.g:3313:2: ( ( ':' ) )
+            {
+            // InternalTextualScenario.g:3313:2: ( ( ':' ) )
+            // InternalTextualScenario.g:3314:3: ( ':' )
+            {
+             before(grammarAccess.getArmTimerMessageAccess().getDoubleDotColonKeyword_2_0()); 
+            // InternalTextualScenario.g:3315:3: ( ':' )
+            // InternalTextualScenario.g:3316:4: ':'
+            {
+             before(grammarAccess.getArmTimerMessageAccess().getDoubleDotColonKeyword_2_0()); 
+            match(input,39,FOLLOW_2); 
+             after(grammarAccess.getArmTimerMessageAccess().getDoubleDotColonKeyword_2_0()); 
+
+            }
+
+             after(grammarAccess.getArmTimerMessageAccess().getDoubleDotColonKeyword_2_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__ArmTimerMessage__DoubleDotAssignment_2"
+
+
     // $ANTLR start "rule__ArmTimerMessage__NameAssignment_3"
-    // InternalTextualScenario.g:3175:1: rule__ArmTimerMessage__NameAssignment_3 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3327:1: rule__ArmTimerMessage__NameAssignment_3 : ( RULE_STRING ) ;
     public final void rule__ArmTimerMessage__NameAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3179:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3180:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3331:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3332:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3180:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3181:3: RULE_STRING
+            // InternalTextualScenario.g:3332:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3333:3: RULE_STRING
             {
              before(grammarAccess.getArmTimerMessageAccess().getNameSTRINGTerminalRuleCall_3_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9874,21 +10314,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__ParticipantDeactivation__KeywordAssignment_0"
-    // InternalTextualScenario.g:3190:1: rule__ParticipantDeactivation__KeywordAssignment_0 : ( ( 'deactivate' ) ) ;
+    // InternalTextualScenario.g:3342:1: rule__ParticipantDeactivation__KeywordAssignment_0 : ( ( 'deactivate' ) ) ;
     public final void rule__ParticipantDeactivation__KeywordAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3194:1: ( ( ( 'deactivate' ) ) )
-            // InternalTextualScenario.g:3195:2: ( ( 'deactivate' ) )
+            // InternalTextualScenario.g:3346:1: ( ( ( 'deactivate' ) ) )
+            // InternalTextualScenario.g:3347:2: ( ( 'deactivate' ) )
             {
-            // InternalTextualScenario.g:3195:2: ( ( 'deactivate' ) )
-            // InternalTextualScenario.g:3196:3: ( 'deactivate' )
+            // InternalTextualScenario.g:3347:2: ( ( 'deactivate' ) )
+            // InternalTextualScenario.g:3348:3: ( 'deactivate' )
             {
              before(grammarAccess.getParticipantDeactivationAccess().getKeywordDeactivateKeyword_0_0()); 
-            // InternalTextualScenario.g:3197:3: ( 'deactivate' )
-            // InternalTextualScenario.g:3198:4: 'deactivate'
+            // InternalTextualScenario.g:3349:3: ( 'deactivate' )
+            // InternalTextualScenario.g:3350:4: 'deactivate'
             {
              before(grammarAccess.getParticipantDeactivationAccess().getKeywordDeactivateKeyword_0_0()); 
             match(input,43,FOLLOW_2); 
@@ -9919,17 +10359,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__ParticipantDeactivation__NameAssignment_1"
-    // InternalTextualScenario.g:3209:1: rule__ParticipantDeactivation__NameAssignment_1 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3361:1: rule__ParticipantDeactivation__NameAssignment_1 : ( RULE_STRING ) ;
     public final void rule__ParticipantDeactivation__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3213:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3214:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3365:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3366:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3214:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3215:3: RULE_STRING
+            // InternalTextualScenario.g:3366:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3367:3: RULE_STRING
             {
              before(grammarAccess.getParticipantDeactivationAccess().getNameSTRINGTerminalRuleCall_1_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -9956,21 +10396,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Reference__KeywordAssignment_0"
-    // InternalTextualScenario.g:3224:1: rule__Reference__KeywordAssignment_0 : ( ( 'ref' ) ) ;
+    // InternalTextualScenario.g:3376:1: rule__Reference__KeywordAssignment_0 : ( ( 'ref' ) ) ;
     public final void rule__Reference__KeywordAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3228:1: ( ( ( 'ref' ) ) )
-            // InternalTextualScenario.g:3229:2: ( ( 'ref' ) )
+            // InternalTextualScenario.g:3380:1: ( ( ( 'ref' ) ) )
+            // InternalTextualScenario.g:3381:2: ( ( 'ref' ) )
             {
-            // InternalTextualScenario.g:3229:2: ( ( 'ref' ) )
-            // InternalTextualScenario.g:3230:3: ( 'ref' )
+            // InternalTextualScenario.g:3381:2: ( ( 'ref' ) )
+            // InternalTextualScenario.g:3382:3: ( 'ref' )
             {
              before(grammarAccess.getReferenceAccess().getKeywordRefKeyword_0_0()); 
-            // InternalTextualScenario.g:3231:3: ( 'ref' )
-            // InternalTextualScenario.g:3232:4: 'ref'
+            // InternalTextualScenario.g:3383:3: ( 'ref' )
+            // InternalTextualScenario.g:3384:4: 'ref'
             {
              before(grammarAccess.getReferenceAccess().getKeywordRefKeyword_0_0()); 
             match(input,44,FOLLOW_2); 
@@ -10001,21 +10441,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Reference__OverAssignment_1"
-    // InternalTextualScenario.g:3243:1: rule__Reference__OverAssignment_1 : ( ( 'over' ) ) ;
+    // InternalTextualScenario.g:3395:1: rule__Reference__OverAssignment_1 : ( ( 'over' ) ) ;
     public final void rule__Reference__OverAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3247:1: ( ( ( 'over' ) ) )
-            // InternalTextualScenario.g:3248:2: ( ( 'over' ) )
+            // InternalTextualScenario.g:3399:1: ( ( ( 'over' ) ) )
+            // InternalTextualScenario.g:3400:2: ( ( 'over' ) )
             {
-            // InternalTextualScenario.g:3248:2: ( ( 'over' ) )
-            // InternalTextualScenario.g:3249:3: ( 'over' )
+            // InternalTextualScenario.g:3400:2: ( ( 'over' ) )
+            // InternalTextualScenario.g:3401:3: ( 'over' )
             {
              before(grammarAccess.getReferenceAccess().getOverOverKeyword_1_0()); 
-            // InternalTextualScenario.g:3250:3: ( 'over' )
-            // InternalTextualScenario.g:3251:4: 'over'
+            // InternalTextualScenario.g:3402:3: ( 'over' )
+            // InternalTextualScenario.g:3403:4: 'over'
             {
              before(grammarAccess.getReferenceAccess().getOverOverKeyword_1_0()); 
             match(input,45,FOLLOW_2); 
@@ -10046,17 +10486,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Reference__TimelinesAssignment_2"
-    // InternalTextualScenario.g:3262:1: rule__Reference__TimelinesAssignment_2 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3414:1: rule__Reference__TimelinesAssignment_2 : ( RULE_STRING ) ;
     public final void rule__Reference__TimelinesAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3266:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3267:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3418:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3419:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3267:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3268:3: RULE_STRING
+            // InternalTextualScenario.g:3419:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3420:3: RULE_STRING
             {
              before(grammarAccess.getReferenceAccess().getTimelinesSTRINGTerminalRuleCall_2_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -10083,17 +10523,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Reference__NameAssignment_3"
-    // InternalTextualScenario.g:3277:1: rule__Reference__NameAssignment_3 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3429:1: rule__Reference__NameAssignment_3 : ( RULE_STRING ) ;
     public final void rule__Reference__NameAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3281:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3282:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3433:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3434:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3282:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3283:3: RULE_STRING
+            // InternalTextualScenario.g:3434:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3435:3: RULE_STRING
             {
              before(grammarAccess.getReferenceAccess().getNameSTRINGTerminalRuleCall_3_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -10120,21 +10560,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CombinedFragment__KeywordAssignment_0"
-    // InternalTextualScenario.g:3292:1: rule__CombinedFragment__KeywordAssignment_0 : ( ( rule__CombinedFragment__KeywordAlternatives_0_0 ) ) ;
+    // InternalTextualScenario.g:3444:1: rule__CombinedFragment__KeywordAssignment_0 : ( ( rule__CombinedFragment__KeywordAlternatives_0_0 ) ) ;
     public final void rule__CombinedFragment__KeywordAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3296:1: ( ( ( rule__CombinedFragment__KeywordAlternatives_0_0 ) ) )
-            // InternalTextualScenario.g:3297:2: ( ( rule__CombinedFragment__KeywordAlternatives_0_0 ) )
+            // InternalTextualScenario.g:3448:1: ( ( ( rule__CombinedFragment__KeywordAlternatives_0_0 ) ) )
+            // InternalTextualScenario.g:3449:2: ( ( rule__CombinedFragment__KeywordAlternatives_0_0 ) )
             {
-            // InternalTextualScenario.g:3297:2: ( ( rule__CombinedFragment__KeywordAlternatives_0_0 ) )
-            // InternalTextualScenario.g:3298:3: ( rule__CombinedFragment__KeywordAlternatives_0_0 )
+            // InternalTextualScenario.g:3449:2: ( ( rule__CombinedFragment__KeywordAlternatives_0_0 ) )
+            // InternalTextualScenario.g:3450:3: ( rule__CombinedFragment__KeywordAlternatives_0_0 )
             {
              before(grammarAccess.getCombinedFragmentAccess().getKeywordAlternatives_0_0()); 
-            // InternalTextualScenario.g:3299:3: ( rule__CombinedFragment__KeywordAlternatives_0_0 )
-            // InternalTextualScenario.g:3299:4: rule__CombinedFragment__KeywordAlternatives_0_0
+            // InternalTextualScenario.g:3451:3: ( rule__CombinedFragment__KeywordAlternatives_0_0 )
+            // InternalTextualScenario.g:3451:4: rule__CombinedFragment__KeywordAlternatives_0_0
             {
             pushFollow(FOLLOW_2);
             rule__CombinedFragment__KeywordAlternatives_0_0();
@@ -10167,17 +10607,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CombinedFragment__ExpressionAssignment_1"
-    // InternalTextualScenario.g:3307:1: rule__CombinedFragment__ExpressionAssignment_1 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3459:1: rule__CombinedFragment__ExpressionAssignment_1 : ( RULE_STRING ) ;
     public final void rule__CombinedFragment__ExpressionAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3311:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3312:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3463:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3464:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3312:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3313:3: RULE_STRING
+            // InternalTextualScenario.g:3464:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3465:3: RULE_STRING
             {
              before(grammarAccess.getCombinedFragmentAccess().getExpressionSTRINGTerminalRuleCall_1_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -10204,21 +10644,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CombinedFragment__OverAssignment_2"
-    // InternalTextualScenario.g:3322:1: rule__CombinedFragment__OverAssignment_2 : ( ( 'over' ) ) ;
+    // InternalTextualScenario.g:3474:1: rule__CombinedFragment__OverAssignment_2 : ( ( 'over' ) ) ;
     public final void rule__CombinedFragment__OverAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3326:1: ( ( ( 'over' ) ) )
-            // InternalTextualScenario.g:3327:2: ( ( 'over' ) )
+            // InternalTextualScenario.g:3478:1: ( ( ( 'over' ) ) )
+            // InternalTextualScenario.g:3479:2: ( ( 'over' ) )
             {
-            // InternalTextualScenario.g:3327:2: ( ( 'over' ) )
-            // InternalTextualScenario.g:3328:3: ( 'over' )
+            // InternalTextualScenario.g:3479:2: ( ( 'over' ) )
+            // InternalTextualScenario.g:3480:3: ( 'over' )
             {
              before(grammarAccess.getCombinedFragmentAccess().getOverOverKeyword_2_0()); 
-            // InternalTextualScenario.g:3329:3: ( 'over' )
-            // InternalTextualScenario.g:3330:4: 'over'
+            // InternalTextualScenario.g:3481:3: ( 'over' )
+            // InternalTextualScenario.g:3482:4: 'over'
             {
              before(grammarAccess.getCombinedFragmentAccess().getOverOverKeyword_2_0()); 
             match(input,45,FOLLOW_2); 
@@ -10249,17 +10689,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CombinedFragment__TimelinesAssignment_3"
-    // InternalTextualScenario.g:3341:1: rule__CombinedFragment__TimelinesAssignment_3 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3493:1: rule__CombinedFragment__TimelinesAssignment_3 : ( RULE_STRING ) ;
     public final void rule__CombinedFragment__TimelinesAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3345:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3346:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3497:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3498:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3346:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3347:3: RULE_STRING
+            // InternalTextualScenario.g:3498:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3499:3: RULE_STRING
             {
              before(grammarAccess.getCombinedFragmentAccess().getTimelinesSTRINGTerminalRuleCall_3_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -10286,17 +10726,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CombinedFragment__BlockAssignment_4"
-    // InternalTextualScenario.g:3356:1: rule__CombinedFragment__BlockAssignment_4 : ( ruleBlock ) ;
+    // InternalTextualScenario.g:3508:1: rule__CombinedFragment__BlockAssignment_4 : ( ruleBlock ) ;
     public final void rule__CombinedFragment__BlockAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3360:1: ( ( ruleBlock ) )
-            // InternalTextualScenario.g:3361:2: ( ruleBlock )
+            // InternalTextualScenario.g:3512:1: ( ( ruleBlock ) )
+            // InternalTextualScenario.g:3513:2: ( ruleBlock )
             {
-            // InternalTextualScenario.g:3361:2: ( ruleBlock )
-            // InternalTextualScenario.g:3362:3: ruleBlock
+            // InternalTextualScenario.g:3513:2: ( ruleBlock )
+            // InternalTextualScenario.g:3514:3: ruleBlock
             {
              before(grammarAccess.getCombinedFragmentAccess().getBlockBlockParserRuleCall_4_0()); 
             pushFollow(FOLLOW_2);
@@ -10327,17 +10767,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__CombinedFragment__OperandsAssignment_5"
-    // InternalTextualScenario.g:3371:1: rule__CombinedFragment__OperandsAssignment_5 : ( ruleOperand ) ;
+    // InternalTextualScenario.g:3523:1: rule__CombinedFragment__OperandsAssignment_5 : ( ruleOperand ) ;
     public final void rule__CombinedFragment__OperandsAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3375:1: ( ( ruleOperand ) )
-            // InternalTextualScenario.g:3376:2: ( ruleOperand )
+            // InternalTextualScenario.g:3527:1: ( ( ruleOperand ) )
+            // InternalTextualScenario.g:3528:2: ( ruleOperand )
             {
-            // InternalTextualScenario.g:3376:2: ( ruleOperand )
-            // InternalTextualScenario.g:3377:3: ruleOperand
+            // InternalTextualScenario.g:3528:2: ( ruleOperand )
+            // InternalTextualScenario.g:3529:3: ruleOperand
             {
              before(grammarAccess.getCombinedFragmentAccess().getOperandsOperandParserRuleCall_5_0()); 
             pushFollow(FOLLOW_2);
@@ -10368,21 +10808,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Operand__KeywordAssignment_0"
-    // InternalTextualScenario.g:3386:1: rule__Operand__KeywordAssignment_0 : ( ( 'else' ) ) ;
+    // InternalTextualScenario.g:3538:1: rule__Operand__KeywordAssignment_0 : ( ( 'else' ) ) ;
     public final void rule__Operand__KeywordAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3390:1: ( ( ( 'else' ) ) )
-            // InternalTextualScenario.g:3391:2: ( ( 'else' ) )
+            // InternalTextualScenario.g:3542:1: ( ( ( 'else' ) ) )
+            // InternalTextualScenario.g:3543:2: ( ( 'else' ) )
             {
-            // InternalTextualScenario.g:3391:2: ( ( 'else' ) )
-            // InternalTextualScenario.g:3392:3: ( 'else' )
+            // InternalTextualScenario.g:3543:2: ( ( 'else' ) )
+            // InternalTextualScenario.g:3544:3: ( 'else' )
             {
              before(grammarAccess.getOperandAccess().getKeywordElseKeyword_0_0()); 
-            // InternalTextualScenario.g:3393:3: ( 'else' )
-            // InternalTextualScenario.g:3394:4: 'else'
+            // InternalTextualScenario.g:3545:3: ( 'else' )
+            // InternalTextualScenario.g:3546:4: 'else'
             {
              before(grammarAccess.getOperandAccess().getKeywordElseKeyword_0_0()); 
             match(input,46,FOLLOW_2); 
@@ -10413,17 +10853,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Operand__ExpressionAssignment_1"
-    // InternalTextualScenario.g:3405:1: rule__Operand__ExpressionAssignment_1 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3557:1: rule__Operand__ExpressionAssignment_1 : ( RULE_STRING ) ;
     public final void rule__Operand__ExpressionAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3409:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3410:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3561:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3562:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3410:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3411:3: RULE_STRING
+            // InternalTextualScenario.g:3562:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3563:3: RULE_STRING
             {
              before(grammarAccess.getOperandAccess().getExpressionSTRINGTerminalRuleCall_1_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -10450,17 +10890,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Operand__BlockAssignment_2"
-    // InternalTextualScenario.g:3420:1: rule__Operand__BlockAssignment_2 : ( ruleBlock ) ;
+    // InternalTextualScenario.g:3572:1: rule__Operand__BlockAssignment_2 : ( ruleBlock ) ;
     public final void rule__Operand__BlockAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3424:1: ( ( ruleBlock ) )
-            // InternalTextualScenario.g:3425:2: ( ruleBlock )
+            // InternalTextualScenario.g:3576:1: ( ( ruleBlock ) )
+            // InternalTextualScenario.g:3577:2: ( ruleBlock )
             {
-            // InternalTextualScenario.g:3425:2: ( ruleBlock )
-            // InternalTextualScenario.g:3426:3: ruleBlock
+            // InternalTextualScenario.g:3577:2: ( ruleBlock )
+            // InternalTextualScenario.g:3578:3: ruleBlock
             {
              before(grammarAccess.getOperandAccess().getBlockBlockParserRuleCall_2_0()); 
             pushFollow(FOLLOW_2);
@@ -10491,24 +10931,24 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Block__BeginAssignment_0"
-    // InternalTextualScenario.g:3435:1: rule__Block__BeginAssignment_0 : ( ( '{' ) ) ;
+    // InternalTextualScenario.g:3587:1: rule__Block__BeginAssignment_0 : ( ( '{' ) ) ;
     public final void rule__Block__BeginAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3439:1: ( ( ( '{' ) ) )
-            // InternalTextualScenario.g:3440:2: ( ( '{' ) )
+            // InternalTextualScenario.g:3591:1: ( ( ( '{' ) ) )
+            // InternalTextualScenario.g:3592:2: ( ( '{' ) )
             {
-            // InternalTextualScenario.g:3440:2: ( ( '{' ) )
-            // InternalTextualScenario.g:3441:3: ( '{' )
-            {
-             before(grammarAccess.getBlockAccess().getBeginLeftCurlyBracketKeyword_0_0()); 
-            // InternalTextualScenario.g:3442:3: ( '{' )
-            // InternalTextualScenario.g:3443:4: '{'
+            // InternalTextualScenario.g:3592:2: ( ( '{' ) )
+            // InternalTextualScenario.g:3593:3: ( '{' )
             {
              before(grammarAccess.getBlockAccess().getBeginLeftCurlyBracketKeyword_0_0()); 
-            match(input,33,FOLLOW_2); 
+            // InternalTextualScenario.g:3594:3: ( '{' )
+            // InternalTextualScenario.g:3595:4: '{'
+            {
+             before(grammarAccess.getBlockAccess().getBeginLeftCurlyBracketKeyword_0_0()); 
+            match(input,28,FOLLOW_2); 
              after(grammarAccess.getBlockAccess().getBeginLeftCurlyBracketKeyword_0_0()); 
 
             }
@@ -10536,21 +10976,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Block__BlockElementsAssignment_1"
-    // InternalTextualScenario.g:3454:1: rule__Block__BlockElementsAssignment_1 : ( ( rule__Block__BlockElementsAlternatives_1_0 ) ) ;
+    // InternalTextualScenario.g:3606:1: rule__Block__BlockElementsAssignment_1 : ( ( rule__Block__BlockElementsAlternatives_1_0 ) ) ;
     public final void rule__Block__BlockElementsAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3458:1: ( ( ( rule__Block__BlockElementsAlternatives_1_0 ) ) )
-            // InternalTextualScenario.g:3459:2: ( ( rule__Block__BlockElementsAlternatives_1_0 ) )
+            // InternalTextualScenario.g:3610:1: ( ( ( rule__Block__BlockElementsAlternatives_1_0 ) ) )
+            // InternalTextualScenario.g:3611:2: ( ( rule__Block__BlockElementsAlternatives_1_0 ) )
             {
-            // InternalTextualScenario.g:3459:2: ( ( rule__Block__BlockElementsAlternatives_1_0 ) )
-            // InternalTextualScenario.g:3460:3: ( rule__Block__BlockElementsAlternatives_1_0 )
+            // InternalTextualScenario.g:3611:2: ( ( rule__Block__BlockElementsAlternatives_1_0 ) )
+            // InternalTextualScenario.g:3612:3: ( rule__Block__BlockElementsAlternatives_1_0 )
             {
              before(grammarAccess.getBlockAccess().getBlockElementsAlternatives_1_0()); 
-            // InternalTextualScenario.g:3461:3: ( rule__Block__BlockElementsAlternatives_1_0 )
-            // InternalTextualScenario.g:3461:4: rule__Block__BlockElementsAlternatives_1_0
+            // InternalTextualScenario.g:3613:3: ( rule__Block__BlockElementsAlternatives_1_0 )
+            // InternalTextualScenario.g:3613:4: rule__Block__BlockElementsAlternatives_1_0
             {
             pushFollow(FOLLOW_2);
             rule__Block__BlockElementsAlternatives_1_0();
@@ -10583,24 +11023,24 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Block__EndAssignment_2"
-    // InternalTextualScenario.g:3469:1: rule__Block__EndAssignment_2 : ( ( '}' ) ) ;
+    // InternalTextualScenario.g:3621:1: rule__Block__EndAssignment_2 : ( ( '}' ) ) ;
     public final void rule__Block__EndAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3473:1: ( ( ( '}' ) ) )
-            // InternalTextualScenario.g:3474:2: ( ( '}' ) )
+            // InternalTextualScenario.g:3625:1: ( ( ( '}' ) ) )
+            // InternalTextualScenario.g:3626:2: ( ( '}' ) )
             {
-            // InternalTextualScenario.g:3474:2: ( ( '}' ) )
-            // InternalTextualScenario.g:3475:3: ( '}' )
-            {
-             before(grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0()); 
-            // InternalTextualScenario.g:3476:3: ( '}' )
-            // InternalTextualScenario.g:3477:4: '}'
+            // InternalTextualScenario.g:3626:2: ( ( '}' ) )
+            // InternalTextualScenario.g:3627:3: ( '}' )
             {
              before(grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0()); 
-            match(input,34,FOLLOW_2); 
+            // InternalTextualScenario.g:3628:3: ( '}' )
+            // InternalTextualScenario.g:3629:4: '}'
+            {
+             before(grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0()); 
+            match(input,29,FOLLOW_2); 
              after(grammarAccess.getBlockAccess().getEndRightCurlyBracketKeyword_2_0()); 
 
             }
@@ -10628,21 +11068,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__StateFragment__OnAssignment_0"
-    // InternalTextualScenario.g:3488:1: rule__StateFragment__OnAssignment_0 : ( ( 'on' ) ) ;
+    // InternalTextualScenario.g:3640:1: rule__StateFragment__OnAssignment_0 : ( ( 'on' ) ) ;
     public final void rule__StateFragment__OnAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3492:1: ( ( ( 'on' ) ) )
-            // InternalTextualScenario.g:3493:2: ( ( 'on' ) )
+            // InternalTextualScenario.g:3644:1: ( ( ( 'on' ) ) )
+            // InternalTextualScenario.g:3645:2: ( ( 'on' ) )
             {
-            // InternalTextualScenario.g:3493:2: ( ( 'on' ) )
-            // InternalTextualScenario.g:3494:3: ( 'on' )
+            // InternalTextualScenario.g:3645:2: ( ( 'on' ) )
+            // InternalTextualScenario.g:3646:3: ( 'on' )
             {
              before(grammarAccess.getStateFragmentAccess().getOnOnKeyword_0_0()); 
-            // InternalTextualScenario.g:3495:3: ( 'on' )
-            // InternalTextualScenario.g:3496:4: 'on'
+            // InternalTextualScenario.g:3647:3: ( 'on' )
+            // InternalTextualScenario.g:3648:4: 'on'
             {
              before(grammarAccess.getStateFragmentAccess().getOnOnKeyword_0_0()); 
             match(input,47,FOLLOW_2); 
@@ -10673,17 +11113,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__StateFragment__TimelineAssignment_1"
-    // InternalTextualScenario.g:3507:1: rule__StateFragment__TimelineAssignment_1 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3659:1: rule__StateFragment__TimelineAssignment_1 : ( RULE_STRING ) ;
     public final void rule__StateFragment__TimelineAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3511:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3512:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3663:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3664:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3512:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3513:3: RULE_STRING
+            // InternalTextualScenario.g:3664:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3665:3: RULE_STRING
             {
              before(grammarAccess.getStateFragmentAccess().getTimelineSTRINGTerminalRuleCall_1_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -10710,21 +11150,21 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__StateFragment__KeywordAssignment_2"
-    // InternalTextualScenario.g:3522:1: rule__StateFragment__KeywordAssignment_2 : ( ( rule__StateFragment__KeywordAlternatives_2_0 ) ) ;
+    // InternalTextualScenario.g:3674:1: rule__StateFragment__KeywordAssignment_2 : ( ( rule__StateFragment__KeywordAlternatives_2_0 ) ) ;
     public final void rule__StateFragment__KeywordAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3526:1: ( ( ( rule__StateFragment__KeywordAlternatives_2_0 ) ) )
-            // InternalTextualScenario.g:3527:2: ( ( rule__StateFragment__KeywordAlternatives_2_0 ) )
+            // InternalTextualScenario.g:3678:1: ( ( ( rule__StateFragment__KeywordAlternatives_2_0 ) ) )
+            // InternalTextualScenario.g:3679:2: ( ( rule__StateFragment__KeywordAlternatives_2_0 ) )
             {
-            // InternalTextualScenario.g:3527:2: ( ( rule__StateFragment__KeywordAlternatives_2_0 ) )
-            // InternalTextualScenario.g:3528:3: ( rule__StateFragment__KeywordAlternatives_2_0 )
+            // InternalTextualScenario.g:3679:2: ( ( rule__StateFragment__KeywordAlternatives_2_0 ) )
+            // InternalTextualScenario.g:3680:3: ( rule__StateFragment__KeywordAlternatives_2_0 )
             {
              before(grammarAccess.getStateFragmentAccess().getKeywordAlternatives_2_0()); 
-            // InternalTextualScenario.g:3529:3: ( rule__StateFragment__KeywordAlternatives_2_0 )
-            // InternalTextualScenario.g:3529:4: rule__StateFragment__KeywordAlternatives_2_0
+            // InternalTextualScenario.g:3681:3: ( rule__StateFragment__KeywordAlternatives_2_0 )
+            // InternalTextualScenario.g:3681:4: rule__StateFragment__KeywordAlternatives_2_0
             {
             pushFollow(FOLLOW_2);
             rule__StateFragment__KeywordAlternatives_2_0();
@@ -10757,17 +11197,17 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__StateFragment__NameAssignment_3"
-    // InternalTextualScenario.g:3537:1: rule__StateFragment__NameAssignment_3 : ( RULE_STRING ) ;
+    // InternalTextualScenario.g:3689:1: rule__StateFragment__NameAssignment_3 : ( RULE_STRING ) ;
     public final void rule__StateFragment__NameAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3541:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3542:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3693:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3694:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3542:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3543:3: RULE_STRING
+            // InternalTextualScenario.g:3694:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3695:3: RULE_STRING
             {
              before(grammarAccess.getStateFragmentAccess().getNameSTRINGTerminalRuleCall_3_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
@@ -10799,23 +11239,23 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
     public static final BitSet FOLLOW_1 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_2 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_3 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_4 = new BitSet(new long[]{0x000099FD04FFC010L});
-    public static final BitSet FOLLOW_5 = new BitSet(new long[]{0x000001F804000002L});
-    public static final BitSet FOLLOW_6 = new BitSet(new long[]{0x0000980100FFC012L});
+    public static final BitSet FOLLOW_3 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_4 = new BitSet(new long[]{0x00009C0FE4FFC010L});
+    public static final BitSet FOLLOW_5 = new BitSet(new long[]{0x0000000FC4000002L});
+    public static final BitSet FOLLOW_6 = new BitSet(new long[]{0x00009C0000FFC012L});
     public static final BitSet FOLLOW_7 = new BitSet(new long[]{0x0000000000000010L});
     public static final BitSet FOLLOW_8 = new BitSet(new long[]{0x0000000000003800L});
-    public static final BitSet FOLLOW_9 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_10 = new BitSet(new long[]{0x0000060020000000L});
-    public static final BitSet FOLLOW_11 = new BitSet(new long[]{0x0000000040000000L});
-    public static final BitSet FOLLOW_12 = new BitSet(new long[]{0x0000000020000000L});
-    public static final BitSet FOLLOW_13 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_9 = new BitSet(new long[]{0x0000001000000000L});
+    public static final BitSet FOLLOW_10 = new BitSet(new long[]{0x000000E000000000L});
+    public static final BitSet FOLLOW_11 = new BitSet(new long[]{0x0000010000000000L});
+    public static final BitSet FOLLOW_12 = new BitSet(new long[]{0x0000008000000000L});
+    public static final BitSet FOLLOW_13 = new BitSet(new long[]{0x0000020000000000L});
     public static final BitSet FOLLOW_14 = new BitSet(new long[]{0x0000200000000000L});
     public static final BitSet FOLLOW_15 = new BitSet(new long[]{0x0000000000000012L});
     public static final BitSet FOLLOW_16 = new BitSet(new long[]{0x0000000000FFC010L});
     public static final BitSet FOLLOW_17 = new BitSet(new long[]{0x0000400000000010L});
     public static final BitSet FOLLOW_18 = new BitSet(new long[]{0x0000400000000012L});
-    public static final BitSet FOLLOW_19 = new BitSet(new long[]{0x0000980500FFC010L});
+    public static final BitSet FOLLOW_19 = new BitSet(new long[]{0x00009C0020FFC010L});
     public static final BitSet FOLLOW_20 = new BitSet(new long[]{0x0000000007000000L});
 
 }

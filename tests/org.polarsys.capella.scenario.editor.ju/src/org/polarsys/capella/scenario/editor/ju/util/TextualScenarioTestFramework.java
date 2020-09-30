@@ -39,6 +39,7 @@ import org.polarsys.capella.common.helpers.EObjectLabelProviderHelper;
 import org.polarsys.capella.core.data.information.AbstractInstance;
 import org.polarsys.capella.core.data.interaction.InstanceRole;
 import org.polarsys.capella.core.data.interaction.SequenceMessage;
+import org.polarsys.capella.core.data.interaction.StateFragment;
 import org.polarsys.capella.scenario.editor.embeddededitor.actions.RefreshAction;
 import org.polarsys.capella.scenario.editor.embeddededitor.actions.SaveAction;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
@@ -149,7 +150,25 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
         SequenceMessage message = (SequenceMessage) target;
         InstanceRole sourceIr = message.getSendingEnd().getCovered();
         InstanceRole targetIr = message.getReceivingEnd().getCovered();
-        newElements.add(sourceIr.getName() + " -> " + targetIr.getName() + " : " + message.getName());
+        switch (message.getKind()) {
+        case CREATE:
+          newElements.add(sourceIr.getName() + " ->+ " + targetIr.getName() + " : " + message.getName());
+          break;
+        case DELETE:
+          newElements.add(sourceIr.getName() + " ->x " + targetIr.getName() + " : " + message.getName());
+          break;
+        default:
+          newElements.add(sourceIr.getName() + " -> " + targetIr.getName() + " : " + message.getName());
+        }
+        
+      } else if (target instanceof StateFragment) {
+        StateFragment fragment = (StateFragment) target;
+        InstanceRole sourceIr = fragment.getStart().getCoveredInstanceRoles().get(0);
+        String keyword = EmbeddedEditorInstanceHelper.getStateFragmentType(fragment);
+        String stateName = fragment.getRelatedAbstractFunction() == null ? 
+            fragment.getRelatedAbstractState().getName() : fragment.getRelatedAbstractFunction().getName();
+        String newElement = "on " + sourceIr.getName() + " " + keyword + " " + stateName;
+        newElements.add(newElement);
       }
     });
 

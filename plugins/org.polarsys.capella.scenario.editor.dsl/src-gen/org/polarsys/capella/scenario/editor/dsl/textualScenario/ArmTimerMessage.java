@@ -25,7 +25,9 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getArrow <em>Arrow</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getParticipant <em>Participant</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getDoubleDot <em>Double Dot</em>}</li>
  * </ul>
  *
  * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getArmTimerMessage()
@@ -34,6 +36,28 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  */
 public interface ArmTimerMessage extends Message
 {
+  /**
+   * Returns the value of the '<em><b>Arrow</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Arrow</em>' attribute.
+   * @see #setArrow(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getArmTimerMessage_Arrow()
+   * @model
+   * @generated
+   */
+  String getArrow();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getArrow <em>Arrow</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Arrow</em>' attribute.
+   * @see #getArrow()
+   * @generated
+   */
+  void setArrow(String value);
+
   /**
    * Returns the value of the '<em><b>Participant</b></em>' attribute.
    * <!-- begin-user-doc -->
@@ -55,5 +79,27 @@ public interface ArmTimerMessage extends Message
    * @generated
    */
   void setParticipant(String value);
+
+  /**
+   * Returns the value of the '<em><b>Double Dot</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Double Dot</em>' attribute.
+   * @see #setDoubleDot(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getArmTimerMessage_DoubleDot()
+   * @model
+   * @generated
+   */
+  String getDoubleDot();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getDoubleDot <em>Double Dot</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Double Dot</em>' attribute.
+   * @see #getDoubleDot()
+   * @generated
+   */
+  void setDoubleDot(String value);
 
 } // ArmTimerMessage

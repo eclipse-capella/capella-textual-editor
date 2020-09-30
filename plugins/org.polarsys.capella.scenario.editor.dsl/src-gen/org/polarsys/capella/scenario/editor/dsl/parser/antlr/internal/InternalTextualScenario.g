@@ -853,10 +853,20 @@ ruleSequenceMessage returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_1='->'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getSequenceMessageAccess().getHyphenMinusGreaterThanSignKeyword_1());
-		}
+		(
+			(
+				lv_arrow_1_0='->'
+				{
+					newLeafNode(lv_arrow_1_0, grammarAccess.getSequenceMessageAccess().getArrowHyphenMinusGreaterThanSignKeyword_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getSequenceMessageRule());
+					}
+					setWithLastConsumed($current, "arrow", lv_arrow_1_0, "->");
+				}
+			)
+		)
 		(
 			(
 				lv_target_2_0=RULE_STRING
@@ -903,10 +913,20 @@ ruleSequenceMessage returns [EObject current=null]
 				}
 			)
 		)?
-		otherlv_5=':'
-		{
-			newLeafNode(otherlv_5, grammarAccess.getSequenceMessageAccess().getColonKeyword_5());
-		}
+		(
+			(
+				lv_doubleDot_5_0=':'
+				{
+					newLeafNode(lv_doubleDot_5_0, grammarAccess.getSequenceMessageAccess().getDoubleDotColonKeyword_5_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getSequenceMessageRule());
+					}
+					setWithLastConsumed($current, "doubleDot", lv_doubleDot_5_0, ":");
+				}
+			)
+		)
 		(
 			(
 				lv_name_6_0=RULE_STRING
@@ -962,10 +982,20 @@ ruleCreateMessage returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_1='->+'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getCreateMessageAccess().getHyphenMinusGreaterThanSignPlusSignKeyword_1());
-		}
+		(
+			(
+				lv_arrow_1_0='->+'
+				{
+					newLeafNode(lv_arrow_1_0, grammarAccess.getCreateMessageAccess().getArrowHyphenMinusGreaterThanSignPlusSignKeyword_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getCreateMessageRule());
+					}
+					setWithLastConsumed($current, "arrow", lv_arrow_1_0, "->+");
+				}
+			)
+		)
 		(
 			(
 				lv_target_2_0=RULE_STRING
@@ -984,10 +1014,20 @@ ruleCreateMessage returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_3=':'
-		{
-			newLeafNode(otherlv_3, grammarAccess.getCreateMessageAccess().getColonKeyword_3());
-		}
+		(
+			(
+				lv_doubleDot_3_0=':'
+				{
+					newLeafNode(lv_doubleDot_3_0, grammarAccess.getCreateMessageAccess().getDoubleDotColonKeyword_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getCreateMessageRule());
+					}
+					setWithLastConsumed($current, "doubleDot", lv_doubleDot_3_0, ":");
+				}
+			)
+		)
 		(
 			(
 				lv_name_4_0=RULE_STRING
@@ -1043,10 +1083,20 @@ ruleDeleteMessage returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_1='->x'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getDeleteMessageAccess().getXKeyword_1());
-		}
+		(
+			(
+				lv_arrow_1_0='->x'
+				{
+					newLeafNode(lv_arrow_1_0, grammarAccess.getDeleteMessageAccess().getArrowXKeyword_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getDeleteMessageRule());
+					}
+					setWithLastConsumed($current, "arrow", lv_arrow_1_0, "->x");
+				}
+			)
+		)
 		(
 			(
 				lv_target_2_0=RULE_STRING
@@ -1065,10 +1115,20 @@ ruleDeleteMessage returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_3=':'
-		{
-			newLeafNode(otherlv_3, grammarAccess.getDeleteMessageAccess().getColonKeyword_3());
-		}
+		(
+			(
+				lv_doubleDot_3_0=':'
+				{
+					newLeafNode(lv_doubleDot_3_0, grammarAccess.getDeleteMessageAccess().getDoubleDotColonKeyword_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getDeleteMessageRule());
+					}
+					setWithLastConsumed($current, "doubleDot", lv_doubleDot_3_0, ":");
+				}
+			)
+		)
 		(
 			(
 				lv_name_4_0=RULE_STRING
@@ -1106,10 +1166,20 @@ ruleArmTimerMessage returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='->>'
-		{
-			newLeafNode(otherlv_0, grammarAccess.getArmTimerMessageAccess().getHyphenMinusGreaterThanSignGreaterThanSignKeyword_0());
-		}
+		(
+			(
+				lv_arrow_0_0='->>'
+				{
+					newLeafNode(lv_arrow_0_0, grammarAccess.getArmTimerMessageAccess().getArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getArmTimerMessageRule());
+					}
+					setWithLastConsumed($current, "arrow", lv_arrow_0_0, "->>");
+				}
+			)
+		)
 		(
 			(
 				lv_participant_1_0=RULE_STRING
@@ -1128,10 +1198,20 @@ ruleArmTimerMessage returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_2=':'
-		{
-			newLeafNode(otherlv_2, grammarAccess.getArmTimerMessageAccess().getColonKeyword_2());
-		}
+		(
+			(
+				lv_doubleDot_2_0=':'
+				{
+					newLeafNode(lv_doubleDot_2_0, grammarAccess.getArmTimerMessageAccess().getDoubleDotColonKeyword_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getArmTimerMessageRule());
+					}
+					setWithLastConsumed($current, "doubleDot", lv_doubleDot_2_0, ":");
+				}
+			)
+		)
 		(
 			(
 				lv_name_3_0=RULE_STRING

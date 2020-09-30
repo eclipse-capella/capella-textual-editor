@@ -30,7 +30,7 @@ import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditor;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditorFactory;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.dsl.ui.internal.DslActivator;
-import org.polarsys.capella.scenario.editor.dsl.ui.provider.TextualScenarioProvider;
+import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.actions.XtextEditorActionFactory;
 
 import com.google.inject.Injector;

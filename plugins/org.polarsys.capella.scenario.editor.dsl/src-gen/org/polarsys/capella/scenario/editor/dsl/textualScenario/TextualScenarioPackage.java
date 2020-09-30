@@ -560,13 +560,31 @@ public interface TextualScenarioPackage extends EPackage
   int SEQUENCE_MESSAGE_TYPE__SOURCE = MESSAGE_FEATURE_COUNT + 0;
 
   /**
+   * The feature id for the '<em><b>Arrow</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SEQUENCE_MESSAGE_TYPE__ARROW = MESSAGE_FEATURE_COUNT + 1;
+
+  /**
    * The feature id for the '<em><b>Target</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SEQUENCE_MESSAGE_TYPE__TARGET = MESSAGE_FEATURE_COUNT + 1;
+  int SEQUENCE_MESSAGE_TYPE__TARGET = MESSAGE_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Double Dot</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT = MESSAGE_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Sequence Message Type</em>' class.
@@ -575,7 +593,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SEQUENCE_MESSAGE_TYPE_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 2;
+  int SEQUENCE_MESSAGE_TYPE_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.SequenceMessageImpl <em>Sequence Message</em>}' class.
@@ -606,6 +624,15 @@ public interface TextualScenarioPackage extends EPackage
   int SEQUENCE_MESSAGE__SOURCE = SEQUENCE_MESSAGE_TYPE__SOURCE;
 
   /**
+   * The feature id for the '<em><b>Arrow</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SEQUENCE_MESSAGE__ARROW = SEQUENCE_MESSAGE_TYPE__ARROW;
+
+  /**
    * The feature id for the '<em><b>Target</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -613,6 +640,15 @@ public interface TextualScenarioPackage extends EPackage
    * @ordered
    */
   int SEQUENCE_MESSAGE__TARGET = SEQUENCE_MESSAGE_TYPE__TARGET;
+
+  /**
+   * The feature id for the '<em><b>Double Dot</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SEQUENCE_MESSAGE__DOUBLE_DOT = SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT;
 
   /**
    * The feature id for the '<em><b>Execution</b></em>' attribute.
@@ -670,6 +706,15 @@ public interface TextualScenarioPackage extends EPackage
   int CREATE_MESSAGE__SOURCE = SEQUENCE_MESSAGE_TYPE__SOURCE;
 
   /**
+   * The feature id for the '<em><b>Arrow</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_MESSAGE__ARROW = SEQUENCE_MESSAGE_TYPE__ARROW;
+
+  /**
    * The feature id for the '<em><b>Target</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -677,6 +722,15 @@ public interface TextualScenarioPackage extends EPackage
    * @ordered
    */
   int CREATE_MESSAGE__TARGET = SEQUENCE_MESSAGE_TYPE__TARGET;
+
+  /**
+   * The feature id for the '<em><b>Double Dot</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_MESSAGE__DOUBLE_DOT = SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT;
 
   /**
    * The number of structural features of the '<em>Create Message</em>' class.
@@ -716,6 +770,15 @@ public interface TextualScenarioPackage extends EPackage
   int DELETE_MESSAGE__SOURCE = SEQUENCE_MESSAGE_TYPE__SOURCE;
 
   /**
+   * The feature id for the '<em><b>Arrow</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DELETE_MESSAGE__ARROW = SEQUENCE_MESSAGE_TYPE__ARROW;
+
+  /**
    * The feature id for the '<em><b>Target</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -723,6 +786,15 @@ public interface TextualScenarioPackage extends EPackage
    * @ordered
    */
   int DELETE_MESSAGE__TARGET = SEQUENCE_MESSAGE_TYPE__TARGET;
+
+  /**
+   * The feature id for the '<em><b>Double Dot</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DELETE_MESSAGE__DOUBLE_DOT = SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT;
 
   /**
    * The number of structural features of the '<em>Delete Message</em>' class.
@@ -753,13 +825,31 @@ public interface TextualScenarioPackage extends EPackage
   int ARM_TIMER_MESSAGE__NAME = MESSAGE__NAME;
 
   /**
+   * The feature id for the '<em><b>Arrow</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARM_TIMER_MESSAGE__ARROW = MESSAGE_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Participant</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ARM_TIMER_MESSAGE__PARTICIPANT = MESSAGE_FEATURE_COUNT + 0;
+  int ARM_TIMER_MESSAGE__PARTICIPANT = MESSAGE_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Double Dot</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARM_TIMER_MESSAGE__DOUBLE_DOT = MESSAGE_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Arm Timer Message</em>' class.
@@ -768,7 +858,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ARM_TIMER_MESSAGE_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 1;
+  int ARM_TIMER_MESSAGE_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ParticipantDeactivationImpl <em>Participant Deactivation</em>}' class.
@@ -1313,6 +1403,17 @@ public interface TextualScenarioPackage extends EPackage
   EAttribute getSequenceMessageType_Source();
 
   /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getArrow <em>Arrow</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Arrow</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getArrow()
+   * @see #getSequenceMessageType()
+   * @generated
+   */
+  EAttribute getSequenceMessageType_Arrow();
+
+  /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getTarget <em>Target</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1322,6 +1423,17 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    */
   EAttribute getSequenceMessageType_Target();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getDoubleDot <em>Double Dot</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Double Dot</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getDoubleDot()
+   * @see #getSequenceMessageType()
+   * @generated
+   */
+  EAttribute getSequenceMessageType_DoubleDot();
 
   /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage <em>Sequence Message</em>}'.
@@ -1386,6 +1498,17 @@ public interface TextualScenarioPackage extends EPackage
   EClass getArmTimerMessage();
 
   /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getArrow <em>Arrow</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Arrow</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getArrow()
+   * @see #getArmTimerMessage()
+   * @generated
+   */
+  EAttribute getArmTimerMessage_Arrow();
+
+  /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getParticipant <em>Participant</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1395,6 +1518,17 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    */
   EAttribute getArmTimerMessage_Participant();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getDoubleDot <em>Double Dot</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Double Dot</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getDoubleDot()
+   * @see #getArmTimerMessage()
+   * @generated
+   */
+  EAttribute getArmTimerMessage_DoubleDot();
 
   /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation <em>Participant Deactivation</em>}'.
@@ -1913,12 +2047,28 @@ public interface TextualScenarioPackage extends EPackage
     EAttribute SEQUENCE_MESSAGE_TYPE__SOURCE = eINSTANCE.getSequenceMessageType_Source();
 
     /**
+     * The meta object literal for the '<em><b>Arrow</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SEQUENCE_MESSAGE_TYPE__ARROW = eINSTANCE.getSequenceMessageType_Arrow();
+
+    /**
      * The meta object literal for the '<em><b>Target</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EAttribute SEQUENCE_MESSAGE_TYPE__TARGET = eINSTANCE.getSequenceMessageType_Target();
+
+    /**
+     * The meta object literal for the '<em><b>Double Dot</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT = eINSTANCE.getSequenceMessageType_DoubleDot();
 
     /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.SequenceMessageImpl <em>Sequence Message</em>}' class.
@@ -1977,12 +2127,28 @@ public interface TextualScenarioPackage extends EPackage
     EClass ARM_TIMER_MESSAGE = eINSTANCE.getArmTimerMessage();
 
     /**
+     * The meta object literal for the '<em><b>Arrow</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ARM_TIMER_MESSAGE__ARROW = eINSTANCE.getArmTimerMessage_Arrow();
+
+    /**
      * The meta object literal for the '<em><b>Participant</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EAttribute ARM_TIMER_MESSAGE__PARTICIPANT = eINSTANCE.getArmTimerMessage_Participant();
+
+    /**
+     * The meta object literal for the '<em><b>Double Dot</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ARM_TIMER_MESSAGE__DOUBLE_DOT = eINSTANCE.getArmTimerMessage_DoubleDot();
 
     /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ParticipantDeactivationImpl <em>Participant Deactivation</em>}' class.

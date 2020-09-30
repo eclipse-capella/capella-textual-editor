@@ -32,7 +32,9 @@
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//SequenceMessageType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//SequenceMessageType/source"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//SequenceMessageType/arrow"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//SequenceMessageType/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//SequenceMessageType/doubleDot"/>
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//SequenceMessage">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//SequenceMessage/execution"/>
@@ -41,7 +43,9 @@
     <genClasses ecoreClass="TextualScenario.ecore#//CreateMessage"/>
     <genClasses ecoreClass="TextualScenario.ecore#//DeleteMessage"/>
     <genClasses ecoreClass="TextualScenario.ecore#//ArmTimerMessage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/arrow"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/participant"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/doubleDot"/>
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//ParticipantDeactivation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ParticipantDeactivation/keyword"/>

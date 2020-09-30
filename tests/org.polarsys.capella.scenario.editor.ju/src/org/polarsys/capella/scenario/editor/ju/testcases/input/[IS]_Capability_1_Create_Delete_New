@@ -1,0 +1,10 @@
+scenario {
+	component "System"
+	actor "SA 3"
+	actor "SA 2"
+	"System" ->+ "SA 3" : "create1"
+	"SA 3" ->+ "SA 2" : "create2"
+	"SA 2" -> "SA 3" : "m1"
+	"SA 2" ->x "SA 3" : "delete"
+	"System" ->x "SA 2" : "delete2"
+}
