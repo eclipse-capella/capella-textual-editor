@@ -23,8 +23,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyTitle;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.texteditor.spelling.SpellingService;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditor;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditorFactory;
@@ -91,9 +93,10 @@ public class EmbeddedEditorView extends ViewPart {
     Injector injector = activator
         .getInjector(DslActivator.ORG_POLARSYS_CAPELLA_SCENARIO_EDITOR_DSL_TEXTUALSCENARIO);
 
+    EditorsPlugin.getDefault().getPreferenceStore().setValue(SpellingService.PREFERENCE_SPELLING_ENABLED, false);
     provider = injector.getInstance(TextualScenarioProvider.class);
     EmbeddedEditorFactory factory = injector.getInstance(EmbeddedEditorFactory.class);
-
+    
     EmbeddedEditor editor = factory.newEditor(provider).withParent(parent);
     editor.createPartialEditor();
     EmbeddedEditorInstance.setEmbeddedEditor(editor);
