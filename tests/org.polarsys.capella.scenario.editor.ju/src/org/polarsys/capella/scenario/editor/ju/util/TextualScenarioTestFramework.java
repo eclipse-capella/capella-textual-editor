@@ -157,6 +157,9 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
         case DELETE:
           newElements.add(sourceIr.getName() + " ->x " + targetIr.getName() + " : " + message.getName());
           break;
+        case TIMER:
+          newElements.add("->> " + targetIr.getName() + " : " + message.getName());
+          break;
         default:
           newElements.add(sourceIr.getName() + " -> " + targetIr.getName() + " : " + message.getName());
         }

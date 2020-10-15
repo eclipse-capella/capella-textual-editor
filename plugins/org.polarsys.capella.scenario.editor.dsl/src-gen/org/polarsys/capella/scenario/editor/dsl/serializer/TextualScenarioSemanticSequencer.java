@@ -172,25 +172,10 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     ArmTimerMessage returns ArmTimerMessage
 	 *
 	 * Constraint:
-	 *     (arrow='->>' participant=STRING doubleDot=':' name=STRING)
+	 *     (arrow='->>' participant=STRING execution='withExecution'? doubleDot=':' name=STRING)
 	 */
 	protected void sequence_ArmTimerMessage(ISerializationContext context, ArmTimerMessage semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__ARROW) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__ARROW));
-			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT));
-			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__DOUBLE_DOT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__DOUBLE_DOT));
-			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getArmTimerMessageAccess().getArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0(), semanticObject.getArrow());
-		feeder.accept(grammarAccess.getArmTimerMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0(), semanticObject.getParticipant());
-		feeder.accept(grammarAccess.getArmTimerMessageAccess().getDoubleDotColonKeyword_2_0(), semanticObject.getDoubleDot());
-		feeder.accept(grammarAccess.getArmTimerMessageAccess().getNameSTRINGTerminalRuleCall_3_0(), semanticObject.getName());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -222,8 +207,9 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *             keyword='neg' | 
 	 *             keyword='opt' | 
 	 *             keyword='seq' | 
-	 *             keyword='strict'
-	 *         )? 
+	 *             keyword='strict' | 
+	 *             keyword='unset'
+	 *         ) 
 	 *         expression=STRING 
 	 *         over='over' 
 	 *         timelines+=STRING+ 
