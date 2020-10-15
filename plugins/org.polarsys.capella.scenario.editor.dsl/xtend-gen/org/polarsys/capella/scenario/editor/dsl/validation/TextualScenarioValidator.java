@@ -23,6 +23,8 @@ import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.polarsys.capella.scenario.editor.dsl.helpers.TextualScenarioHelper;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
@@ -116,11 +118,10 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
     if (_isESScenario) {
       Object model = TextualScenarioHelper.getModelContainer(message);
-      boolean _notEquals = (!Objects.equal(model, null));
-      if (_notEquals) {
+      if ((model != null)) {
         Object scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) model).getElements());
         String exchangeType = TextualScenarioHelper.getMessageExchangeType(message);
-        if (((!Objects.equal(scenarioExchangesType, null)) && (!scenarioExchangesType.equals(exchangeType)))) {
+        if (((scenarioExchangesType != null) && (!scenarioExchangesType.equals(exchangeType)))) {
           this.error(("Exchange type can not be used, expected " + scenarioExchangesType), 
             TextualScenarioPackage.Literals.MESSAGE__NAME);
         }
@@ -204,6 +205,151 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           }
         }
         index++;
+      }
+    }
+  }
+  
+  @Check
+  public void checkTimelinesMessages(final SequenceMessageType message) {
+    ArrayList<String> participantsNames = TextualScenarioHelper.participantsDefinedBeforeNames(message);
+    boolean _contains = participantsNames.contains(message.getSource());
+    boolean _not = (!_contains);
+    if (_not) {
+      this.error(String.format("Timeline not defined in text"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
+      return;
+    }
+    boolean _contains_1 = participantsNames.contains(message.getTarget());
+    boolean _not_1 = (!_contains_1);
+    if (_not_1) {
+      this.error(String.format("Timeline not defined in text"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+      return;
+    }
+  }
+  
+  /**
+   * check if a delete message was created on a timeline involved in the actual combined fragment
+   */
+  @Check
+  public void checkIfACombinedFragmentIsUsedAfterDeleteMessage(final CombinedFragment combinedFragment) {
+    Object model = TextualScenarioHelper.getModelContainer(combinedFragment);
+    EList<EObject> elements = ((Model) model).getElements();
+    for (final EObject element : elements) {
+      {
+        boolean _equals = element.equals(combinedFragment);
+        if (_equals) {
+          return;
+        }
+        if ((element instanceof DeleteMessage)) {
+          boolean _contains = combinedFragment.getTimelines().contains(((DeleteMessage) element).getTarget());
+          if (_contains) {
+            this.error(
+              String.format(
+                "Combined Fragment can not be used at this point, a delete message was already inserted on this timeline"), 
+              TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES);
+            return;
+          }
+        }
+      }
+    }
+  }
+  
+  @Check
+  public void checkIfAMessageIsUsedAfterStateFragment(final StateFragment fragment) {
+    Object model = TextualScenarioHelper.getModelContainer(fragment);
+    EList<EObject> elements = ((Model) model).getElements();
+    for (final EObject element : elements) {
+      {
+        boolean _equals = element.equals(fragment);
+        if (_equals) {
+          return;
+        }
+        if ((element instanceof DeleteMessage)) {
+          boolean _equals_1 = ((DeleteMessage) element).getTarget().equals(fragment.getTimeline());
+          if (_equals_1) {
+            this.error(
+              String.format(
+                "State Fragment can not be used at this point, a delete message was already inserted on this timeline"), 
+              TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE);
+            return;
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * check if a delete message was created on a timeline involved in the actual message
+   */
+  @Check
+  public void checkIfAMessageIsUsedAfterDeleteMessage(final SequenceMessageType message) {
+    Object model = TextualScenarioHelper.getModelContainer(message);
+    EList<EObject> elements = ((Model) model).getElements();
+    for (final EObject element : elements) {
+      {
+        boolean _equals = element.equals(message);
+        if (_equals) {
+          return;
+        }
+        if ((element instanceof DeleteMessage)) {
+          boolean _equals_1 = ((DeleteMessage) element).getTarget().equals(message.getSource());
+          if (_equals_1) {
+            this.error(
+              String.format(
+                "Message can not be used at this point, a delete message was already inserted on this timeline"), 
+              TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
+            return;
+          }
+          boolean _equals_2 = ((DeleteMessage) element).getTarget().equals(message.getTarget());
+          if (_equals_2) {
+            this.error(
+              String.format(
+                "Message can not be used at this point, a delete message was already inserted on this timeline"), 
+              TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+            return;
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * check if create message could be used
+   */
+  @Check
+  public void checkCreateMessage(final CreateMessage createMessage) {
+    Object model = TextualScenarioHelper.getModelContainer(createMessage);
+    EList<EObject> elements = ((Model) model).getElements();
+    String target = createMessage.getTarget();
+    for (final EObject element : elements) {
+      {
+        if ((element instanceof SequenceMessageType)) {
+          boolean _equals = ((SequenceMessageType)element).equals(createMessage);
+          if (_equals) {
+            return;
+          }
+          if ((((SequenceMessageType) element).getTarget().equals(target) || 
+            ((SequenceMessageType) element).getSource().equals(target))) {
+            this.error(String.format("Create message can not be used at this point"), 
+              TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+            return;
+          }
+        }
+        if ((element instanceof CombinedFragment)) {
+          boolean _contains = ((CombinedFragment) element).getTimelines().contains(target);
+          if (_contains) {
+            this.error(String.format("Create message can not be used at this point"), 
+              TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+            return;
+          }
+        }
+        if ((element instanceof StateFragment)) {
+          boolean _equals_1 = ((StateFragment) element).getTimeline().equals(target);
+          if (_equals_1) {
+            this.error(String.format("Create message can not be used at this point"), 
+              TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+            return;
+          }
+        }
       }
     }
   }
@@ -303,7 +449,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkCombinedFragmentEmptyExpression(final CombinedFragment combinedFragment) {
-    if ((Objects.equal(combinedFragment.getExpression(), null) || combinedFragment.getExpression().isEmpty())) {
+    if (((combinedFragment.getExpression() == null) || combinedFragment.getExpression().isEmpty())) {
       this.error(
         "Expression can not be empty", 
         TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION);
@@ -315,7 +461,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkOperandEmptyExpression(final Operand operand) {
-    if ((Objects.equal(operand.getExpression(), null) || operand.getExpression().isEmpty())) {
+    if (((operand.getExpression() == null) || operand.getExpression().isEmpty())) {
       this.error(
         "Expression can not be empty", 
         TextualScenarioPackage.Literals.OPERAND__EXPRESSION);
@@ -353,7 +499,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       EObject _eContainer_1 = operand.eContainer();
       CombinedFragment combinedFragment = ((CombinedFragment) _eContainer_1);
       if (((!Objects.equal(combinedFragment.getKeyword(), "alt")) && (!combinedFragment.getOperands().isEmpty()))) {
-        if (((!Objects.equal(operand.getKeyword(), null)) || (!operand.getKeyword().isEmpty()))) {
+        if (((operand.getKeyword() != null) || (!operand.getKeyword().isEmpty()))) {
           this.error(
             "Unexpected keyword", 
             TextualScenarioPackage.Literals.OPERAND__KEYWORD);
@@ -392,6 +538,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     if (_not) {
       this.error(("Timelines not present in diagram:" + unexistingTimelines), 
         TextualScenarioPackage.eINSTANCE.getCombinedFragment_Timelines());
+      return;
     }
     boolean _isEmpty_1 = undefinedTimelines.isEmpty();
     boolean _not_1 = (!_isEmpty_1);
