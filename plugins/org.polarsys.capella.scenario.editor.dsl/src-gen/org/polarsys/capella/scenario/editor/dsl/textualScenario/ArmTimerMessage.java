@@ -27,6 +27,7 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getArrow <em>Arrow</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getParticipant <em>Participant</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getExecution <em>Execution</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getDoubleDot <em>Double Dot</em>}</li>
  * </ul>
  *
@@ -79,6 +80,28 @@ public interface ArmTimerMessage extends Message
    * @generated
    */
   void setParticipant(String value);
+
+  /**
+   * Returns the value of the '<em><b>Execution</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Execution</em>' attribute.
+   * @see #setExecution(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getArmTimerMessage_Execution()
+   * @model
+   * @generated
+   */
+  String getExecution();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getExecution <em>Execution</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Execution</em>' attribute.
+   * @see #getExecution()
+   * @generated
+   */
+  void setExecution(String value);
 
   /**
    * Returns the value of the '<em><b>Double Dot</b></em>' attribute.

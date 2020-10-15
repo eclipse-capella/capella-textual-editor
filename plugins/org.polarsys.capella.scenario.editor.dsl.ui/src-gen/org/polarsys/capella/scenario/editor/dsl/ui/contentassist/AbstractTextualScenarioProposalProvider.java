@@ -149,6 +149,9 @@ public abstract class AbstractTextualScenarioProposalProvider extends TerminalsP
 	public void completeArmTimerMessage_Participant(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		completeRuleCall(((RuleCall)assignment.getTerminal()), context, acceptor);
 	}
+	public void completeArmTimerMessage_Execution(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		// subclasses may override
+	}
 	public void completeArmTimerMessage_DoubleDot(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		// subclasses may override
 	}
@@ -174,6 +177,7 @@ public abstract class AbstractTextualScenarioProposalProvider extends TerminalsP
 		completeRuleCall(((RuleCall)assignment.getTerminal()), context, acceptor);
 	}
 	public void completeCombinedFragment_Keyword(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		// subclasses may override
 		// subclasses may override
 		// subclasses may override
 		// subclasses may override

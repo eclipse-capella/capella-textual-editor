@@ -80,7 +80,7 @@ DeleteMessage:
 ;
 
 ArmTimerMessage:
-	arrow = "->>" participant=STRING doubleDot = ':' name=STRING
+	arrow = "->>" participant=STRING (execution = 'withExecution')? doubleDot = ':' name=STRING
 ;
 
 ParticipantDeactivation:
@@ -92,7 +92,7 @@ Reference:
 ;
 
 CombinedFragment: 
-	keyword = ('alt'|'loop'|'par'|'assert'|'critical'|'ignore'|'neg'|'opt'|'seq'|'strict')? expression=STRING over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
+	keyword = ('alt'|'loop'|'par'|'assert'|'critical'|'ignore'|'neg'|'opt'|'seq'|'strict'|'unset') expression=STRING over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
 ;
 
 Operand:

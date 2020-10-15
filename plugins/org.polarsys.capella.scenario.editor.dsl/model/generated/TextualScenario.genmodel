@@ -45,6 +45,7 @@
     <genClasses ecoreClass="TextualScenario.ecore#//ArmTimerMessage">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/arrow"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/participant"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/execution"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/doubleDot"/>
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//ParticipantDeactivation">

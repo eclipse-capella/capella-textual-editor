@@ -843,13 +843,22 @@ public interface TextualScenarioPackage extends EPackage
   int ARM_TIMER_MESSAGE__PARTICIPANT = MESSAGE_FEATURE_COUNT + 1;
 
   /**
+   * The feature id for the '<em><b>Execution</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ARM_TIMER_MESSAGE__EXECUTION = MESSAGE_FEATURE_COUNT + 2;
+
+  /**
    * The feature id for the '<em><b>Double Dot</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ARM_TIMER_MESSAGE__DOUBLE_DOT = MESSAGE_FEATURE_COUNT + 2;
+  int ARM_TIMER_MESSAGE__DOUBLE_DOT = MESSAGE_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Arm Timer Message</em>' class.
@@ -858,7 +867,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ARM_TIMER_MESSAGE_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 3;
+  int ARM_TIMER_MESSAGE_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ParticipantDeactivationImpl <em>Participant Deactivation</em>}' class.
@@ -1520,6 +1529,17 @@ public interface TextualScenarioPackage extends EPackage
   EAttribute getArmTimerMessage_Participant();
 
   /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getExecution <em>Execution</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Execution</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getExecution()
+   * @see #getArmTimerMessage()
+   * @generated
+   */
+  EAttribute getArmTimerMessage_Execution();
+
+  /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage#getDoubleDot <em>Double Dot</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2141,6 +2161,14 @@ public interface TextualScenarioPackage extends EPackage
      * @generated
      */
     EAttribute ARM_TIMER_MESSAGE__PARTICIPANT = eINSTANCE.getArmTimerMessage_Participant();
+
+    /**
+     * The meta object literal for the '<em><b>Execution</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ARM_TIMER_MESSAGE__EXECUTION = eINSTANCE.getArmTimerMessage_Execution();
 
     /**
      * The meta object literal for the '<em><b>Double Dot</b></em>' attribute feature.

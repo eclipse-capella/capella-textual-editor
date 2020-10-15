@@ -1200,23 +1200,37 @@ ruleArmTimerMessage returns [EObject current=null]
 		)
 		(
 			(
-				lv_doubleDot_2_0=':'
+				lv_execution_2_0='withExecution'
 				{
-					newLeafNode(lv_doubleDot_2_0, grammarAccess.getArmTimerMessageAccess().getDoubleDotColonKeyword_2_0());
+					newLeafNode(lv_execution_2_0, grammarAccess.getArmTimerMessageAccess().getExecutionWithExecutionKeyword_2_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getArmTimerMessageRule());
 					}
-					setWithLastConsumed($current, "doubleDot", lv_doubleDot_2_0, ":");
+					setWithLastConsumed($current, "execution", lv_execution_2_0, "withExecution");
+				}
+			)
+		)?
+		(
+			(
+				lv_doubleDot_3_0=':'
+				{
+					newLeafNode(lv_doubleDot_3_0, grammarAccess.getArmTimerMessageAccess().getDoubleDotColonKeyword_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getArmTimerMessageRule());
+					}
+					setWithLastConsumed($current, "doubleDot", lv_doubleDot_3_0, ":");
 				}
 			)
 		)
 		(
 			(
-				lv_name_3_0=RULE_STRING
+				lv_name_4_0=RULE_STRING
 				{
-					newLeafNode(lv_name_3_0, grammarAccess.getArmTimerMessageAccess().getNameSTRINGTerminalRuleCall_3_0());
+					newLeafNode(lv_name_4_0, grammarAccess.getArmTimerMessageAccess().getNameSTRINGTerminalRuleCall_4_0());
 				}
 				{
 					if ($current==null) {
@@ -1225,7 +1239,7 @@ ruleArmTimerMessage returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_3_0,
+						lv_name_4_0,
 						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)
@@ -1495,9 +1509,20 @@ ruleCombinedFragment returns [EObject current=null]
 						}
 						setWithLastConsumed($current, "keyword", lv_keyword_0_10, null);
 					}
+					    |
+					lv_keyword_0_11='unset'
+					{
+						newLeafNode(lv_keyword_0_11, grammarAccess.getCombinedFragmentAccess().getKeywordUnsetKeyword_0_0_10());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getCombinedFragmentRule());
+						}
+						setWithLastConsumed($current, "keyword", lv_keyword_0_11, null);
+					}
 				)
 			)
-		)?
+		)
 		(
 			(
 				lv_expression_1_0=RULE_STRING

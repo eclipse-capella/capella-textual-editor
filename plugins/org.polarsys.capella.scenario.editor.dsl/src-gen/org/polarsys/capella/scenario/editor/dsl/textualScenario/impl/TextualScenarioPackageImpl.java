@@ -649,9 +649,20 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EAttribute getArmTimerMessage_DoubleDot()
+  public EAttribute getArmTimerMessage_Execution()
   {
     return (EAttribute)armTimerMessageEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getArmTimerMessage_DoubleDot()
+  {
+    return (EAttribute)armTimerMessageEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1031,6 +1042,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     armTimerMessageEClass = createEClass(ARM_TIMER_MESSAGE);
     createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__ARROW);
     createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__PARTICIPANT);
+    createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__EXECUTION);
     createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__DOUBLE_DOT);
 
     participantDeactivationEClass = createEClass(PARTICIPANT_DEACTIVATION);
@@ -1162,6 +1174,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     initEClass(armTimerMessageEClass, ArmTimerMessage.class, "ArmTimerMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getArmTimerMessage_Arrow(), ecorePackage.getEString(), "arrow", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getArmTimerMessage_Participant(), ecorePackage.getEString(), "participant", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getArmTimerMessage_Execution(), ecorePackage.getEString(), "execution", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getArmTimerMessage_DoubleDot(), ecorePackage.getEString(), "doubleDot", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(participantDeactivationEClass, ParticipantDeactivation.class, "ParticipantDeactivation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

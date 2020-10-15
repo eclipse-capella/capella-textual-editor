@@ -109,8 +109,9 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getDeleteMessageAccess().getNameAssignment_4(), "rule__DeleteMessage__NameAssignment_4");
 			builder.put(grammarAccess.getArmTimerMessageAccess().getArrowAssignment_0(), "rule__ArmTimerMessage__ArrowAssignment_0");
 			builder.put(grammarAccess.getArmTimerMessageAccess().getParticipantAssignment_1(), "rule__ArmTimerMessage__ParticipantAssignment_1");
-			builder.put(grammarAccess.getArmTimerMessageAccess().getDoubleDotAssignment_2(), "rule__ArmTimerMessage__DoubleDotAssignment_2");
-			builder.put(grammarAccess.getArmTimerMessageAccess().getNameAssignment_3(), "rule__ArmTimerMessage__NameAssignment_3");
+			builder.put(grammarAccess.getArmTimerMessageAccess().getExecutionAssignment_2(), "rule__ArmTimerMessage__ExecutionAssignment_2");
+			builder.put(grammarAccess.getArmTimerMessageAccess().getDoubleDotAssignment_3(), "rule__ArmTimerMessage__DoubleDotAssignment_3");
+			builder.put(grammarAccess.getArmTimerMessageAccess().getNameAssignment_4(), "rule__ArmTimerMessage__NameAssignment_4");
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getKeywordAssignment_0(), "rule__ParticipantDeactivation__KeywordAssignment_0");
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getNameAssignment_1(), "rule__ParticipantDeactivation__NameAssignment_1");
 			builder.put(grammarAccess.getReferenceAccess().getKeywordAssignment_0(), "rule__Reference__KeywordAssignment_0");

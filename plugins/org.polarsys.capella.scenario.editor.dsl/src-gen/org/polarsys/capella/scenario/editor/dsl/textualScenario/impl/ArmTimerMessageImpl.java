@@ -34,6 +34,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ArmTimerMessageImpl#getArrow <em>Arrow</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ArmTimerMessageImpl#getParticipant <em>Participant</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ArmTimerMessageImpl#getExecution <em>Execution</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ArmTimerMessageImpl#getDoubleDot <em>Double Dot</em>}</li>
  * </ul>
  *
@@ -80,6 +81,26 @@ public class ArmTimerMessageImpl extends MessageImpl implements ArmTimerMessage
    * @ordered
    */
   protected String participant = PARTICIPANT_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getExecution() <em>Execution</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getExecution()
+   * @generated
+   * @ordered
+   */
+  protected static final String EXECUTION_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getExecution() <em>Execution</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getExecution()
+   * @generated
+   * @ordered
+   */
+  protected String execution = EXECUTION_EDEFAULT;
 
   /**
    * The default value of the '{@link #getDoubleDot() <em>Double Dot</em>}' attribute.
@@ -178,6 +199,31 @@ public class ArmTimerMessageImpl extends MessageImpl implements ArmTimerMessage
    * @generated
    */
   @Override
+  public String getExecution()
+  {
+    return execution;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setExecution(String newExecution)
+  {
+    String oldExecution = execution;
+    execution = newExecution;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, TextualScenarioPackage.ARM_TIMER_MESSAGE__EXECUTION, oldExecution, execution));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public String getDoubleDot()
   {
     return doubleDot;
@@ -211,6 +257,8 @@ public class ArmTimerMessageImpl extends MessageImpl implements ArmTimerMessage
         return getArrow();
       case TextualScenarioPackage.ARM_TIMER_MESSAGE__PARTICIPANT:
         return getParticipant();
+      case TextualScenarioPackage.ARM_TIMER_MESSAGE__EXECUTION:
+        return getExecution();
       case TextualScenarioPackage.ARM_TIMER_MESSAGE__DOUBLE_DOT:
         return getDoubleDot();
     }
@@ -232,6 +280,9 @@ public class ArmTimerMessageImpl extends MessageImpl implements ArmTimerMessage
         return;
       case TextualScenarioPackage.ARM_TIMER_MESSAGE__PARTICIPANT:
         setParticipant((String)newValue);
+        return;
+      case TextualScenarioPackage.ARM_TIMER_MESSAGE__EXECUTION:
+        setExecution((String)newValue);
         return;
       case TextualScenarioPackage.ARM_TIMER_MESSAGE__DOUBLE_DOT:
         setDoubleDot((String)newValue);
@@ -256,6 +307,9 @@ public class ArmTimerMessageImpl extends MessageImpl implements ArmTimerMessage
       case TextualScenarioPackage.ARM_TIMER_MESSAGE__PARTICIPANT:
         setParticipant(PARTICIPANT_EDEFAULT);
         return;
+      case TextualScenarioPackage.ARM_TIMER_MESSAGE__EXECUTION:
+        setExecution(EXECUTION_EDEFAULT);
+        return;
       case TextualScenarioPackage.ARM_TIMER_MESSAGE__DOUBLE_DOT:
         setDoubleDot(DOUBLE_DOT_EDEFAULT);
         return;
@@ -277,6 +331,8 @@ public class ArmTimerMessageImpl extends MessageImpl implements ArmTimerMessage
         return ARROW_EDEFAULT == null ? arrow != null : !ARROW_EDEFAULT.equals(arrow);
       case TextualScenarioPackage.ARM_TIMER_MESSAGE__PARTICIPANT:
         return PARTICIPANT_EDEFAULT == null ? participant != null : !PARTICIPANT_EDEFAULT.equals(participant);
+      case TextualScenarioPackage.ARM_TIMER_MESSAGE__EXECUTION:
+        return EXECUTION_EDEFAULT == null ? execution != null : !EXECUTION_EDEFAULT.equals(execution);
       case TextualScenarioPackage.ARM_TIMER_MESSAGE__DOUBLE_DOT:
         return DOUBLE_DOT_EDEFAULT == null ? doubleDot != null : !DOUBLE_DOT_EDEFAULT.equals(doubleDot);
     }
@@ -298,6 +354,8 @@ public class ArmTimerMessageImpl extends MessageImpl implements ArmTimerMessage
     result.append(arrow);
     result.append(", participant: ");
     result.append(participant);
+    result.append(", execution: ");
+    result.append(execution);
     result.append(", doubleDot: ");
     result.append(doubleDot);
     result.append(')');
