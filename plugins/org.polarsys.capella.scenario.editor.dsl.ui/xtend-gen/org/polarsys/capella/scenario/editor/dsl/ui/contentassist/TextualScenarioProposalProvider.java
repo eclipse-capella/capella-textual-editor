@@ -16,7 +16,9 @@ import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -31,11 +33,14 @@ import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.model.helpers.CapellaElementExt;
 import org.polarsys.capella.scenario.editor.dsl.helpers.TextualScenarioHelper;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
@@ -206,7 +211,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
         boolean _not = (!_messageAlreadyInserted);
         if (_not) {
           String exchangeType = TextualScenarioHelper.getExchangeType(element);
-          if ((Objects.equal(scenarioExchangesType, null) || scenarioExchangesType.equals(exchangeType))) {
+          if (((scenarioExchangesType == null) || scenarioExchangesType.equals(exchangeType))) {
             acceptor.accept(
               this.createCompletionProposal((("\"" + elementName) + "\""), (("\"" + elementName) + "\""), null, context));
           }
@@ -277,6 +282,136 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
           this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
       }
     }
+  }
+  
+  @Override
+  public void completeParticipantDeactivation_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    Object modelContainer = TextualScenarioHelper.getModelContainer(((ParticipantDeactivation) model));
+    HashMap<String, Integer> timelinesToPropose = new HashMap<String, Integer>();
+    this.createTimelinesHashMapToProposeForDeactivation(((ParticipantDeactivation) model), ((Model) modelContainer), timelinesToPropose);
+    Set<String> _keySet = timelinesToPropose.keySet();
+    for (final String timelineToPropose : _keySet) {
+      Integer _get = timelinesToPropose.get(timelineToPropose);
+      boolean _greaterEqualsThan = ((_get).intValue() >= 1);
+      if (_greaterEqualsThan) {
+        acceptor.accept(
+          this.createCompletionProposal((("\"" + timelineToPropose) + "\""), timelineToPropose, null, context));
+      }
+    }
+  }
+  
+  public HashMap<String, Integer> createTimelinesHashMapToProposeForDeactivation(final ParticipantDeactivation participantDeactivation, final EObject modelContainer, final HashMap<String, Integer> timelinesToPropose) {
+    EList<EObject> elements = this.getElements(modelContainer);
+    for (int i = 0; (i < elements.size()); i++) {
+      {
+        boolean _equals = elements.get(i).equals(participantDeactivation);
+        if (_equals) {
+          for (int j = 0; (j <= i); j++) {
+            this.updateHashMap(timelinesToPropose, elements.get(j), participantDeactivation);
+          }
+          return timelinesToPropose;
+        }
+        EObject _get = elements.get(i);
+        if ((_get instanceof CombinedFragment)) {
+          EObject _get_1 = elements.get(i);
+          this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((CombinedFragment) _get_1), timelinesToPropose);
+        }
+        EObject _get_2 = elements.get(i);
+        if ((_get_2 instanceof Operand)) {
+          EObject _get_3 = elements.get(i);
+          this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((Operand) _get_3), timelinesToPropose);
+        }
+      }
+    }
+    return timelinesToPropose;
+  }
+  
+  public Integer updateHashMap(final HashMap<String, Integer> timelinesToPropose, final EObject element, final ParticipantDeactivation participantDeactivation) {
+    Integer _xblockexpression = null;
+    {
+      if ((element instanceof SequenceMessage)) {
+        this.updateHashMapWithSequenceMessage(timelinesToPropose, ((SequenceMessage) element));
+      }
+      if ((element instanceof ArmTimerMessage)) {
+        this.updateHashMapWithArmTimerMessage(timelinesToPropose, ((ArmTimerMessage) element));
+      }
+      Integer _xifexpression = null;
+      if ((element instanceof ParticipantDeactivation)) {
+        _xifexpression = this.updateHashMapWithParticipantDeactivation(timelinesToPropose, ((ParticipantDeactivation) element));
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+  
+  public EList<EObject> getElements(final EObject modelContainer) {
+    if ((modelContainer instanceof Model)) {
+      return ((Model) modelContainer).getElements();
+    }
+    if ((modelContainer instanceof CombinedFragment)) {
+      EList<EObject> elements = ((CombinedFragment) modelContainer).getBlock().getBlockElements();
+      elements.addAll(((CombinedFragment) modelContainer).getOperands());
+      return elements;
+    }
+    return ((Operand) modelContainer).getBlock().getBlockElements();
+  }
+  
+  public Integer updateHashMapWithSequenceMessage(final HashMap<String, Integer> timelinesToPropose, final SequenceMessage sequenceMessage) {
+    Integer _xifexpression = null;
+    String _execution = sequenceMessage.getExecution();
+    boolean _tripleNotEquals = (_execution != null);
+    if (_tripleNotEquals) {
+      Integer _xifexpression_1 = null;
+      boolean _containsKey = timelinesToPropose.containsKey(sequenceMessage.getTarget());
+      if (_containsKey) {
+        Integer _xblockexpression = null;
+        {
+          Integer value = timelinesToPropose.get(sequenceMessage.getTarget());
+          _xblockexpression = timelinesToPropose.put(sequenceMessage.getTarget(), Integer.valueOf(((((Integer) value)).intValue() + 1)));
+        }
+        _xifexpression_1 = _xblockexpression;
+      } else {
+        _xifexpression_1 = timelinesToPropose.put(sequenceMessage.getTarget(), Integer.valueOf(1));
+      }
+      _xifexpression = _xifexpression_1;
+    }
+    return _xifexpression;
+  }
+  
+  public Integer updateHashMapWithArmTimerMessage(final HashMap<String, Integer> timelinesToPropose, final ArmTimerMessage armTimer) {
+    Integer _xifexpression = null;
+    String _execution = armTimer.getExecution();
+    boolean _tripleNotEquals = (_execution != null);
+    if (_tripleNotEquals) {
+      Integer _xifexpression_1 = null;
+      boolean _containsKey = timelinesToPropose.containsKey(armTimer.getParticipant());
+      if (_containsKey) {
+        Integer _xblockexpression = null;
+        {
+          Integer value = timelinesToPropose.get(armTimer.getParticipant());
+          _xblockexpression = value = Integer.valueOf(((((Integer) value)).intValue() + 1));
+        }
+        _xifexpression_1 = _xblockexpression;
+      } else {
+        _xifexpression_1 = timelinesToPropose.put(armTimer.getParticipant(), Integer.valueOf(1));
+      }
+      _xifexpression = _xifexpression_1;
+    }
+    return _xifexpression;
+  }
+  
+  public Integer updateHashMapWithParticipantDeactivation(final HashMap<String, Integer> timelinesToPropose, final ParticipantDeactivation participantDeactivation) {
+    Integer _xifexpression = null;
+    boolean _containsKey = timelinesToPropose.containsKey(participantDeactivation.getName());
+    if (_containsKey) {
+      Integer _xblockexpression = null;
+      {
+        Integer value = timelinesToPropose.get(participantDeactivation.getName());
+        _xblockexpression = timelinesToPropose.put(participantDeactivation.getName(), Integer.valueOf(((((Integer) value)).intValue() - 1)));
+      }
+      _xifexpression = _xblockexpression;
+    }
+    return _xifexpression;
   }
   
   @Override

@@ -35,8 +35,10 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
+import java.util.HashMap
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -191,7 +193,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 				// in a scenario, cannot combine FE and CE in same scenario (functional and component exchanges)
 				// if the type of exchange is allowed, propose it
 				var exchangeType = TextualScenarioHelper.getExchangeType(element)
-				if (scenarioExchangesType == null || scenarioExchangesType.equals(exchangeType)) {
+				if (scenarioExchangesType === null || scenarioExchangesType.equals(exchangeType)) {
 					acceptor.accept(
 						createCompletionProposal("\"" + elementName + "\"", "\"" + elementName + "\"", null, context))
 				}
@@ -254,6 +256,95 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 			}
 		}
 	}
+	
+	override completeParticipantDeactivation_Name(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+			var modelContainer = TextualScenarioHelper.getModelContainer(model as ParticipantDeactivation)
+			var timelinesToPropose = new HashMap
+			createTimelinesHashMapToProposeForDeactivation(model as ParticipantDeactivation, modelContainer as Model, timelinesToPropose)
+			
+			for (String timelineToPropose : timelinesToPropose.keySet) {
+				if (timelinesToPropose.get(timelineToPropose) >= 1) {
+					acceptor.accept(
+					createCompletionProposal("\"" + timelineToPropose + "\"", timelineToPropose, null,
+						context))
+				}
+			}	
+	}
+	
+	def createTimelinesHashMapToProposeForDeactivation(ParticipantDeactivation participantDeactivation, EObject modelContainer, HashMap<String, Integer> timelinesToPropose)   {		
+		var elements = getElements(modelContainer)
+		for (var i = 0; i < elements.size; i++) {
+			if (elements.get(i).equals(participantDeactivation)) {
+				for (var j = 0; j <= i; j++) {
+					updateHashMap(timelinesToPropose, elements.get(j), participantDeactivation)
+				}
+				return timelinesToPropose
+			}
+			if (elements.get(i) instanceof CombinedFragment) {							
+				createTimelinesHashMapToProposeForDeactivation(participantDeactivation, elements.get(i) as CombinedFragment, timelinesToPropose)
+			}
+			
+			if (elements.get(i) instanceof Operand) {
+				createTimelinesHashMapToProposeForDeactivation(participantDeactivation, elements.get(i) as Operand, timelinesToPropose)
+			}
+		}
+		return timelinesToPropose
+	}
+	
+	def updateHashMap(HashMap<String, Integer> timelinesToPropose, EObject element, ParticipantDeactivation participantDeactivation) {
+			if (element instanceof SequenceMessage) {
+				updateHashMapWithSequenceMessage(timelinesToPropose, element as SequenceMessage)
+			}
+			if (element instanceof ArmTimerMessage) {
+				updateHashMapWithArmTimerMessage(timelinesToPropose, element as ArmTimerMessage)
+			}
+
+			if (element instanceof ParticipantDeactivation) {
+				updateHashMapWithParticipantDeactivation(timelinesToPropose, element as ParticipantDeactivation)		
+			}	
+	}
+	
+	def getElements(EObject modelContainer) {
+		if (modelContainer instanceof Model) {
+			return (modelContainer as Model).elements
+		}
+		if (modelContainer instanceof CombinedFragment) {
+			var elements = (modelContainer as CombinedFragment).block.blockElements
+			elements.addAll((modelContainer as CombinedFragment).operands)
+			return elements
+		}	
+		return (modelContainer as Operand).block.blockElements
+	}
+	
+	def updateHashMapWithSequenceMessage(HashMap<String, Integer> timelinesToPropose, SequenceMessage sequenceMessage) {
+		if (sequenceMessage.execution !== null) {
+			if (timelinesToPropose.containsKey(sequenceMessage.target)) {
+				var value = timelinesToPropose.get(sequenceMessage.target)
+				timelinesToPropose.put(sequenceMessage.target, (value as Integer) + 1)
+			} else {
+				timelinesToPropose.put(sequenceMessage.target, 1)
+			}
+		}
+	}
+	
+	def updateHashMapWithArmTimerMessage(HashMap<String, Integer> timelinesToPropose, ArmTimerMessage armTimer) {
+		if (armTimer.execution !== null) {
+			if (timelinesToPropose.containsKey(armTimer.participant)) {
+				var value = timelinesToPropose.get(armTimer.participant)
+				value = (value as Integer) + 1
+			} else {
+				timelinesToPropose.put(armTimer.participant, 1)
+			}
+		}
+	}
+	
+	def updateHashMapWithParticipantDeactivation(HashMap<String, Integer> timelinesToPropose, ParticipantDeactivation participantDeactivation) {
+		if (timelinesToPropose.containsKey(participantDeactivation.name)) {
+			var value = timelinesToPropose.get(participantDeactivation.name)
+			timelinesToPropose.put(participantDeactivation.name, (value as Integer) - 1)
+		}
+	}
+	
 	
 	override completeDeleteMessage_DoubleDot(EObject model, Assignment assignment, ContentAssistContext context,
 		ICompletionProposalAcceptor acceptor) {
