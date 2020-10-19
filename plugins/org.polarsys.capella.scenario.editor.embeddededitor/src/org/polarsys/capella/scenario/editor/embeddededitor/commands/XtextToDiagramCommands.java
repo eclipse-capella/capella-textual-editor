@@ -157,12 +157,8 @@ public class XtextToDiagramCommands {
         }
 
         // remove all instance roles from diagram that do not exist in editor
-        List<InstanceRole> removedIR = removeParticipantsFromDiagram(instanceRoles, participants);
+        removeParticipantsFromDiagram(scenario, participants);
 
-        // for each removed instance role, delete the messages containing it.
-        for (InstanceRole ir : removedIR) {
-          removeEditorMessages(messages, ir.getName());
-        }
         // do instance roles reorder if they do not match the order of the editor participants
         reorderParticipants(instanceRoles, participants);
       }
@@ -178,19 +174,28 @@ public class XtextToDiagramCommands {
    *          Participants from editor
    * @return Return the list of the removed participants
    */
-  private static List<InstanceRole> removeParticipantsFromDiagram(List<InstanceRole> instanceRoles,
+  private static void removeParticipantsFromDiagram(Scenario scenario,
       EList<Participant> participants) {
     List<InstanceRole> irToRemove = new ArrayList<InstanceRole>();
+    EList<InstanceRole> instanceRoles = scenario.getOwnedInstanceRoles();
+    
     for (InstanceRole ir : instanceRoles) {
       List<String> participantsName = participants.stream().map(x -> x.getName()).collect(Collectors.toList());
       if (!participantsName.contains(ir.getName())) {
         irToRemove.add(ir);
+        // remove all related diagram elements
+        removeParticipantRelatedElements(scenario, ir);
       }
     }
     for (InstanceRole ir : irToRemove) {
       instanceRoles.remove(ir);
     }
-    return irToRemove;
+  }
+
+  private static void removeParticipantRelatedElements(Scenario scenario, InstanceRole ir) {
+    removeParticipantRelatedMessages(scenario, ir.getName());
+    removeParticipantRelatedStateFragments(scenario, ir.getName());
+    removeParticipantRelatedCombinedFragments(scenario, ir);
   }
 
   /**
@@ -220,27 +225,66 @@ public class XtextToDiagramCommands {
   /**
    * Remove from xtext model all messages containing the participant that has just been deleted
    * 
-   * @param messagesOrReferences
-   *          All messages and references from textual editor
+   * @param scenario
+   *          The scenario diagram
    * @param participantName
    *          The participant that has just been deleted
    */
-  private static void removeEditorMessages(EList<EObject> messagesOrReferences, String participantName) {
-    List<EObject> messagesToRemove = new ArrayList<EObject>();
-    for (EObject message : messagesOrReferences) {
-      if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) {
-        String source = ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) message)
-            .getSource();
-        String target = ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) message)
-            .getTarget();
-        if (source.equals(participantName) || target.equals(participantName)) {
-          messagesToRemove.add(message);
-        }
-      }
+  private static void removeParticipantRelatedMessages(Scenario scenario, String participantName) {
+    List<SequenceMessage> messagesToBeDeleted = new ArrayList<SequenceMessage>();    
+    EList<SequenceMessage> messages = scenario.getOwnedMessages();   
+    
+    for (SequenceMessage message : messages) {
+      if (message.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName) ||
+          message.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName)) {
+          messagesToBeDeleted.add(message);
+       }
     }
-    messagesOrReferences.removeAll(messagesToRemove);
+    for (SequenceMessage message : messagesToBeDeleted) {
+      removeMessageFromScenario(scenario, message);
+    }
   }
 
+  /**
+   * Remove from diagram all messages related to the participant that has just been deleted
+   * @param scenario 
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param participantName
+   *          The participant that has just been deleted
+   */
+  protected static void removeParticipantRelatedStateFragments(Scenario scenario, String participantName) {
+    List<TimeLapse> stateFragmentsToBeDeleted = scenario.getOwnedTimeLapses().stream()
+        .filter(timelapse -> timelapse instanceof StateFragment 
+            && timelapse.getStart().getCoveredInstanceRoles().get(0).getName().equals(participantName))
+        .collect(Collectors.toList());
+    
+    for (TimeLapse timeLapse : stateFragmentsToBeDeleted) {
+      removeStateFragmentFromScenario(scenario, timeLapse);
+    } 
+  }
+
+  /**
+   * Remove from diagram all combined fragment related to the participant that has just been deleted
+   * @param scenario 
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param participantName
+   *          The participant that has just been deleted
+   */
+  private static void removeParticipantRelatedCombinedFragments(Scenario scenario, InstanceRole instanceRole) {
+    List<TimeLapse> combinedFragmentsToBeDeleted = scenario.getOwnedTimeLapses().stream()
+        .filter(timelapse -> timelapse instanceof CombinedFragment
+            && timelapse.getStart().getCoveredInstanceRoles().contains(instanceRole))
+        .collect(Collectors.toList());
+    
+    for (TimeLapse timeLapse : combinedFragmentsToBeDeleted) {
+      removeCombinedFragmentFromScenario(scenario, timeLapse);
+    }   
+  }
+  
   /**
    * Synchronize graphical ordering in diagram
    */
