@@ -31,6 +31,7 @@ import org.polarsys.capella.scenario.editor.helper.DslConstants
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import java.util.HashMap
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage
 
 /**
  * This class contains custom validation rules. 
@@ -154,18 +155,18 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		val names = newHashSet
 		var elements = TextualScenarioHelper.getElements(model)
 		for (element : elements) {
-			if (element instanceof SequenceMessageType) {
+			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage) {
 				if (!names.add(getMessagesMapKey(element))) {
 					if (model instanceof Model) {
 						error(
-							'Duplicated message! Another message with same source, target, exchange already defined',
+							'Duplicated message! The same message is already defined',
 							TextualScenarioPackage.Literals.MODEL__ELEMENTS,
 							index,
 							DUPLICATED_MESSAGES_NAME
 						)
 					} else if (model instanceof Block) {
 						error(
-							'Duplicated message! Another message with same source, target, exchange already defined',
+							'Duplicated message! The same message is already defined',
 							TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
 							index,
 							DUPLICATED_MESSAGES_NAME
@@ -203,6 +204,13 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				// add the already encountered messages to the list
 				messageTargets.add((obj as SequenceMessage).target)
 			}
+			
+			if (obj instanceof ArmTimerMessage && (obj as ArmTimerMessage).execution !== null) {
+				// add the already encountered messages to the list
+				messageTargets.add((obj as ArmTimerMessage).participant)
+			}
+			
+			
 			if (obj instanceof ParticipantDeactivation) {
 				var deactivation = obj as ParticipantDeactivation
 
@@ -327,6 +335,30 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			}
 		}
 	}
+	
+	@Check
+	def checkIfAnArmTimerIsUsedAfterDeleteMessage(ArmTimerMessage armTimer) {
+		var model = TextualScenarioHelper.getModelContainer(armTimer)
+		var elements = (model as Model).elements
+
+		for (EObject element : elements) {
+			if (element.equals(armTimer)) {
+				return
+			}
+
+			if (element instanceof DeleteMessage) {
+				if ((element as DeleteMessage).target.equals(armTimer.participant)) {
+					error(
+						String.format(
+							"Arm Timer can not be used at this point, a delete message was already inserted on this timeline"),
+						TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT)
+						return 
+				}
+			}
+		}
+	}
+	
+	
 	/*
 	 * check if create message could be used 
 	 */
@@ -344,6 +376,14 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 
 				if ((element as SequenceMessageType).target.equals(target) ||
 				(element as SequenceMessageType).source.equals(target)) {
+					error(String.format("Create message can not be used at this point"),
+							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+					return
+				}
+			}
+			
+			if (element instanceof ArmTimerMessage) {
+				if ((element as ArmTimerMessage).participant.equals(target)) {
 					error(String.format("Create message can not be used at this point"),
 							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
 					return
@@ -442,6 +482,12 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				messageWithExecutionTargets.add((obj as SequenceMessage).target)
 				messageWithExecutionTargetsIndex.add(index)
 			}
+			
+			if (obj instanceof ArmTimerMessage && (obj as ArmTimerMessage).execution !== null) {
+				messageWithExecutionTargets.add((obj as ArmTimerMessage).participant)
+				messageWithExecutionTargetsIndex.add(index)
+			}
+			
 			if (obj instanceof ParticipantDeactivation) {
 				var targetName = (obj as ParticipantDeactivation).name
 				var indexOfTarget = messageWithExecutionTargets.indexOf(targetName)
@@ -566,7 +612,13 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		p.name + ":" + p.keyword
 	}
 
-	def getMessagesMapKey(SequenceMessageType m) {
-		m.name + ":" + m.source + ":" + m.target
+	def getMessagesMapKey(EObject message) {
+		if (message instanceof SequenceMessage) {
+			return message.name + ":" + message.source + ":" + message.target
+		} 
+		
+		if (message instanceof ArmTimerMessage) {
+			return message.participant + ":" + message.name
+		}
 	}
 }

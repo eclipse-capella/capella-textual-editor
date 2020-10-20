@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.polarsys.capella.scenario.editor.dsl.helpers.TextualScenarioHelper;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
@@ -176,19 +177,19 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     EList<EObject> elements = TextualScenarioHelper.getElements(model);
     for (final EObject element : elements) {
       {
-        if ((element instanceof SequenceMessageType)) {
-          boolean _add = names.add(this.getMessagesMapKey(((SequenceMessageType)element)));
+        if (((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage))) {
+          boolean _add = names.add(this.getMessagesMapKey(element));
           boolean _not = (!_add);
           if (_not) {
             if ((model instanceof Model)) {
               this.error(
-                "Duplicated message! Another message with same source, target, exchange already defined", 
+                "Duplicated message! The same message is already defined", 
                 TextualScenarioPackage.Literals.MODEL__ELEMENTS, index, 
                 TextualScenarioValidator.DUPLICATED_MESSAGES_NAME);
             } else {
               if ((model instanceof Block)) {
                 this.error(
-                  "Duplicated message! Another message with same source, target, exchange already defined", 
+                  "Duplicated message! The same message is already defined", 
                   TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, index, 
                   TextualScenarioValidator.DUPLICATED_MESSAGES_NAME);
               }
@@ -222,6 +223,9 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageTargets.add(((SequenceMessage) obj).getTarget());
+        }
+        if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
+          messageTargets.add(((ArmTimerMessage) obj).getParticipant());
         }
         if ((obj instanceof ParticipantDeactivation)) {
           ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
@@ -348,6 +352,30 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
+  @Check
+  public void checkIfAnArmTimerIsUsedAfterDeleteMessage(final ArmTimerMessage armTimer) {
+    Object model = TextualScenarioHelper.getModelContainer(armTimer);
+    EList<EObject> elements = ((Model) model).getElements();
+    for (final EObject element : elements) {
+      {
+        boolean _equals = element.equals(armTimer);
+        if (_equals) {
+          return;
+        }
+        if ((element instanceof DeleteMessage)) {
+          boolean _equals_1 = ((DeleteMessage) element).getTarget().equals(armTimer.getParticipant());
+          if (_equals_1) {
+            this.error(
+              String.format(
+                "Arm Timer can not be used at this point, a delete message was already inserted on this timeline"), 
+              TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT);
+            return;
+          }
+        }
+      }
+    }
+  }
+  
   /**
    * check if create message could be used
    */
@@ -370,6 +398,14 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
             return;
           }
         }
+        if ((element instanceof ArmTimerMessage)) {
+          boolean _equals_1 = ((ArmTimerMessage) element).getParticipant().equals(target);
+          if (_equals_1) {
+            this.error(String.format("Create message can not be used at this point"), 
+              TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+            return;
+          }
+        }
         if ((element instanceof CombinedFragment)) {
           boolean _contains = ((CombinedFragment) element).getTimelines().contains(target);
           if (_contains) {
@@ -379,8 +415,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           }
         }
         if ((element instanceof StateFragment)) {
-          boolean _equals_1 = ((StateFragment) element).getTimeline().equals(target);
-          if (_equals_1) {
+          boolean _equals_2 = ((StateFragment) element).getTimeline().equals(target);
+          if (_equals_2) {
             this.error(String.format("Create message can not be used at this point"), 
               TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
             return;
@@ -468,6 +504,10 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageWithExecutionTargets.add(((SequenceMessage) obj).getTarget());
+          messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
+        }
+        if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
+          messageWithExecutionTargets.add(((ArmTimerMessage) obj).getParticipant());
           messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
         }
         if ((obj instanceof ParticipantDeactivation)) {
@@ -607,13 +647,22 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     return (_plus + _keyword);
   }
   
-  public String getMessagesMapKey(final SequenceMessageType m) {
-    String _name = m.getName();
-    String _plus = (_name + ":");
-    String _source = m.getSource();
-    String _plus_1 = (_plus + _source);
-    String _plus_2 = (_plus_1 + ":");
-    String _target = m.getTarget();
-    return (_plus_2 + _target);
+  public String getMessagesMapKey(final EObject message) {
+    if ((message instanceof SequenceMessage)) {
+      String _name = ((SequenceMessage)message).getName();
+      String _plus = (_name + ":");
+      String _source = ((SequenceMessage)message).getSource();
+      String _plus_1 = (_plus + _source);
+      String _plus_2 = (_plus_1 + ":");
+      String _target = ((SequenceMessage)message).getTarget();
+      return (_plus_2 + _target);
+    }
+    if ((message instanceof ArmTimerMessage)) {
+      String _participant = ((ArmTimerMessage)message).getParticipant();
+      String _plus_3 = (_participant + ":");
+      String _name_1 = ((ArmTimerMessage)message).getName();
+      return (_plus_3 + _name_1);
+    }
+    return null;
   }
 }
