@@ -272,7 +272,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 	}
 	
 	def createTimelinesHashMapToProposeForDeactivation(ParticipantDeactivation participantDeactivation, EObject modelContainer, HashMap<String, Integer> timelinesToPropose)   {		
-		var elements = getElements(modelContainer)
+		var elements = TextualScenarioHelper.getElements(modelContainer)
 		for (var i = 0; i < elements.size; i++) {
 			if (elements.get(i).equals(participantDeactivation)) {
 				for (var j = 0; j <= i; j++) {
@@ -302,18 +302,6 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 			if (element instanceof ParticipantDeactivation) {
 				updateHashMapWithParticipantDeactivation(timelinesToPropose, element as ParticipantDeactivation)		
 			}	
-	}
-	
-	def getElements(EObject modelContainer) {
-		if (modelContainer instanceof Model) {
-			return (modelContainer as Model).elements
-		}
-		if (modelContainer instanceof CombinedFragment) {
-			var elements = (modelContainer as CombinedFragment).block.blockElements
-			elements.addAll((modelContainer as CombinedFragment).operands)
-			return elements
-		}	
-		return (modelContainer as Operand).block.blockElements
 	}
 	
 	def updateHashMapWithSequenceMessage(HashMap<String, Integer> timelinesToPropose, SequenceMessage sequenceMessage) {

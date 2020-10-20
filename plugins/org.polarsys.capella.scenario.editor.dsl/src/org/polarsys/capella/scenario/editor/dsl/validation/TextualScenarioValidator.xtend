@@ -29,6 +29,8 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment
 import org.polarsys.capella.scenario.editor.helper.DslConstants
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
+import java.util.HashMap
 
 /**
  * This class contains custom validation rules. 
@@ -37,8 +39,8 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
  */
 class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	public static val INVALID_NAME = 'invalidName'
-	public static val DUPILCATED_NAME = 'duplicatedName'
-	public static val DUPILCATED_MESSAGES_NAME = 'duplicatedMessageName'
+	public static val DUPLICATED_NAME = 'duplicatedName'
+	public static val DUPLICATED_MESSAGES_NAME = 'duplicatedMessageName'
 	
 	@Check
 	def checkPartExists(Participant participant) {
@@ -123,7 +125,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 					'Duplicated participant',
 					TextualScenarioPackage.Literals.MODEL__PARTICIPANTS,
 					index,
-					DUPILCATED_NAME
+					DUPLICATED_NAME
 				)
 			}
 			index++
@@ -135,37 +137,69 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 * ex: not allowed: "A1" -> "A2" : "MSG1", "A1" -> "A2" : "MSG1"
 	 * ex: allowed: "A1" -> "A2" : "MSG1", "A2" -> "A3" : "MSG1"
 	 */
+	
+	@Check 
+	def checkDuplicatedMessagesNamesModel(Model model) {
+		checkDuplicatedMessagesNames(model)	
+	}
+	
 	@Check
-	def checkDuplicatedMessagesNames(Model model) {
+	def checkDuplicateMessagesNamesBlock(Block block) {
+		 checkDuplicatedMessagesNames(block)
+	}
+	
+	
+	def checkDuplicatedMessagesNames(EObject model) {
 		var index = 0
 		val names = newHashSet
-		for (p : model.elements) {
-			if (p instanceof SequenceMessageType) {
-				if (!names.add(getMessagesMapKey(p))) {
-					error(
-						'Duplicated message! Another message with same source, target, exchange already defined',
-						TextualScenarioPackage.Literals.MODEL__ELEMENTS,
-						index,
-						DUPILCATED_MESSAGES_NAME
-					)
+		var elements = TextualScenarioHelper.getElements(model)
+		for (element : elements) {
+			if (element instanceof SequenceMessageType) {
+				if (!names.add(getMessagesMapKey(element))) {
+					if (model instanceof Model) {
+						error(
+							'Duplicated message! Another message with same source, target, exchange already defined',
+							TextualScenarioPackage.Literals.MODEL__ELEMENTS,
+							index,
+							DUPLICATED_MESSAGES_NAME
+						)
+					} else if (model instanceof Block) {
+						error(
+							'Duplicated message! Another message with same source, target, exchange already defined',
+							TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
+							index,
+							DUPLICATED_MESSAGES_NAME
+						)
+					}
 				}
 			}
 			index++
 		}
 	}
-
+	
+	@Check
+	def checkDeactivateMessagesModel(Model model) {
+		checkDeactivateMessages(model)	
+	}
+	
+	@Check
+	def checkDeactivateMessagesBlock(Block block) {
+		checkDeactivateMessages(block)
+	}
+	
+	
 	/*
 	 * Checks on deactivation keyword
 	 * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
 	 */
-	@Check
-	def checkDeactivateMessages(Model model) {
+	def checkDeactivateMessages(EObject model) {
 		var index = 0
 		// a message shall occur before a deactivation
 		// keep this array with the targets of each encountered message to check that the message happens before deactivation
 		var messageTargets = newLinkedList
-		for (obj : model.elements) {
-			if (obj instanceof SequenceMessage) {
+		var elements = TextualScenarioHelper.getElements(model)
+		for (obj : elements) {
+			if (obj instanceof SequenceMessage && (obj as SequenceMessage).execution !== null) {
 				// add the already encountered messages to the list
 				messageTargets.add((obj as SequenceMessage).target)
 			}
@@ -177,11 +211,19 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				var removed = messageTargets.remove(deactivation.name)
 				if (!removed) {
 					// if the deactivation is not matched in a previous message, display an error
-					error(
-						'Deactivation keyword not expected',
-						TextualScenarioPackage.Literals.MODEL__ELEMENTS,
-						index
-					)
+					if (model instanceof Model) {
+						error(
+							'Deactivation keyword not expected',
+							TextualScenarioPackage.Literals.MODEL__ELEMENTS,
+							index
+						)
+					} else if (model instanceof Block) {
+						error(
+							'Deactivation keyword not expected',
+							TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
+							index
+						)
+					}
 				}
 			}
 			index++
@@ -373,18 +415,28 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 
 	}
-
+	
 	/*
 	 * Check that each withExecution message is closed by deactivation (on the proper target)
 	 */
 	@Check
-	def checkWithExecutionHasDeactivate(Model model) {
+	def checkWithExecutionHasDeactivateModel(Model model) {
+		 checkWithExecutionHasDeactivate(model)
+	}
+	
+	@Check
+	def checkWithExecutionHasDeactivateBlock(Block block) {
+		checkWithExecutionHasDeactivate(block)
+	}
+		
+	def checkWithExecutionHasDeactivate(EObject model) {
 		// keep a list with the target of the messages that contains the withExecution keyword
 		// keep also a list with the index on which withExecution message is found, to know on which line to show an error
 		var messageWithExecutionTargets = newLinkedList
 		var messageWithExecutionTargetsIndex = newLinkedList
 		var index = 0
-		for (obj : model.elements) {
+		var elements = TextualScenarioHelper.getElements(model)
+		for (obj : elements) {
 			if (obj instanceof SequenceMessage && (obj as SequenceMessage).execution !== null) {
 				// add the SequenceMessage with execution to a list
 				messageWithExecutionTargets.add((obj as SequenceMessage).target)
@@ -393,6 +445,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			if (obj instanceof ParticipantDeactivation) {
 				var targetName = (obj as ParticipantDeactivation).name
 				var indexOfTarget = messageWithExecutionTargets.indexOf(targetName)
+
 				if (indexOfTarget >= 0) {
 					messageWithExecutionTargets.remove(indexOfTarget)
 					messageWithExecutionTargetsIndex.remove(indexOfTarget)
@@ -403,11 +456,19 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		// if not all withExecution messages were matched with a deactivation, show an error
 		// use the index list to know on which message to display the error
 		for (var i = 0; i < messageWithExecutionTargets.size; i++) {
-			error(
-				'Deactivation keyword expected for a withExecution message',
-				TextualScenarioPackage.Literals.MODEL__ELEMENTS,
-				messageWithExecutionTargetsIndex.get(i)
-			)
+			if (model instanceof Model) {
+				error(
+					'Deactivation keyword expected for a withExecution message',
+					TextualScenarioPackage.Literals.MODEL__ELEMENTS,
+					messageWithExecutionTargetsIndex.get(i)
+				)
+			} else {
+				error(
+					'Deactivation keyword expected for a withExecution message',
+					TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
+					messageWithExecutionTargets.get(i)
+				)
+			}
 		}
 	}
 	
