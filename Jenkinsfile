@@ -105,7 +105,7 @@ pipeline {
         			wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
 		        		
 		        		tester.runUITests("${CAPELLA_PRODUCT_PATH}", 'ScenarioEditorTestSuite', 'org.polarsys.capella.scenario.editor.ju', 
-		        			['org.polarsys.capella.scenario.editor.ju.testsuites.ScenarioEditorTestSuite'])		        			 
+		        			['org.polarsys.capella.scenario.editor.ju.ScenarioEditorTestSuite'])		        			 
 	        		}
 	        		
 	        		junit '*.xml'
