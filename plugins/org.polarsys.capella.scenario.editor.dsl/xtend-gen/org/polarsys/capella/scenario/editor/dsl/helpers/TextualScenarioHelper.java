@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -34,8 +22,10 @@ import org.polarsys.capella.core.data.fa.ComponentExchange;
 import org.polarsys.capella.core.data.fa.FunctionalExchange;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.model.helpers.CapellaElementExt;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
@@ -135,5 +125,26 @@ public class TextualScenarioHelper {
     ArrayList<String> participantsKeywords = CollectionLiterals.<String>newArrayList("actor", "entity", "role", "activity", "component", 
       "configuration_item", "function");
     return participantsKeywords.contains(keywordValue);
+  }
+  
+  /**
+   * get all elements on the same level as modelContainer
+   */
+  public static EList<EObject> getElements(final EObject modelContainer) {
+    if ((modelContainer instanceof Model)) {
+      return ((Model) modelContainer).getElements();
+    }
+    if ((modelContainer instanceof CombinedFragment)) {
+      EList<EObject> elements = ((CombinedFragment) modelContainer).getBlock().getBlockElements();
+      elements.addAll(((CombinedFragment) modelContainer).getOperands());
+      return elements;
+    }
+    if ((modelContainer instanceof Operand)) {
+      return ((Operand) modelContainer).getBlock().getBlockElements();
+    }
+    if ((modelContainer instanceof Block)) {
+      return ((Block) modelContainer).getBlockElements();
+    }
+    return null;
   }
 }

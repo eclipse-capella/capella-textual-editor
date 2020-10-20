@@ -24,6 +24,8 @@ import org.polarsys.capella.core.data.fa.ComponentExchange
 import org.polarsys.capella.core.data.fa.FunctionalExchange
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -101,5 +103,28 @@ class TextualScenarioHelper {
 		var participantsKeywords = newArrayList("actor", "entity", "role", "activity", "component",
 			"configuration_item", "function")
 		return participantsKeywords.contains(keywordValue)
+	}
+	
+	/*
+	 * get all elements on the same level as modelContainer  
+	 */
+	def static getElements(EObject modelContainer) {
+		
+		if (modelContainer instanceof Model) {
+			return (modelContainer as Model).elements
+		}
+		if (modelContainer instanceof CombinedFragment) {
+			var elements = (modelContainer as CombinedFragment).block.blockElements
+			elements.addAll((modelContainer as CombinedFragment).operands)
+			return elements
+		}
+		if (modelContainer instanceof Operand) {
+			return (modelContainer as Operand).block.blockElements
+		}
+		
+		if (modelContainer instanceof Block) {
+			return (modelContainer as Block).blockElements
+		}
+		
 	}
 }

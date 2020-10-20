@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.polarsys.capella.scenario.editor.dsl.helpers.TextualScenarioHelper;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
@@ -47,9 +48,9 @@ import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public static final String INVALID_NAME = "invalidName";
   
-  public static final String DUPILCATED_NAME = "duplicatedName";
+  public static final String DUPLICATED_NAME = "duplicatedName";
   
-  public static final String DUPILCATED_MESSAGES_NAME = "duplicatedMessageName";
+  public static final String DUPLICATED_MESSAGES_NAME = "duplicatedMessageName";
   
   @Check
   public void checkPartExists(final Participant participant) {
@@ -147,7 +148,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           this.error(
             "Duplicated participant", 
             TextualScenarioPackage.Literals.MODEL__PARTICIPANTS, index, 
-            TextualScenarioValidator.DUPILCATED_NAME);
+            TextualScenarioValidator.DUPLICATED_NAME);
         }
         index++;
       }
@@ -160,20 +161,38 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    * ex: allowed: "A1" -> "A2" : "MSG1", "A2" -> "A3" : "MSG1"
    */
   @Check
-  public void checkDuplicatedMessagesNames(final Model model) {
+  public void checkDuplicatedMessagesNamesModel(final Model model) {
+    this.checkDuplicatedMessagesNames(model);
+  }
+  
+  @Check
+  public void checkDuplicateMessagesNamesBlock(final Block block) {
+    this.checkDuplicatedMessagesNames(block);
+  }
+  
+  public void checkDuplicatedMessagesNames(final EObject model) {
     int index = 0;
     final HashSet<String> names = CollectionLiterals.<String>newHashSet();
-    EList<EObject> _elements = model.getElements();
-    for (final EObject p : _elements) {
+    EList<EObject> elements = TextualScenarioHelper.getElements(model);
+    for (final EObject element : elements) {
       {
-        if ((p instanceof SequenceMessageType)) {
-          boolean _add = names.add(this.getMessagesMapKey(((SequenceMessageType)p)));
+        if ((element instanceof SequenceMessageType)) {
+          boolean _add = names.add(this.getMessagesMapKey(((SequenceMessageType)element)));
           boolean _not = (!_add);
           if (_not) {
-            this.error(
-              "Duplicated message! Another message with same source, target, exchange already defined", 
-              TextualScenarioPackage.Literals.MODEL__ELEMENTS, index, 
-              TextualScenarioValidator.DUPILCATED_MESSAGES_NAME);
+            if ((model instanceof Model)) {
+              this.error(
+                "Duplicated message! Another message with same source, target, exchange already defined", 
+                TextualScenarioPackage.Literals.MODEL__ELEMENTS, index, 
+                TextualScenarioValidator.DUPLICATED_MESSAGES_NAME);
+            } else {
+              if ((model instanceof Block)) {
+                this.error(
+                  "Duplicated message! Another message with same source, target, exchange already defined", 
+                  TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, index, 
+                  TextualScenarioValidator.DUPLICATED_MESSAGES_NAME);
+              }
+            }
           }
         }
         index++;
@@ -181,27 +200,44 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
+  @Check
+  public void checkDeactivateMessagesModel(final Model model) {
+    this.checkDeactivateMessages(model);
+  }
+  
+  @Check
+  public void checkDeactivateMessagesBlock(final Block block) {
+    this.checkDeactivateMessages(block);
+  }
+  
   /**
    * Checks on deactivation keyword
    * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
    */
-  @Check
-  public void checkDeactivateMessages(final Model model) {
+  public void checkDeactivateMessages(final EObject model) {
     int index = 0;
     LinkedList<String> messageTargets = CollectionLiterals.<String>newLinkedList();
-    EList<EObject> _elements = model.getElements();
-    for (final EObject obj : _elements) {
+    EList<EObject> elements = TextualScenarioHelper.getElements(model);
+    for (final EObject obj : elements) {
       {
-        if ((obj instanceof SequenceMessage)) {
+        if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageTargets.add(((SequenceMessage) obj).getTarget());
         }
         if ((obj instanceof ParticipantDeactivation)) {
           ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
           boolean removed = messageTargets.remove(deactivation.getName());
           if ((!removed)) {
-            this.error(
-              "Deactivation keyword not expected", 
-              TextualScenarioPackage.Literals.MODEL__ELEMENTS, index);
+            if ((model instanceof Model)) {
+              this.error(
+                "Deactivation keyword not expected", 
+                TextualScenarioPackage.Literals.MODEL__ELEMENTS, index);
+            } else {
+              if ((model instanceof Block)) {
+                this.error(
+                  "Deactivation keyword not expected", 
+                  TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, index);
+              }
+            }
           }
         }
         index++;
@@ -414,12 +450,21 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    * Check that each withExecution message is closed by deactivation (on the proper target)
    */
   @Check
-  public void checkWithExecutionHasDeactivate(final Model model) {
+  public void checkWithExecutionHasDeactivateModel(final Model model) {
+    this.checkWithExecutionHasDeactivate(model);
+  }
+  
+  @Check
+  public void checkWithExecutionHasDeactivateBlock(final Block block) {
+    this.checkWithExecutionHasDeactivate(block);
+  }
+  
+  public void checkWithExecutionHasDeactivate(final EObject model) {
     LinkedList<String> messageWithExecutionTargets = CollectionLiterals.<String>newLinkedList();
     LinkedList<Integer> messageWithExecutionTargetsIndex = CollectionLiterals.<Integer>newLinkedList();
     int index = 0;
-    EList<EObject> _elements = model.getElements();
-    for (final EObject obj : _elements) {
+    EList<EObject> elements = TextualScenarioHelper.getElements(model);
+    for (final EObject obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageWithExecutionTargets.add(((SequenceMessage) obj).getTarget());
@@ -437,10 +482,17 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
     for (int i = 0; (i < messageWithExecutionTargets.size()); i++) {
-      this.error(
-        "Deactivation keyword expected for a withExecution message", 
-        TextualScenarioPackage.Literals.MODEL__ELEMENTS, 
-        (messageWithExecutionTargetsIndex.get(i)).intValue());
+      if ((model instanceof Model)) {
+        this.error(
+          "Deactivation keyword expected for a withExecution message", 
+          TextualScenarioPackage.Literals.MODEL__ELEMENTS, 
+          (messageWithExecutionTargetsIndex.get(i)).intValue());
+      } else {
+        this.error(
+          "Deactivation keyword expected for a withExecution message", 
+          TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, 
+          messageWithExecutionTargets.get(i));
+      }
     }
   }
   

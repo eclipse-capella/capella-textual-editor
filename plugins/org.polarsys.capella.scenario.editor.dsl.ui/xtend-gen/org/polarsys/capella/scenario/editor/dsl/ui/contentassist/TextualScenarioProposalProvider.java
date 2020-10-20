@@ -301,7 +301,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   }
   
   public HashMap<String, Integer> createTimelinesHashMapToProposeForDeactivation(final ParticipantDeactivation participantDeactivation, final EObject modelContainer, final HashMap<String, Integer> timelinesToPropose) {
-    EList<EObject> elements = this.getElements(modelContainer);
+    EList<EObject> elements = TextualScenarioHelper.getElements(modelContainer);
     for (int i = 0; (i < elements.size()); i++) {
       {
         boolean _equals = elements.get(i).equals(participantDeactivation);
@@ -342,18 +342,6 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       _xblockexpression = _xifexpression;
     }
     return _xblockexpression;
-  }
-  
-  public EList<EObject> getElements(final EObject modelContainer) {
-    if ((modelContainer instanceof Model)) {
-      return ((Model) modelContainer).getElements();
-    }
-    if ((modelContainer instanceof CombinedFragment)) {
-      EList<EObject> elements = ((CombinedFragment) modelContainer).getBlock().getBlockElements();
-      elements.addAll(((CombinedFragment) modelContainer).getOperands());
-      return elements;
-    }
-    return ((Operand) modelContainer).getBlock().getBlockElements();
   }
   
   public Integer updateHashMapWithSequenceMessage(final HashMap<String, Integer> timelinesToPropose, final SequenceMessage sequenceMessage) {
