@@ -648,13 +648,13 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   public String getMessagesMapKey(final EObject message) {
-    if ((message instanceof SequenceMessage)) {
-      String _name = ((SequenceMessage)message).getName();
+    if ((message instanceof SequenceMessageType)) {
+      String _name = ((SequenceMessageType)message).getName();
       String _plus = (_name + ":");
-      String _source = ((SequenceMessage)message).getSource();
+      String _source = ((SequenceMessageType)message).getSource();
       String _plus_1 = (_plus + _source);
       String _plus_2 = (_plus_1 + ":");
-      String _target = ((SequenceMessage)message).getTarget();
+      String _target = ((SequenceMessageType)message).getTarget();
       return (_plus_2 + _target);
     }
     if ((message instanceof ArmTimerMessage)) {

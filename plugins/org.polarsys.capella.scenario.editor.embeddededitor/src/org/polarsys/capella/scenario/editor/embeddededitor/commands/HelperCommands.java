@@ -23,7 +23,6 @@ public class HelperCommands {
   public static boolean isValidTextResource(XtextResource resource) {
     IResourceValidator validator = resource.getResourceServiceProvider().getResourceValidator();
     List<Issue> issues = validator.validate(resource, CheckMode.ALL, null);
-    //TODO - uncomment after fixing validation
-    return true;//issues.isEmpty();
+    return issues.isEmpty();
   }
 }
