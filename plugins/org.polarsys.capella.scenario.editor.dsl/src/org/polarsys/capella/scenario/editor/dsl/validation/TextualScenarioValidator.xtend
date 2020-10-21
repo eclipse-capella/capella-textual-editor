@@ -30,8 +30,9 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment
 import org.polarsys.capella.scenario.editor.helper.DslConstants
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
-import java.util.HashMap
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage
+import java.util.HashSet
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
 
 /**
  * This class contains custom validation rules. 
@@ -139,42 +140,35 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 * ex: allowed: "A1" -> "A2" : "MSG1", "A2" -> "A3" : "MSG1"
 	 */
 	
-	@Check 
-	def checkDuplicatedMessagesNamesModel(Model model) {
-		checkDuplicatedMessagesNames(model)	
+	@Check
+	def checkDuplicatedSequenceMessageNames(SequenceMessage message) {
+		var model = TextualScenarioHelper.getModelContainer(message) 
+		checkDuplicated(message, model as Model, newHashSet)	
 	}
 	
 	@Check
-	def checkDuplicateMessagesNamesBlock(Block block) {
-		 checkDuplicatedMessagesNames(block)
+	def checkDuplicatedArmTimerMessageNames(ArmTimerMessage message) {
+		var model = TextualScenarioHelper.getModelContainer(message) 
+		checkDuplicated(message, model as Model, newHashSet)	
 	}
 	
-	
-	def checkDuplicatedMessagesNames(EObject model) {
-		var index = 0
-		val names = newHashSet
+	def checkDuplicated(Message message, EObject model, HashSet<String> names) {
 		var elements = TextualScenarioHelper.getElements(model)
 		for (element : elements) {
+
 			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage) {
 				if (!names.add(getMessagesMapKey(element))) {
-					if (model instanceof Model) {
-						error(
-							'Duplicated message! The same message is already defined',
-							TextualScenarioPackage.Literals.MODEL__ELEMENTS,
-							index,
-							DUPLICATED_MESSAGES_NAME
-						)
-					} else if (model instanceof Block) {
-						error(
-							'Duplicated message! The same message is already defined',
-							TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
-							index,
-							DUPLICATED_MESSAGES_NAME
-						)
-					}
+					error('Duplicated message! The same message is already defined',
+						TextualScenarioPackage.Literals.MESSAGE__NAME)
+				}
+				if (element.equals(message)) {
+					return
 				}
 			}
-			index++
+			
+			if (element instanceof CombinedFragment || element instanceof Operand) {
+				checkDuplicated(message, element, names)
+			}	
 		}
 	}
 	
