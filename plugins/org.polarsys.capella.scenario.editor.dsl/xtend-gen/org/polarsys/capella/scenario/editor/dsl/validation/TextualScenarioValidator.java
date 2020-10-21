@@ -28,6 +28,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
@@ -162,18 +163,18 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    * ex: allowed: "A1" -> "A2" : "MSG1", "A2" -> "A3" : "MSG1"
    */
   @Check
-  public void checkDuplicatedMessagesNamesModel(final Model model) {
-    this.checkDuplicatedMessagesNames(model);
+  public void checkDuplicatedSequenceMessageNames(final SequenceMessage message) {
+    Object model = TextualScenarioHelper.getModelContainer(message);
+    this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
   }
   
   @Check
-  public void checkDuplicateMessagesNamesBlock(final Block block) {
-    this.checkDuplicatedMessagesNames(block);
+  public void checkDuplicatedArmTimerMessageNames(final ArmTimerMessage message) {
+    Object model = TextualScenarioHelper.getModelContainer(message);
+    this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
   }
   
-  public void checkDuplicatedMessagesNames(final EObject model) {
-    int index = 0;
-    final HashSet<String> names = CollectionLiterals.<String>newHashSet();
+  public void checkDuplicated(final Message message, final EObject model, final HashSet<String> names) {
     EList<EObject> elements = TextualScenarioHelper.getElements(model);
     for (final EObject element : elements) {
       {
@@ -181,22 +182,17 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           boolean _add = names.add(this.getMessagesMapKey(element));
           boolean _not = (!_add);
           if (_not) {
-            if ((model instanceof Model)) {
-              this.error(
-                "Duplicated message! The same message is already defined", 
-                TextualScenarioPackage.Literals.MODEL__ELEMENTS, index, 
-                TextualScenarioValidator.DUPLICATED_MESSAGES_NAME);
-            } else {
-              if ((model instanceof Block)) {
-                this.error(
-                  "Duplicated message! The same message is already defined", 
-                  TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, index, 
-                  TextualScenarioValidator.DUPLICATED_MESSAGES_NAME);
-              }
-            }
+            this.error("Duplicated message! The same message is already defined", 
+              TextualScenarioPackage.Literals.MESSAGE__NAME);
+          }
+          boolean _equals = element.equals(message);
+          if (_equals) {
+            return;
           }
         }
-        index++;
+        if (((element instanceof CombinedFragment) || (element instanceof Operand))) {
+          this.checkDuplicated(message, element, names);
+        }
       }
     }
   }
