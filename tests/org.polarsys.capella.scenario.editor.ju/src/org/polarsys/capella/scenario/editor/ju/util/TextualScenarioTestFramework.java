@@ -48,7 +48,7 @@ import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
   public static final String simpleDiagramName = "[IS] CapabilityRealization 1 (Simple)";
-  public static final String simpleFileContentExpected = "[IS]_CapabilityRealization_1_Simple";
+  public static final String simpleFileContent = "[IS]_CapabilityRealization_1_Simple";
   protected String invalidContentErrMsg = "Invalid content in diagram {0}.\n Text expected in editor:\n{1}\nFound:\n{2}";
 
   protected String modelName = "TextualEditor";
@@ -85,7 +85,7 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
     DiagramContext simpleDiagram = new OpenDiagramStep(context, simpleDiagramName).run();
     assertTrue(simpleDiagram != null);
 
-    String simpleExpectedContent = readFile(simpleFileContentExpected);
+    String simpleExpectedContent = readFile(simpleFileContent);
     // check the content of the text editor
     checkValidContent(simpleDiagramName, simpleExpectedContent);
   }

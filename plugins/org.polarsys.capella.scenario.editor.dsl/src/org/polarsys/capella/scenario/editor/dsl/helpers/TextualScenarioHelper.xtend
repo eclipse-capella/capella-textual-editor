@@ -100,8 +100,7 @@ class TextualScenarioHelper {
 	}
 	
 	def static isParticipantKeyword(String keywordValue) {
-		var participantsKeywords = newArrayList("actor", "entity", "role", "activity", "component",
-			"configuration_item", "function")
+		var participantsKeywords = EmbeddedEditorInstanceHelper.PARTICIPANT_KEYWORDS;
 		return participantsKeywords.contains(keywordValue)
 	}
 	

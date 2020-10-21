@@ -8,7 +8,7 @@ scenario {
 		"SA 3" -> "SA 2" : "c2"
 		"SA 2" -> "SA 3" withReturn : "cr2"
 	}
-	opt "" over "SA 3" "SA 2" {
+	opt "123" over "SA 3" "SA 2" {
 		"SA 3" -> "SA 2" : "c3"
 	}
 }

@@ -613,7 +613,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	}
 
 	def getMessagesMapKey(EObject message) {
-		if (message instanceof SequenceMessage) {
+		if (message instanceof SequenceMessageType) {
 			return message.name + ":" + message.source + ":" + message.target
 		} 
 		

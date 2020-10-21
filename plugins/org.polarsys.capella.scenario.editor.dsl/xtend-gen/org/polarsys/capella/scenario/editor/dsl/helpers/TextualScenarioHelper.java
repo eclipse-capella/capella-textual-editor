@@ -122,8 +122,7 @@ public class TextualScenarioHelper {
   }
   
   public static boolean isParticipantKeyword(final String keywordValue) {
-    ArrayList<String> participantsKeywords = CollectionLiterals.<String>newArrayList("actor", "entity", "role", "activity", "component", 
-      "configuration_item", "function");
+    List<String> participantsKeywords = EmbeddedEditorInstanceHelper.PARTICIPANT_KEYWORDS;
     return participantsKeywords.contains(keywordValue);
   }
   

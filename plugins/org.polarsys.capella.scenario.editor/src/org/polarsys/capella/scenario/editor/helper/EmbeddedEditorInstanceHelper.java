@@ -13,6 +13,7 @@
 package org.polarsys.capella.scenario.editor.helper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +32,9 @@ import org.polarsys.capella.core.data.capellacommon.State;
 import org.polarsys.capella.core.data.capellacore.CapellaElement;
 import org.polarsys.capella.core.data.cs.BlockArchitecture;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
+import org.polarsys.capella.core.data.cs.Part;
 import org.polarsys.capella.core.data.ctx.SystemAnalysis;
+import org.polarsys.capella.core.data.ctx.SystemFunction;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
@@ -52,9 +55,35 @@ import org.polarsys.capella.core.sirius.analysis.OAServices;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 
 public class EmbeddedEditorInstanceHelper {
-  public static EList<InstanceRole> getAvailableInstanceRoles() {
+  
+  public static final List<String> PARTICIPANT_KEYWORDS = Arrays.asList(DslConstants.ACTOR, DslConstants.ENTITY, DslConstants.ROLE,
+      DslConstants.ACTIVITY, DslConstants.COMPONENT, DslConstants.CONFIGURATION_ITEM, DslConstants.FUNCTION);
+  
+  public static EList<InstanceRole> getAvailableInstanceRolesInDiagram() {
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return currentScenario.getOwnedInstanceRoles();
+  }
+  
+  public static List<InstanceRole> getAvailableInstanceRoles() {
+    List<String> participantKeywords = EmbeddedEditorInstanceHelper.PARTICIPANT_KEYWORDS;
+    
+    List<InstanceRole> instanceRoles = new ArrayList<InstanceRole>();
+    for (String keyword : participantKeywords) {
+      if (checkValidKeyword(keyword)) {
+        List<InstanceRole> availableInstanceRoleForKeyword;
+        if (keyword.equals(DslConstants.FUNCTION)) {
+          availableInstanceRoleForKeyword = getAvailableElements(keyword).stream()
+              .map(element -> ((SystemFunction) element).getRepresentingInstanceRoles())
+              .flatMap(Collection::stream).distinct().collect(Collectors.toList());      
+        } else {
+          availableInstanceRoleForKeyword = getAvailableElements(keyword).stream()
+              .map(element -> ((Part) element).getRepresentingInstanceRoles())
+              .flatMap(Collection::stream).distinct().collect(Collectors.toList());
+        }
+        instanceRoles.addAll(availableInstanceRoleForKeyword);
+      }
+    }    
+    return instanceRoles.stream().distinct().collect(Collectors.toList());
   }
 
   public static String getScenarioType() {
@@ -106,7 +135,6 @@ public class EmbeddedEditorInstanceHelper {
    */
   public static List<String> getExchangeNames(String source, String target) {
     List<String> messages = new ArrayList<String>();
-
     List<AbstractEventOperation> exchanges = getAvailableExchanges(source, target);
     for (AbstractEventOperation exchange : exchanges) {
       if (isInterfaceScenario()) {
@@ -146,8 +174,8 @@ public class EmbeddedEditorInstanceHelper {
    */
   public static List<AbstractEventOperation> getAvailableExchanges(String source, String target) {
     List<AbstractEventOperation> exchangesAvailable = new ArrayList<AbstractEventOperation>();
-    InstanceRole sourceIr = EmbeddedEditorInstanceHelper.getInstanceRole(source);
-    InstanceRole targetIr = EmbeddedEditorInstanceHelper.getInstanceRole(target);
+    InstanceRole sourceIr = EmbeddedEditorInstanceHelper.getInstanceRoleFromScenario(source);
+    InstanceRole targetIr = EmbeddedEditorInstanceHelper.getInstanceRoleFromScenario(target);
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
 
     switch (currentScenario.getKind()) {
@@ -290,7 +318,20 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static InstanceRole getInstanceRole(String source) {
-    EList<InstanceRole> instanceRoles = getAvailableInstanceRoles();
+    List<InstanceRole> instanceRoles = getAvailableInstanceRolesInDiagram();
+    InstanceRole instanceRole = null;
+    for (Iterator<InstanceRole> iterator = instanceRoles.iterator(); iterator.hasNext();) {
+      InstanceRole role = iterator.next();
+      if (role.getName().equals(source)) {
+        instanceRole = role;
+        break;
+      }
+    }
+    return instanceRole;
+  }
+  
+  public static InstanceRole getInstanceRoleFromScenario(String source) {
+    List<InstanceRole> instanceRoles = getAvailableInstanceRoles();
     InstanceRole instanceRole = null;
     for (Iterator<InstanceRole> iterator = instanceRoles.iterator(); iterator.hasNext();) {
       InstanceRole role = iterator.next();
@@ -317,10 +358,9 @@ public class EmbeddedEditorInstanceHelper {
     if (currentScenario.getKind() == ScenarioKind.INTERACTION) {
       if (ScenarioExt.isFunctionalScenario(currentScenario)) {
         return keyword.equals(DslConstants.ACTIVITY);
-      } else {
-        return keyword.equals(DslConstants.ENTITY) || keyword.equals(DslConstants.ACTOR)
+      } 
+      return keyword.equals(DslConstants.ENTITY) || keyword.equals(DslConstants.ACTOR)
             || keyword.equals(DslConstants.ROLE);
-      }
     }
     // IS and ES
     if (currentScenario.getKind() == ScenarioKind.INTERFACE || currentScenario.getKind() == ScenarioKind.DATA_FLOW) {
@@ -343,7 +383,7 @@ public class EmbeddedEditorInstanceHelper {
   }
 
   public static boolean checkValidTimeline(String timelineName) {
-    if (timelineName == null || getInstanceRole(timelineName) == null)
+    if (timelineName == null || getInstanceRoleFromScenario(timelineName) == null)
       return false;
     return true;
   }
@@ -362,7 +402,7 @@ public class EmbeddedEditorInstanceHelper {
       return new ArrayList<String>();
     }
 
-    EObject element = getInstanceRole(timelineName);
+    EObject element = getInstanceRoleFromScenario(timelineName);
     if (element == null)
       return new ArrayList<String>();
 
