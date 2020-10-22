@@ -157,19 +157,20 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		for (element : elements) {
 
 			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage) {
-				if (!names.add(getMessagesMapKey(element))) {
-					error('Duplicated message! The same message is already defined',
-						TextualScenarioPackage.Literals.MESSAGE__NAME)
-				}
-				if (element.equals(message)) {
-					return
+				if (!names.add(getMessagesMapKey(element)) && element.equals(message)) {
+						error('Duplicated message! The same message is already defined',
+							TextualScenarioPackage.Literals.MESSAGE__NAME)
+						return true
+					}
+			}
+
+			if (element instanceof CombinedFragment || element instanceof Operand) {
+				if (checkDuplicated(message, element, names) == true) {
+					return true
 				}
 			}
-			
-			if (element instanceof CombinedFragment || element instanceof Operand) {
-				checkDuplicated(message, element, names)
-			}	
 		}
+		return false
 	}
 	
 	@Check
@@ -261,10 +262,10 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 
 			if (element instanceof DeleteMessage) {
 				if (combinedFragment.timelines.contains((element as DeleteMessage).target)) {
-					error(
-						String.format(
-							"Combined Fragment can not be used at this point, a delete message was already inserted on this timeline"),
-						TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES)
+					error(String.format(
+						"Timeline \"" + (element as DeleteMessage).target +
+							"\" can not be used at this point. A delete message was already defined on this timeline"
+					), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES)
 					return
 				}
 			}
@@ -286,10 +287,10 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			
 			if (element instanceof DeleteMessage) {
 				if ((element as DeleteMessage).target.equals(fragment.timeline)) {
-					error(
-						String.format(
-							"State Fragment can not be used at this point, a delete message was already inserted on this timeline"),
-						TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE)
+					error(String.format(
+						"Timeline \"" + (element as DeleteMessage).target +
+							"\" can not be used at this point. A delete message was already defined on this timeline"
+					), TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE)
 					return
 				}
 			}
@@ -314,17 +315,19 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				if ((element as DeleteMessage).target.equals(message.source)) {
 					error(
 						String.format(
-							"Message can not be used at this point, a delete message was already inserted on this timeline"),
+							"Source \"" + (element as DeleteMessage).target +
+								"\" can not be used at this point. A delete message was already defined on this timeline"),
 						TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
-						return 
+					return
 				}
 
 				if ((element as DeleteMessage).target.equals(message.target)) {
 					error(
 						String.format(
-							"Message can not be used at this point, a delete message was already inserted on this timeline"),
+							"Target \"" + (element as DeleteMessage).target +
+								"\" can not be used at this point. A delete message was already defined on this timeline"),
 						TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
-						return
+					return
 				}
 			}
 		}
@@ -342,16 +345,15 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 
 			if (element instanceof DeleteMessage) {
 				if ((element as DeleteMessage).target.equals(armTimer.participant)) {
-					error(
-						String.format(
-							"Arm Timer can not be used at this point, a delete message was already inserted on this timeline"),
-						TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT)
-						return 
+					error(String.format(
+						"Timeline \"" + (element as DeleteMessage).target +
+							"\" can not be used at this point. A delete message was already defined on this timeline"
+					), TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT)
+					return
 				}
 			}
 		}
 	}
-	
 	
 	/*
 	 * check if create message could be used 
@@ -370,36 +372,37 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 
 				if ((element as SequenceMessageType).target.equals(target) ||
 				(element as SequenceMessageType).source.equals(target)) {
-					error(String.format("Create message can not be used at this point"),
-							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+					errorCreateMessage(target)
 					return
 				}
 			}
 			
 			if (element instanceof ArmTimerMessage) {
 				if ((element as ArmTimerMessage).participant.equals(target)) {
-					error(String.format("Create message can not be used at this point"),
-							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+					errorCreateMessage(target)
 					return
 				}
 			}
 
 			if (element instanceof CombinedFragment) {
 				if ((element as CombinedFragment).timelines.contains(target)) {
-					error(String.format("Create message can not be used at this point"),
-							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+					errorCreateMessage(target)
 					return 
 				}
 			}
 
 			if (element instanceof StateFragment) {
 				if ((element as StateFragment).timeline.equals(target)) {
-					error(String.format("Create message can not be used at this point"),
-							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+					errorCreateMessage(target)
 					return 
 				}
 			}
 		}
+	}
+	
+	def errorCreateMessage(String target) {
+		error(String.format("Target \"" + target +"\" can not be used in a create message at this point. Other operations were already defined on this timeline"),
+							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
 	}
 	
 	
