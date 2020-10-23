@@ -253,11 +253,15 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkIfACombinedFragmentIsUsedAfterDeleteMessage(CombinedFragment combinedFragment) {
 		var model = TextualScenarioHelper.getModelContainer(combinedFragment)
-		var elements = (model as Model).elements
+		checkCombinedFragmentAfterDelete(model as Model, combinedFragment)
+	}
+	
+	def checkCombinedFragmentAfterDelete(EObject model, CombinedFragment combinedFragment) {
+		var elements = TextualScenarioHelper.getElements(model)
 
 		for (EObject element : elements) {
 			if (element.equals(combinedFragment)) {
-				return
+				return true
 			}
 
 			if (element instanceof DeleteMessage) {
@@ -266,35 +270,53 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 						"Timeline \"" + (element as DeleteMessage).target +
 							"\" can not be used at this point. A delete message was already defined on this timeline"
 					), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES)
-					return
+					return true
 				}
 			}
-		}
+			
+			if (element instanceof CombinedFragment || element instanceof Operand) {
+				if (checkCombinedFragmentAfterDelete(element, combinedFragment) as Boolean) {
+					return true
+				}
+			}
+		}	
+		return false
 	}
 	
 	
 	// check if a delete message with the target involved in state fragment was created before
 	@Check
-	def checkIfAMessageIsUsedAfterStateFragment(StateFragment fragment) {
+	def checkIfAStateFragmentIsUsedAfterDeleteMessage(StateFragment fragment) {
 		
 		var model = TextualScenarioHelper.getModelContainer(fragment)
-		var elements = (model as Model).elements
-		
+		checkStateFragmentAfterDelete(model as Model, fragment)
+	}
+	
+	def checkStateFragmentAfterDelete(EObject model, StateFragment fragment) {
+		var elements = TextualScenarioHelper.getElements(model)
+
 		for (EObject element : elements) {
 			if (element.equals(fragment)) {
-				return
+				return true
 			}
-			
+
 			if (element instanceof DeleteMessage) {
 				if ((element as DeleteMessage).target.equals(fragment.timeline)) {
 					error(String.format(
 						"Timeline \"" + (element as DeleteMessage).target +
 							"\" can not be used at this point. A delete message was already defined on this timeline"
 					), TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE)
-					return
+					return true
+				}
+			}
+
+			if (element instanceof CombinedFragment || element instanceof Operand) {
+				if (checkStateFragmentAfterDelete(element, fragment) as Boolean) {
+					return true
 				}
 			}
 		}
+		return false;
 	}
 	
 	
@@ -304,43 +326,53 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkIfAMessageIsUsedAfterDeleteMessage(SequenceMessageType message) {
 		var model = TextualScenarioHelper.getModelContainer(message)
-		var elements = (model as Model).elements
-
+		checkSequenceMessageAfterDelete(model as Model, message)
+	}
+	
+	def checkSequenceMessageAfterDelete(EObject model, SequenceMessageType message) {
+		var elements = TextualScenarioHelper.getElements(model)
 		for (EObject element : elements) {
 			if (element.equals(message)) {
-				return
+				return true
 			}
 
 			if (element instanceof DeleteMessage) {
 				if ((element as DeleteMessage).target.equals(message.source)) {
-					error(
-						String.format(
-							"Source \"" + (element as DeleteMessage).target +
-								"\" can not be used at this point. A delete message was already defined on this timeline"),
+					error(String.format("Source \"" + (element as DeleteMessage).target +
+						"\" can not be used at this point. A delete message was already defined on this timeline"),
 						TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
-					return
+					return true
 				}
 
 				if ((element as DeleteMessage).target.equals(message.target)) {
-					error(
-						String.format(
-							"Target \"" + (element as DeleteMessage).target +
-								"\" can not be used at this point. A delete message was already defined on this timeline"),
+					error(String.format("Target \"" + (element as DeleteMessage).target +
+						"\" can not be used at this point. A delete message was already defined on this timeline"),
 						TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
-					return
+					return true
+				}
+			}
+
+			if (element instanceof CombinedFragment || element instanceof Operand) {
+				if (checkSequenceMessageAfterDelete(element, message) as Boolean) {
+					return true
 				}
 			}
 		}
+		return false
 	}
 	
 	@Check
 	def checkIfAnArmTimerIsUsedAfterDeleteMessage(ArmTimerMessage armTimer) {
 		var model = TextualScenarioHelper.getModelContainer(armTimer)
-		var elements = (model as Model).elements
+		checkArmTimerAfterDelete(model as Model, armTimer)
+	}
+	
+	def checkArmTimerAfterDelete(EObject model, ArmTimerMessage armTimer) {
+		var elements = TextualScenarioHelper.getElements(model)
 
 		for (EObject element : elements) {
 			if (element.equals(armTimer)) {
-				return
+				return true
 			}
 
 			if (element instanceof DeleteMessage) {
@@ -349,10 +381,17 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 						"Timeline \"" + (element as DeleteMessage).target +
 							"\" can not be used at this point. A delete message was already defined on this timeline"
 					), TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT)
-					return
+					return true
+				}
+			}
+			
+			if (element instanceof CombinedFragment || elements instanceof Operand) {
+				if (checkArmTimerAfterDelete(element, armTimer) as Boolean) {
+					return true
 				}
 			}
 		}
+		return false
 	}
 	
 	/*
@@ -361,43 +400,56 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkCreateMessage(CreateMessage createMessage) {
 		var model = TextualScenarioHelper.getModelContainer(createMessage)
-		var elements = (model as Model).elements
+		if (!checkCreateMessageValid(model as Model, createMessage)) {
+			errorCreateMessage(createMessage.target)
+		}
+	}
+	
+	def checkCreateMessageValid(EObject model, CreateMessage createMessage) {
 		var target = createMessage.target
+		var elements = TextualScenarioHelper.getElements(model)
 		
 		for (EObject element : elements) {
 			if (element instanceof SequenceMessageType) {
 				if (element.equals(createMessage)) {
-					return 
+					return true
 				}
 
 				if ((element as SequenceMessageType).target.equals(target) ||
 				(element as SequenceMessageType).source.equals(target)) {
-					errorCreateMessage(target)
-					return
+					return false
 				}
 			}
 			
 			if (element instanceof ArmTimerMessage) {
 				if ((element as ArmTimerMessage).participant.equals(target)) {
-					errorCreateMessage(target)
-					return
+					 return false
 				}
 			}
 
 			if (element instanceof CombinedFragment) {
 				if ((element as CombinedFragment).timelines.contains(target)) {
-					errorCreateMessage(target)
-					return 
+					return false
+				} else {
+					if (!(checkCreateMessageValid(element, createMessage) as Boolean)) {
+						return false
+					}
 				}
+			}
+			
+			if (element instanceof Operand) {
+				if (!(checkCreateMessageValid(element, createMessage) as Boolean)) {
+						return false
+					}
 			}
 
 			if (element instanceof StateFragment) {
 				if ((element as StateFragment).timeline.equals(target)) {
-					errorCreateMessage(target)
-					return 
-				}
+					return false
+				} 
 			}
 		}
+		return true
 	}
 	
 	def errorCreateMessage(String target) {
