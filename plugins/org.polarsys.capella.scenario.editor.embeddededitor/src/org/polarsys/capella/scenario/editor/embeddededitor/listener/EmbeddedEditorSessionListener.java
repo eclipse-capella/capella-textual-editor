@@ -49,33 +49,32 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
     }
   }
 
-  public ISelectionListener getSelectionListener() {
+  public static ISelectionListener getSelectionListener() {
     if (selectionListener == null) {
       selectionListener = createSelectionListener();
     }
     return selectionListener;
   }
 
-  public Object handleSelection(IWorkbenchPart part, ISelection selection,
-    boolean handleSemanticBrowserSelectionEvent) {
+  public static Object handleSelection(IWorkbenchPart part, ISelection selection) {
 	DialectEditor dEditor = (DialectEditor) part;
     DDiagram diagram = (DDiagram) dEditor.getRepresentation();
     EmbeddedEditorInstance.setDDiagram(diagram);
     Object result = null;
     if (selection != null && !selection.isEmpty() && (!(part instanceof EmbeddedEditorView))) {
       if (selection instanceof IStructuredSelection) {
-        IStructuredSelection selection_l = (IStructuredSelection) selection;
-        Object firstElement = selection_l.getFirstElement();
+        IStructuredSelection selectionStructure = (IStructuredSelection) selection;
+        Object firstElement = selectionStructure.getFirstElement();
         result = CapellaAdapterHelper.resolveDescriptorOrBusinessObject(firstElement);
       }
     }
     return result;
   }
 
-  protected ISelectionListener createSelectionListener() {
+  protected static ISelectionListener createSelectionListener() {
     return (part, selection) -> {
       if (part instanceof DDiagramEditor) {
-        Object newInput = handleSelection(part, selection, false);
+        Object newInput = handleSelection(part, selection);
 
         /*
          * when a new diagram of type scenario is opened, we use the class EmbeddedEditorInstance to save the current
@@ -94,7 +93,7 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
                 try {
                   eeView = (EmbeddedEditorView) activePage.showView(EmbeddedEditorView.ID);
                 } catch (PartInitException e) {
-                  e.printStackTrace();
+                  System.err.println("Cannot open Textual Editor View");
                 }
                 activePage.activate(eeView);
               }
@@ -107,20 +106,12 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
     };
   }
 
-  private EmbeddedEditorView getActiveEmbeddedEditorView() {
-    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-    EmbeddedEditorView eeView = (EmbeddedEditorView) activePage.findView(EmbeddedEditorView.ID);
-    return eeView;
-  }
-
   @Override
   public void notifyAddSession(Session newSession) {
-    // Do Nothing
   }
 
   @Override
   public void notifyRemoveSession(Session removedSession) {
-    // Do Nothing
   }
 
   @Override
@@ -129,7 +120,6 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
 
   @Override
   public void viewpointDeselected(Viewpoint deselectedSirius) {
-    // TODO Auto-generated method stub
-
   }
+
 }
