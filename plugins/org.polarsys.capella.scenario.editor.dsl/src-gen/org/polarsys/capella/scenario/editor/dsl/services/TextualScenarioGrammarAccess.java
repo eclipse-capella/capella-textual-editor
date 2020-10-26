@@ -52,8 +52,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEndRightCurlyBracketKeyword_4_0 = (Keyword)cEndAssignment_4.eContents().get(0);
 		
 		//Model:
-		//	'scenario' begin='{' participants+=Participant*
-		//	elements+=(Message | Reference | CombinedFragment | StateFragment)*
+		//	'scenario' begin='{' participants+=Participant* elements+=(Message | Reference | CombinedFragment | StateFragment)*
 		//	end='}';
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -429,22 +428,24 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cSourceAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cSourceSTRINGTerminalRuleCall_0_0 = (RuleCall)cSourceAssignment_0.eContents().get(0);
-		private final Keyword cHyphenMinusGreaterThanSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cArrowAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cArrowHyphenMinusGreaterThanSignKeyword_1_0 = (Keyword)cArrowAssignment_1.eContents().get(0);
 		private final Assignment cTargetAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cTargetSTRINGTerminalRuleCall_2_0 = (RuleCall)cTargetAssignment_2.eContents().get(0);
 		private final Assignment cExecutionAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final Keyword cExecutionWithExecutionKeyword_3_0 = (Keyword)cExecutionAssignment_3.eContents().get(0);
 		private final Assignment cReturnAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final Keyword cReturnWithReturnKeyword_4_0 = (Keyword)cReturnAssignment_4.eContents().get(0);
-		private final Keyword cColonKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cDoubleDotAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final Keyword cDoubleDotColonKeyword_5_0 = (Keyword)cDoubleDotAssignment_5.eContents().get(0);
 		private final Assignment cNameAssignment_6 = (Assignment)cGroup.eContents().get(6);
 		private final RuleCall cNameSTRINGTerminalRuleCall_6_0 = (RuleCall)cNameAssignment_6.eContents().get(0);
 		
 		//SequenceMessage:
-		//	source=STRING '->' target=STRING execution='withExecution'? return='withReturn'? ':' name=STRING;
+		//	source=STRING arrow='->' target=STRING execution='withExecution'? return='withReturn'? doubleDot=':' name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//source=STRING '->' target=STRING execution='withExecution'? return='withReturn'? ':' name=STRING
+		//source=STRING arrow='->' target=STRING execution='withExecution'? return='withReturn'? doubleDot=':' name=STRING
 		public Group getGroup() { return cGroup; }
 		
 		//source=STRING
@@ -453,8 +454,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getSourceSTRINGTerminalRuleCall_0_0() { return cSourceSTRINGTerminalRuleCall_0_0; }
 		
+		//arrow='->'
+		public Assignment getArrowAssignment_1() { return cArrowAssignment_1; }
+		
 		//'->'
-		public Keyword getHyphenMinusGreaterThanSignKeyword_1() { return cHyphenMinusGreaterThanSignKeyword_1; }
+		public Keyword getArrowHyphenMinusGreaterThanSignKeyword_1_0() { return cArrowHyphenMinusGreaterThanSignKeyword_1_0; }
 		
 		//target=STRING
 		public Assignment getTargetAssignment_2() { return cTargetAssignment_2; }
@@ -474,8 +478,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//'withReturn'
 		public Keyword getReturnWithReturnKeyword_4_0() { return cReturnWithReturnKeyword_4_0; }
 		
+		//doubleDot=':'
+		public Assignment getDoubleDotAssignment_5() { return cDoubleDotAssignment_5; }
+		
 		//':'
-		public Keyword getColonKeyword_5() { return cColonKeyword_5; }
+		public Keyword getDoubleDotColonKeyword_5_0() { return cDoubleDotColonKeyword_5_0; }
 		
 		//name=STRING
 		public Assignment getNameAssignment_6() { return cNameAssignment_6; }
@@ -488,18 +495,20 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cSourceAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cSourceSTRINGTerminalRuleCall_0_0 = (RuleCall)cSourceAssignment_0.eContents().get(0);
-		private final Keyword cHyphenMinusGreaterThanSignPlusSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cArrowAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cArrowHyphenMinusGreaterThanSignPlusSignKeyword_1_0 = (Keyword)cArrowAssignment_1.eContents().get(0);
 		private final Assignment cTargetAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cTargetSTRINGTerminalRuleCall_2_0 = (RuleCall)cTargetAssignment_2.eContents().get(0);
-		private final Keyword cColonKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cDoubleDotAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cDoubleDotColonKeyword_3_0 = (Keyword)cDoubleDotAssignment_3.eContents().get(0);
 		private final Assignment cNameAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cNameSTRINGTerminalRuleCall_4_0 = (RuleCall)cNameAssignment_4.eContents().get(0);
 		
 		//CreateMessage:
-		//	source=STRING '->+' target=STRING ':' name=STRING;
+		//	source=STRING arrow='->+' target=STRING doubleDot=':' name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//source=STRING '->+' target=STRING ':' name=STRING
+		//source=STRING arrow='->+' target=STRING doubleDot=':' name=STRING
 		public Group getGroup() { return cGroup; }
 		
 		//source=STRING
@@ -508,8 +517,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getSourceSTRINGTerminalRuleCall_0_0() { return cSourceSTRINGTerminalRuleCall_0_0; }
 		
+		//arrow='->+'
+		public Assignment getArrowAssignment_1() { return cArrowAssignment_1; }
+		
 		//'->+'
-		public Keyword getHyphenMinusGreaterThanSignPlusSignKeyword_1() { return cHyphenMinusGreaterThanSignPlusSignKeyword_1; }
+		public Keyword getArrowHyphenMinusGreaterThanSignPlusSignKeyword_1_0() { return cArrowHyphenMinusGreaterThanSignPlusSignKeyword_1_0; }
 		
 		//target=STRING
 		public Assignment getTargetAssignment_2() { return cTargetAssignment_2; }
@@ -517,8 +529,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getTargetSTRINGTerminalRuleCall_2_0() { return cTargetSTRINGTerminalRuleCall_2_0; }
 		
+		//doubleDot=':'
+		public Assignment getDoubleDotAssignment_3() { return cDoubleDotAssignment_3; }
+		
 		//':'
-		public Keyword getColonKeyword_3() { return cColonKeyword_3; }
+		public Keyword getDoubleDotColonKeyword_3_0() { return cDoubleDotColonKeyword_3_0; }
 		
 		//name=STRING
 		public Assignment getNameAssignment_4() { return cNameAssignment_4; }
@@ -531,18 +546,20 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cSourceAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cSourceSTRINGTerminalRuleCall_0_0 = (RuleCall)cSourceAssignment_0.eContents().get(0);
-		private final Keyword cXKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cArrowAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cArrowXKeyword_1_0 = (Keyword)cArrowAssignment_1.eContents().get(0);
 		private final Assignment cTargetAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cTargetSTRINGTerminalRuleCall_2_0 = (RuleCall)cTargetAssignment_2.eContents().get(0);
-		private final Keyword cColonKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cDoubleDotAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cDoubleDotColonKeyword_3_0 = (Keyword)cDoubleDotAssignment_3.eContents().get(0);
 		private final Assignment cNameAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cNameSTRINGTerminalRuleCall_4_0 = (RuleCall)cNameAssignment_4.eContents().get(0);
 		
 		//DeleteMessage:
-		//	source=STRING '->x' target=STRING ':' name=STRING;
+		//	source=STRING arrow='->x' target=STRING doubleDot=':' name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//source=STRING '->x' target=STRING ':' name=STRING
+		//source=STRING arrow='->x' target=STRING doubleDot=':' name=STRING
 		public Group getGroup() { return cGroup; }
 		
 		//source=STRING
@@ -551,8 +568,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getSourceSTRINGTerminalRuleCall_0_0() { return cSourceSTRINGTerminalRuleCall_0_0; }
 		
+		//arrow='->x'
+		public Assignment getArrowAssignment_1() { return cArrowAssignment_1; }
+		
 		//'->x'
-		public Keyword getXKeyword_1() { return cXKeyword_1; }
+		public Keyword getArrowXKeyword_1_0() { return cArrowXKeyword_1_0; }
 		
 		//target=STRING
 		public Assignment getTargetAssignment_2() { return cTargetAssignment_2; }
@@ -560,8 +580,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getTargetSTRINGTerminalRuleCall_2_0() { return cTargetSTRINGTerminalRuleCall_2_0; }
 		
+		//doubleDot=':'
+		public Assignment getDoubleDotAssignment_3() { return cDoubleDotAssignment_3; }
+		
 		//':'
-		public Keyword getColonKeyword_3() { return cColonKeyword_3; }
+		public Keyword getDoubleDotColonKeyword_3_0() { return cDoubleDotColonKeyword_3_0; }
 		
 		//name=STRING
 		public Assignment getNameAssignment_4() { return cNameAssignment_4; }
@@ -572,22 +595,29 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	public class ArmTimerMessageElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.ArmTimerMessage");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cHyphenMinusGreaterThanSignGreaterThanSignKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cArrowAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final Keyword cArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0 = (Keyword)cArrowAssignment_0.eContents().get(0);
 		private final Assignment cParticipantAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cParticipantSTRINGTerminalRuleCall_1_0 = (RuleCall)cParticipantAssignment_1.eContents().get(0);
-		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cNameSTRINGTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
+		private final Assignment cExecutionAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cExecutionWithExecutionKeyword_2_0 = (Keyword)cExecutionAssignment_2.eContents().get(0);
+		private final Assignment cDoubleDotAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final Keyword cDoubleDotColonKeyword_3_0 = (Keyword)cDoubleDotAssignment_3.eContents().get(0);
+		private final Assignment cNameAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cNameSTRINGTerminalRuleCall_4_0 = (RuleCall)cNameAssignment_4.eContents().get(0);
 		
 		//ArmTimerMessage:
-		//	"->>" participant=STRING ':' name=STRING;
+		//	arrow="->>" participant=STRING execution='withExecution'? doubleDot=':' name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//"->>" participant=STRING ':' name=STRING
+		//arrow="->>" participant=STRING execution='withExecution'? doubleDot=':' name=STRING
 		public Group getGroup() { return cGroup; }
 		
+		//arrow="->>"
+		public Assignment getArrowAssignment_0() { return cArrowAssignment_0; }
+		
 		//"->>"
-		public Keyword getHyphenMinusGreaterThanSignGreaterThanSignKeyword_0() { return cHyphenMinusGreaterThanSignGreaterThanSignKeyword_0; }
+		public Keyword getArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0() { return cArrowHyphenMinusGreaterThanSignGreaterThanSignKeyword_0_0; }
 		
 		//participant=STRING
 		public Assignment getParticipantAssignment_1() { return cParticipantAssignment_1; }
@@ -595,14 +625,23 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getParticipantSTRINGTerminalRuleCall_1_0() { return cParticipantSTRINGTerminalRuleCall_1_0; }
 		
+		//execution='withExecution'?
+		public Assignment getExecutionAssignment_2() { return cExecutionAssignment_2; }
+		
+		//'withExecution'
+		public Keyword getExecutionWithExecutionKeyword_2_0() { return cExecutionWithExecutionKeyword_2_0; }
+		
+		//doubleDot=':'
+		public Assignment getDoubleDotAssignment_3() { return cDoubleDotAssignment_3; }
+		
 		//':'
-		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
+		public Keyword getDoubleDotColonKeyword_3_0() { return cDoubleDotColonKeyword_3_0; }
 		
 		//name=STRING
-		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
+		public Assignment getNameAssignment_4() { return cNameAssignment_4; }
 		
 		//STRING
-		public RuleCall getNameSTRINGTerminalRuleCall_3_0() { return cNameSTRINGTerminalRuleCall_3_0; }
+		public RuleCall getNameSTRINGTerminalRuleCall_4_0() { return cNameSTRINGTerminalRuleCall_4_0; }
 	}
 	public class ParticipantDeactivationElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.ParticipantDeactivation");
@@ -689,6 +728,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cKeywordOptKeyword_0_0_7 = (Keyword)cKeywordAlternatives_0_0.eContents().get(7);
 		private final Keyword cKeywordSeqKeyword_0_0_8 = (Keyword)cKeywordAlternatives_0_0.eContents().get(8);
 		private final Keyword cKeywordStrictKeyword_0_0_9 = (Keyword)cKeywordAlternatives_0_0.eContents().get(9);
+		private final Keyword cKeywordUnsetKeyword_0_0_10 = (Keyword)cKeywordAlternatives_0_0.eContents().get(10);
 		private final Assignment cExpressionAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cExpressionSTRINGTerminalRuleCall_1_0 = (RuleCall)cExpressionAssignment_1.eContents().get(0);
 		private final Assignment cOverAssignment_2 = (Assignment)cGroup.eContents().get(2);
@@ -701,18 +741,18 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cOperandsOperandParserRuleCall_5_0 = (RuleCall)cOperandsAssignment_5.eContents().get(0);
 		
 		//CombinedFragment:
-		//	keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict')?
+		//	keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
 		//	expression=STRING over='over' timelines+=STRING+ block=Block operands+=Operand*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict')?
+		//keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
 		//expression=STRING over='over' timelines+=STRING+ block=Block operands+=Operand*
 		public Group getGroup() { return cGroup; }
 		
-		//keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict')?
+		//keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
 		public Assignment getKeywordAssignment_0() { return cKeywordAssignment_0; }
 		
-		//('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict')
+		//('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
 		public Alternatives getKeywordAlternatives_0_0() { return cKeywordAlternatives_0_0; }
 		
 		//'alt'
@@ -744,6 +784,9 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//'strict'
 		public Keyword getKeywordStrictKeyword_0_0_9() { return cKeywordStrictKeyword_0_0_9; }
+		
+		//'unset'
+		public Keyword getKeywordUnsetKeyword_0_0_10() { return cKeywordUnsetKeyword_0_0_10; }
 		
 		//expression=STRING
 		public Assignment getExpressionAssignment_1() { return cExpressionAssignment_1; }
@@ -1004,8 +1047,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//Model:
-	//	'scenario' begin='{' participants+=Participant*
-	//	elements+=(Message | Reference | CombinedFragment | StateFragment)*
+	//	'scenario' begin='{' participants+=Participant* elements+=(Message | Reference | CombinedFragment | StateFragment)*
 	//	end='}';
 	public ModelElements getModelAccess() {
 		return pModel;
@@ -1136,7 +1178,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//SequenceMessage:
-	//	source=STRING '->' target=STRING execution='withExecution'? return='withReturn'? ':' name=STRING;
+	//	source=STRING arrow='->' target=STRING execution='withExecution'? return='withReturn'? doubleDot=':' name=STRING;
 	public SequenceMessageElements getSequenceMessageAccess() {
 		return pSequenceMessage;
 	}
@@ -1146,7 +1188,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//CreateMessage:
-	//	source=STRING '->+' target=STRING ':' name=STRING;
+	//	source=STRING arrow='->+' target=STRING doubleDot=':' name=STRING;
 	public CreateMessageElements getCreateMessageAccess() {
 		return pCreateMessage;
 	}
@@ -1156,7 +1198,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//DeleteMessage:
-	//	source=STRING '->x' target=STRING ':' name=STRING;
+	//	source=STRING arrow='->x' target=STRING doubleDot=':' name=STRING;
 	public DeleteMessageElements getDeleteMessageAccess() {
 		return pDeleteMessage;
 	}
@@ -1166,7 +1208,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//ArmTimerMessage:
-	//	"->>" participant=STRING ':' name=STRING;
+	//	arrow="->>" participant=STRING execution='withExecution'? doubleDot=':' name=STRING;
 	public ArmTimerMessageElements getArmTimerMessageAccess() {
 		return pArmTimerMessage;
 	}
@@ -1196,7 +1238,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//CombinedFragment:
-	//	keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict')?
+	//	keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
 	//	expression=STRING over='over' timelines+=STRING+ block=Block operands+=Operand*;
 	public CombinedFragmentElements getCombinedFragmentAccess() {
 		return pCombinedFragment;

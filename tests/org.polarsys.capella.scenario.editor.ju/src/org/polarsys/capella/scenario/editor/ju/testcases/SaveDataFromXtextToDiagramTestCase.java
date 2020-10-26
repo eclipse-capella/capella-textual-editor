@@ -28,7 +28,7 @@ public class SaveDataFromXtextToDiagramTestCase extends TextualScenarioTestFrame
         "Logical Component:LA 4", "Logical Component:LA 8", "Logical Component:LC 5", "LA 4 -> LA 5 : ex3",
         "LA 5 -> LA 4 : ex3", "LA 4 -> LA 6 : ex4"));
 
-    testUpdateDiagram(simpleDiagramName, simpleFileContentExpected, "[IS]_CapabilityRealization_1_Simple_New1", elementsNew1);
-    testUpdateDiagram(simpleDiagramName, simpleFileContentExpected, "[IS]_CapabilityRealization_1_Simple_New2", elementsNew2);
+    testUpdateDiagram(simpleDiagramName, simpleFileContent, "[IS]_CapabilityRealization_1_Simple_New1", elementsNew1);
+    testUpdateDiagram("[IS] CapabilityRealization 1 (Simple) 2", simpleFileContent, "[IS]_CapabilityRealization_1_Simple_New2", elementsNew2);
   }
 }

@@ -26,7 +26,9 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getSource <em>Source</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getArrow <em>Arrow</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getDoubleDot <em>Double Dot</em>}</li>
  * </ul>
  *
  * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getSequenceMessageType()
@@ -58,6 +60,28 @@ public interface SequenceMessageType extends Message
   void setSource(String value);
 
   /**
+   * Returns the value of the '<em><b>Arrow</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Arrow</em>' attribute.
+   * @see #setArrow(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getSequenceMessageType_Arrow()
+   * @model
+   * @generated
+   */
+  String getArrow();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getArrow <em>Arrow</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Arrow</em>' attribute.
+   * @see #getArrow()
+   * @generated
+   */
+  void setArrow(String value);
+
+  /**
    * Returns the value of the '<em><b>Target</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -78,5 +102,27 @@ public interface SequenceMessageType extends Message
    * @generated
    */
   void setTarget(String value);
+
+  /**
+   * Returns the value of the '<em><b>Double Dot</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Double Dot</em>' attribute.
+   * @see #setDoubleDot(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getSequenceMessageType_DoubleDot()
+   * @model
+   * @generated
+   */
+  String getDoubleDot();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType#getDoubleDot <em>Double Dot</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Double Dot</em>' attribute.
+   * @see #getDoubleDot()
+   * @generated
+   */
+  void setDoubleDot(String value);
 
 } // SequenceMessageType

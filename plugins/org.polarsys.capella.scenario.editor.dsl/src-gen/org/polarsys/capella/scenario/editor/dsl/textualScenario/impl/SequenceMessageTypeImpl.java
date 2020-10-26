@@ -33,7 +33,9 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.SequenceMessageTypeImpl#getSource <em>Source</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.SequenceMessageTypeImpl#getArrow <em>Arrow</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.SequenceMessageTypeImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.SequenceMessageTypeImpl#getDoubleDot <em>Double Dot</em>}</li>
  * </ul>
  *
  * @generated
@@ -61,6 +63,26 @@ public class SequenceMessageTypeImpl extends MessageImpl implements SequenceMess
   protected String source = SOURCE_EDEFAULT;
 
   /**
+   * The default value of the '{@link #getArrow() <em>Arrow</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getArrow()
+   * @generated
+   * @ordered
+   */
+  protected static final String ARROW_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getArrow() <em>Arrow</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getArrow()
+   * @generated
+   * @ordered
+   */
+  protected String arrow = ARROW_EDEFAULT;
+
+  /**
    * The default value of the '{@link #getTarget() <em>Target</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -79,6 +101,26 @@ public class SequenceMessageTypeImpl extends MessageImpl implements SequenceMess
    * @ordered
    */
   protected String target = TARGET_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getDoubleDot() <em>Double Dot</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getDoubleDot()
+   * @generated
+   * @ordered
+   */
+  protected static final String DOUBLE_DOT_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getDoubleDot() <em>Double Dot</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getDoubleDot()
+   * @generated
+   * @ordered
+   */
+  protected String doubleDot = DOUBLE_DOT_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -132,6 +174,31 @@ public class SequenceMessageTypeImpl extends MessageImpl implements SequenceMess
    * @generated
    */
   @Override
+  public String getArrow()
+  {
+    return arrow;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setArrow(String newArrow)
+  {
+    String oldArrow = arrow;
+    arrow = newArrow;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__ARROW, oldArrow, arrow));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public String getTarget()
   {
     return target;
@@ -157,14 +224,43 @@ public class SequenceMessageTypeImpl extends MessageImpl implements SequenceMess
    * @generated
    */
   @Override
+  public String getDoubleDot()
+  {
+    return doubleDot;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setDoubleDot(String newDoubleDot)
+  {
+    String oldDoubleDot = doubleDot;
+    doubleDot = newDoubleDot;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT, oldDoubleDot, doubleDot));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
     switch (featureID)
     {
       case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__SOURCE:
         return getSource();
+      case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__ARROW:
+        return getArrow();
       case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__TARGET:
         return getTarget();
+      case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT:
+        return getDoubleDot();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -182,8 +278,14 @@ public class SequenceMessageTypeImpl extends MessageImpl implements SequenceMess
       case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__SOURCE:
         setSource((String)newValue);
         return;
+      case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__ARROW:
+        setArrow((String)newValue);
+        return;
       case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__TARGET:
         setTarget((String)newValue);
+        return;
+      case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT:
+        setDoubleDot((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -202,8 +304,14 @@ public class SequenceMessageTypeImpl extends MessageImpl implements SequenceMess
       case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__SOURCE:
         setSource(SOURCE_EDEFAULT);
         return;
+      case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__ARROW:
+        setArrow(ARROW_EDEFAULT);
+        return;
       case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__TARGET:
         setTarget(TARGET_EDEFAULT);
+        return;
+      case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT:
+        setDoubleDot(DOUBLE_DOT_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -221,8 +329,12 @@ public class SequenceMessageTypeImpl extends MessageImpl implements SequenceMess
     {
       case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__SOURCE:
         return SOURCE_EDEFAULT == null ? source != null : !SOURCE_EDEFAULT.equals(source);
+      case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__ARROW:
+        return ARROW_EDEFAULT == null ? arrow != null : !ARROW_EDEFAULT.equals(arrow);
       case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__TARGET:
         return TARGET_EDEFAULT == null ? target != null : !TARGET_EDEFAULT.equals(target);
+      case TextualScenarioPackage.SEQUENCE_MESSAGE_TYPE__DOUBLE_DOT:
+        return DOUBLE_DOT_EDEFAULT == null ? doubleDot != null : !DOUBLE_DOT_EDEFAULT.equals(doubleDot);
     }
     return super.eIsSet(featureID);
   }
@@ -240,8 +352,12 @@ public class SequenceMessageTypeImpl extends MessageImpl implements SequenceMess
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (source: ");
     result.append(source);
+    result.append(", arrow: ");
+    result.append(arrow);
     result.append(", target: ");
     result.append(target);
+    result.append(", doubleDot: ");
+    result.append(doubleDot);
     result.append(')');
     return result.toString();
   }

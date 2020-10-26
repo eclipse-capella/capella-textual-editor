@@ -10,7 +10,7 @@
  *  Contributors:
  *     Thales - initial API and implementation
  ******************************************************************************/
-package org.polarsys.capella.scenario.editor.dsl.ui.provider;
+package org.polarsys.capella.scenario.editor.dsl.provider;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;

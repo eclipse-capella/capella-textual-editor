@@ -24,6 +24,5 @@ Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.polarsys.capella.scenario.editor.dsl.ui.contentassist,
  org.polarsys.capella.scenario.editor.dsl.ui.internal,
- org.polarsys.capella.scenario.editor.dsl.ui.provider,
  org.polarsys.capella.scenario.editor.dsl.ui.quickfix
 Bundle-Activator: org.polarsys.capella.scenario.editor.dsl.ui.internal.DslActivator

@@ -68,19 +68,19 @@ SequenceMessageType:
 ;
 
 SequenceMessage:
-    source=STRING '->' target=STRING (execution = 'withExecution')? (return='withReturn')? ':' name=STRING 
+    source=STRING arrow = '->' target=STRING (execution = 'withExecution')? (return='withReturn')? doubleDot = ':' name=STRING 
 ;
 
 CreateMessage:
-	source=STRING '->+' target=STRING ':' name=STRING 
+	source=STRING arrow = '->+' target=STRING doubleDot = ':' name=STRING 
 ;
 
 DeleteMessage:
-	source=STRING '->x' target=STRING ':' name=STRING 
+	source=STRING arrow = '->x' target=STRING doubleDot = ':' name=STRING 
 ;
 
 ArmTimerMessage:
-	"->>" participant=STRING ':' name=STRING
+	arrow = "->>" participant=STRING (execution = 'withExecution')? doubleDot = ':' name=STRING
 ;
 
 ParticipantDeactivation:
@@ -92,7 +92,7 @@ Reference:
 ;
 
 CombinedFragment: 
-	keyword = ('alt'|'loop'|'par'|'assert'|'critical'|'ignore'|'neg'|'opt'|'seq'|'strict')? expression=STRING over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
+	keyword = ('alt'|'loop'|'par'|'assert'|'critical'|'ignore'|'neg'|'opt'|'seq'|'strict'|'unset') expression=STRING over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
 ;
 
 Operand:

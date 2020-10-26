@@ -1,0 +1,5 @@
+scenario {
+	function "SystemFunction 2"
+	function "SystemFunction 1"
+	"SystemFunction 2" -> "SystemFunction 1" : "f1"
+}
