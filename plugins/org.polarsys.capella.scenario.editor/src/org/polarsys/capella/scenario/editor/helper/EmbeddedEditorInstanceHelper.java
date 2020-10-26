@@ -71,18 +71,18 @@ public class EmbeddedEditorInstanceHelper {
     for (String keyword : participantKeywords) {
       if (checkValidKeyword(keyword)) {
         List<InstanceRole> availableInstanceRoleForKeyword;
-        if (keyword.equals(DslConstants.FUNCTION)) {
+        if (keyword.equals(DslConstants.FUNCTION) || keyword.equals(DslConstants.ACTIVITY)) {
           availableInstanceRoleForKeyword = getAvailableElements(keyword).stream()
-              .map(element -> ((SystemFunction) element).getRepresentingInstanceRoles())
-              .flatMap(Collection::stream).distinct().collect(Collectors.toList());      
+              .map(element -> ((AbstractFunction) element).getRepresentingInstanceRoles()).flatMap(Collection::stream)
+              .distinct().collect(Collectors.toList());
         } else {
           availableInstanceRoleForKeyword = getAvailableElements(keyword).stream()
-              .map(element -> ((Part) element).getRepresentingInstanceRoles())
-              .flatMap(Collection::stream).distinct().collect(Collectors.toList());
+              .map(element -> ((Part) element).getRepresentingInstanceRoles()).flatMap(Collection::stream).distinct()
+              .collect(Collectors.toList());
         }
         instanceRoles.addAll(availableInstanceRoleForKeyword);
       }
-    }    
+    }
     return instanceRoles.stream().distinct().collect(Collectors.toList());
   }
 
