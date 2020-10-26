@@ -33,6 +33,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage
 import java.util.HashSet
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
+import org.eclipse.emf.ecore.EAttribute
 
 /**
  * This class contains custom validation rules. 
@@ -48,9 +49,9 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkPartExists(Participant participant) {
 		if (!EmbeddedEditorInstanceHelper.getAvailablePartNames(participant.keyword).contains(participant.name)) {
 			if (participant instanceof Function) {
-				error('Function does not exist', TextualScenarioPackage.Literals.PARTICIPANT__NAME, INVALID_NAME)
+				error('Function does not exist!', TextualScenarioPackage.Literals.PARTICIPANT__NAME, INVALID_NAME)
 			} else {
-				error('Represented part does not exist', TextualScenarioPackage.Literals.PARTICIPANT__NAME,
+				error('Represented part does not exist!', TextualScenarioPackage.Literals.PARTICIPANT__NAME,
 					INVALID_NAME)
 			}
 		}
@@ -59,7 +60,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkParticipantKeywordIsValid(Participant participant) {
 		if (!EmbeddedEditorInstanceHelper.checkValidKeyword(participant.keyword)) {
-			error('\'' + participant.keyword + '\' can not be used in this diagram',
+			error('\'' + participant.keyword + '\' can not be used in this diagram!',
 				TextualScenarioPackage.Literals.PARTICIPANT__KEYWORD)
 		}
 	}
@@ -68,7 +69,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkMessagesExist(SequenceMessage message) {
 		if (!EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource, message.getTarget).contains(
 				message.name)) {
-			error('Message does not exist', TextualScenarioPackage.Literals.MESSAGE__NAME)
+			error('Message does not exist!', TextualScenarioPackage.Literals.MESSAGE__NAME)
 		}
 	}
 	
@@ -81,13 +82,13 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		var participantsDefined = TextualScenarioHelper.participantsDefinedBeforeNames(message);
 		if (!participantsDefined.contains(message.source)) {
 			error(
-				'Source participant not defined in text',
+				'Source participant not defined in text editor!',
 				TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE
 			)
 		}
 		if (!participantsDefined.contains(message.target)) {
 			error(
-				'Target participant not defined in text',
+				'Target participant not defined in text editor!',
 				TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET
 			)
 		}
@@ -105,7 +106,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 					getScenarioAllowedExchangesType((model as Model).elements)
 				var exchangeType = TextualScenarioHelper.getMessageExchangeType(message)
 				if (scenarioExchangesType !== null && !scenarioExchangesType.equals(exchangeType)) {
-					error('Exchange type can not be used, expected ' + scenarioExchangesType,
+					error('Exchange type can not be used, expected ' + scenarioExchangesType + "!",
 						TextualScenarioPackage.Literals.MESSAGE__NAME)
 				}
 			}
@@ -124,7 +125,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		for (p : model.participants) {
 			if (!names.add(getParticipantsMapKey(p))) {
 				error(
-					'Duplicated participant',
+					'Duplicated participant!',
 					TextualScenarioPackage.Literals.MODEL__PARTICIPANTS,
 					index,
 					DUPLICATED_NAME
@@ -158,7 +159,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 
 			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage) {
 				if (!names.add(getMessagesMapKey(element)) && element.equals(message)) {
-						error('Duplicated message! The same message is already defined',
+						error('Duplicated message! The same message is already defined.',
 							TextualScenarioPackage.Literals.MESSAGE__NAME)
 						return true
 					}
@@ -216,13 +217,13 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 					// if the deactivation is not matched in a previous message, display an error
 					if (model instanceof Model) {
 						error(
-							'Deactivation keyword not expected',
+							'Deactivation keyword not expected!',
 							TextualScenarioPackage.Literals.MODEL__ELEMENTS,
 							index
 						)
 					} else if (model instanceof Block) {
 						error(
-							'Deactivation keyword not expected',
+							'Deactivation keyword not expected!',
 							TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
 							index
 						)
@@ -237,161 +238,101 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkTimelinesMessages(SequenceMessageType message) {
 		var participantsNames = TextualScenarioHelper.participantsDefinedBeforeNames(message)
 		if (!participantsNames.contains(message.source)) {
-			error(String.format("Timeline not defined in text"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
+			error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
 			return
 		}
 
 		if (!participantsNames.contains(message.target)) {
-			error(String.format("Timeline not defined in text"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+			error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
 			return
 		}
 	}
 	
 	/*
-	 * check if a delete message was created on a timeline involved in the actual combined fragment
+	 * check if a timeline involved in a combined fragment was used after a delete message was already defined 
+	 * on the previous lines on the same timeline
 	 */
 	@Check
-	def checkIfACombinedFragmentIsUsedAfterDeleteMessage(CombinedFragment combinedFragment) {
+	def checkTimelineUsedAfterDeleteMessage(CombinedFragment combinedFragment) {
 		var model = TextualScenarioHelper.getModelContainer(combinedFragment)
-		checkCombinedFragmentAfterDelete(model as Model, combinedFragment)
+		var index = 0
+		for (timeline : combinedFragment.timelines) {
+			checkElementAfterDelete(model as Model, combinedFragment, timeline,
+				TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES, index++)
+		}
 	}
-	
-	def checkCombinedFragmentAfterDelete(EObject model, CombinedFragment combinedFragment) {
-		var elements = TextualScenarioHelper.getElements(model)
 
-		for (EObject element : elements) {
-			if (element.equals(combinedFragment)) {
-				return true
-			}
-
-			if (element instanceof DeleteMessage) {
-				if (combinedFragment.timelines.contains((element as DeleteMessage).target)) {
-					error(String.format(
-						"Timeline \"" + (element as DeleteMessage).target +
-							"\" can not be used at this point. A delete message was already defined on this timeline"
-					), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES)
-					return true
-				}
-			}
-			
-			if (element instanceof CombinedFragment || element instanceof Operand) {
-				if (checkCombinedFragmentAfterDelete(element, combinedFragment) as Boolean) {
-					return true
-				}
-			}
-		}	
-		return false
-	}
-	
-	
-	// check if a delete message with the target involved in state fragment was created before
+	/*
+	 * check if the timeline involved in a state fragment was used after a delete message was already defined 
+	 * on the previous lines on the same timeline
+	 */
 	@Check
-	def checkIfAStateFragmentIsUsedAfterDeleteMessage(StateFragment fragment) {
-		
+	def checkTimelineUsedAfterDeleteMessage(StateFragment fragment) {
 		var model = TextualScenarioHelper.getModelContainer(fragment)
-		checkStateFragmentAfterDelete(model as Model, fragment)
+		checkElementAfterDelete(model as Model, fragment, fragment.timeline,
+			TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE, 0)
+	}
+
+	/*
+	 * check if a participant involved in arm timer was used after a delete message was already defined 
+	 * on the previous lines on the same timeline
+	 */
+	@Check
+	def checkParticipantUsedAfterDeleteMessage(ArmTimerMessage armTimer) {
+		var model = TextualScenarioHelper.getModelContainer(armTimer)
+		checkElementAfterDelete(model as Model, armTimer, armTimer.participant,
+			TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0)
+	}
+
+	/*
+	 * check if a sequence message source element was used after a delete message was already defined 
+	 * on the previous lines on the same timeline
+	 */
+	@Check
+	def checkMessageSourceUsedAfterDeleteMessage(SequenceMessageType message) {
+		var model = TextualScenarioHelper.getModelContainer(message)
+		checkElementAfterDelete(model as Model, message, message.source,
+			TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE, 0)
 	}
 	
-	def checkStateFragmentAfterDelete(EObject model, StateFragment fragment) {
+	/*
+	 * check if a sequence message target element was used after a delete message was already defined 
+	 * on the previous lines on the same timeline
+	 */
+	@Check
+	def checkMessageTargetUsedAfterDeleteMessage(SequenceMessageType message) {
+		var model = TextualScenarioHelper.getModelContainer(message)
+		checkElementAfterDelete(model as Model, message, message.target,
+			TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET, 0)
+	}
+	
+
+	def boolean checkElementAfterDelete(EObject model, EObject checkedElement, String target,
+		EAttribute checkedAttribute, int index) {
 		var elements = TextualScenarioHelper.getElements(model)
 
 		for (EObject element : elements) {
-			if (element.equals(fragment)) {
+			if (element.equals(checkedElement)) {
 				return true
 			}
 
 			if (element instanceof DeleteMessage) {
-				if ((element as DeleteMessage).target.equals(fragment.timeline)) {
+				if ((element as DeleteMessage).target.equals(target)) {
 					error(String.format(
-						"Timeline \"" + (element as DeleteMessage).target +
-							"\" can not be used at this point. A delete message was already defined on this timeline"
-					), TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE)
+						"Element \"" + target +
+							"\" can not be used at this point! A delete message was already defined on this timeline."
+					), checkedAttribute, index)
 					return true
 				}
 			}
 
 			if (element instanceof CombinedFragment || element instanceof Operand) {
-				if (checkStateFragmentAfterDelete(element, fragment) as Boolean) {
-					return true
+				if(checkElementAfterDelete(element, checkedElement, target, checkedAttribute, index)) {
+					return true;
 				}
 			}
 		}
 		return false;
-	}
-	
-	
-	/*
-	 * check if a delete message was created on a timeline involved in the actual message
-	 */
-	@Check
-	def checkIfAMessageIsUsedAfterDeleteMessage(SequenceMessageType message) {
-		var model = TextualScenarioHelper.getModelContainer(message)
-		checkSequenceMessageAfterDelete(model as Model, message)
-	}
-	
-	def checkSequenceMessageAfterDelete(EObject model, SequenceMessageType message) {
-		var elements = TextualScenarioHelper.getElements(model)
-		for (EObject element : elements) {
-			if (element.equals(message)) {
-				return true
-			}
-
-			if (element instanceof DeleteMessage) {
-				if ((element as DeleteMessage).target.equals(message.source)) {
-					error(String.format("Source \"" + (element as DeleteMessage).target +
-						"\" can not be used at this point. A delete message was already defined on this timeline"),
-						TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
-					return true
-				}
-
-				if ((element as DeleteMessage).target.equals(message.target)) {
-					error(String.format("Target \"" + (element as DeleteMessage).target +
-						"\" can not be used at this point. A delete message was already defined on this timeline"),
-						TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
-					return true
-				}
-			}
-
-			if (element instanceof CombinedFragment || element instanceof Operand) {
-				if (checkSequenceMessageAfterDelete(element, message) as Boolean) {
-					return true
-				}
-			}
-		}
-		return false
-	}
-	
-	@Check
-	def checkIfAnArmTimerIsUsedAfterDeleteMessage(ArmTimerMessage armTimer) {
-		var model = TextualScenarioHelper.getModelContainer(armTimer)
-		checkArmTimerAfterDelete(model as Model, armTimer)
-	}
-	
-	def checkArmTimerAfterDelete(EObject model, ArmTimerMessage armTimer) {
-		var elements = TextualScenarioHelper.getElements(model)
-
-		for (EObject element : elements) {
-			if (element.equals(armTimer)) {
-				return true
-			}
-
-			if (element instanceof DeleteMessage) {
-				if ((element as DeleteMessage).target.equals(armTimer.participant)) {
-					error(String.format(
-						"Timeline \"" + (element as DeleteMessage).target +
-							"\" can not be used at this point. A delete message was already defined on this timeline"
-					), TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT)
-					return true
-				}
-			}
-			
-			if (element instanceof CombinedFragment || elements instanceof Operand) {
-				if (checkArmTimerAfterDelete(element, armTimer) as Boolean) {
-					return true
-				}
-			}
-		}
-		return false
 	}
 	
 	/*
@@ -405,7 +346,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 	
-	def checkCreateMessageValid(EObject model, CreateMessage createMessage) {
+	def boolean checkCreateMessageValid(EObject model, CreateMessage createMessage) {
 		var target = createMessage.target
 		var elements = TextualScenarioHelper.getElements(model)
 		
@@ -453,45 +394,26 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	}
 	
 	def errorCreateMessage(String target) {
-		error(String.format("Target \"" + target +"\" can not be used in a create message at this point. Other operations were already defined on this timeline"),
+		error(String.format("Target \"" + target +"\" can not be used in a create message at this point! Other operations were already defined on this timeline."),
 							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
 	}
 	
 	
 	/*
-	 * Check that the state fragment exists
+	 * Validate a State Fragment
 	 */
 	@Check
 	def checkStateFragment(StateFragment fragment) {
-		if (fragment.timeline === null) {
-			error(String.format("Insert timeline"), TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE)
-			return
-		}
-
 		if (!EmbeddedEditorInstanceHelper.checkValidTimeline(fragment.timeline)) {
 			error(String.format("Timeline not present in diagram", fragment.keyword),
 				TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE)
 			return
 		}
 
-		if (fragment.keyword === null) {
-			error(String.format("Insert \'state\', \'mode\' or \'function\'"),
-				TextualScenarioPackage.Literals.STATE_FRAGMENT__KEYWORD)
-			return
-		}
-		
-		
-
 		var scenarioType = EmbeddedEditorInstanceHelper.getScenarioType();
 		if (fragment.keyword.equals(DslConstants.FUNCTION) && scenarioType.equals(DslConstants.FUNCTIONAL)) {
-			error(String.format("\'function\' can not be used in this diagram"),
+			error(String.format("\'function\' can not be used in this diagram!"),
 				TextualScenarioPackage.Literals.STATE_FRAGMENT__KEYWORD)
-			return
-		}
-
-		if (fragment.name === null) {
-			error(String.format("Insert the " + fragment.keyword + " name"),
-				TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME)
 			return
 		}
 
@@ -499,8 +421,8 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			fragment.timeline)
 		if (!availableStateFragments.contains(fragment.name)) {
 			error(
-				String.format("This " + fragment.keyword + " does not exist or it's not available for " +
-					fragment.timeline), TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME)
+				String.format("This " + fragment.keyword + " does not exist or is not available for \"" +
+					fragment.timeline +"\"!"), TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME)
 		}
 
 	}
@@ -553,13 +475,13 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		for (var i = 0; i < messageWithExecutionTargets.size; i++) {
 			if (model instanceof Model) {
 				error(
-					'Deactivation keyword expected for a withExecution message',
+					'Deactivation keyword expected for a withExecution message!',
 					TextualScenarioPackage.Literals.MODEL__ELEMENTS,
 					messageWithExecutionTargetsIndex.get(i)
 				)
 			} else {
 				error(
-					'Deactivation keyword expected for a withExecution message',
+					'Deactivation keyword expected for a withExecution message!',
 					TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
 					messageWithExecutionTargets.get(i)
 				)
@@ -574,7 +496,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkCombinedFragmentEmptyExpression(CombinedFragment combinedFragment) {
 		if (combinedFragment.expression === null || combinedFragment.expression.isEmpty) {
 			error(
-				'Expression can not be empty',
+				'Expression can not be empty!',
 				TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION
 			)
 		}
@@ -587,7 +509,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkOperandEmptyExpression(Operand operand) {
 		if (operand.expression === null || operand.expression.isEmpty) {
 			error(
-				'Expression can not be empty',
+				'Expression can not be empty!',
 				TextualScenarioPackage.Literals.OPERAND__EXPRESSION
 			)
 		}
@@ -603,7 +525,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			if (combinedFragment.keyword == 'alt' && !combinedFragment.operands.isEmpty) {
 				if (operand.keyword != 'else') {
 					error(
-						'Expected \'else\' keyword',
+						'Expected \'else\' keyword!',
 						TextualScenarioPackage.Literals.OPERAND__KEYWORD
 					)
 				}
@@ -621,7 +543,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			if (combinedFragment.keyword != 'alt' && !combinedFragment.operands.isEmpty) {
 				if (operand.keyword !== null || !operand.keyword.isEmpty) {
 					error(
-						'Unexpected keyword',
+						'Unexpected keyword!',
 						TextualScenarioPackage.Literals.OPERAND__KEYWORD
 					)
 				}
@@ -634,25 +556,14 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 */
 	@Check
 	def checkCombinedFragmentOnValidTimelines(CombinedFragment combinedFragment) {
-		var undefinedTimelines = "";
-		var unexistingTimelines = "";
 		var participantsDefined = TextualScenarioHelper.participantsDefinedBeforeNames(combinedFragment);
+		var index = 0
 		for (timeline : combinedFragment.timelines) {
-			if (!EmbeddedEditorInstanceHelper.checkValidTimeline(timeline)) {
-				unexistingTimelines += " " + timeline;
-			}
 			if (!participantsDefined.contains(timeline)) {
-				undefinedTimelines += " " + timeline;
+				error('Timeline not defined in text edior!',
+				TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES, index)
 			}
-		}
-		if (!unexistingTimelines.isEmpty) {
-			error('Timelines not present in diagram:' + unexistingTimelines,
-				TextualScenarioPackage.eINSTANCE.getCombinedFragment_Timelines())
-				return
-		}
-		if (!undefinedTimelines.isEmpty) {
-			error('Timelines not defined in text:' + undefinedTimelines,
-				TextualScenarioPackage.eINSTANCE.getCombinedFragment_Timelines())
+			index++
 		}
 	}
 

@@ -33,17 +33,10 @@ pipeline {
     	stage('Build and Package') {
       		steps {
       			script {
-					withCredentials([string(credentialsId: 'sonar-token-capella', variable: 'SONARCLOUD_TOKEN')]) {
-						withEnv(['MAVEN_OPTS=-Xmx4g']) {
-							def sign = github.isPullRequest() ? '' : '-Psign'
-							def sonarCommon = 'sonar:sonar -Dsonar.projectKey=eclipse_capella -Dsonar.organization=eclipse -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONARCLOUD_TOKEN} '
-							def sonarBranchAnalysis = '-Dsonar.branch.name=${BRANCH_NAME}'
-							def sonarPullRequestAnalysis = '-Dsonar.pullrequest.provider=GitHub -Dsonar.pullrequest.github.repository=eclipse/capella -Dsonar.pullrequest.key=${CHANGE_ID} -Dsonar.pullrequest.branch=${CHANGE_BRANCH}'
-							def sonar = sonarCommon + (github.isPullRequest() ? sonarPullRequestAnalysis : sonarBranchAnalysis)
-	      					sh "mvn clean verify -f pom.xml -Djacoco.skip=true -DjavaDocPhase=none -Pfull ${sign} ${sonar}"
-						}
-					}
-      			}
+      				def customParams = github.isPullRequest() ? '-DSKIP_SONAR=true' : '-Psign'
+      	    
+      	    		sh "mvn -Djacoco.skip=true -DjavaDocPhase=none ${customParams} clean package -f pom.xml"
+	       		}         
 	     	}
 	    }
     
