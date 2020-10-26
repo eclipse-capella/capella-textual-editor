@@ -44,6 +44,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	public static val INVALID_NAME = 'invalidName'
 	public static val DUPLICATED_NAME = 'duplicatedName'
 	public static val DUPLICATED_MESSAGES_NAME = 'duplicatedMessageName'
+	public static val SAME_SOURCE_AND_TARGET_ERROR = 'Invalid element! Source and target must be different!'
 	
 	@Check
 	def checkPartExists(Participant participant) {
@@ -66,7 +67,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	}
 
 	@Check
-	def checkMessagesExist(SequenceMessage message) {
+	def checkMessagesExist(SequenceMessageType message) {
 		if (!EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource, message.getTarget).contains(
 				message.name)) {
 			error('Message does not exist!', TextualScenarioPackage.Literals.MESSAGE__NAME)
@@ -248,6 +249,20 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 	
+	@Check
+	def checkDeleteMessage(DeleteMessage deleteMessage) {
+		checkSameSourceAndTarget(deleteMessage)
+	}
+	
+	def checkSameSourceAndTarget(SequenceMessageType message) {
+		if (message.source.equals(message.target)) {
+			error(SAME_SOURCE_AND_TARGET_ERROR,
+							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+			error(SAME_SOURCE_AND_TARGET_ERROR,
+							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
+		}
+	}
+	
 	/*
 	 * check if a timeline involved in a combined fragment was used after a delete message was already defined 
 	 * on the previous lines on the same timeline
@@ -340,6 +355,8 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 */
 	@Check
 	def checkCreateMessage(CreateMessage createMessage) {
+		// check if source and target are the same
+		checkSameSourceAndTarget(createMessage)
 		var model = TextualScenarioHelper.getModelContainer(createMessage)
 		if (!checkCreateMessageValid(model as Model, createMessage)) {
 			errorCreateMessage(createMessage.target)
@@ -404,8 +421,8 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 */
 	@Check
 	def checkStateFragment(StateFragment fragment) {
-		if (!EmbeddedEditorInstanceHelper.checkValidTimeline(fragment.timeline)) {
-			error(String.format("Timeline not present in diagram", fragment.keyword),
+		if (!TextualScenarioHelper.participantsDefinedBeforeNames(fragment).contains(fragment.timeline)) {
+			error(String.format("Timeline not defined in text editor!", fragment.keyword),
 				TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE)
 			return
 		}
@@ -560,7 +577,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		var index = 0
 		for (timeline : combinedFragment.timelines) {
 			if (!participantsDefined.contains(timeline)) {
-				error('Timeline not defined in text edior!',
+				error('Timeline not defined in text editor!',
 				TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES, index)
 			}
 			index++
