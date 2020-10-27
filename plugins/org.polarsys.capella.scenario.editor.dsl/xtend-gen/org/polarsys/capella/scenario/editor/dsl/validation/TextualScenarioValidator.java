@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -283,6 +271,32 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     if (_not_1) {
       this.error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
       return;
+    }
+    Object model = TextualScenarioHelper.getModelContainer(message);
+    Object container = TextualScenarioHelper.getDirectContainer(message, ((Model) model));
+    if ((container instanceof CombinedFragment)) {
+      boolean _contains_2 = ((CombinedFragment)container).getTimelines().contains(message.getSource());
+      boolean _not_2 = (!_contains_2);
+      if (_not_2) {
+        String _keyword = ((CombinedFragment)container).getKeyword();
+        String _plus = ("Timeline not covered by " + _keyword);
+        String _plus_1 = (_plus + " \"");
+        String _expression = ((CombinedFragment)container).getExpression();
+        String _plus_2 = (_plus_1 + _expression);
+        String _plus_3 = (_plus_2 + "\"");
+        this.error(String.format(_plus_3), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
+      }
+      boolean _contains_3 = ((CombinedFragment)container).getTimelines().contains(message.getTarget());
+      boolean _not_3 = (!_contains_3);
+      if (_not_3) {
+        String _keyword_1 = ((CombinedFragment)container).getKeyword();
+        String _plus_4 = ("Timeline not covered by " + _keyword_1);
+        String _plus_5 = (_plus_4 + " \"");
+        String _expression_1 = ((CombinedFragment)container).getExpression();
+        String _plus_6 = (_plus_5 + _expression_1);
+        String _plus_7 = (_plus_6 + "\"");
+        this.error(String.format(_plus_7), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+      }
     }
   }
   

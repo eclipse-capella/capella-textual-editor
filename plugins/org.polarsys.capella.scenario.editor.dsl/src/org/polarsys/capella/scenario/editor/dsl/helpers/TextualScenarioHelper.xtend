@@ -27,6 +27,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -125,6 +126,22 @@ class TextualScenarioHelper {
 		if (modelContainer instanceof Block) {
 			return (modelContainer as Block).blockElements
 		}
-		
 	}
+	
+	def static getDirectContainer(SequenceMessageType message, EObject container) {
+		if (message === null || container === null)
+			return null
+
+		for (element : getElements(container)) {
+			if (element.equals(message))
+				// return Model or CombinedFragment
+				return container
+
+			if (element instanceof CombinedFragment) {
+				return getDirectContainer(message, element)
+			}
+		}
+		return null
+	}
+	
 }

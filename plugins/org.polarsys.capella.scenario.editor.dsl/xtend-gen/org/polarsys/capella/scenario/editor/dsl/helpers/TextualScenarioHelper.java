@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -40,6 +28,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 /**
@@ -155,6 +144,25 @@ public class TextualScenarioHelper {
     }
     if ((modelContainer instanceof Block)) {
       return ((Block) modelContainer).getBlockElements();
+    }
+    return null;
+  }
+  
+  public static Object getDirectContainer(final SequenceMessageType message, final EObject container) {
+    if (((message == null) || (container == null))) {
+      return null;
+    }
+    EList<Element> _elements = TextualScenarioHelper.getElements(container);
+    for (final Element element : _elements) {
+      {
+        boolean _equals = element.equals(message);
+        if (_equals) {
+          return container;
+        }
+        if ((element instanceof CombinedFragment)) {
+          return TextualScenarioHelper.getDirectContainer(message, element);
+        }
+      }
     }
     return null;
   }
