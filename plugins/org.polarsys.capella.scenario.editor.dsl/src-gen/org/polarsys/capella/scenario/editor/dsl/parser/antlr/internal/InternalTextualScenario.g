@@ -115,71 +115,21 @@ ruleModel returns [EObject current=null]
 		)*
 		(
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getModelAccess().getElementsMessageParserRuleCall_3_0_0());
+				{
+					newCompositeNode(grammarAccess.getModelAccess().getElementsElementParserRuleCall_3_0());
+				}
+				lv_elements_3_0=ruleElement
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getModelRule());
 					}
-					lv_elements_3_1=ruleMessage
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getModelRule());
-						}
-						add(
-							$current,
-							"elements",
-							lv_elements_3_1,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Message");
-						afterParserOrEnumRuleCall();
-					}
-					    |
-					{
-						newCompositeNode(grammarAccess.getModelAccess().getElementsReferenceParserRuleCall_3_0_1());
-					}
-					lv_elements_3_2=ruleReference
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getModelRule());
-						}
-						add(
-							$current,
-							"elements",
-							lv_elements_3_2,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
-						afterParserOrEnumRuleCall();
-					}
-					    |
-					{
-						newCompositeNode(grammarAccess.getModelAccess().getElementsCombinedFragmentParserRuleCall_3_0_2());
-					}
-					lv_elements_3_3=ruleCombinedFragment
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getModelRule());
-						}
-						add(
-							$current,
-							"elements",
-							lv_elements_3_3,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.CombinedFragment");
-						afterParserOrEnumRuleCall();
-					}
-					    |
-					{
-						newCompositeNode(grammarAccess.getModelAccess().getElementsStateFragmentParserRuleCall_3_0_3());
-					}
-					lv_elements_3_4=ruleStateFragment
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getModelRule());
-						}
-						add(
-							$current,
-							"elements",
-							lv_elements_3_4,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.StateFragment");
-						afterParserOrEnumRuleCall();
-					}
-				)
+					add(
+						$current,
+						"elements",
+						lv_elements_3_0,
+						"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Element");
+					afterParserOrEnumRuleCall();
+				}
 			)
 		)*
 		(
@@ -334,6 +284,51 @@ ruleGenericFunction returns [EObject current=null]
 	)
 ;
 
+// Entry rule entryRuleElement
+entryRuleElement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementRule()); }
+	iv_ruleElement=ruleElement
+	{ $current=$iv_ruleElement.current; }
+	EOF;
+
+// Rule Element
+ruleElement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getElementAccess().getMessageParserRuleCall_0());
+		}
+		this_Message_0=ruleMessage
+		{
+			$current = $this_Message_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementAccess().getCombinedFragmentParserRuleCall_1());
+		}
+		this_CombinedFragment_1=ruleCombinedFragment
+		{
+			$current = $this_CombinedFragment_1.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementAccess().getStateFragmentParserRuleCall_2());
+		}
+		this_StateFragment_2=ruleStateFragment
+		{
+			$current = $this_StateFragment_2.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
 // Entry rule entryRuleActor
 entryRuleActor returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getActorRule()); }
@@ -433,44 +428,6 @@ ruleComponent returns [EObject current=null]
 				}
 			)
 		)
-		(
-			(
-				(
-					lv_nature_2_1='unset'
-					{
-						newLeafNode(lv_nature_2_1, grammarAccess.getComponentAccess().getNatureUnsetKeyword_2_0_0());
-					}
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getComponentRule());
-						}
-						setWithLastConsumed($current, "nature", lv_nature_2_1, null);
-					}
-					    |
-					lv_nature_2_2='behavior'
-					{
-						newLeafNode(lv_nature_2_2, grammarAccess.getComponentAccess().getNatureBehaviorKeyword_2_0_1());
-					}
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getComponentRule());
-						}
-						setWithLastConsumed($current, "nature", lv_nature_2_2, null);
-					}
-					    |
-					lv_nature_2_3='node'
-					{
-						newLeafNode(lv_nature_2_3, grammarAccess.getComponentAccess().getNatureNodeKeyword_2_0_2());
-					}
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getComponentRule());
-						}
-						setWithLastConsumed($current, "nature", lv_nature_2_3, null);
-					}
-				)
-			)
-		)?
 	)
 ;
 
@@ -1298,89 +1255,6 @@ ruleParticipantDeactivation returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleReference
-entryRuleReference returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getReferenceRule()); }
-	iv_ruleReference=ruleReference
-	{ $current=$iv_ruleReference.current; }
-	EOF;
-
-// Rule Reference
-ruleReference returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			(
-				lv_keyword_0_0='ref'
-				{
-					newLeafNode(lv_keyword_0_0, grammarAccess.getReferenceAccess().getKeywordRefKeyword_0_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getReferenceRule());
-					}
-					setWithLastConsumed($current, "keyword", lv_keyword_0_0, "ref");
-				}
-			)
-		)
-		(
-			(
-				lv_over_1_0='over'
-				{
-					newLeafNode(lv_over_1_0, grammarAccess.getReferenceAccess().getOverOverKeyword_1_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getReferenceRule());
-					}
-					setWithLastConsumed($current, "over", lv_over_1_0, "over");
-				}
-			)
-		)
-		(
-			(
-				lv_timelines_2_0=RULE_STRING
-				{
-					newLeafNode(lv_timelines_2_0, grammarAccess.getReferenceAccess().getTimelinesSTRINGTerminalRuleCall_2_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getReferenceRule());
-					}
-					addWithLastConsumed(
-						$current,
-						"timelines",
-						lv_timelines_2_0,
-						"org.eclipse.xtext.common.Terminals.STRING");
-				}
-			)
-		)+
-		(
-			(
-				lv_name_3_0=RULE_STRING
-				{
-					newLeafNode(lv_name_3_0, grammarAccess.getReferenceAccess().getNameSTRINGTerminalRuleCall_3_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getReferenceRule());
-					}
-					setWithLastConsumed(
-						$current,
-						"name",
-						lv_name_3_0,
-						"org.eclipse.xtext.common.Terminals.STRING");
-				}
-			)
-		)
-	)
-;
-
 // Entry rule entryRuleCombinedFragment
 entryRuleCombinedFragment returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getCombinedFragmentRule()); }
@@ -1716,71 +1590,21 @@ ruleBlock returns [EObject current=null]
 		)
 		(
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getBlockAccess().getBlockElementsMessageParserRuleCall_1_0_0());
+				{
+					newCompositeNode(grammarAccess.getBlockAccess().getBlockElementsElementParserRuleCall_1_0());
+				}
+				lv_blockElements_1_0=ruleElement
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getBlockRule());
 					}
-					lv_blockElements_1_1=ruleMessage
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getBlockRule());
-						}
-						add(
-							$current,
-							"blockElements",
-							lv_blockElements_1_1,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Message");
-						afterParserOrEnumRuleCall();
-					}
-					    |
-					{
-						newCompositeNode(grammarAccess.getBlockAccess().getBlockElementsReferenceParserRuleCall_1_0_1());
-					}
-					lv_blockElements_1_2=ruleReference
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getBlockRule());
-						}
-						add(
-							$current,
-							"blockElements",
-							lv_blockElements_1_2,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
-						afterParserOrEnumRuleCall();
-					}
-					    |
-					{
-						newCompositeNode(grammarAccess.getBlockAccess().getBlockElementsCombinedFragmentParserRuleCall_1_0_2());
-					}
-					lv_blockElements_1_3=ruleCombinedFragment
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getBlockRule());
-						}
-						add(
-							$current,
-							"blockElements",
-							lv_blockElements_1_3,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.CombinedFragment");
-						afterParserOrEnumRuleCall();
-					}
-					    |
-					{
-						newCompositeNode(grammarAccess.getBlockAccess().getBlockElementsStateFragmentParserRuleCall_1_0_3());
-					}
-					lv_blockElements_1_4=ruleStateFragment
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getBlockRule());
-						}
-						add(
-							$current,
-							"blockElements",
-							lv_blockElements_1_4,
-							"org.polarsys.capella.scenario.editor.dsl.TextualScenario.StateFragment");
-						afterParserOrEnumRuleCall();
-					}
-				)
+					add(
+						$current,
+						"blockElements",
+						lv_blockElements_1_0,
+						"org.polarsys.capella.scenario.editor.dsl.TextualScenario.Element");
+					afterParserOrEnumRuleCall();
+				}
 			)
 		)*
 		(

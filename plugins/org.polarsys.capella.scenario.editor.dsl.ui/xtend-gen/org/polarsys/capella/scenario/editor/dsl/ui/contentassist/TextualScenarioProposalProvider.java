@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0
+ *  
+ *  SPDX-License-Identifier: EPL-2.0
+ *  
+ *  Contributors:
+ *     Thales - initial API and implementation
+ ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -37,6 +49,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
@@ -192,7 +205,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   @Override
   public void completeSequenceMessage_Name(final EObject messageObj, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject _rootModel = context.getRootModel();
-    Object scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) _rootModel).getElements());
+    String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) _rootModel).getElements());
     SequenceMessage message = ((SequenceMessage) messageObj);
     List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
     String elementName = new String();
@@ -301,7 +314,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   }
   
   public HashMap<String, Integer> createTimelinesHashMapToProposeForDeactivation(final ParticipantDeactivation participantDeactivation, final EObject modelContainer, final HashMap<String, Integer> timelinesToPropose) {
-    EList<EObject> elements = TextualScenarioHelper.getElements(modelContainer);
+    EList<Element> elements = TextualScenarioHelper.getElements(modelContainer);
     for (int i = 0; (i < elements.size()); i++) {
       {
         boolean _equals = elements.get(i).equals(participantDeactivation);
@@ -311,14 +324,14 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
           }
           return timelinesToPropose;
         }
-        EObject _get = elements.get(i);
+        Element _get = elements.get(i);
         if ((_get instanceof CombinedFragment)) {
-          EObject _get_1 = elements.get(i);
+          Element _get_1 = elements.get(i);
           this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((CombinedFragment) _get_1), timelinesToPropose);
         }
-        EObject _get_2 = elements.get(i);
+        Element _get_2 = elements.get(i);
         if ((_get_2 instanceof Operand)) {
-          EObject _get_3 = elements.get(i);
+          Element _get_3 = elements.get(i);
           this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((Operand) _get_3), timelinesToPropose);
         }
       }
@@ -502,8 +515,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
    * check if a message is already used in the text
    */
   public boolean messageAlreadyInserted(final Model model, final String source, final String target, final String name) {
-    EList<EObject> _elements = model.getElements();
-    for (final EObject element : _elements) {
+    EList<Element> _elements = model.getElements();
+    for (final Element element : _elements) {
       if ((element instanceof SequenceMessage)) {
         SequenceMessage message = ((SequenceMessage) element);
         if (((Objects.equal(message.getName(), name) && Objects.equal(message.getSource(), source)) && Objects.equal(message.getTarget(), target))) {

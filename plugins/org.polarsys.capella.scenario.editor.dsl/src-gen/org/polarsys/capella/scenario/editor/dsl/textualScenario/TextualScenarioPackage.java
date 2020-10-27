@@ -236,6 +236,25 @@ public interface TextualScenarioPackage extends EPackage
   int GENERIC_FUNCTION_FEATURE_COUNT = PARTICIPANT_FEATURE_COUNT + 0;
 
   /**
+   * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ElementImpl <em>Element</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ElementImpl
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getElement()
+   * @generated
+   */
+  int ELEMENT = 4;
+
+  /**
+   * The number of structural features of the '<em>Element</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_FEATURE_COUNT = 0;
+
+  /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ActorImpl <em>Actor</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -243,7 +262,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getActor()
    * @generated
    */
-  int ACTOR = 4;
+  int ACTOR = 5;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -280,7 +299,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getComponent()
    * @generated
    */
-  int COMPONENT = 5;
+  int COMPONENT = 6;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -301,22 +320,13 @@ public interface TextualScenarioPackage extends EPackage
   int COMPONENT__NAME = GENERIC_COMPONENT__NAME;
 
   /**
-   * The feature id for the '<em><b>Nature</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int COMPONENT__NATURE = GENERIC_COMPONENT_FEATURE_COUNT + 0;
-
-  /**
    * The number of structural features of the '<em>Component</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int COMPONENT_FEATURE_COUNT = GENERIC_COMPONENT_FEATURE_COUNT + 1;
+  int COMPONENT_FEATURE_COUNT = GENERIC_COMPONENT_FEATURE_COUNT + 0;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ConfigurationItemImpl <em>Configuration Item</em>}' class.
@@ -326,7 +336,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getConfigurationItem()
    * @generated
    */
-  int CONFIGURATION_ITEM = 6;
+  int CONFIGURATION_ITEM = 7;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -363,7 +373,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getFunction()
    * @generated
    */
-  int FUNCTION = 7;
+  int FUNCTION = 8;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -400,7 +410,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getActivity()
    * @generated
    */
-  int ACTIVITY = 8;
+  int ACTIVITY = 9;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -437,7 +447,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getEntity()
    * @generated
    */
-  int ENTITY = 9;
+  int ENTITY = 10;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -474,7 +484,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getRole()
    * @generated
    */
-  int ROLE = 10;
+  int ROLE = 11;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -511,7 +521,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getMessage()
    * @generated
    */
-  int MESSAGE = 11;
+  int MESSAGE = 12;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -520,7 +530,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MESSAGE__NAME = 0;
+  int MESSAGE__NAME = ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>Message</em>' class.
@@ -529,7 +539,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MESSAGE_FEATURE_COUNT = 1;
+  int MESSAGE_FEATURE_COUNT = ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.SequenceMessageTypeImpl <em>Sequence Message Type</em>}' class.
@@ -539,7 +549,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getSequenceMessageType()
    * @generated
    */
-  int SEQUENCE_MESSAGE_TYPE = 12;
+  int SEQUENCE_MESSAGE_TYPE = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -603,7 +613,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getSequenceMessage()
    * @generated
    */
-  int SEQUENCE_MESSAGE = 13;
+  int SEQUENCE_MESSAGE = 14;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -685,7 +695,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getCreateMessage()
    * @generated
    */
-  int CREATE_MESSAGE = 14;
+  int CREATE_MESSAGE = 15;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -749,7 +759,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getDeleteMessage()
    * @generated
    */
-  int DELETE_MESSAGE = 15;
+  int DELETE_MESSAGE = 16;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -813,7 +823,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getArmTimerMessage()
    * @generated
    */
-  int ARM_TIMER_MESSAGE = 16;
+  int ARM_TIMER_MESSAGE = 17;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -877,7 +887,7 @@ public interface TextualScenarioPackage extends EPackage
    * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getParticipantDeactivation()
    * @generated
    */
-  int PARTICIPANT_DEACTIVATION = 17;
+  int PARTICIPANT_DEACTIVATION = 18;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -907,61 +917,6 @@ public interface TextualScenarioPackage extends EPackage
   int PARTICIPANT_DEACTIVATION_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ReferenceImpl <em>Reference</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ReferenceImpl
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getReference()
-   * @generated
-   */
-  int REFERENCE = 18;
-
-  /**
-   * The feature id for the '<em><b>Keyword</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REFERENCE__KEYWORD = 0;
-
-  /**
-   * The feature id for the '<em><b>Over</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REFERENCE__OVER = 1;
-
-  /**
-   * The feature id for the '<em><b>Timelines</b></em>' attribute list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REFERENCE__TIMELINES = 2;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REFERENCE__NAME = 3;
-
-  /**
-   * The number of structural features of the '<em>Reference</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REFERENCE_FEATURE_COUNT = 4;
-
-  /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.CombinedFragmentImpl <em>Combined Fragment</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -978,7 +933,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COMBINED_FRAGMENT__KEYWORD = 0;
+  int COMBINED_FRAGMENT__KEYWORD = ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' attribute.
@@ -987,7 +942,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COMBINED_FRAGMENT__EXPRESSION = 1;
+  int COMBINED_FRAGMENT__EXPRESSION = ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Over</b></em>' attribute.
@@ -996,7 +951,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COMBINED_FRAGMENT__OVER = 2;
+  int COMBINED_FRAGMENT__OVER = ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Timelines</b></em>' attribute list.
@@ -1005,7 +960,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COMBINED_FRAGMENT__TIMELINES = 3;
+  int COMBINED_FRAGMENT__TIMELINES = ELEMENT_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Block</b></em>' containment reference.
@@ -1014,7 +969,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COMBINED_FRAGMENT__BLOCK = 4;
+  int COMBINED_FRAGMENT__BLOCK = ELEMENT_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>Operands</b></em>' containment reference list.
@@ -1023,7 +978,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COMBINED_FRAGMENT__OPERANDS = 5;
+  int COMBINED_FRAGMENT__OPERANDS = ELEMENT_FEATURE_COUNT + 5;
 
   /**
    * The number of structural features of the '<em>Combined Fragment</em>' class.
@@ -1032,7 +987,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COMBINED_FRAGMENT_FEATURE_COUNT = 6;
+  int COMBINED_FRAGMENT_FEATURE_COUNT = ELEMENT_FEATURE_COUNT + 6;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.OperandImpl <em>Operand</em>}' class.
@@ -1143,7 +1098,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STATE_FRAGMENT__ON = 0;
+  int STATE_FRAGMENT__ON = ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Timeline</b></em>' attribute.
@@ -1152,7 +1107,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STATE_FRAGMENT__TIMELINE = 1;
+  int STATE_FRAGMENT__TIMELINE = ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Keyword</b></em>' attribute.
@@ -1161,7 +1116,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STATE_FRAGMENT__KEYWORD = 2;
+  int STATE_FRAGMENT__KEYWORD = ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1170,7 +1125,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STATE_FRAGMENT__NAME = 3;
+  int STATE_FRAGMENT__NAME = ELEMENT_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>State Fragment</em>' class.
@@ -1179,7 +1134,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STATE_FRAGMENT_FEATURE_COUNT = 4;
+  int STATE_FRAGMENT_FEATURE_COUNT = ELEMENT_FEATURE_COUNT + 4;
 
 
   /**
@@ -1289,6 +1244,16 @@ public interface TextualScenarioPackage extends EPackage
   EClass getGenericFunction();
 
   /**
+   * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Element <em>Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
+   * @generated
+   */
+  EClass getElement();
+
+  /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Actor <em>Actor</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1307,17 +1272,6 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    */
   EClass getComponent();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Component#getNature <em>Nature</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Nature</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Component#getNature()
-   * @see #getComponent()
-   * @generated
-   */
-  EAttribute getComponent_Nature();
 
   /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ConfigurationItem <em>Configuration Item</em>}'.
@@ -1570,60 +1524,6 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    */
   EAttribute getParticipantDeactivation_Keyword();
-
-  /**
-   * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference <em>Reference</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Reference</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference
-   * @generated
-   */
-  EClass getReference();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getKeyword <em>Keyword</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Keyword</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getKeyword()
-   * @see #getReference()
-   * @generated
-   */
-  EAttribute getReference_Keyword();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getOver <em>Over</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Over</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getOver()
-   * @see #getReference()
-   * @generated
-   */
-  EAttribute getReference_Over();
-
-  /**
-   * Returns the meta object for the attribute list '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getTimelines <em>Timelines</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute list '<em>Timelines</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getTimelines()
-   * @see #getReference()
-   * @generated
-   */
-  EAttribute getReference_Timelines();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getName <em>Name</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference#getName()
-   * @see #getReference()
-   * @generated
-   */
-  EAttribute getReference_Name();
 
   /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment <em>Combined Fragment</em>}'.
@@ -1953,6 +1853,16 @@ public interface TextualScenarioPackage extends EPackage
     EClass GENERIC_FUNCTION = eINSTANCE.getGenericFunction();
 
     /**
+     * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ElementImpl <em>Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ElementImpl
+     * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getElement()
+     * @generated
+     */
+    EClass ELEMENT = eINSTANCE.getElement();
+
+    /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ActorImpl <em>Actor</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1971,14 +1881,6 @@ public interface TextualScenarioPackage extends EPackage
      * @generated
      */
     EClass COMPONENT = eINSTANCE.getComponent();
-
-    /**
-     * The meta object literal for the '<em><b>Nature</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute COMPONENT__NATURE = eINSTANCE.getComponent_Nature();
 
     /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ConfigurationItemImpl <em>Configuration Item</em>}' class.
@@ -2195,48 +2097,6 @@ public interface TextualScenarioPackage extends EPackage
      * @generated
      */
     EAttribute PARTICIPANT_DEACTIVATION__KEYWORD = eINSTANCE.getParticipantDeactivation_Keyword();
-
-    /**
-     * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ReferenceImpl <em>Reference</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ReferenceImpl
-     * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioPackageImpl#getReference()
-     * @generated
-     */
-    EClass REFERENCE = eINSTANCE.getReference();
-
-    /**
-     * The meta object literal for the '<em><b>Keyword</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute REFERENCE__KEYWORD = eINSTANCE.getReference_Keyword();
-
-    /**
-     * The meta object literal for the '<em><b>Over</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute REFERENCE__OVER = eINSTANCE.getReference_Over();
-
-    /**
-     * The meta object literal for the '<em><b>Timelines</b></em>' attribute list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute REFERENCE__TIMELINES = eINSTANCE.getReference_Timelines();
-
-    /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute REFERENCE__NAME = eINSTANCE.getReference_Name();
 
     /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.CombinedFragmentImpl <em>Combined Fragment</em>}' class.

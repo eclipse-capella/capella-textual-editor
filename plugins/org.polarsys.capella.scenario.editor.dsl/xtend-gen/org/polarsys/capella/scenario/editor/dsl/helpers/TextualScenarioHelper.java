@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0
+ *  
+ *  SPDX-License-Identifier: EPL-2.0
+ *  
+ *  Contributors:
+ *     Thales - initial API and implementation
+ ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -12,7 +24,6 @@
  */
 package org.polarsys.capella.scenario.editor.dsl.helpers;
 
-import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
@@ -24,6 +35,7 @@ import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.model.helpers.CapellaElementExt;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
@@ -43,7 +55,7 @@ public class TextualScenarioHelper {
   /**
    * calculate the type of exchanges allowed to be declared in the text
    */
-  public static Object getScenarioAllowedExchangesType(final EList<EObject> elements) {
+  public static String getScenarioAllowedExchangesType(final EList<Element> elements) {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
     if (_isESScenario) {
       boolean _isCEScenario = EmbeddedEditorInstanceHelper.isCEScenario();
@@ -54,7 +66,7 @@ public class TextualScenarioHelper {
       if (_isFEScenario) {
         return TextualScenarioHelper.TYPE_FE;
       }
-      for (final EObject element : elements) {
+      for (final Element element : elements) {
         {
           if ((element instanceof SequenceMessage)) {
             SequenceMessage message = ((SequenceMessage) element);
@@ -73,7 +85,7 @@ public class TextualScenarioHelper {
   public static String getMessageExchangeType(final SequenceMessage message) {
     List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
     for (final AbstractEventOperation exchange : exchangesAvailable) {
-      if (((!Objects.equal(message.getName(), null)) && message.getName().equals(CapellaElementExt.getName(exchange)))) {
+      if (((message.getName() != null) && message.getName().equals(CapellaElementExt.getName(exchange)))) {
         return TextualScenarioHelper.getExchangeType(exchange);
       }
     }
@@ -129,17 +141,17 @@ public class TextualScenarioHelper {
   /**
    * get all elements on the same level as modelContainer
    */
-  public static EList<EObject> getElements(final EObject modelContainer) {
+  public static EList<Element> getElements(final EObject modelContainer) {
     if ((modelContainer instanceof Model)) {
       return ((Model) modelContainer).getElements();
     }
     if ((modelContainer instanceof CombinedFragment)) {
-      EList<EObject> elements = ((CombinedFragment) modelContainer).getBlock().getBlockElements();
-      elements.addAll(((CombinedFragment) modelContainer).getOperands());
+      EList<Element> elements = ((CombinedFragment) modelContainer).getBlock().getBlockElements();
+      EList<Operand> operands = ((CombinedFragment) modelContainer).getOperands();
+      for (final Operand operand : operands) {
+        elements.addAll(operand.getBlock().getBlockElements());
+      }
       return elements;
-    }
-    if ((modelContainer instanceof Operand)) {
-      return ((Operand) modelContainer).getBlock().getBlockElements();
     }
     if ((modelContainer instanceof Block)) {
       return ((Block) modelContainer).getBlockElements();

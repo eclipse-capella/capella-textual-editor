@@ -17,8 +17,6 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Combined Fragment</b></em>'.
@@ -40,7 +38,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface CombinedFragment extends EObject
+public interface CombinedFragment extends Element
 {
   /**
    * Returns the value of the '<em><b>Keyword</b></em>' attribute.

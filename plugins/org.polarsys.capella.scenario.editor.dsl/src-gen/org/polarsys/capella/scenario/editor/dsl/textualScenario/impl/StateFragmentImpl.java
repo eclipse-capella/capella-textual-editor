@@ -20,7 +20,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
@@ -41,7 +40,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  *
  * @generated
  */
-public class StateFragmentImpl extends MinimalEObjectImpl.Container implements StateFragment
+public class StateFragmentImpl extends ElementImpl implements StateFragment
 {
   /**
    * The default value of the '{@link #getOn() <em>On</em>}' attribute.

@@ -76,7 +76,7 @@ public interface Model extends EObject
 
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+   * The list contents are of type {@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Element}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Elements</em>' containment reference list.
@@ -84,7 +84,7 @@ public interface Model extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<EObject> getElements();
+  EList<Element> getElements();
 
   /**
    * Returns the value of the '<em><b>End</b></em>' attribute.

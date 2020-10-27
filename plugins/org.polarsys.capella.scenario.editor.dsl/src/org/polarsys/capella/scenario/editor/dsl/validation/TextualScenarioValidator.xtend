@@ -154,7 +154,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		checkDuplicated(message, model as Model, newHashSet)	
 	}
 	
-	def checkDuplicated(Message message, EObject model, HashSet<String> names) {
+	def boolean checkDuplicated(Message message, EObject model, HashSet<String> names) {
 		var elements = TextualScenarioHelper.getElements(model)
 		for (element : elements) {
 
@@ -166,7 +166,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 					}
 			}
 
-			if (element instanceof CombinedFragment || element instanceof Operand) {
+			if (element instanceof CombinedFragment) {
 				if (checkDuplicated(message, element, names) == true) {
 					return true
 				}
@@ -341,7 +341,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				}
 			}
 
-			if (element instanceof CombinedFragment || element instanceof Operand) {
+			if (element instanceof CombinedFragment) {
 				if(checkElementAfterDelete(element, checkedElement, target, checkedAttribute, index)) {
 					return true;
 				}
@@ -395,12 +395,6 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				}
 			}
 			
-			if (element instanceof Operand) {
-				if (!(checkCreateMessageValid(element, createMessage) as Boolean)) {
-						return false
-					}
-			}
-
 			if (element instanceof StateFragment) {
 				if ((element as StateFragment).timeline.equals(target)) {
 					return false

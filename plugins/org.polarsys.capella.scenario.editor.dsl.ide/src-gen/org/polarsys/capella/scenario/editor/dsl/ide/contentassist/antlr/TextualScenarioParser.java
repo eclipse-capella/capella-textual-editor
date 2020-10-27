@@ -43,15 +43,13 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 		}
 		
 		private static void init(ImmutableMap.Builder<AbstractElement, String> builder, TextualScenarioGrammarAccess grammarAccess) {
-			builder.put(grammarAccess.getModelAccess().getElementsAlternatives_3_0(), "rule__Model__ElementsAlternatives_3_0");
 			builder.put(grammarAccess.getParticipantAccess().getAlternatives(), "rule__Participant__Alternatives");
 			builder.put(grammarAccess.getGenericComponentAccess().getAlternatives(), "rule__GenericComponent__Alternatives");
 			builder.put(grammarAccess.getGenericFunctionAccess().getAlternatives(), "rule__GenericFunction__Alternatives");
-			builder.put(grammarAccess.getComponentAccess().getNatureAlternatives_2_0(), "rule__Component__NatureAlternatives_2_0");
+			builder.put(grammarAccess.getElementAccess().getAlternatives(), "rule__Element__Alternatives");
 			builder.put(grammarAccess.getMessageAccess().getAlternatives(), "rule__Message__Alternatives");
 			builder.put(grammarAccess.getSequenceMessageTypeAccess().getAlternatives(), "rule__SequenceMessageType__Alternatives");
 			builder.put(grammarAccess.getCombinedFragmentAccess().getKeywordAlternatives_0_0(), "rule__CombinedFragment__KeywordAlternatives_0_0");
-			builder.put(grammarAccess.getBlockAccess().getBlockElementsAlternatives_1_0(), "rule__Block__BlockElementsAlternatives_1_0");
 			builder.put(grammarAccess.getStateFragmentAccess().getKeywordAlternatives_2_0(), "rule__StateFragment__KeywordAlternatives_2_0");
 			builder.put(grammarAccess.getModelAccess().getGroup(), "rule__Model__Group__0");
 			builder.put(grammarAccess.getActorAccess().getGroup(), "rule__Actor__Group__0");
@@ -66,7 +64,6 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getDeleteMessageAccess().getGroup(), "rule__DeleteMessage__Group__0");
 			builder.put(grammarAccess.getArmTimerMessageAccess().getGroup(), "rule__ArmTimerMessage__Group__0");
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getGroup(), "rule__ParticipantDeactivation__Group__0");
-			builder.put(grammarAccess.getReferenceAccess().getGroup(), "rule__Reference__Group__0");
 			builder.put(grammarAccess.getCombinedFragmentAccess().getGroup(), "rule__CombinedFragment__Group__0");
 			builder.put(grammarAccess.getOperandAccess().getGroup(), "rule__Operand__Group__0");
 			builder.put(grammarAccess.getBlockAccess().getGroup(), "rule__Block__Group__0");
@@ -79,7 +76,6 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getActorAccess().getNameAssignment_1(), "rule__Actor__NameAssignment_1");
 			builder.put(grammarAccess.getComponentAccess().getKeywordAssignment_0(), "rule__Component__KeywordAssignment_0");
 			builder.put(grammarAccess.getComponentAccess().getNameAssignment_1(), "rule__Component__NameAssignment_1");
-			builder.put(grammarAccess.getComponentAccess().getNatureAssignment_2(), "rule__Component__NatureAssignment_2");
 			builder.put(grammarAccess.getConfigurationItemAccess().getKeywordAssignment_0(), "rule__ConfigurationItem__KeywordAssignment_0");
 			builder.put(grammarAccess.getConfigurationItemAccess().getNameAssignment_1(), "rule__ConfigurationItem__NameAssignment_1");
 			builder.put(grammarAccess.getFunctionAccess().getKeywordAssignment_0(), "rule__Function__KeywordAssignment_0");
@@ -114,10 +110,6 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getArmTimerMessageAccess().getNameAssignment_4(), "rule__ArmTimerMessage__NameAssignment_4");
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getKeywordAssignment_0(), "rule__ParticipantDeactivation__KeywordAssignment_0");
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getNameAssignment_1(), "rule__ParticipantDeactivation__NameAssignment_1");
-			builder.put(grammarAccess.getReferenceAccess().getKeywordAssignment_0(), "rule__Reference__KeywordAssignment_0");
-			builder.put(grammarAccess.getReferenceAccess().getOverAssignment_1(), "rule__Reference__OverAssignment_1");
-			builder.put(grammarAccess.getReferenceAccess().getTimelinesAssignment_2(), "rule__Reference__TimelinesAssignment_2");
-			builder.put(grammarAccess.getReferenceAccess().getNameAssignment_3(), "rule__Reference__NameAssignment_3");
 			builder.put(grammarAccess.getCombinedFragmentAccess().getKeywordAssignment_0(), "rule__CombinedFragment__KeywordAssignment_0");
 			builder.put(grammarAccess.getCombinedFragmentAccess().getExpressionAssignment_1(), "rule__CombinedFragment__ExpressionAssignment_1");
 			builder.put(grammarAccess.getCombinedFragmentAccess().getOverAssignment_2(), "rule__CombinedFragment__OverAssignment_2");
