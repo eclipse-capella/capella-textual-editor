@@ -26,7 +26,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -55,7 +54,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  *
  * @generated
  */
-public class CombinedFragmentImpl extends MinimalEObjectImpl.Container implements CombinedFragment
+public class CombinedFragmentImpl extends ElementImpl implements CombinedFragment
 {
   /**
    * The default value of the '{@link #getKeyword() <em>Keyword</em>}' attribute.

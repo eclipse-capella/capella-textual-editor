@@ -108,6 +108,11 @@ public class TextualScenarioAdapterFactory extends AdapterFactoryImpl
         return createGenericFunctionAdapter();
       }
       @Override
+      public Adapter caseElement(Element object)
+      {
+        return createElementAdapter();
+      }
+      @Override
       public Adapter caseActor(Actor object)
       {
         return createActorAdapter();
@@ -176,11 +181,6 @@ public class TextualScenarioAdapterFactory extends AdapterFactoryImpl
       public Adapter caseParticipantDeactivation(ParticipantDeactivation object)
       {
         return createParticipantDeactivationAdapter();
-      }
-      @Override
-      public Adapter caseReference(Reference object)
-      {
-        return createReferenceAdapter();
       }
       @Override
       public Adapter caseCombinedFragment(CombinedFragment object)
@@ -280,6 +280,21 @@ public class TextualScenarioAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createGenericFunctionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Element <em>Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
+   * @generated
+   */
+  public Adapter createElementAdapter()
   {
     return null;
   }
@@ -490,21 +505,6 @@ public class TextualScenarioAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createParticipantDeactivationAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference <em>Reference</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference
-   * @generated
-   */
-  public Adapter createReferenceAdapter()
   {
     return null;
   }

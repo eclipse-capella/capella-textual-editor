@@ -115,6 +115,13 @@ public class TextualScenarioSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case TextualScenarioPackage.ELEMENT:
+      {
+        Element element = (Element)theEObject;
+        T result = caseElement(element);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case TextualScenarioPackage.ACTOR:
       {
         Actor actor = (Actor)theEObject;
@@ -182,6 +189,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
       {
         Message message = (Message)theEObject;
         T result = caseMessage(message);
+        if (result == null) result = caseElement(message);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -190,6 +198,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
         SequenceMessageType sequenceMessageType = (SequenceMessageType)theEObject;
         T result = caseSequenceMessageType(sequenceMessageType);
         if (result == null) result = caseMessage(sequenceMessageType);
+        if (result == null) result = caseElement(sequenceMessageType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -199,6 +208,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
         T result = caseSequenceMessage(sequenceMessage);
         if (result == null) result = caseSequenceMessageType(sequenceMessage);
         if (result == null) result = caseMessage(sequenceMessage);
+        if (result == null) result = caseElement(sequenceMessage);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -208,6 +218,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
         T result = caseCreateMessage(createMessage);
         if (result == null) result = caseSequenceMessageType(createMessage);
         if (result == null) result = caseMessage(createMessage);
+        if (result == null) result = caseElement(createMessage);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -217,6 +228,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
         T result = caseDeleteMessage(deleteMessage);
         if (result == null) result = caseSequenceMessageType(deleteMessage);
         if (result == null) result = caseMessage(deleteMessage);
+        if (result == null) result = caseElement(deleteMessage);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -225,6 +237,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
         ArmTimerMessage armTimerMessage = (ArmTimerMessage)theEObject;
         T result = caseArmTimerMessage(armTimerMessage);
         if (result == null) result = caseMessage(armTimerMessage);
+        if (result == null) result = caseElement(armTimerMessage);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -233,13 +246,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
         ParticipantDeactivation participantDeactivation = (ParticipantDeactivation)theEObject;
         T result = caseParticipantDeactivation(participantDeactivation);
         if (result == null) result = caseMessage(participantDeactivation);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case TextualScenarioPackage.REFERENCE:
-      {
-        Reference reference = (Reference)theEObject;
-        T result = caseReference(reference);
+        if (result == null) result = caseElement(participantDeactivation);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -247,6 +254,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
       {
         CombinedFragment combinedFragment = (CombinedFragment)theEObject;
         T result = caseCombinedFragment(combinedFragment);
+        if (result == null) result = caseElement(combinedFragment);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -268,6 +276,7 @@ public class TextualScenarioSwitch<T> extends Switch<T>
       {
         StateFragment stateFragment = (StateFragment)theEObject;
         T result = caseStateFragment(stateFragment);
+        if (result == null) result = caseElement(stateFragment);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -335,6 +344,22 @@ public class TextualScenarioSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseGenericFunction(GenericFunction object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElement(Element object)
   {
     return null;
   }
@@ -559,22 +584,6 @@ public class TextualScenarioSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseParticipantDeactivation(ParticipantDeactivation object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Reference</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Reference</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseReference(Reference object)
   {
     return null;
   }

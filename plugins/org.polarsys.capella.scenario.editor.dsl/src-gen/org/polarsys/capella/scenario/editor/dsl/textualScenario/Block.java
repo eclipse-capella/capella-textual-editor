@@ -63,7 +63,7 @@ public interface Block extends EObject
 
   /**
    * Returns the value of the '<em><b>Block Elements</b></em>' containment reference list.
-   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+   * The list contents are of type {@link org.polarsys.capella.scenario.editor.dsl.textualScenario.Element}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Block Elements</em>' containment reference list.
@@ -71,7 +71,7 @@ public interface Block extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<EObject> getBlockElements();
+  EList<Element> getBlockElements();
 
   /**
    * Returns the value of the '<em><b>End</b></em>' attribute.

@@ -72,6 +72,15 @@ public interface TextualScenarioFactory extends EFactory
   GenericFunction createGenericFunction();
 
   /**
+   * Returns a new object of class '<em>Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element</em>'.
+   * @generated
+   */
+  Element createElement();
+
+  /**
    * Returns a new object of class '<em>Actor</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -196,15 +205,6 @@ public interface TextualScenarioFactory extends EFactory
    * @generated
    */
   ParticipantDeactivation createParticipantDeactivation();
-
-  /**
-   * Returns a new object of class '<em>Reference</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Reference</em>'.
-   * @generated
-   */
-  Reference createReference();
 
   /**
    * Returns a new object of class '<em>Combined Fragment</em>'.

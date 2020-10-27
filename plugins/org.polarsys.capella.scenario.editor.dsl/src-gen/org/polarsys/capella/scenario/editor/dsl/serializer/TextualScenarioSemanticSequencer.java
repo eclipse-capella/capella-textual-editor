@@ -41,7 +41,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Role;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
@@ -102,9 +101,6 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 				return; 
 			case TextualScenarioPackage.PARTICIPANT_DEACTIVATION:
 				sequence_ParticipantDeactivation(context, (ParticipantDeactivation) semanticObject); 
-				return; 
-			case TextualScenarioPackage.REFERENCE:
-				sequence_Reference(context, (Reference) semanticObject); 
 				return; 
 			case TextualScenarioPackage.ROLE:
 				sequence_Role(context, (Role) semanticObject); 
@@ -168,6 +164,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns ArmTimerMessage
 	 *     Message returns ArmTimerMessage
 	 *     ArmTimerMessage returns ArmTimerMessage
 	 *
@@ -184,7 +181,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Block returns Block
 	 *
 	 * Constraint:
-	 *     (begin='{' (blockElements+=Message | blockElements+=Reference | blockElements+=CombinedFragment | blockElements+=StateFragment)* end='}')
+	 *     (begin='{' blockElements+=Element* end='}')
 	 */
 	protected void sequence_Block(ISerializationContext context, Block semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -193,6 +190,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns CombinedFragment
 	 *     CombinedFragment returns CombinedFragment
 	 *
 	 * Constraint:
@@ -229,10 +227,19 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Component returns Component
 	 *
 	 * Constraint:
-	 *     (keyword='component' name=STRING (nature='unset' | nature='behavior' | nature='node')?)
+	 *     (keyword='component' name=STRING)
 	 */
 	protected void sequence_Component(ISerializationContext context, Component semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.PARTICIPANT__KEYWORD) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.PARTICIPANT__KEYWORD));
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.PARTICIPANT__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.PARTICIPANT__NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getComponentAccess().getKeywordComponentKeyword_0_0(), semanticObject.getKeyword());
+		feeder.accept(grammarAccess.getComponentAccess().getNameSTRINGTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.finish();
 	}
 	
 	
@@ -261,6 +268,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns CreateMessage
 	 *     Message returns CreateMessage
 	 *     SequenceMessageType returns CreateMessage
 	 *     CreateMessage returns CreateMessage
@@ -293,6 +301,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns DeleteMessage
 	 *     Message returns DeleteMessage
 	 *     SequenceMessageType returns DeleteMessage
 	 *     DeleteMessage returns DeleteMessage
@@ -374,7 +383,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Model returns Model
 	 *
 	 * Constraint:
-	 *     (begin='{' participants+=Participant* (elements+=Message | elements+=Reference | elements+=CombinedFragment | elements+=StateFragment)* end='}')
+	 *     (begin='{' participants+=Participant* elements+=Element* end='}')
 	 */
 	protected void sequence_Model(ISerializationContext context, Model semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -395,6 +404,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns ParticipantDeactivation
 	 *     Message returns ParticipantDeactivation
 	 *     ParticipantDeactivation returns ParticipantDeactivation
 	 *
@@ -412,18 +422,6 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 		feeder.accept(grammarAccess.getParticipantDeactivationAccess().getKeywordDeactivateKeyword_0_0(), semanticObject.getKeyword());
 		feeder.accept(grammarAccess.getParticipantDeactivationAccess().getNameSTRINGTerminalRuleCall_1_0(), semanticObject.getName());
 		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Reference returns Reference
-	 *
-	 * Constraint:
-	 *     (keyword='ref' over='over' timelines+=STRING+ name=STRING)
-	 */
-	protected void sequence_Reference(ISerializationContext context, Reference semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -452,6 +450,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns SequenceMessage
 	 *     Message returns SequenceMessage
 	 *     SequenceMessageType returns SequenceMessage
 	 *     SequenceMessage returns SequenceMessage
@@ -474,6 +473,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns StateFragment
 	 *     StateFragment returns StateFragment
 	 *
 	 * Constraint:

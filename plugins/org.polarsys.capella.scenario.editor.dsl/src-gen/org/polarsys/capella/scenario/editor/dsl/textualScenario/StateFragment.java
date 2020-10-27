@@ -15,7 +15,6 @@
  */
 package org.polarsys.capella.scenario.editor.dsl.textualScenario;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,7 +35,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface StateFragment extends EObject
+public interface StateFragment extends Element
 {
   /**
    * Returns the value of the '<em><b>On</b></em>' attribute.

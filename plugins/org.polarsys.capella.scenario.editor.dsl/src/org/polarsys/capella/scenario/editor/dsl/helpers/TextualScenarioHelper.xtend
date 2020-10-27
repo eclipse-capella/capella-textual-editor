@@ -26,6 +26,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -37,7 +38,7 @@ class TextualScenarioHelper {
 	/*
 	 * calculate the type of exchanges allowed to be declared in the text
 	 */
-	def static getScenarioAllowedExchangesType(EList<EObject> elements) {
+	def static String getScenarioAllowedExchangesType(EList<Element> elements) {
 		if (EmbeddedEditorInstanceHelper.isESScenario()) {
 			if(EmbeddedEditorInstanceHelper.isCEScenario())
 				return TYPE_CE
@@ -60,7 +61,7 @@ class TextualScenarioHelper {
 	def static getMessageExchangeType(SequenceMessage message) {
 		var exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource, message.getTarget)
 		for(exchange : exchangesAvailable) {
-			if(message.name != null && message.name.equals(CapellaElementExt.getName(exchange))) {
+			if(message.name !== null && message.name.equals(CapellaElementExt.getName(exchange))) {
 				return getExchangeType(exchange)
 			}
 		}
@@ -114,11 +115,11 @@ class TextualScenarioHelper {
 		}
 		if (modelContainer instanceof CombinedFragment) {
 			var elements = (modelContainer as CombinedFragment).block.blockElements
-			elements.addAll((modelContainer as CombinedFragment).operands)
+			var operands = (modelContainer as CombinedFragment).operands
+			for(operand : operands) {
+				elements.addAll(operand.block.blockElements)
+			}
 			return elements
-		}
-		if (modelContainer instanceof Operand) {
-			return (modelContainer as Operand).block.blockElements
 		}
 		
 		if (modelContainer instanceof Block) {

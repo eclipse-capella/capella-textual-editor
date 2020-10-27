@@ -23,7 +23,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -33,6 +32,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
 
 /**
@@ -80,7 +80,7 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
    * @generated
    * @ordered
    */
-  protected EList<EObject> blockElements;
+  protected EList<Element> blockElements;
 
   /**
    * The default value of the '{@link #getEnd() <em>End</em>}' attribute.
@@ -154,11 +154,11 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
    * @generated
    */
   @Override
-  public EList<EObject> getBlockElements()
+  public EList<Element> getBlockElements()
   {
     if (blockElements == null)
     {
-      blockElements = new EObjectContainmentEList<EObject>(EObject.class, this, TextualScenarioPackage.BLOCK__BLOCK_ELEMENTS);
+      blockElements = new EObjectContainmentEList<Element>(Element.class, this, TextualScenarioPackage.BLOCK__BLOCK_ELEMENTS);
     }
     return blockElements;
   }
@@ -240,7 +240,7 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block
         return;
       case TextualScenarioPackage.BLOCK__BLOCK_ELEMENTS:
         getBlockElements().clear();
-        getBlockElements().addAll((Collection<? extends EObject>)newValue);
+        getBlockElements().addAll((Collection<? extends Element>)newValue);
         return;
       case TextualScenarioPackage.BLOCK__END:
         setEnd((String)newValue);

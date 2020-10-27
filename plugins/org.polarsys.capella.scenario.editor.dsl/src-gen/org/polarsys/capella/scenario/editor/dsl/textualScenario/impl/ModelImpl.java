@@ -23,7 +23,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -32,6 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
@@ -92,7 +92,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
    * @generated
    * @ordered
    */
-  protected EList<EObject> elements;
+  protected EList<Element> elements;
 
   /**
    * The default value of the '{@link #getEnd() <em>End</em>}' attribute.
@@ -181,11 +181,11 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
    * @generated
    */
   @Override
-  public EList<EObject> getElements()
+  public EList<Element> getElements()
   {
     if (elements == null)
     {
-      elements = new EObjectContainmentEList<EObject>(EObject.class, this, TextualScenarioPackage.MODEL__ELEMENTS);
+      elements = new EObjectContainmentEList<Element>(Element.class, this, TextualScenarioPackage.MODEL__ELEMENTS);
     }
     return elements;
   }
@@ -275,7 +275,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
         return;
       case TextualScenarioPackage.MODEL__ELEMENTS:
         getElements().clear();
-        getElements().addAll((Collection<? extends EObject>)newValue);
+        getElements().addAll((Collection<? extends Element>)newValue);
         return;
       case TextualScenarioPackage.MODEL__END:
         setEnd((String)newValue);

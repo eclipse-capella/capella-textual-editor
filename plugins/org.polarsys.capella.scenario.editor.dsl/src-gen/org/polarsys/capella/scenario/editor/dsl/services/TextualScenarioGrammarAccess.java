@@ -43,21 +43,17 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cParticipantsAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cParticipantsParticipantParserRuleCall_2_0 = (RuleCall)cParticipantsAssignment_2.eContents().get(0);
 		private final Assignment cElementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final Alternatives cElementsAlternatives_3_0 = (Alternatives)cElementsAssignment_3.eContents().get(0);
-		private final RuleCall cElementsMessageParserRuleCall_3_0_0 = (RuleCall)cElementsAlternatives_3_0.eContents().get(0);
-		private final RuleCall cElementsReferenceParserRuleCall_3_0_1 = (RuleCall)cElementsAlternatives_3_0.eContents().get(1);
-		private final RuleCall cElementsCombinedFragmentParserRuleCall_3_0_2 = (RuleCall)cElementsAlternatives_3_0.eContents().get(2);
-		private final RuleCall cElementsStateFragmentParserRuleCall_3_0_3 = (RuleCall)cElementsAlternatives_3_0.eContents().get(3);
+		private final RuleCall cElementsElementParserRuleCall_3_0 = (RuleCall)cElementsAssignment_3.eContents().get(0);
 		private final Assignment cEndAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final Keyword cEndRightCurlyBracketKeyword_4_0 = (Keyword)cEndAssignment_4.eContents().get(0);
 		
 		//Model:
-		//	'scenario' begin='{' participants+=Participant* elements+=(Message | Reference | CombinedFragment | StateFragment)*
+		//	'scenario' begin='{' participants+=Participant*
+		//	elements+=Element*
 		//	end='}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'scenario' begin='{' participants+=Participant* elements+=(Message | Reference | CombinedFragment | StateFragment)*
-		//end='}'
+		//'scenario' begin='{' participants+=Participant* elements+=Element* end='}'
 		public Group getGroup() { return cGroup; }
 		
 		//'scenario'
@@ -75,23 +71,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//Participant
 		public RuleCall getParticipantsParticipantParserRuleCall_2_0() { return cParticipantsParticipantParserRuleCall_2_0; }
 		
-		//elements+=(Message | Reference | CombinedFragment | StateFragment)*
+		//elements+=Element*
 		public Assignment getElementsAssignment_3() { return cElementsAssignment_3; }
 		
-		//(Message | Reference | CombinedFragment | StateFragment)
-		public Alternatives getElementsAlternatives_3_0() { return cElementsAlternatives_3_0; }
-		
-		//Message
-		public RuleCall getElementsMessageParserRuleCall_3_0_0() { return cElementsMessageParserRuleCall_3_0_0; }
-		
-		//Reference
-		public RuleCall getElementsReferenceParserRuleCall_3_0_1() { return cElementsReferenceParserRuleCall_3_0_1; }
-		
-		//CombinedFragment
-		public RuleCall getElementsCombinedFragmentParserRuleCall_3_0_2() { return cElementsCombinedFragmentParserRuleCall_3_0_2; }
-		
-		//StateFragment
-		public RuleCall getElementsStateFragmentParserRuleCall_3_0_3() { return cElementsStateFragmentParserRuleCall_3_0_3; }
+		//Element
+		public RuleCall getElementsElementParserRuleCall_3_0() { return cElementsElementParserRuleCall_3_0; }
 		
 		//end='}'
 		public Assignment getEndAssignment_4() { return cEndAssignment_4; }
@@ -168,6 +152,29 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//Activity
 		public RuleCall getActivityParserRuleCall_1() { return cActivityParserRuleCall_1; }
 	}
+	public class ElementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.Element");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cMessageParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cCombinedFragmentParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cStateFragmentParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		
+		//Element:
+		//	Message | CombinedFragment | StateFragment;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//Message | CombinedFragment | StateFragment
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//Message
+		public RuleCall getMessageParserRuleCall_0() { return cMessageParserRuleCall_0; }
+		
+		//CombinedFragment
+		public RuleCall getCombinedFragmentParserRuleCall_1() { return cCombinedFragmentParserRuleCall_1; }
+		
+		//StateFragment
+		public RuleCall getStateFragmentParserRuleCall_2() { return cStateFragmentParserRuleCall_2; }
+	}
 	public class ActorElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.Actor");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -202,17 +209,12 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cKeywordComponentKeyword_0_0 = (Keyword)cKeywordAssignment_0.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameSTRINGTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Assignment cNatureAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final Alternatives cNatureAlternatives_2_0 = (Alternatives)cNatureAssignment_2.eContents().get(0);
-		private final Keyword cNatureUnsetKeyword_2_0_0 = (Keyword)cNatureAlternatives_2_0.eContents().get(0);
-		private final Keyword cNatureBehaviorKeyword_2_0_1 = (Keyword)cNatureAlternatives_2_0.eContents().get(1);
-		private final Keyword cNatureNodeKeyword_2_0_2 = (Keyword)cNatureAlternatives_2_0.eContents().get(2);
 		
 		//Component:
-		//	keyword='component' name=STRING nature=('unset' | 'behavior' | 'node')?;
+		//	keyword='component' name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//keyword='component' name=STRING nature=('unset' | 'behavior' | 'node')?
+		//keyword='component' name=STRING
 		public Group getGroup() { return cGroup; }
 		
 		//keyword='component'
@@ -226,21 +228,6 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//STRING
 		public RuleCall getNameSTRINGTerminalRuleCall_1_0() { return cNameSTRINGTerminalRuleCall_1_0; }
-		
-		//nature=('unset' | 'behavior' | 'node')?
-		public Assignment getNatureAssignment_2() { return cNatureAssignment_2; }
-		
-		//('unset' | 'behavior' | 'node')
-		public Alternatives getNatureAlternatives_2_0() { return cNatureAlternatives_2_0; }
-		
-		//'unset'
-		public Keyword getNatureUnsetKeyword_2_0_0() { return cNatureUnsetKeyword_2_0_0; }
-		
-		//'behavior'
-		public Keyword getNatureBehaviorKeyword_2_0_1() { return cNatureBehaviorKeyword_2_0_1; }
-		
-		//'node'
-		public Keyword getNatureNodeKeyword_2_0_2() { return cNatureNodeKeyword_2_0_2; }
 	}
 	public class ConfigurationItemElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.ConfigurationItem");
@@ -670,49 +657,6 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getNameSTRINGTerminalRuleCall_1_0() { return cNameSTRINGTerminalRuleCall_1_0; }
 	}
-	public class ReferenceElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cKeywordAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final Keyword cKeywordRefKeyword_0_0 = (Keyword)cKeywordAssignment_0.eContents().get(0);
-		private final Assignment cOverAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final Keyword cOverOverKeyword_1_0 = (Keyword)cOverAssignment_1.eContents().get(0);
-		private final Assignment cTimelinesAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cTimelinesSTRINGTerminalRuleCall_2_0 = (RuleCall)cTimelinesAssignment_2.eContents().get(0);
-		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cNameSTRINGTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
-		
-		//Reference:
-		//	keyword='ref' over='over' timelines+=STRING+ name=STRING;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//keyword='ref' over='over' timelines+=STRING+ name=STRING
-		public Group getGroup() { return cGroup; }
-		
-		//keyword='ref'
-		public Assignment getKeywordAssignment_0() { return cKeywordAssignment_0; }
-		
-		//'ref'
-		public Keyword getKeywordRefKeyword_0_0() { return cKeywordRefKeyword_0_0; }
-		
-		//over='over'
-		public Assignment getOverAssignment_1() { return cOverAssignment_1; }
-		
-		//'over'
-		public Keyword getOverOverKeyword_1_0() { return cOverOverKeyword_1_0; }
-		
-		//timelines+=STRING+
-		public Assignment getTimelinesAssignment_2() { return cTimelinesAssignment_2; }
-		
-		//STRING
-		public RuleCall getTimelinesSTRINGTerminalRuleCall_2_0() { return cTimelinesSTRINGTerminalRuleCall_2_0; }
-		
-		//name=STRING
-		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
-		
-		//STRING
-		public RuleCall getNameSTRINGTerminalRuleCall_3_0() { return cNameSTRINGTerminalRuleCall_3_0; }
-	}
 	public class CombinedFragmentElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.CombinedFragment");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -859,19 +803,15 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cBeginAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cBeginLeftCurlyBracketKeyword_0_0 = (Keyword)cBeginAssignment_0.eContents().get(0);
 		private final Assignment cBlockElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final Alternatives cBlockElementsAlternatives_1_0 = (Alternatives)cBlockElementsAssignment_1.eContents().get(0);
-		private final RuleCall cBlockElementsMessageParserRuleCall_1_0_0 = (RuleCall)cBlockElementsAlternatives_1_0.eContents().get(0);
-		private final RuleCall cBlockElementsReferenceParserRuleCall_1_0_1 = (RuleCall)cBlockElementsAlternatives_1_0.eContents().get(1);
-		private final RuleCall cBlockElementsCombinedFragmentParserRuleCall_1_0_2 = (RuleCall)cBlockElementsAlternatives_1_0.eContents().get(2);
-		private final RuleCall cBlockElementsStateFragmentParserRuleCall_1_0_3 = (RuleCall)cBlockElementsAlternatives_1_0.eContents().get(3);
+		private final RuleCall cBlockElementsElementParserRuleCall_1_0 = (RuleCall)cBlockElementsAssignment_1.eContents().get(0);
 		private final Assignment cEndAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final Keyword cEndRightCurlyBracketKeyword_2_0 = (Keyword)cEndAssignment_2.eContents().get(0);
 		
 		//Block:
-		//	begin="{" blockElements+=(Message | Reference | CombinedFragment | StateFragment)* end="}";
+		//	begin="{" blockElements+=Element* end="}";
 		@Override public ParserRule getRule() { return rule; }
 		
-		//begin="{" blockElements+=(Message | Reference | CombinedFragment | StateFragment)* end="}"
+		//begin="{" blockElements+=Element* end="}"
 		public Group getGroup() { return cGroup; }
 		
 		//begin="{"
@@ -880,23 +820,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getBeginLeftCurlyBracketKeyword_0_0() { return cBeginLeftCurlyBracketKeyword_0_0; }
 		
-		//blockElements+=(Message | Reference | CombinedFragment | StateFragment)*
+		//blockElements+=Element*
 		public Assignment getBlockElementsAssignment_1() { return cBlockElementsAssignment_1; }
 		
-		//(Message | Reference | CombinedFragment | StateFragment)
-		public Alternatives getBlockElementsAlternatives_1_0() { return cBlockElementsAlternatives_1_0; }
-		
-		//Message
-		public RuleCall getBlockElementsMessageParserRuleCall_1_0_0() { return cBlockElementsMessageParserRuleCall_1_0_0; }
-		
-		//Reference
-		public RuleCall getBlockElementsReferenceParserRuleCall_1_0_1() { return cBlockElementsReferenceParserRuleCall_1_0_1; }
-		
-		//CombinedFragment
-		public RuleCall getBlockElementsCombinedFragmentParserRuleCall_1_0_2() { return cBlockElementsCombinedFragmentParserRuleCall_1_0_2; }
-		
-		//StateFragment
-		public RuleCall getBlockElementsStateFragmentParserRuleCall_1_0_3() { return cBlockElementsStateFragmentParserRuleCall_1_0_3; }
+		//Element
+		public RuleCall getBlockElementsElementParserRuleCall_1_0() { return cBlockElementsElementParserRuleCall_1_0; }
 		
 		//end="}"
 		public Assignment getEndAssignment_2() { return cEndAssignment_2; }
@@ -965,6 +893,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	private final ParticipantElements pParticipant;
 	private final GenericComponentElements pGenericComponent;
 	private final GenericFunctionElements pGenericFunction;
+	private final ElementElements pElement;
 	private final ActorElements pActor;
 	private final ComponentElements pComponent;
 	private final ConfigurationItemElements pConfigurationItem;
@@ -979,7 +908,6 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	private final DeleteMessageElements pDeleteMessage;
 	private final ArmTimerMessageElements pArmTimerMessage;
 	private final ParticipantDeactivationElements pParticipantDeactivation;
-	private final ReferenceElements pReference;
 	private final CombinedFragmentElements pCombinedFragment;
 	private final OperandElements pOperand;
 	private final BlockElements pBlock;
@@ -998,6 +926,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		this.pParticipant = new ParticipantElements();
 		this.pGenericComponent = new GenericComponentElements();
 		this.pGenericFunction = new GenericFunctionElements();
+		this.pElement = new ElementElements();
 		this.pActor = new ActorElements();
 		this.pComponent = new ComponentElements();
 		this.pConfigurationItem = new ConfigurationItemElements();
@@ -1012,7 +941,6 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		this.pDeleteMessage = new DeleteMessageElements();
 		this.pArmTimerMessage = new ArmTimerMessageElements();
 		this.pParticipantDeactivation = new ParticipantDeactivationElements();
-		this.pReference = new ReferenceElements();
 		this.pCombinedFragment = new CombinedFragmentElements();
 		this.pOperand = new OperandElements();
 		this.pBlock = new BlockElements();
@@ -1047,7 +975,8 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//Model:
-	//	'scenario' begin='{' participants+=Participant* elements+=(Message | Reference | CombinedFragment | StateFragment)*
+	//	'scenario' begin='{' participants+=Participant*
+	//	elements+=Element*
 	//	end='}';
 	public ModelElements getModelAccess() {
 		return pModel;
@@ -1087,6 +1016,16 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		return getGenericFunctionAccess().getRule();
 	}
 	
+	//Element:
+	//	Message | CombinedFragment | StateFragment;
+	public ElementElements getElementAccess() {
+		return pElement;
+	}
+	
+	public ParserRule getElementRule() {
+		return getElementAccess().getRule();
+	}
+	
 	//Actor:
 	//	keyword='actor' name=STRING;
 	public ActorElements getActorAccess() {
@@ -1098,7 +1037,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Component:
-	//	keyword='component' name=STRING nature=('unset' | 'behavior' | 'node')?;
+	//	keyword='component' name=STRING;
 	public ComponentElements getComponentAccess() {
 		return pComponent;
 	}
@@ -1227,16 +1166,6 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		return getParticipantDeactivationAccess().getRule();
 	}
 	
-	//Reference:
-	//	keyword='ref' over='over' timelines+=STRING+ name=STRING;
-	public ReferenceElements getReferenceAccess() {
-		return pReference;
-	}
-	
-	public ParserRule getReferenceRule() {
-		return getReferenceAccess().getRule();
-	}
-	
 	//CombinedFragment:
 	//	keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
 	//	expression=STRING over='over' timelines+=STRING+ block=Block operands+=Operand*;
@@ -1259,7 +1188,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Block:
-	//	begin="{" blockElements+=(Message | Reference | CombinedFragment | StateFragment)* end="}";
+	//	begin="{" blockElements+=Element* end="}";
 	public BlockElements getBlockAccess() {
 		return pBlock;
 	}

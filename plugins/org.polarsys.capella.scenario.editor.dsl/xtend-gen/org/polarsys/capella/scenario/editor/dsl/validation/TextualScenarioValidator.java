@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0
+ *  
+ *  SPDX-License-Identifier: EPL-2.0
+ *  
+ *  Contributors:
+ *     Thales - initial API and implementation
+ ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -28,6 +40,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
@@ -125,7 +138,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     if (_isESScenario) {
       Object model = TextualScenarioHelper.getModelContainer(message);
       if ((model != null)) {
-        Object scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) model).getElements());
+        String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) model).getElements());
         String exchangeType = TextualScenarioHelper.getMessageExchangeType(message);
         if (((scenarioExchangesType != null) && (!scenarioExchangesType.equals(exchangeType)))) {
           this.error((("Exchange type can not be used, expected " + scenarioExchangesType) + "!"), 
@@ -186,8 +199,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   public boolean checkDuplicated(final Message message, final EObject model, final HashSet<String> names) {
-    EList<EObject> elements = TextualScenarioHelper.getElements(model);
-    for (final EObject element : elements) {
+    EList<Element> elements = TextualScenarioHelper.getElements(model);
+    for (final Element element : elements) {
       {
         if (((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage))) {
           if (((!names.add(this.getMessagesMapKey(element))) && element.equals(message))) {
@@ -196,9 +209,9 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
             return true;
           }
         }
-        if (((element instanceof CombinedFragment) || (element instanceof Operand))) {
-          Object _checkDuplicated = this.checkDuplicated(message, element, names);
-          boolean _equals = Objects.equal(_checkDuplicated, Boolean.valueOf(true));
+        if ((element instanceof CombinedFragment)) {
+          boolean _checkDuplicated = this.checkDuplicated(message, element, names);
+          boolean _equals = (_checkDuplicated == true);
           if (_equals) {
             return true;
           }
@@ -225,8 +238,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public void checkDeactivateMessages(final EObject model) {
     int index = 0;
     LinkedList<String> messageTargets = CollectionLiterals.<String>newLinkedList();
-    EList<EObject> elements = TextualScenarioHelper.getElements(model);
-    for (final EObject obj : elements) {
+    EList<Element> elements = TextualScenarioHelper.getElements(model);
+    for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageTargets.add(((SequenceMessage) obj).getTarget());
@@ -365,7 +378,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   public boolean checkElementAfterDelete(final EObject model, final EObject checkedElement, final String target, final EAttribute checkedAttribute, final int index) {
-    EList<EObject> elements = TextualScenarioHelper.getElements(model);
+    EList<Element> elements = TextualScenarioHelper.getElements(model);
     for (final EObject element : elements) {
       {
         boolean _equals = element.equals(checkedElement);
@@ -382,7 +395,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
             return true;
           }
         }
-        if (((element instanceof CombinedFragment) || (element instanceof Operand))) {
+        if ((element instanceof CombinedFragment)) {
           boolean _checkElementAfterDelete = this.checkElementAfterDelete(element, checkedElement, target, checkedAttribute, index);
           if (_checkElementAfterDelete) {
             return true;
@@ -409,7 +422,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   public boolean checkCreateMessageValid(final EObject model, final CreateMessage createMessage) {
     String target = createMessage.getTarget();
-    EList<EObject> elements = TextualScenarioHelper.getElements(model);
+    EList<Element> elements = TextualScenarioHelper.getElements(model);
     for (final EObject element : elements) {
       {
         if ((element instanceof SequenceMessageType)) {
@@ -438,13 +451,6 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
             if (_not) {
               return false;
             }
-          }
-        }
-        if ((element instanceof Operand)) {
-          boolean _checkCreateMessageValid_1 = this.checkCreateMessageValid(element, createMessage);
-          boolean _not_1 = (!(((Boolean) Boolean.valueOf(_checkCreateMessageValid_1))).booleanValue());
-          if (_not_1) {
-            return false;
           }
         }
         if ((element instanceof StateFragment)) {
@@ -514,8 +520,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     LinkedList<String> messageWithExecutionTargets = CollectionLiterals.<String>newLinkedList();
     LinkedList<Integer> messageWithExecutionTargetsIndex = CollectionLiterals.<Integer>newLinkedList();
     int index = 0;
-    EList<EObject> elements = TextualScenarioHelper.getElements(model);
-    for (final EObject obj : elements) {
+    EList<Element> elements = TextualScenarioHelper.getElements(model);
+    for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageWithExecutionTargets.add(((SequenceMessage) obj).getTarget());

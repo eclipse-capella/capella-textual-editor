@@ -50,6 +50,7 @@ import org.polarsys.capella.core.model.helpers.ScenarioExt;
 import org.polarsys.capella.core.sirius.analysis.SequenceDiagramServices;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
@@ -306,7 +307,7 @@ public class DiagramToXtextCommands {
    *  - the factory object is used to create xtext elements
    */ 
   private static void generateElements(Model domainModel, Scenario scenario, TextualScenarioFactory factory) {
-    EList<EObject> elements = domainModel.getElements();
+    EList<Element> elements = domainModel.getElements();
 
     List<InteractionFragment> fragments = SequenceDiagramServices.getOrderedInteractionFragments(scenario);
     // ends contains the interaction fragments from the scenario diagram
@@ -375,7 +376,7 @@ public class DiagramToXtextCommands {
   private static int processCombinedFragments(Object[] ends, int index,
       Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment> combinedFragments,
       Deque<Block> blockOperands,
-      EList<EObject> elements,
+      EList<Element> elements,
       Scenario scenario,
       TextualScenarioFactory factory) {
     if (((FragmentEnd) ends[index])
@@ -423,7 +424,7 @@ public class DiagramToXtextCommands {
       CombinedFragment capellaCombinedFragment,
       Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment> combinedFragments,
       Deque<Block> blockOperands,
-      EList<EObject> elements,
+      EList<Element> elements,
       TextualScenarioFactory factory) {
     // when we encounter a combination of FragmentEnd + Interaction operand, generate combined fragment sequence
     org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment xtextCombinedFragment = createCombinedFragment(factory, interactionOperand,
@@ -490,7 +491,7 @@ public class DiagramToXtextCommands {
    */
   private static void generateDeactivatioOnMessages(ExecutionEnd executionEnd,
       Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.Message> messagesToDeactivate,
-      Deque<Block> blockOperands, EList<EObject> elements, TextualScenarioFactory factory) {
+      Deque<Block> blockOperands, EList<Element> elements, TextualScenarioFactory factory) {
     SequenceMessage capellaSequenceMessage = ExecutionEndExt.getMessage(executionEnd);
     ParticipantDeactivation participantDeactivationMsg = createDeactivationMessage(factory, capellaSequenceMessage);
 
@@ -525,7 +526,7 @@ public class DiagramToXtextCommands {
   private static int generateMessages(Object[] ends, int index,
       Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.Message> messagesToDeactivate,
       Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment> combinedFragments,
-      Deque<Block> blockOperands, EList<EObject> elements,
+      Deque<Block> blockOperands, EList<Element> elements,
       TextualScenarioFactory factory) {
 
     SequenceMessage currentSequenceMessage = ((MessageEnd) ends[index]).getMessage();
@@ -536,7 +537,7 @@ public class DiagramToXtextCommands {
 
         // add the deactivation, to the model, or to a block
         if (blockOperands.isEmpty()) {
-          elements.add(participantDeactivateMsg);
+          elements.add((Element) participantDeactivateMsg);
         } else {
           blockOperands.peek().getBlockElements().add((org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) participantDeactivateMsg);
         }
@@ -558,7 +559,7 @@ public class DiagramToXtextCommands {
 
         // add the sequence message, to the model, or to a block
         if (blockOperands.isEmpty()) {
-          elements.add(message);
+          elements.add((Element) message);
         } else {
           blockOperands.peek().getBlockElements().add((org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) message);
         }
@@ -862,7 +863,7 @@ public class DiagramToXtextCommands {
    * @param factory
    */ 
   private static void generateStateFragment(InteractionState interactionState, EList<TimeLapse> timeLapses,
-      Deque<Block> blockOperands, EList<EObject> elements, TextualScenarioFactory factory) {
+      Deque<Block> blockOperands, EList<Element> elements, TextualScenarioFactory factory) {
     for (EObject timeLapse : timeLapses) {
       if (timeLapse instanceof StateFragment && ((StateFragment) timeLapse).getStart().equals(interactionState)) {
         String timelineName = interactionState.getCovered().getName();

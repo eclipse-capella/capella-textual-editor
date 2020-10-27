@@ -28,8 +28,11 @@ public class HelperCommands {
   
   public static boolean isValidTextResource(XtextResource resource) {
     IResourceValidator validator = resource.getResourceServiceProvider().getResourceValidator();
-    List<Issue> issues = validator.validate(resource, CheckMode.ALL, null);
-    return issues.isEmpty();
+    if(validator != null) {
+    	List<Issue> issues = validator.validate(resource, CheckMode.ALL, null);
+    	return issues.isEmpty();
+    }
+    return false;
   }
   
   /**

@@ -18,10 +18,9 @@
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//GenericComponent"/>
     <genClasses ecoreClass="TextualScenario.ecore#//GenericFunction"/>
+    <genClasses ecoreClass="TextualScenario.ecore#//Element"/>
     <genClasses ecoreClass="TextualScenario.ecore#//Actor"/>
-    <genClasses ecoreClass="TextualScenario.ecore#//Component">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Component/nature"/>
-    </genClasses>
+    <genClasses ecoreClass="TextualScenario.ecore#//Component"/>
     <genClasses ecoreClass="TextualScenario.ecore#//ConfigurationItem"/>
     <genClasses ecoreClass="TextualScenario.ecore#//Function"/>
     <genClasses ecoreClass="TextualScenario.ecore#//Activity"/>
@@ -50,12 +49,6 @@
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//ParticipantDeactivation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ParticipantDeactivation/keyword"/>
-    </genClasses>
-    <genClasses ecoreClass="TextualScenario.ecore#//Reference">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/keyword"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/over"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/timelines"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/name"/>
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//CombinedFragment">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//CombinedFragment/keyword"/>

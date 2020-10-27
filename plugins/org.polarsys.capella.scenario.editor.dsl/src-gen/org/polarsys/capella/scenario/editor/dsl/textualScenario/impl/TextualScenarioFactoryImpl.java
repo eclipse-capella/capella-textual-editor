@@ -81,6 +81,7 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
       case TextualScenarioPackage.PARTICIPANT: return createParticipant();
       case TextualScenarioPackage.GENERIC_COMPONENT: return createGenericComponent();
       case TextualScenarioPackage.GENERIC_FUNCTION: return createGenericFunction();
+      case TextualScenarioPackage.ELEMENT: return createElement();
       case TextualScenarioPackage.ACTOR: return createActor();
       case TextualScenarioPackage.COMPONENT: return createComponent();
       case TextualScenarioPackage.CONFIGURATION_ITEM: return createConfigurationItem();
@@ -95,7 +96,6 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
       case TextualScenarioPackage.DELETE_MESSAGE: return createDeleteMessage();
       case TextualScenarioPackage.ARM_TIMER_MESSAGE: return createArmTimerMessage();
       case TextualScenarioPackage.PARTICIPANT_DEACTIVATION: return createParticipantDeactivation();
-      case TextualScenarioPackage.REFERENCE: return createReference();
       case TextualScenarioPackage.COMBINED_FRAGMENT: return createCombinedFragment();
       case TextualScenarioPackage.OPERAND: return createOperand();
       case TextualScenarioPackage.BLOCK: return createBlock();
@@ -151,6 +151,18 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
   {
     GenericFunctionImpl genericFunction = new GenericFunctionImpl();
     return genericFunction;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Element createElement()
+  {
+    ElementImpl element = new ElementImpl();
+    return element;
   }
 
   /**
@@ -319,18 +331,6 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
   {
     ParticipantDeactivationImpl participantDeactivation = new ParticipantDeactivationImpl();
     return participantDeactivation;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Reference createReference()
-  {
-    ReferenceImpl reference = new ReferenceImpl();
-    return reference;
   }
 
   /**

@@ -20,7 +20,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
@@ -38,7 +37,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  *
  * @generated
  */
-public class MessageImpl extends MinimalEObjectImpl.Container implements Message
+public class MessageImpl extends ElementImpl implements Message
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.

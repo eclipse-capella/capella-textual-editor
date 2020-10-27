@@ -16,7 +16,7 @@ generate textualScenario "http://www.polarsys.org/capella/scenario/editor/dsl/Te
 
 Model:
        'scenario' begin = '{' participants+=Participant* 
-        (elements+=(Message | Reference | CombinedFragment | StateFragment))* 
+        (elements+=Element)* 
         end = '}';
 
 Participant: 
@@ -31,12 +31,16 @@ GenericFunction:
 	Function | Activity
 ;
 
+Element:
+	Message | CombinedFragment | StateFragment
+;
+
 Actor:
 	keyword = 'actor' name=STRING
 ; 
 
 Component:
-	keyword = 'component' name=STRING (nature = ('unset' | 'behavior' | 'node'))?
+	keyword = 'component' name=STRING
 ;
 
 ConfigurationItem:
@@ -87,12 +91,9 @@ ParticipantDeactivation:
     keyword = 'deactivate' name=STRING	
 ;
 
-Reference: 
-	keyword = 'ref' over='over' (timelines+=STRING)+ name=STRING
-;
-
 CombinedFragment: 
-	keyword = ('alt'|'loop'|'par'|'assert'|'critical'|'ignore'|'neg'|'opt'|'seq'|'strict'|'unset') expression=STRING over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
+	keyword = ('alt'|'loop'|'par'|'assert'|'critical'|'ignore'|'neg'|'opt'|'seq'|'strict'|'unset')
+	expression=STRING over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
 ;
 
 Operand:
@@ -100,7 +101,7 @@ Operand:
 ;
 
 Block:
-	begin="{" (blockElements+=(Message | Reference | CombinedFragment | StateFragment))* end="}"
+	begin="{" (blockElements+=Element)* end="}"
 ;
 
 StateFragment:

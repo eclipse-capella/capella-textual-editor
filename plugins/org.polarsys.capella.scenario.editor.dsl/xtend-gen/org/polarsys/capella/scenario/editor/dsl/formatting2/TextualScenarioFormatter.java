@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0
+ *  
+ *  SPDX-License-Identifier: EPL-2.0
+ *  
+ *  Contributors:
+ *     Thales - initial API and implementation
+ ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -26,6 +38,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.polarsys.capella.scenario.editor.dsl.services.TextualScenarioGrammarAccess;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
@@ -58,8 +71,8 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       document.<Participant>format(element);
     };
     model.getParticipants().forEach(_function_3);
-    final Consumer<EObject> _function_4 = (EObject element) -> {
-      document.<EObject>format(element);
+    final Consumer<Element> _function_4 = (Element element) -> {
+      document.<Element>format(element);
     };
     model.getElements().forEach(_function_4);
   }
@@ -106,8 +119,8 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       it.indent();
     };
     document.<ISemanticRegion, ISemanticRegion>interior(begin, end, _function_1);
-    final Consumer<EObject> _function_2 = (EObject element) -> {
-      document.<EObject>format(element);
+    final Consumer<Element> _function_2 = (Element element) -> {
+      document.<Element>format(element);
     };
     block.getBlockElements().forEach(_function_2);
   }
@@ -119,43 +132,43 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     document.append(this.textRegionExtensions.regionFor(stateFragment).feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME), _function);
   }
   
-  public void format(final Object block, final IFormattableDocument document) {
-    if (block instanceof XtextResource) {
-      _format((XtextResource)block, document);
+  public void format(final Object fragment, final IFormattableDocument document) {
+    if (fragment instanceof XtextResource) {
+      _format((XtextResource)fragment, document);
       return;
-    } else if (block instanceof Block) {
-      _format((Block)block, document);
+    } else if (fragment instanceof CombinedFragment) {
+      _format((CombinedFragment)fragment, document);
       return;
-    } else if (block instanceof CombinedFragment) {
-      _format((CombinedFragment)block, document);
+    } else if (fragment instanceof Message) {
+      _format((Message)fragment, document);
       return;
-    } else if (block instanceof Message) {
-      _format((Message)block, document);
+    } else if (fragment instanceof StateFragment) {
+      _format((StateFragment)fragment, document);
       return;
-    } else if (block instanceof Model) {
-      _format((Model)block, document);
+    } else if (fragment instanceof Block) {
+      _format((Block)fragment, document);
       return;
-    } else if (block instanceof Operand) {
-      _format((Operand)block, document);
+    } else if (fragment instanceof Model) {
+      _format((Model)fragment, document);
       return;
-    } else if (block instanceof Participant) {
-      _format((Participant)block, document);
+    } else if (fragment instanceof Operand) {
+      _format((Operand)fragment, document);
       return;
-    } else if (block instanceof StateFragment) {
-      _format((StateFragment)block, document);
+    } else if (fragment instanceof Participant) {
+      _format((Participant)fragment, document);
       return;
-    } else if (block instanceof EObject) {
-      _format((EObject)block, document);
+    } else if (fragment instanceof EObject) {
+      _format((EObject)fragment, document);
       return;
-    } else if (block == null) {
+    } else if (fragment == null) {
       _format((Void)null, document);
       return;
-    } else if (block != null) {
-      _format(block, document);
+    } else if (fragment != null) {
+      _format(fragment, document);
       return;
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
-        Arrays.<Object>asList(block, document).toString());
+        Arrays.<Object>asList(fragment, document).toString());
     }
   }
 }
