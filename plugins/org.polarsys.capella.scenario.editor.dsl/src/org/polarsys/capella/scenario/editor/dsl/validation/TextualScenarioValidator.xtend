@@ -253,11 +253,11 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		var container = TextualScenarioHelper.getDirectContainer(message, model as Model) 
 		if (container instanceof CombinedFragment) {
 			if (!container.timelines.contains(message.source)) {
-				error(String.format("Timeline not covered by " + container.keyword + " \"" + container.expression + "\""), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
+				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
 			}
 			
 			if (!container.timelines.contains(message.target)) {
-				error(String.format("Timeline not covered by " + container.keyword +  " \"" + container.expression + "\""), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
 			}
 		}
 	}

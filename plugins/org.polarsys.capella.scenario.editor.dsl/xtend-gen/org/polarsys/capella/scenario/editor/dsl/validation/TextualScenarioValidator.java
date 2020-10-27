@@ -279,23 +279,17 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       boolean _not_2 = (!_contains_2);
       if (_not_2) {
         String _keyword = ((CombinedFragment)container).getKeyword();
-        String _plus = ("Timeline not covered by " + _keyword);
-        String _plus_1 = (_plus + " \"");
-        String _expression = ((CombinedFragment)container).getExpression();
-        String _plus_2 = (_plus_1 + _expression);
-        String _plus_3 = (_plus_2 + "\"");
-        this.error(String.format(_plus_3), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
+        String _plus = ("Timeline not covered by this " + _keyword);
+        String _plus_1 = (_plus + "!");
+        this.error(String.format(_plus_1), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
       }
       boolean _contains_3 = ((CombinedFragment)container).getTimelines().contains(message.getTarget());
       boolean _not_3 = (!_contains_3);
       if (_not_3) {
         String _keyword_1 = ((CombinedFragment)container).getKeyword();
-        String _plus_4 = ("Timeline not covered by " + _keyword_1);
-        String _plus_5 = (_plus_4 + " \"");
-        String _expression_1 = ((CombinedFragment)container).getExpression();
-        String _plus_6 = (_plus_5 + _expression_1);
-        String _plus_7 = (_plus_6 + "\"");
-        this.error(String.format(_plus_7), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+        String _plus_2 = ("Timeline not covered by this " + _keyword_1);
+        String _plus_3 = (_plus_2 + "!");
+        this.error(String.format(_plus_3), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
       }
     }
   }

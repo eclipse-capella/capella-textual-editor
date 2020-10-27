@@ -57,7 +57,11 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 			}
 		}
 		else {
-			super.completeKeyword(keyword, contentAssistContext, acceptor)
+			// the message keywords are proposed separately
+			val String[] messageKeywords = #["->", "->x", "->+", "->>"]
+			if(!messageKeywords.contains(keyword.value)) {
+				super.completeKeyword(keyword, contentAssistContext, acceptor)
+			}
 		}
 	}
 	
@@ -164,11 +168,6 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 		}
 	}
 	
-	override completeSequenceMessage_DoubleDot(EObject model, Assignment assignment, ContentAssistContext context,
-		ICompletionProposalAcceptor acceptor) {
-		acceptor.accept(createCompletionProposal(":", ":", null, context))
-	}
-
 	override completeSequenceMessage_Name(EObject messageObj, Assignment assignment, ContentAssistContext context,
 		ICompletionProposalAcceptor acceptor) {
 
