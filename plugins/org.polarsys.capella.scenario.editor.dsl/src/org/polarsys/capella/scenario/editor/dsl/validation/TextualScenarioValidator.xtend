@@ -247,6 +247,19 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
 			return
 		}
+		
+		// if the message is inside a combined fragment, check that source and target are covered by it
+		var model = TextualScenarioHelper.getModelContainer(message)
+		var container = TextualScenarioHelper.getDirectContainer(message, model as Model) 
+		if (container instanceof CombinedFragment) {
+			if (!container.timelines.contains(message.source)) {
+				error(String.format("Timeline not covered by " + container.keyword + " \"" + container.expression + "\""), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
+			}
+			
+			if (!container.timelines.contains(message.target)) {
+				error(String.format("Timeline not covered by " + container.keyword +  " \"" + container.expression + "\""), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+			}
+		}
 	}
 	
 	@Check
