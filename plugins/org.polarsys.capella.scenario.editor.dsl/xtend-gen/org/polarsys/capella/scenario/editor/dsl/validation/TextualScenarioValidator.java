@@ -55,6 +55,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   public static final String DUPLICATED_MESSAGES_NAME = "duplicatedMessageName";
   
+  public static final String SAME_SOURCE_AND_TARGET_ERROR = "Invalid element! Source and target must be different!";
+  
   @Check
   public void checkPartExists(final Participant participant) {
     boolean _contains = EmbeddedEditorInstanceHelper.getAvailablePartNames(participant.getKeyword()).contains(participant.getName());
@@ -83,7 +85,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   @Check
-  public void checkMessagesExist(final SequenceMessage message) {
+  public void checkMessagesExist(final SequenceMessageType message) {
     boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), message.getTarget()).contains(
       message.getName());
     boolean _not = (!_contains);
@@ -271,6 +273,21 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
+  @Check
+  public void checkDeleteMessage(final DeleteMessage deleteMessage) {
+    this.checkSameSourceAndTarget(deleteMessage);
+  }
+  
+  public void checkSameSourceAndTarget(final SequenceMessageType message) {
+    boolean _equals = message.getSource().equals(message.getTarget());
+    if (_equals) {
+      this.error(TextualScenarioValidator.SAME_SOURCE_AND_TARGET_ERROR, 
+        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+      this.error(TextualScenarioValidator.SAME_SOURCE_AND_TARGET_ERROR, 
+        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
+    }
+  }
+  
   /**
    * check if a timeline involved in a combined fragment was used after a delete message was already defined
    * on the previous lines on the same timeline
@@ -381,6 +398,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkCreateMessage(final CreateMessage createMessage) {
+    this.checkSameSourceAndTarget(createMessage);
     Object model = TextualScenarioHelper.getModelContainer(createMessage);
     boolean _checkCreateMessageValid = this.checkCreateMessageValid(((Model) model), createMessage);
     boolean _not = (!_checkCreateMessageValid);
@@ -450,10 +468,10 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkStateFragment(final StateFragment fragment) {
-    boolean _checkValidTimeline = EmbeddedEditorInstanceHelper.checkValidTimeline(fragment.getTimeline());
-    boolean _not = (!_checkValidTimeline);
+    boolean _contains = TextualScenarioHelper.participantsDefinedBeforeNames(fragment).contains(fragment.getTimeline());
+    boolean _not = (!_contains);
     if (_not) {
-      this.error(String.format("Timeline not present in diagram", fragment.getKeyword()), 
+      this.error(String.format("Timeline not defined in text editor!", fragment.getKeyword()), 
         TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE);
       return;
     }
@@ -465,8 +483,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     List<String> availableStateFragments = EmbeddedEditorInstanceHelper.getAvailableStateFragments(fragment.getKeyword(), 
       fragment.getTimeline());
-    boolean _contains = availableStateFragments.contains(fragment.getName());
-    boolean _not_1 = (!_contains);
+    boolean _contains_1 = availableStateFragments.contains(fragment.getName());
+    boolean _not_1 = (!_contains_1);
     if (_not_1) {
       String _keyword = fragment.getKeyword();
       String _plus = ("This " + _keyword);
@@ -610,7 +628,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         boolean _contains = participantsDefined.contains(timeline);
         boolean _not = (!_contains);
         if (_not) {
-          this.error("Timeline not defined in text edior!", 
+          this.error("Timeline not defined in text editor!", 
             TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES, index);
         }
         index++;
