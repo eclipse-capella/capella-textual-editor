@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -40,6 +28,7 @@ import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Conversions;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
@@ -80,7 +69,12 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
         super.completeKeyword(keyword, contentAssistContext, acceptor);
       }
     } else {
-      super.completeKeyword(keyword, contentAssistContext, acceptor);
+      final String[] messageKeywords = { "->", "->x", "->+", "->>" };
+      boolean _contains = ((List<String>)Conversions.doWrapArray(messageKeywords)).contains(keyword.getValue());
+      boolean _not = (!_contains);
+      if (_not) {
+        super.completeKeyword(keyword, contentAssistContext, acceptor);
+      }
     }
   }
   
@@ -195,11 +189,6 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       acceptor.accept(
         this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
     }
-  }
-  
-  @Override
-  public void completeSequenceMessage_DoubleDot(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    acceptor.accept(this.createCompletionProposal(":", ":", null, context));
   }
   
   @Override
