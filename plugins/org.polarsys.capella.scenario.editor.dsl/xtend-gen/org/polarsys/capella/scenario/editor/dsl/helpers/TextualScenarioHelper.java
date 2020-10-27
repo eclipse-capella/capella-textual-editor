@@ -28,7 +28,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 /**
@@ -92,29 +91,18 @@ public class TextualScenarioHelper {
     return null;
   }
   
-  public static Object getModelContainer(final EObject object) {
-    Object _xblockexpression = null;
-    {
-      if ((object instanceof Model)) {
-        return ((Model) object);
-      }
-      _xblockexpression = TextualScenarioHelper.getModelContainer(object.eContainer());
-    }
-    return _xblockexpression;
-  }
-  
-  public static EList<Participant> participantsDefinedBefore(final EObject element) {
+  public static EList<Participant> participantsDefinedBefore(final EObject element, final Model rootModel) {
     if ((element instanceof Model)) {
       return ((Model) element).getParticipants();
     } else {
-      Object _modelContainer = TextualScenarioHelper.getModelContainer(element);
-      Model model = ((Model) _modelContainer);
-      return model.getParticipants();
+      return rootModel.getParticipants();
     }
   }
   
   public static ArrayList<String> participantsDefinedBeforeNames(final EObject element) {
-    EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(element);
+    EObject _modelContainer = TextualScenarioHelper.getModelContainer(element);
+    Model model = ((Model) _modelContainer);
+    EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(element, model);
     ArrayList<String> participantsNames = CollectionLiterals.<String>newArrayList();
     for (final Participant participant : participants) {
       participantsNames.add(participant.getName());
@@ -148,22 +136,26 @@ public class TextualScenarioHelper {
     return null;
   }
   
-  public static Object getDirectContainer(final SequenceMessageType message, final EObject container) {
-    if (((message == null) || (container == null))) {
-      return null;
+  /**
+   * get the root model that contains the object given as para
+   */
+  public static EObject getModelContainer(final EObject object) {
+    if ((object instanceof Model)) {
+      return ((Model) object);
     }
-    EList<Element> _elements = TextualScenarioHelper.getElements(container);
-    for (final Element element : _elements) {
-      {
-        boolean _equals = element.equals(message);
-        if (_equals) {
-          return container;
-        }
-        if ((element instanceof CombinedFragment)) {
-          return TextualScenarioHelper.getDirectContainer(message, element);
-        }
-      }
+    return TextualScenarioHelper.getModelContainer(object.eContainer());
+  }
+  
+  /**
+   * get the logic container of an element
+   * (the container can be the model or a combined fragment)
+   */
+  public static EObject getDirectContainer(final EObject element) {
+    EObject container = element.eContainer();
+    if (((container instanceof Model) || 
+      (container instanceof CombinedFragment))) {
+      return container;
     }
-    return null;
+    return TextualScenarioHelper.getDirectContainer(container);
   }
 }

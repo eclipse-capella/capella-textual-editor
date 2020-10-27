@@ -34,6 +34,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage
 import java.util.HashSet
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
 import org.eclipse.emf.ecore.EAttribute
+import java.util.List
 
 /**
  * This class contains custom validation rules. 
@@ -70,7 +71,9 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkMessagesExist(SequenceMessageType message) {
 		if (!EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource, message.getTarget).contains(
 				message.name)) {
-			error('Message does not exist!', TextualScenarioPackage.Literals.MESSAGE__NAME)
+			error('Exchange does not exist between \"' + message.source + "\" and \"" + message.target +"\"!"
+				, TextualScenarioPackage.Literals.MESSAGE__NAME
+			)
 		}
 	}
 	
@@ -160,10 +163,19 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 
 			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage) {
 				if (!names.add(getMessagesMapKey(element)) && element.equals(message)) {
-						error('Duplicated message! The same message is already defined.',
+					if (element instanceof SequenceMessageType) {
+						var source = (element as SequenceMessageType).source
+						var target = (element as SequenceMessageType).target
+						error('The same exchange is already used in text editor between \"' +
+							source + "\" \"" + target + "\"!",
 							TextualScenarioPackage.Literals.MESSAGE__NAME)
-						return true
+					} else if(element instanceof ArmTimerMessage) {
+						error('The same exchange is already used in text editor on timeline \"' +
+							(element as ArmTimerMessage).name +"\"!",
+							TextualScenarioPackage.Literals.MESSAGE__NAME)
 					}
+					return true
+				}
 			}
 
 			if (element instanceof CombinedFragment) {
@@ -235,6 +247,36 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 
+	/*
+	 * check that the messages we define are valid
+	 * if the message is inside a combined fragment, the messages must be between the defined timelines of the combined fragment
+	 */
+	@Check
+	def checkDefinedTimelinesMessages(SequenceMessageType message) {
+		var participantsNames = TextualScenarioHelper.participantsDefinedBeforeNames(message)
+		if (!participantsNames.contains(message.source)) {
+			error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
+			return
+		}
+
+		if (!participantsNames.contains(message.target)) {
+			error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+			return
+		}
+		
+		// if the message is inside a combined fragment, check that source and target are covered by it
+		var container = TextualScenarioHelper.getDirectContainer(message) 
+		if (container instanceof CombinedFragment) {
+			if (!container.timelines.contains(message.source)) {
+				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
+			}
+			
+			if (!container.timelines.contains(message.target)) {
+				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+			}
+		}
+	}
+	
 	@Check
 	def checkTimelinesMessages(SequenceMessageType message) {
 		var participantsNames = TextualScenarioHelper.participantsDefinedBeforeNames(message)
@@ -249,8 +291,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 		
 		// if the message is inside a combined fragment, check that source and target are covered by it
-		var model = TextualScenarioHelper.getModelContainer(message)
-		var container = TextualScenarioHelper.getDirectContainer(message, model as Model) 
+		var container = TextualScenarioHelper.getDirectContainer(message) 
 		if (container instanceof CombinedFragment) {
 			if (!container.timelines.contains(message.source)) {
 				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
@@ -261,6 +302,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			}
 		}
 	}
+	
 	
 	@Check
 	def checkDeleteMessage(DeleteMessage deleteMessage) {
@@ -621,6 +663,59 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 
+	/*
+	 * Check that a inner combine fragment has timelines over a subset in the parent combined fragment
+	 */
+	@Check
+	def checkContainedCombinedFragment(CombinedFragment combinedFragment) {
+		var container = TextualScenarioHelper.getDirectContainer(combinedFragment)
+		if (container instanceof CombinedFragment) {
+			checkContainedCombinedFragmentTimelines(combinedFragment, container)
+		}
+	}
+	
+	def void checkContainedCombinedFragmentTimelines(CombinedFragment combinedFragment, CombinedFragment container) {
+		// timeline must be a subset of the parent timeline
+		if (innerCombinedFragment(combinedFragment, container) &&
+			!isASubset(combinedFragment.timelines, (container as CombinedFragment).timelines)) {
+			error(
+				'Timelines covered by this ' + combinedFragment.keyword +
+					' must be a subset of the parent covered timelines ' +
+					container.timelines + "!",
+				TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES
+			)
+		} else {
+			var upperContainer = TextualScenarioHelper.getDirectContainer(container)
+			if (upperContainer instanceof CombinedFragment) {
+				checkContainedCombinedFragmentTimelines(combinedFragment, upperContainer as CombinedFragment);
+			}
+		}
+	}
+	
+	/*
+	 * check if a the smallList is a subset in the containerList
+	 */
+	def boolean isASubset(List<String> smallList, List<String> containerList) {
+		for (var i = 0; i < containerList.size; i++) {
+			if (i < containerList.size && smallList.size <= containerList.size) {
+				var subset = containerList.subList(i, smallList.size)
+				if (subset !== null && smallList.equals(subset))
+					return true
+			}
+		}
+		return false
+	}
+	/*
+	 * we consider that it is a inner combined fragment if it has some same timelines as the parent
+	 * added this due to the limitation that a paralel combined fragment in diagram, is represented inside the text
+	 */
+	def boolean innerCombinedFragment(CombinedFragment combinedFragment, CombinedFragment container) {
+		for(timeline : combinedFragment.timelines) {
+				if(container.timelines.contains(timeline))
+					return true
+		}
+		return false
+	}
 
 	def getParticipantsMapKey(Participant p) {
 		p.name + ":" + p.keyword
