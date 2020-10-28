@@ -589,7 +589,7 @@ public class XtextToDiagramCommands {
           target = source;
         }
         
-        if (!foundMessageBySourceTargetAndName(sequenceMessages, source, target, seqMessage.getName())) {
+        if (!foundMessageBySourceTargetAndName(sequenceMessages, seqMessage)) {
           SequenceMessage sequenceMessage = createCapellaSequenceMessage(scenario, source, target, seqMessage);
           sequenceMessages.add(sequenceMessage);
           
@@ -651,14 +651,10 @@ public class XtextToDiagramCommands {
    * @return true if a message with these attributes was found, false otherwise
    */
   private static boolean foundMessageBySourceTargetAndName(EList<SequenceMessage> sequenceMessages, 
-      InstanceRole source, InstanceRole target, String messageName) {
-    if (source == null) {
-      return false;
-    }
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.Message seqMessage) {
     List<SequenceMessage> msgsFilteredByNameTargetSource = sequenceMessages.stream()
-        .filter(x -> x.getName().equals(messageName))
-        .filter(x -> x.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(source.getName()))
-        .filter(x -> x.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(target.getName()))
+        .filter(x -> isSameMessage(seqMessage, x))
+        
         .collect(Collectors.toList());
     return !msgsFilteredByNameTargetSource.isEmpty();
   }

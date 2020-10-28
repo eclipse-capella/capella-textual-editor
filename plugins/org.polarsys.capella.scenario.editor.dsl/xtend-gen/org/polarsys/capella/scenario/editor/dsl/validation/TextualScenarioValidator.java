@@ -661,17 +661,20 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     if ((message instanceof SequenceMessageType)) {
       String _name = ((SequenceMessageType)message).getName();
       String _plus = (_name + ":");
-      String _source = ((SequenceMessageType)message).getSource();
-      String _plus_1 = (_plus + _source);
+      String _arrow = ((SequenceMessageType)message).getArrow();
+      String _plus_1 = (_plus + _arrow);
       String _plus_2 = (_plus_1 + ":");
+      String _source = ((SequenceMessageType)message).getSource();
+      String _plus_3 = (_plus_2 + _source);
+      String _plus_4 = (_plus_3 + ":");
       String _target = ((SequenceMessageType)message).getTarget();
-      return (_plus_2 + _target);
+      return (_plus_4 + _target);
     }
     if ((message instanceof ArmTimerMessage)) {
       String _participant = ((ArmTimerMessage)message).getParticipant();
-      String _plus_3 = (_participant + ":");
+      String _plus_5 = (_participant + ":");
       String _name_1 = ((ArmTimerMessage)message).getName();
-      return (_plus_3 + _name_1);
+      return (_plus_5 + _name_1);
     }
     return null;
   }
