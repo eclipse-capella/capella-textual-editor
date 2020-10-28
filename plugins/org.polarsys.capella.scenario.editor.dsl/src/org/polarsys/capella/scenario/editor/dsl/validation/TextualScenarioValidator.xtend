@@ -598,7 +598,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 
 	def getMessagesMapKey(EObject message) {
 		if (message instanceof SequenceMessageType) {
-			return message.name + ":" + message.source + ":" + message.target
+			return message.name + ":" + message.arrow + ":" + message.source + ":" + message.target
 		} 
 		
 		if (message instanceof ArmTimerMessage) {
