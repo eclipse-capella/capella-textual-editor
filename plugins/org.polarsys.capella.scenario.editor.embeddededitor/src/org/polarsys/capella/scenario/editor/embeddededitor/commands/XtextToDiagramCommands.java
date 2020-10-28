@@ -1503,7 +1503,9 @@ public class XtextToDiagramCommands {
     String source = null;
     String target = null;
     String xtextMessageName = null;
+    MessageKind xtextMessageKind = null;
     String capellaMessageName = seqMessage.getName();
+    MessageKind capellaMessageKind = seqMessage.getKind();
     
     if (xtextElement instanceof SequenceMessageType) {
       org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType message = 
@@ -1513,6 +1515,7 @@ public class XtextToDiagramCommands {
       source = message.getSource();
       target = message.getTarget();
       xtextMessageName = message.getName();
+      xtextMessageKind = getSequenceMessageKind(message, false);
     } else if (xtextElement instanceof ArmTimerMessage) {
       org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage armTimerMessage = 
           (org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) xtextElement;
@@ -1524,8 +1527,9 @@ public class XtextToDiagramCommands {
     }
     
     return sendingEnd == null ? false : 
-      isSameMessage(source, target, sendingEnd, receivingEnd, xtextMessageName, capellaMessageName);
+      isSameMessage(source, target, sendingEnd, receivingEnd, xtextMessageName, capellaMessageName, xtextMessageKind, capellaMessageKind);
   }
+  
 
   /**
    * Check if the two messages match
@@ -1542,15 +1546,20 @@ public class XtextToDiagramCommands {
    *          Name of the xtext message
    * @param capellaMessageName
    *          Name of the Capella message
+   * @param xtextMessageKind
+   *          Kind of the Xtext message
+   * @param capellaMessageKind
+   *          Kind of the Capella message
    * @return true if the two messages match, false otherwise
    */
   private static boolean isSameMessage(String source, String target, MessageEnd sendingEnd, MessageEnd receivingEnd,
-      String messageName, String capellaMessageName) {
+      String messageName, String capellaMessageName, MessageKind xtextMessageKind, MessageKind capellaMessageKind) {
     if (!sendingEnd.getCoveredInstanceRoles().isEmpty()
         && source.equals(sendingEnd.getCoveredInstanceRoles().get(0).getName())
         && !receivingEnd.getCoveredInstanceRoles().isEmpty()
         && target.equals(receivingEnd.getCoveredInstanceRoles().get(0).getName())
-        && messageName.equals(capellaMessageName)) {
+        && messageName.equals(capellaMessageName)
+        && xtextMessageKind.equals(capellaMessageKind)) {
       return true;
     }
     return false;
