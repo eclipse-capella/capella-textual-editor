@@ -26,13 +26,12 @@ public class HelperCommands {
     return "";
   }
   
-  public static boolean isValidTextResource(XtextResource resource) {
+  public static List<Issue> getValidationIsuesTextResource(XtextResource resource) {
     IResourceValidator validator = resource.getResourceServiceProvider().getResourceValidator();
     if(validator != null) {
-    	List<Issue> issues = validator.validate(resource, CheckMode.ALL, null);
-    	return issues.isEmpty();
+    	return validator.validate(resource, CheckMode.ALL, null);
     }
-    return false;
+    return null;
   }
   
   /**

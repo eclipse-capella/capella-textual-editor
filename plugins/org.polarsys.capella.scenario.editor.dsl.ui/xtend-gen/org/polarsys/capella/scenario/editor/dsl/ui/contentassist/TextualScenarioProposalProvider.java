@@ -164,7 +164,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeSequenceMessage_Source(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model);
+    EObject _rootModel = context.getRootModel();
+    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
       String _name = ((Participant) el).getName();
       String _plus = ("\"" + _name);
@@ -181,7 +182,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeSequenceMessage_Target(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model);
+    EObject _rootModel = context.getRootModel();
+    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
       String _name = ((Participant) el).getName();
       String _plus = ("\"" + _name);
@@ -235,7 +237,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   @Override
   public void completeCreateMessage_Target(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     String source = ((CreateMessage) model).getSource();
-    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model);
+    EObject _rootModel = context.getRootModel();
+    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
       boolean _equals = ((Participant) el).getName().equals(source);
       boolean _not = (!_equals);
@@ -272,7 +275,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   @Override
   public void completeDeleteMessage_Target(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     String source = ((DeleteMessage) model).getSource();
-    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model);
+    EObject _rootModel = context.getRootModel();
+    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
       boolean _equals = ((Participant) el).getName().equals(source);
       boolean _not = (!_equals);
@@ -288,7 +292,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeParticipantDeactivation_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    Object modelContainer = TextualScenarioHelper.getModelContainer(((ParticipantDeactivation) model));
+    EObject modelContainer = TextualScenarioHelper.getModelContainer(((ParticipantDeactivation) model));
     HashMap<String, Integer> timelinesToPropose = new HashMap<String, Integer>();
     this.createTimelinesHashMapToProposeForDeactivation(((ParticipantDeactivation) model), ((Model) modelContainer), timelinesToPropose);
     Set<String> _keySet = timelinesToPropose.keySet();
@@ -425,7 +429,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeArmTimerMessage_Participant(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model);
+    EObject _rootModel = context.getRootModel();
+    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
       String _name = ((Participant) el).getName();
       String _plus = ("\"" + _name);
@@ -486,7 +491,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeCombinedFragment_Timelines(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model);
+    EObject _rootModel = context.getRootModel();
+    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
       boolean _contains = ((CombinedFragment) model).getTimelines().contains(((Participant) el).getName());
       boolean _not = (!_contains);

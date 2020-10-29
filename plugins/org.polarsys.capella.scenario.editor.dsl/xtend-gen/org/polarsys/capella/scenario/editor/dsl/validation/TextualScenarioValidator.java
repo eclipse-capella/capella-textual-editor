@@ -91,7 +91,13 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       message.getName());
     boolean _not = (!_contains);
     if (_not) {
-      this.error("Message does not exist!", TextualScenarioPackage.Literals.MESSAGE__NAME);
+      String _source = message.getSource();
+      String _plus = ("Exchange does not exist between \"" + _source);
+      String _plus_1 = (_plus + "\" and \"");
+      String _target = message.getTarget();
+      String _plus_2 = (_plus_1 + _target);
+      String _plus_3 = (_plus_2 + "\"!");
+      this.error(_plus_3, TextualScenarioPackage.Literals.MESSAGE__NAME);
     }
   }
   
@@ -124,7 +130,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public void checkMessagesExchangeType(final SequenceMessage message) {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
     if (_isESScenario) {
-      Object model = TextualScenarioHelper.getModelContainer(message);
+      EObject model = TextualScenarioHelper.getModelContainer(message);
       if ((model != null)) {
         String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) model).getElements());
         String exchangeType = TextualScenarioHelper.getMessageExchangeType(message);
@@ -170,7 +176,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public boolean checkDuplicatedSequenceMessageNames(final SequenceMessage message) {
     boolean _xblockexpression = false;
     {
-      Object model = TextualScenarioHelper.getModelContainer(message);
+      EObject model = TextualScenarioHelper.getModelContainer(message);
       _xblockexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
     }
     return _xblockexpression;
@@ -180,7 +186,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public boolean checkDuplicatedArmTimerMessageNames(final ArmTimerMessage message) {
     boolean _xblockexpression = false;
     {
-      Object model = TextualScenarioHelper.getModelContainer(message);
+      EObject model = TextualScenarioHelper.getModelContainer(message);
       _xblockexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
     }
     return _xblockexpression;
@@ -192,8 +198,20 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       {
         if (((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage))) {
           if (((!names.add(this.getMessagesMapKey(element))) && element.equals(message))) {
-            this.error("Duplicated message! The same message is already defined.", 
-              TextualScenarioPackage.Literals.MESSAGE__NAME);
+            if ((element instanceof SequenceMessageType)) {
+              String source = ((SequenceMessageType) element).getSource();
+              String target = ((SequenceMessageType) element).getTarget();
+              this.error((((("The same exchange is already used in text editor between \"" + source) + "\" and \"") + target) + "\"!"), 
+                TextualScenarioPackage.Literals.MESSAGE__NAME);
+            } else {
+              if ((element instanceof ArmTimerMessage)) {
+                String _participant = ((ArmTimerMessage) element).getParticipant();
+                String _plus = ("The same exchange is already used in text editor on timeline \"" + _participant);
+                String _plus_1 = (_plus + "\"!");
+                this.error(_plus_1, 
+                  TextualScenarioPackage.Literals.MESSAGE__NAME);
+              }
+            }
             return true;
           }
         }
@@ -257,8 +275,12 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
+  /**
+   * check that the messages we define are valid
+   * if the message is inside a combined fragment, the messages must be between the defined timelines of the combined fragment
+   */
   @Check
-  public void checkTimelinesMessages(final SequenceMessageType message) {
+  public void checkDefinedTimelinesMessages(final SequenceMessageType message) {
     ArrayList<String> participantsNames = TextualScenarioHelper.participantsDefinedBeforeNames(message);
     boolean _contains = participantsNames.contains(message.getSource());
     boolean _not = (!_contains);
@@ -272,25 +294,51 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       this.error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
       return;
     }
-    Object model = TextualScenarioHelper.getModelContainer(message);
-    Object container = TextualScenarioHelper.getDirectContainer(message, ((Model) model));
+  }
+  
+  @Check
+  public void checkContainedTimelinesMessages(final SequenceMessageType message) {
+    EObject container = TextualScenarioHelper.getDirectContainer(message);
     if ((container instanceof CombinedFragment)) {
-      boolean _contains_2 = ((CombinedFragment)container).getTimelines().contains(message.getSource());
-      boolean _not_2 = (!_contains_2);
-      if (_not_2) {
-        String _keyword = ((CombinedFragment)container).getKeyword();
-        String _plus = ("Timeline not covered by this " + _keyword);
-        String _plus_1 = (_plus + "!");
-        this.error(String.format(_plus_1), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
+      EObject upContainer = this.getUpperContainerCombinedFragmentTimelines(message, ((CombinedFragment)container));
+      if (((upContainer != null) && (upContainer instanceof CombinedFragment))) {
+        this.checkTimelinesMessages(message, ((CombinedFragment) upContainer));
       }
-      boolean _contains_3 = ((CombinedFragment)container).getTimelines().contains(message.getTarget());
-      boolean _not_3 = (!_contains_3);
-      if (_not_3) {
-        String _keyword_1 = ((CombinedFragment)container).getKeyword();
-        String _plus_2 = ("Timeline not covered by this " + _keyword_1);
-        String _plus_3 = (_plus_2 + "!");
-        this.error(String.format(_plus_3), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+    }
+  }
+  
+  public EObject getUpperContainerCombinedFragmentTimelines(final SequenceMessageType message, final CombinedFragment container) {
+    if ((container.getTimelines().contains(message.getSource()) || container.getTimelines().contains(message.getTarget()))) {
+      return container;
+    } else {
+      EObject upperContainer = TextualScenarioHelper.getDirectContainer(container);
+      if ((upperContainer instanceof CombinedFragment)) {
+        return this.getUpperContainerCombinedFragmentTimelines(message, ((CombinedFragment) upperContainer));
       }
+    }
+    return null;
+  }
+  
+  public void checkTimelinesMessages(final SequenceMessageType message, final CombinedFragment container) {
+    String _keyword = container.getKeyword();
+    String _plus = ("Timeline not covered by this " + _keyword);
+    String _plus_1 = (_plus + "!");
+    String _plus_2 = (_plus_1 + 
+      " Expected values in : ");
+    EList<String> _timelines = container.getTimelines();
+    String _plus_3 = (_plus_2 + _timelines);
+    String msg = String.format(_plus_3);
+    boolean _contains = container.getTimelines().contains(message.getSource());
+    boolean _not = (!_contains);
+    if (_not) {
+      this.error(msg, 
+        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
+    }
+    boolean _contains_1 = container.getTimelines().contains(message.getTarget());
+    boolean _not_1 = (!_contains_1);
+    if (_not_1) {
+      this.error(msg, 
+        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
     }
   }
   
@@ -338,7 +386,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkTimelineUsedAfterDeleteMessage(final CombinedFragment combinedFragment) {
-    Object model = TextualScenarioHelper.getModelContainer(combinedFragment);
+    EObject model = TextualScenarioHelper.getModelContainer(combinedFragment);
     int index = 0;
     EList<String> _timelines = combinedFragment.getTimelines();
     for (final String timeline : _timelines) {
@@ -356,7 +404,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public boolean checkTimelineUsedAfterDeleteMessage(final StateFragment fragment) {
     boolean _xblockexpression = false;
     {
-      Object model = TextualScenarioHelper.getModelContainer(fragment);
+      EObject model = TextualScenarioHelper.getModelContainer(fragment);
       _xblockexpression = this.checkElementAfterDelete(((Model) model), fragment, fragment.getTimeline(), 
         TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE, 0);
     }
@@ -371,7 +419,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public boolean checkParticipantUsedAfterDeleteMessage(final ArmTimerMessage armTimer) {
     boolean _xblockexpression = false;
     {
-      Object model = TextualScenarioHelper.getModelContainer(armTimer);
+      EObject model = TextualScenarioHelper.getModelContainer(armTimer);
       _xblockexpression = this.checkElementAfterDelete(((Model) model), armTimer, armTimer.getParticipant(), 
         TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0);
     }
@@ -386,7 +434,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public boolean checkMessageSourceUsedAfterDeleteMessage(final SequenceMessageType message) {
     boolean _xblockexpression = false;
     {
-      Object model = TextualScenarioHelper.getModelContainer(message);
+      EObject model = TextualScenarioHelper.getModelContainer(message);
       _xblockexpression = this.checkElementAfterDelete(((Model) model), message, message.getSource(), 
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE, 0);
     }
@@ -401,7 +449,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public boolean checkMessageTargetUsedAfterDeleteMessage(final SequenceMessageType message) {
     boolean _xblockexpression = false;
     {
-      Object model = TextualScenarioHelper.getModelContainer(message);
+      EObject model = TextualScenarioHelper.getModelContainer(message);
       _xblockexpression = this.checkElementAfterDelete(((Model) model), message, message.getTarget(), 
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET, 0);
     }
@@ -444,7 +492,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public void checkCreateMessage(final CreateMessage createMessage) {
     this.checkCreateOrDeleteCouldBeUsed();
     this.checkSameSourceAndTarget(createMessage);
-    Object model = TextualScenarioHelper.getModelContainer(createMessage);
+    EObject model = TextualScenarioHelper.getModelContainer(createMessage);
     boolean _checkCreateMessageValid = this.checkCreateMessageValid(((Model) model), createMessage);
     boolean _not = (!_checkCreateMessageValid);
     if (_not) {
@@ -672,6 +720,73 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         index++;
       }
     }
+  }
+  
+  /**
+   * Check that a inner combine fragment has timelines over a subset in the parent combined fragment
+   */
+  @Check
+  public void checkContainedCombinedFragment(final CombinedFragment combinedFragment) {
+    EObject container = TextualScenarioHelper.getDirectContainer(combinedFragment);
+    if ((container instanceof CombinedFragment)) {
+      EObject upperContainer = this.getContainerCombinedFragmentTimelines(combinedFragment, ((CombinedFragment)container));
+      if (((upperContainer != null) && (upperContainer instanceof CombinedFragment))) {
+        String _keyword = combinedFragment.getKeyword();
+        String _plus = ("Timelines covered by this " + _keyword);
+        String _plus_1 = (_plus + 
+          " must be a subset of the parent covered timelines ");
+        EList<String> _timelines = ((CombinedFragment) upperContainer).getTimelines();
+        String _plus_2 = (_plus_1 + _timelines);
+        String _plus_3 = (_plus_2 + "!");
+        this.error(_plus_3, 
+          TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES);
+      }
+    }
+  }
+  
+  public EObject getContainerCombinedFragmentTimelines(final CombinedFragment combinedFragment, final CombinedFragment container) {
+    if ((this.innerCombinedFragment(combinedFragment, container) && 
+      (!this.isASubset(combinedFragment.getTimelines(), ((CombinedFragment) container).getTimelines())))) {
+      return container;
+    } else {
+      EObject upperContainer = TextualScenarioHelper.getDirectContainer(container);
+      if ((upperContainer instanceof CombinedFragment)) {
+        return this.getContainerCombinedFragmentTimelines(combinedFragment, ((CombinedFragment) upperContainer));
+      }
+    }
+    return null;
+  }
+  
+  /**
+   * check if a the smallList is a subset in the containerList
+   */
+  public boolean isASubset(final List<String> smallList, final List<String> containerList) {
+    for (int i = 0; (i < containerList.size()); i++) {
+      if (((i < containerList.size()) && ((i + smallList.size()) <= containerList.size()))) {
+        int _size = smallList.size();
+        int _plus = (i + _size);
+        List<String> subset = containerList.subList(i, _plus);
+        if (((subset != null) && smallList.equals(subset))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  /**
+   * we consider that it is a inner combined fragment if it has some same timelines as the parent
+   * added this due to the limitation that a paralel combined fragment in diagram, is represented inside the text
+   */
+  public boolean innerCombinedFragment(final CombinedFragment combinedFragment, final CombinedFragment container) {
+    EList<String> _timelines = combinedFragment.getTimelines();
+    for (final String timeline : _timelines) {
+      boolean _contains = container.getTimelines().contains(timeline);
+      if (_contains) {
+        return true;
+      }
+    }
+    return false;
   }
   
   public String getParticipantsMapKey(final Participant p) {

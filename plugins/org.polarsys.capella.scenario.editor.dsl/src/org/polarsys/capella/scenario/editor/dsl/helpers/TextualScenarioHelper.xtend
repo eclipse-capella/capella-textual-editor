@@ -77,23 +77,17 @@ class TextualScenarioHelper {
 		return null
 	}
 	
-	def static getModelContainer(EObject object) {
-		if(object instanceof Model)
-			return object as Model
-		getModelContainer(object.eContainer)	
-	}
-	
-	def static participantsDefinedBefore(EObject element) {
+	def static participantsDefinedBefore(EObject element, Model rootModel) {
 		if(element instanceof Model)
 			return (element as Model).participants
 		else {
-			var model = getModelContainer(element) as Model
-			return model.participants
+			return rootModel.participants
 		}	
 	}
 	
 	def static participantsDefinedBeforeNames(EObject element) {
-		var participants = participantsDefinedBefore(element)
+		var model = getModelContainer(element) as Model
+		var participants = participantsDefinedBefore(element, model)
 		var participantsNames = newArrayList
 		for(participant : participants) {
 			participantsNames.add(participant.name)
@@ -128,20 +122,28 @@ class TextualScenarioHelper {
 		}
 	}
 	
-	def static getDirectContainer(SequenceMessageType message, EObject container) {
-		if (message === null || container === null)
-			return null
-
-		for (element : getElements(container)) {
-			if (element.equals(message))
-				// return Model or CombinedFragment
-				return container
-
-			if (element instanceof CombinedFragment) {
-				return getDirectContainer(message, element)
-			}
+	/*
+	 * get the root model that contains the object given as para
+	 */
+	def static EObject getModelContainer(EObject object) {
+		if(object instanceof Model)
+			return object as Model
+		return getModelContainer(object.eContainer)	
+	}
+	
+	/*
+	 * get the logic container of an element 
+	 * (the container can be the model or a combined fragment)
+	 */
+	def static EObject getDirectContainer(EObject element) {
+		var container = element.eContainer
+		if(container instanceof Model ||
+			container instanceof CombinedFragment
+		) {
+			return container
 		}
-		return null
+
+		return getDirectContainer(container)
 	}
 	
 }
