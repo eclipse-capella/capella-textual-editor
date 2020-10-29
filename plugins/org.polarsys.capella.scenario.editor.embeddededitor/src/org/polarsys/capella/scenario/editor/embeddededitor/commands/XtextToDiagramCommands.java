@@ -86,7 +86,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
-import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 import org.polarsys.capella.scenario.editor.helper.DslConstants;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
@@ -113,11 +112,13 @@ public class XtextToDiagramCommands {
 
         doEditingOnElements(scenario, messages);
 
+        
         // do refresh - when the messages associated with the removed actors are deleted too,
         // a refresh is needed to update also the editor
-        EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-        Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-        DiagramToXtextCommands.process(scenarioDiagram, eeView);
+        
+        //EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+        //Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+        //DiagramToXtextCommands.process(scenarioDiagram, eeView);
       } else {
         MessageDialog.openError(Display.getCurrent().getActiveShell(), "Invalid data",
             "Please fix the errors in the textual editor! \n" + issues);
@@ -351,6 +352,7 @@ public class XtextToDiagramCommands {
 
         // Reorder scenario, this means reordering the interaction fragments and sequence messages lists
         reorderCapellaScenario(scenario, elements);
+        
         // refresh visual editor
         syncGraphicalOrdering();
       }
@@ -758,19 +760,18 @@ public class XtextToDiagramCommands {
    *          The element representing Capella abstract function or abstract state related with a state fragment
    * @return the list of state fragments with the given attributes
    */
-  private static List<TimeLapse> getStateFragmentsWithGivenAttributes(Scenario scenario,
-      InstanceRole instanceRole, org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment xtextElement,
-      EObject relatedElement) {
+  private static List<TimeLapse> getStateFragmentsWithGivenAttributes(Scenario scenario, InstanceRole instanceRole,
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment xtextElement, EObject relatedElement) {
 
     if (xtextElement.getKeyword().equals(DslConstants.FUNCTION))
       return scenario.getOwnedTimeLapses().stream()
           .filter(
-              x -> x instanceof StateFragment && ((StateFragment) x).getRelatedAbstractFunction().equals(relatedElement)
+              x -> x instanceof StateFragment && relatedElement.equals(((StateFragment) x).getRelatedAbstractFunction())
                   && ((StateFragment) x).getStart().getCoveredInstanceRoles().get(0).equals(instanceRole))
           .collect(Collectors.toList());
 
     return scenario.getOwnedTimeLapses().stream()
-        .filter(x -> x instanceof StateFragment && ((StateFragment) x).getRelatedAbstractState().equals(relatedElement)
+        .filter(x -> x instanceof StateFragment && relatedElement.equals(((StateFragment) x).getRelatedAbstractState())
             && ((StateFragment) x).getStart().getCoveredInstanceRoles().get(0).equals(instanceRole))
         .collect(Collectors.toList());
   }
@@ -1049,14 +1050,14 @@ public class XtextToDiagramCommands {
     List<TimeLapse> filteredTimeLapses;
     if (stateFragment.getKeyword().equals(DslConstants.FUNCTION)) {
       filteredTimeLapses = scenario.getOwnedTimeLapses().stream()
-          .filter(x -> x instanceof StateFragment
+          .filter(x -> x instanceof StateFragment && ((StateFragment) x).getRelatedAbstractFunction() != null
               && ((StateFragment) x).getRelatedAbstractFunction().getName().equals(stateFragment.getName())
               && x.getStart().getCoveredInstanceRoles().get(0).equals(instanceRole)
               && !interactionFragments.contains(((StateFragment) x).getStart()))
           .collect(Collectors.toList());
     } else {
       filteredTimeLapses = scenario.getOwnedTimeLapses().stream()
-          .filter(x -> x instanceof StateFragment
+          .filter(x -> x instanceof StateFragment && ((StateFragment) x).getRelatedAbstractState() != null
               && ((StateFragment) x).getRelatedAbstractState().getName().equals(stateFragment.getName())
               && x.getStart().getCoveredInstanceRoles().get(0).equals(instanceRole)
               && !interactionFragments.contains(((StateFragment) x).getStart()))

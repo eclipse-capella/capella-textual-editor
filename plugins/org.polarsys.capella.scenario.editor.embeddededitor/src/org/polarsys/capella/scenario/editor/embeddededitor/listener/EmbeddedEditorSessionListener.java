@@ -57,9 +57,6 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
   }
 
   public static Object handleSelection(IWorkbenchPart part, ISelection selection) {
-	DialectEditor dEditor = (DialectEditor) part;
-    DDiagram diagram = (DDiagram) dEditor.getRepresentation();
-    EmbeddedEditorInstance.setDDiagram(diagram);
     Object result = null;
     if (selection != null && !selection.isEmpty() && (!(part instanceof EmbeddedEditorView))) {
       if (selection instanceof IStructuredSelection) {
@@ -81,25 +78,34 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
          * scenario and we update the content of the embedded xtext editor
          */
         if (newInput instanceof DRepresentationDescriptor) {
-          if (currentSelected == null || !newInput.equals(currentSelected)) {
-            currentSelected = newInput;
-            DRepresentationDescriptor desc = (DRepresentationDescriptor) currentSelected;
-            if (desc.getTarget() instanceof Scenario) {
-              Scenario sc = (Scenario) desc.getTarget();
-              IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-              EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-              if (eeView == null) {
-                // Show it if not found.
-                try {
-                  eeView = (EmbeddedEditorView) activePage.showView(EmbeddedEditorView.ID);
-                } catch (PartInitException e) {
-                  System.err.println("Cannot open Textual Editor View");
-                }
-                activePage.activate(eeView);
+          DRepresentationDescriptor desc = (DRepresentationDescriptor) newInput;
+          if (desc.getTarget() instanceof Scenario) {
+            Scenario sc = (Scenario) desc.getTarget();
+            IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+            boolean toRefresh = false;
+            if (eeView == null) {
+              // Show it if not found.
+              try {
+                eeView = (EmbeddedEditorView) activePage.showView(EmbeddedEditorView.ID);
+                toRefresh = true;
+              } catch (PartInitException e) {
+                System.err.println("Cannot open Textual Editor View");
               }
-              eeView.refreshTitleBar(sc.getName());
-              DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
+              activePage.activate(eeView);
             }
+            
+            if (toRefresh || currentSelected == null || !newInput.equals(currentSelected)) {
+              // set the diagram
+              DialectEditor dEditor = (DialectEditor) part;
+              DDiagram diagram = (DDiagram) dEditor.getRepresentation();
+              EmbeddedEditorInstance.setDDiagram(diagram);
+              
+              // refresh the text editor
+              DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
+              eeView.refreshTitleBar(sc.getName());
+            }
+            currentSelected = newInput;
           }
         }
       }

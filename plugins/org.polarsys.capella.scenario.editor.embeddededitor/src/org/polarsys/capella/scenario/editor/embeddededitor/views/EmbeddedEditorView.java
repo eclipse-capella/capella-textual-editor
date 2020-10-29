@@ -80,7 +80,7 @@ public class EmbeddedEditorView extends ViewPart {
     scenarioTitle = new TabbedPropertyTitle(parent, new TabbedPropertySheetWidgetFactory());
     scenarioTitle.setLayoutData(titleLayoutData);
     // Sets a default name with no image
-    scenarioTitle.setTitle("Scenario editor", null);
+    scenarioTitle.setTitle("Textual Editor", null);
 
     GridLayout layout = new GridLayout();
     // No blank space.

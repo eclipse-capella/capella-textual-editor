@@ -758,9 +758,23 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   /**
-   * check if a the smallList is a subset in the containerList
+   * check if the smallList is a subset in the containerList
    */
   public boolean isASubset(final List<String> smallList, final List<String> containerList) {
+    for (final String element : smallList) {
+      boolean _contains = containerList.contains(element);
+      boolean _not = (!_contains);
+      if (_not) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  /**
+   * check if the smallList is a sublist in the containerList
+   */
+  public boolean isASublist(final List<String> smallList, final List<String> containerList) {
     for (int i = 0; (i < containerList.size()); i++) {
       if (((i < containerList.size()) && ((i + smallList.size()) <= containerList.size()))) {
         int _size = smallList.size();
