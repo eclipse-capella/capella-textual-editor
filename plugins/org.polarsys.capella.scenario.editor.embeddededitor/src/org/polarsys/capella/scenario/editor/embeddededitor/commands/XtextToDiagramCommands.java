@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -32,6 +33,7 @@ import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
 import org.eclipse.sirius.diagram.sequence.business.internal.layout.flag.SequenceEventAbsoluteBoundsFlagger;
 import org.eclipse.sirius.diagram.sequence.business.internal.operation.SynchronizeGraphicalOrderingOperation;
+import org.eclipse.sirius.diagram.sequence.business.internal.refresh.RefreshLayoutCommand;
 import org.eclipse.sirius.diagram.ui.business.internal.operation.AbstractModelChangeOperation;
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.swt.widgets.Display;
@@ -310,15 +312,18 @@ public class XtextToDiagramCommands {
     DDiagram dDiagram = EmbeddedEditorInstance.getDDiagram();
     ((SequenceDDiagram) dDiagram).getTarget();
     EList<AnnotationEntry> ownedAnnotationEntries = dDiagram.getOwnedAnnotationEntries();
-    EObject data = null;
+    Diagram diagram = null;
     for (AnnotationEntry annotationEntry : ownedAnnotationEntries) {
       if ((annotationEntry != null) && (annotationEntry.getData() instanceof Diagram)) {
-        data = annotationEntry.getData();
+        diagram = (Diagram)annotationEntry.getData();
+        break;
       }
     }
-    AbstractModelChangeOperation<Boolean> synchronizeGraphicalOrderingOperation = new SynchronizeGraphicalOrderingOperation(
-        (Diagram) data, true);
-    synchronizeGraphicalOrderingOperation.execute();
+    if (diagram != null) {
+      Command refreshLayoutCommand = new RefreshLayoutCommand(TransactionUtil.getEditingDomain(dDiagram), diagram,
+          true);
+      refreshLayoutCommand.execute();
+    }
   }
 
   /**
