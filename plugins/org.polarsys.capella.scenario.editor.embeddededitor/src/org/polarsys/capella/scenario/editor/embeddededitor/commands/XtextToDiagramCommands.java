@@ -36,6 +36,7 @@ import org.eclipse.sirius.diagram.ui.business.internal.operation.AbstractModelCh
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.validation.Issue;
 import org.polarsys.capella.common.menu.dynamic.CreationHelper;
 import org.polarsys.capella.core.data.capellacommon.AbstractState;
 import org.polarsys.capella.core.data.capellacore.CapellacoreFactory;
@@ -95,7 +96,8 @@ public class XtextToDiagramCommands {
       TextualScenarioProvider p = embeddedEditorViewPart.getProvider();
       XtextResource resource = p.getResource();
 
-      if (HelperCommands.isValidTextResource(resource)) {
+      List<Issue> issues = HelperCommands.getValidationIsuesTextResource(resource);
+      if (issues == null || issues.isEmpty()) {
         EList<EObject> content = resource.getContents();
         Model domainModel = (Model) content.get(0);
 
@@ -116,7 +118,7 @@ public class XtextToDiagramCommands {
         DiagramToXtextCommands.process(scenarioDiagram, eeView);
       } else {
         MessageDialog.openError(Display.getCurrent().getActiveShell(), "Invalid data",
-            "Please fix the errors in the textual editor!");
+            "Please fix the errors in the textual editor! \n" + issues);
       }
     }
   }

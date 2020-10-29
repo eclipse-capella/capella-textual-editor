@@ -167,11 +167,11 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 						var source = (element as SequenceMessageType).source
 						var target = (element as SequenceMessageType).target
 						error('The same exchange is already used in text editor between \"' +
-							source + "\" \"" + target + "\"!",
+							source + "\" and \"" + target + "\"!",
 							TextualScenarioPackage.Literals.MESSAGE__NAME)
 					} else if(element instanceof ArmTimerMessage) {
 						error('The same exchange is already used in text editor on timeline \"' +
-							(element as ArmTimerMessage).name +"\"!",
+							(element as ArmTimerMessage).participant +"\"!",
 							TextualScenarioPackage.Literals.MESSAGE__NAME)
 					}
 					return true
@@ -263,43 +263,44 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
 			return
 		}
-		
+	}
+	
+	@Check
+	def checkContainedTimelinesMessages(SequenceMessageType message) {
 		// if the message is inside a combined fragment, check that source and target are covered by it
 		var container = TextualScenarioHelper.getDirectContainer(message) 
 		if (container instanceof CombinedFragment) {
-			if (!container.timelines.contains(message.source)) {
-				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
-			}
-			
-			if (!container.timelines.contains(message.target)) {
-				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
+			var upContainer = getUpperContainerCombinedFragmentTimelines(message, container)
+			if(upContainer !== null && upContainer instanceof CombinedFragment) {
+				checkTimelinesMessages(message, upContainer as CombinedFragment)
 			}
 		}
 	}
 	
-	@Check
-	def checkTimelinesMessages(SequenceMessageType message) {
-		var participantsNames = TextualScenarioHelper.participantsDefinedBeforeNames(message)
-		if (!participantsNames.contains(message.source)) {
-			error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
-			return
+	def EObject getUpperContainerCombinedFragmentTimelines(SequenceMessageType message, CombinedFragment container) {
+		if (container.timelines.contains(message.source) || container.timelines.contains(message.target)) {
+			return container
+		} else {
+			var upperContainer = TextualScenarioHelper.getDirectContainer(container)
+			if (upperContainer instanceof CombinedFragment) {
+				return getUpperContainerCombinedFragmentTimelines(message, upperContainer as CombinedFragment);
+			}
+		}
+		return null
+	}
+	
+	def checkTimelinesMessages(SequenceMessageType message, CombinedFragment container) {
+		var msg = String.format("Timeline not covered by this " + container.keyword + "!" +
+				" Expected values in : " + container.timelines
+			)
+		if (!container.timelines.contains(message.source)) {
+			error(msg,
+				TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
 		}
 
-		if (!participantsNames.contains(message.target)) {
-			error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
-			return
-		}
-		
-		// if the message is inside a combined fragment, check that source and target are covered by it
-		var container = TextualScenarioHelper.getDirectContainer(message) 
-		if (container instanceof CombinedFragment) {
-			if (!container.timelines.contains(message.source)) {
-				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
-			}
-			
-			if (!container.timelines.contains(message.target)) {
-				error(String.format("Timeline not covered by this " + container.keyword + "!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
-			}
+		if (!container.timelines.contains(message.target)) {
+			error(msg,
+				TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET)
 		}
 	}
 	
@@ -670,26 +671,30 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkContainedCombinedFragment(CombinedFragment combinedFragment) {
 		var container = TextualScenarioHelper.getDirectContainer(combinedFragment)
 		if (container instanceof CombinedFragment) {
-			checkContainedCombinedFragmentTimelines(combinedFragment, container)
+			var upperContainer = getContainerCombinedFragmentTimelines(combinedFragment, container)
+			if (upperContainer !== null && upperContainer instanceof CombinedFragment) {
+				error(
+					'Timelines covered by this ' + combinedFragment.keyword +
+						' must be a subset of the parent covered timelines ' +
+						(upperContainer as CombinedFragment).timelines + "!",
+					TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES
+				)
+			}
 		}
 	}
 	
-	def void checkContainedCombinedFragmentTimelines(CombinedFragment combinedFragment, CombinedFragment container) {
+	def EObject getContainerCombinedFragmentTimelines(CombinedFragment combinedFragment, CombinedFragment container) {
 		// timeline must be a subset of the parent timeline
 		if (innerCombinedFragment(combinedFragment, container) &&
 			!isASubset(combinedFragment.timelines, (container as CombinedFragment).timelines)) {
-			error(
-				'Timelines covered by this ' + combinedFragment.keyword +
-					' must be a subset of the parent covered timelines ' +
-					container.timelines + "!",
-				TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES
-			)
+			return container
 		} else {
 			var upperContainer = TextualScenarioHelper.getDirectContainer(container)
 			if (upperContainer instanceof CombinedFragment) {
-				checkContainedCombinedFragmentTimelines(combinedFragment, upperContainer as CombinedFragment);
+				return getContainerCombinedFragmentTimelines(combinedFragment, upperContainer as CombinedFragment);
 			}
 		}
+		return null
 	}
 	
 	/*
@@ -697,8 +702,8 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 */
 	def boolean isASubset(List<String> smallList, List<String> containerList) {
 		for (var i = 0; i < containerList.size; i++) {
-			if (i < containerList.size && smallList.size <= containerList.size) {
-				var subset = containerList.subList(i, smallList.size)
+			if (i < containerList.size &&  (i + smallList.size) <= containerList.size) {
+				var subset = containerList.subList(i, i + smallList.size)
 				if (subset !== null && smallList.equals(subset))
 					return true
 			}
