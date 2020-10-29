@@ -264,8 +264,35 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	
 	@Check
 	def checkDeleteMessage(DeleteMessage deleteMessage) {
+		checkCreateOrDeleteCouldBeUsed()
 		checkSameSourceAndTarget(deleteMessage)
 	}
+	
+	// check that in opened diagram create or delete messages could be used 
+	def checkCreateOrDeleteCouldBeUsed() {
+		if (EmbeddedEditorInstanceHelper.isFSScenario() ||
+			(EmbeddedEditorInstanceHelper.isESScenario() && !EmbeddedEditorInstanceHelper.isInteractionScenario)
+		) {
+			error("Create or delete message can not be used in this diagram!",
+							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__ARROW)
+		}
+	}
+	
+	@Check
+	def checkArmTimer(ArmTimerMessage armTimer) {
+		// check arm timer could be used in opened diagram
+		if (EmbeddedEditorInstanceHelper.isFSScenario()) {
+			error("Arm Timer can not be used in this diagram!",
+							TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__ARROW)
+		}
+		
+		// check timeline exist
+		if (!TextualScenarioHelper.participantsDefinedBeforeNames(armTimer).contains(armTimer.participant)) {
+			error("Timeline not defined in text editor!",
+							TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT)
+		}
+	}
+	
 	
 	def checkSameSourceAndTarget(SequenceMessageType message) {
 		if (message.source.equals(message.target)) {
@@ -368,6 +395,9 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 */
 	@Check
 	def checkCreateMessage(CreateMessage createMessage) {
+		// check if create message could be used in opened diagram
+		checkCreateOrDeleteCouldBeUsed()
+		
 		// check if source and target are the same
 		checkSameSourceAndTarget(createMessage)
 		var model = TextualScenarioHelper.getModelContainer(createMessage)

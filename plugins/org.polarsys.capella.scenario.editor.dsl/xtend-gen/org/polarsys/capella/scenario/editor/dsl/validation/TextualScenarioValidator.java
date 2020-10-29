@@ -296,7 +296,30 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   @Check
   public void checkDeleteMessage(final DeleteMessage deleteMessage) {
+    this.checkCreateOrDeleteCouldBeUsed();
     this.checkSameSourceAndTarget(deleteMessage);
+  }
+  
+  public void checkCreateOrDeleteCouldBeUsed() {
+    if ((EmbeddedEditorInstanceHelper.isFSScenario() || (EmbeddedEditorInstanceHelper.isESScenario() && (!EmbeddedEditorInstanceHelper.isInteractionScenario())))) {
+      this.error("Create or delete message can not be used in this diagram!", 
+        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__ARROW);
+    }
+  }
+  
+  @Check
+  public void checkArmTimer(final ArmTimerMessage armTimer) {
+    boolean _isFSScenario = EmbeddedEditorInstanceHelper.isFSScenario();
+    if (_isFSScenario) {
+      this.error("Arm Timer can not be used in this diagram!", 
+        TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__ARROW);
+    }
+    boolean _contains = TextualScenarioHelper.participantsDefinedBeforeNames(armTimer).contains(armTimer.getParticipant());
+    boolean _not = (!_contains);
+    if (_not) {
+      this.error("Timeline not defined in text editor!", 
+        TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT);
+    }
   }
   
   public void checkSameSourceAndTarget(final SequenceMessageType message) {
@@ -419,6 +442,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkCreateMessage(final CreateMessage createMessage) {
+    this.checkCreateOrDeleteCouldBeUsed();
     this.checkSameSourceAndTarget(createMessage);
     Object model = TextualScenarioHelper.getModelContainer(createMessage);
     boolean _checkCreateMessageValid = this.checkCreateMessageValid(((Model) model), createMessage);

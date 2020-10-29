@@ -1520,6 +1520,7 @@ public class XtextToDiagramCommands {
       source = armTimerMessage.getParticipant();
       target = armTimerMessage.getParticipant();
       xtextMessageName = armTimerMessage.getName();
+      xtextMessageKind = getSequenceMessageKind(armTimerMessage, false);
     }
     
     return sendingEnd == null ? false : 
