@@ -207,34 +207,19 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         if ((((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage)) || 
           (element instanceof CombinedFragment))) {
           if (((!names.add(this.getElementMapKey(element))) && element.equals(elementToCheck))) {
-            if ((element instanceof SequenceMessageType)) {
-              String source = ((SequenceMessageType) element).getSource();
-              String target = ((SequenceMessageType) element).getTarget();
+            if ((element instanceof CombinedFragment)) {
+              String _keyword = ((CombinedFragment)element).getKeyword();
+              String _plus = ("The same " + _keyword);
+              String _plus_1 = (_plus + " with expression \" ");
+              String _expression = ((CombinedFragment)element).getExpression();
+              String _plus_2 = (_plus_1 + _expression);
+              String _plus_3 = (_plus_2 + 
+                "\" and timelines ");
+              EList<String> _timelines = ((CombinedFragment)element).getTimelines();
+              String _plus_4 = (_plus_3 + _timelines);
+              String _plus_5 = (_plus_4 + " is already used in text editor!");
               this.error(
-                (((("The same exchange is already used in text editor between \"" + source) + "\" and \"") + target) + "\"!"), TextualScenarioPackage.Literals.MESSAGE__NAME);
-            } else {
-              if ((element instanceof ArmTimerMessage)) {
-                String _participant = ((ArmTimerMessage) element).getParticipant();
-                String _plus = ("The same exchange is already used in text editor on timeline \"" + _participant);
-                String _plus_1 = (_plus + "\"!");
-                this.error(_plus_1, 
-                  TextualScenarioPackage.Literals.MESSAGE__NAME);
-              } else {
-                if ((element instanceof CombinedFragment)) {
-                  String _keyword = ((CombinedFragment)element).getKeyword();
-                  String _plus_2 = ("The same " + _keyword);
-                  String _plus_3 = (_plus_2 + " with expression \" ");
-                  String _expression = ((CombinedFragment)element).getExpression();
-                  String _plus_4 = (_plus_3 + _expression);
-                  String _plus_5 = (_plus_4 + 
-                    "\" and timelines ");
-                  EList<String> _timelines = ((CombinedFragment)element).getTimelines();
-                  String _plus_6 = (_plus_5 + _timelines);
-                  String _plus_7 = (_plus_6 + " is already used in text editor!");
-                  this.error(
-                    String.format(_plus_7), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION);
-                }
-              }
+                String.format(_plus_5), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION);
             }
             return true;
           }

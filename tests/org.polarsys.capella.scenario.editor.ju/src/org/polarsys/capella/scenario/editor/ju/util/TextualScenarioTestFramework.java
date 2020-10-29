@@ -133,7 +133,7 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
     List<DDiagramElement> afterUpdateElements = new ArrayList<DDiagramElement>();
     afterUpdateElements.addAll(diagram.getDiagram().getDiagramElements());
     afterUpdateElements.removeAll(elementsBeforeUpdate);
-    Set<String> newElements = new HashSet<String>();
+    List<String> newElements = new ArrayList<String>();
     afterUpdateElements.forEach(x -> {
       EObject target = x.getTarget();
       if (target instanceof InstanceRole) {
