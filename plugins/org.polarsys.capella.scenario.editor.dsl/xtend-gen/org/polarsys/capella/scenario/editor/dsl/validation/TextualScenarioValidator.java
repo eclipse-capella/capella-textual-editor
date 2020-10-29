@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.polarsys.capella.scenario.editor.dsl.helpers.TextualScenarioHelper;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
@@ -30,7 +31,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
@@ -192,17 +192,18 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     return _xblockexpression;
   }
   
-  public boolean checkDuplicated(final Message message, final EObject model, final HashSet<String> names) {
+  public boolean checkDuplicated(final EObject elementToCheck, final EObject model, final HashSet<String> names) {
     EList<Element> elements = TextualScenarioHelper.getElements(model);
     for (final Element element : elements) {
       {
-        if (((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage))) {
-          if (((!names.add(this.getMessagesMapKey(element))) && element.equals(message))) {
+        if ((((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage)) || 
+          (element instanceof CombinedFragment))) {
+          if (((!names.add(this.getElementMapKey(element))) && element.equals(elementToCheck))) {
             if ((element instanceof SequenceMessageType)) {
               String source = ((SequenceMessageType) element).getSource();
               String target = ((SequenceMessageType) element).getTarget();
-              this.error((((("The same exchange is already used in text editor between \"" + source) + "\" and \"") + target) + "\"!"), 
-                TextualScenarioPackage.Literals.MESSAGE__NAME);
+              this.error(
+                (((("The same exchange is already used in text editor between \"" + source) + "\" and \"") + target) + "\"!"), TextualScenarioPackage.Literals.MESSAGE__NAME);
             } else {
               if ((element instanceof ArmTimerMessage)) {
                 String _participant = ((ArmTimerMessage) element).getParticipant();
@@ -210,13 +211,28 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
                 String _plus_1 = (_plus + "\"!");
                 this.error(_plus_1, 
                   TextualScenarioPackage.Literals.MESSAGE__NAME);
+              } else {
+                if ((element instanceof CombinedFragment)) {
+                  String _keyword = ((CombinedFragment)element).getKeyword();
+                  String _plus_2 = ("The same " + _keyword);
+                  String _plus_3 = (_plus_2 + " with expression \" ");
+                  String _expression = ((CombinedFragment)element).getExpression();
+                  String _plus_4 = (_plus_3 + _expression);
+                  String _plus_5 = (_plus_4 + 
+                    "\" and timelines ");
+                  EList<String> _timelines = ((CombinedFragment)element).getTimelines();
+                  String _plus_6 = (_plus_5 + _timelines);
+                  String _plus_7 = (_plus_6 + " is already used in text editor!");
+                  this.error(
+                    String.format(_plus_7), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION);
+                }
               }
             }
             return true;
           }
         }
         if ((element instanceof CombinedFragment)) {
-          boolean _checkDuplicated = this.checkDuplicated(message, element, names);
+          boolean _checkDuplicated = this.checkDuplicated(elementToCheck, element, names);
           boolean _equals = (_checkDuplicated == true);
           if (_equals) {
             return true;
@@ -378,6 +394,11 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       this.error(TextualScenarioValidator.SAME_SOURCE_AND_TARGET_ERROR, 
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
     }
+  }
+  
+  @Check
+  public boolean checkDuplicatedCombinedFragment(final CombinedFragment combinedFragment) {
+    return this.checkDuplicated(combinedFragment, TextualScenarioHelper.getModelContainer(combinedFragment), CollectionLiterals.<String>newHashSet());
   }
   
   /**
@@ -810,23 +831,33 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     return (_plus + _keyword);
   }
   
-  public String getMessagesMapKey(final EObject message) {
-    if ((message instanceof SequenceMessageType)) {
-      String _name = ((SequenceMessageType)message).getName();
+  public String getElementMapKey(final EObject element) {
+    if ((element instanceof CombinedFragment)) {
+      String _keyword = ((CombinedFragment)element).getKeyword();
+      String _expression = ((CombinedFragment)element).getExpression();
+      String key = (_keyword + _expression);
+      List<String> _sort = IterableExtensions.<String>sort(IterableExtensions.<String>toSet(((CombinedFragment)element).getTimelines()));
+      for (final String timeline : _sort) {
+        key = ((key + ":") + timeline);
+      }
+      return key;
+    }
+    if ((element instanceof SequenceMessageType)) {
+      String _name = ((SequenceMessageType)element).getName();
       String _plus = (_name + ":");
-      String _arrow = ((SequenceMessageType)message).getArrow();
+      String _arrow = ((SequenceMessageType)element).getArrow();
       String _plus_1 = (_plus + _arrow);
       String _plus_2 = (_plus_1 + ":");
-      String _source = ((SequenceMessageType)message).getSource();
+      String _source = ((SequenceMessageType)element).getSource();
       String _plus_3 = (_plus_2 + _source);
       String _plus_4 = (_plus_3 + ":");
-      String _target = ((SequenceMessageType)message).getTarget();
+      String _target = ((SequenceMessageType)element).getTarget();
       return (_plus_4 + _target);
     }
-    if ((message instanceof ArmTimerMessage)) {
-      String _participant = ((ArmTimerMessage)message).getParticipant();
+    if ((element instanceof ArmTimerMessage)) {
+      String _participant = ((ArmTimerMessage)element).getParticipant();
       String _plus_5 = (_participant + ":");
-      String _name_1 = ((ArmTimerMessage)message).getName();
+      String _name_1 = ((ArmTimerMessage)element).getName();
       return (_plus_5 + _name_1);
     }
     return null;
