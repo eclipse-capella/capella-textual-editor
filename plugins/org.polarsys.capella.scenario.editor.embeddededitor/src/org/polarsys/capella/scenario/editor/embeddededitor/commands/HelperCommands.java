@@ -70,6 +70,12 @@ public class HelperCommands {
     if (domainModel != null && domainModel.getElements() != null) {
       domainModel.getElements().clear();
     }
+    if (domainModel.getBegin() == null) {
+      domainModel.setBegin("{");
+    }
+    if (domainModel.getEnd() == null) {
+      domainModel.setEnd("}");
+    }
   }
 
 }
