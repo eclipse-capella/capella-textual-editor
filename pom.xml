@@ -64,9 +64,9 @@
 
 		<!-- plugins -->
 		<module>plugins</module>
-		<!--
+		
+		<!-- tests -->
 		<module>tests/org.polarsys.capella.scenario.editor.ju</module>
-		-->
 
 		<!-- Repository -->
 		<module>releng/org.polarsys.capella.scenario.editor.site</module>

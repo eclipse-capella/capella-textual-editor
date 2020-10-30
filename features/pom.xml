@@ -28,5 +28,6 @@
 
 	<modules>
 		<module>org.polarsys.capella.scenario.editor.feature</module>
+		<module>org.polarsys.capella.scenario.editor.tests.feature</module>
 	</modules>
 </project>

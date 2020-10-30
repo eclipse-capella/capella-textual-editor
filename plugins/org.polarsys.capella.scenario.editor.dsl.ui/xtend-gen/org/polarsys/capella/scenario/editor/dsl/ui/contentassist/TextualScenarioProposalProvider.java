@@ -292,7 +292,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeParticipantDeactivation_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    EObject modelContainer = TextualScenarioHelper.getModelContainer(((ParticipantDeactivation) model));
+    EObject _rootModel = context.getRootModel();
+    Model modelContainer = ((Model) _rootModel);
     HashMap<String, Integer> timelinesToPropose = new HashMap<String, Integer>();
     this.createTimelinesHashMapToProposeForDeactivation(((ParticipantDeactivation) model), ((Model) modelContainer), timelinesToPropose);
     Set<String> _keySet = timelinesToPropose.keySet();

@@ -257,7 +257,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 	}
 	
 	override completeParticipantDeactivation_Name(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-			var modelContainer = TextualScenarioHelper.getModelContainer(model as ParticipantDeactivation)
+			var modelContainer = context.rootModel as Model
 			var timelinesToPropose = new HashMap
 			createTimelinesHashMapToProposeForDeactivation(model as ParticipantDeactivation, modelContainer as Model, timelinesToPropose)
 			
