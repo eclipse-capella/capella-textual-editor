@@ -157,29 +157,35 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		checkDuplicated(message, model as Model, newHashSet)	
 	}
 	
-	def boolean checkDuplicated(Message message, EObject model, HashSet<String> names) {
+	def boolean checkDuplicated(EObject elementToCheck, EObject model, HashSet<String> names) {
 		var elements = TextualScenarioHelper.getElements(model)
 		for (element : elements) {
 
-			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage) {
-				if (!names.add(getMessagesMapKey(element)) && element.equals(message)) {
+			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage ||
+				element instanceof CombinedFragment) {
+				if (!names.add(getElementMapKey(element)) && element.equals(elementToCheck)) {
 					if (element instanceof SequenceMessageType) {
 						var source = (element as SequenceMessageType).source
 						var target = (element as SequenceMessageType).target
-						error('The same exchange is already used in text editor between \"' +
-							source + "\" and \"" + target + "\"!",
-							TextualScenarioPackage.Literals.MESSAGE__NAME)
-					} else if(element instanceof ArmTimerMessage) {
+						error(
+							'The same exchange is already used in text editor between \"' + source + "\" and \"" +
+								target + "\"!", TextualScenarioPackage.Literals.MESSAGE__NAME)
+					} else if (element instanceof ArmTimerMessage) {
 						error('The same exchange is already used in text editor on timeline \"' +
-							(element as ArmTimerMessage).participant +"\"!",
+							(element as ArmTimerMessage).participant + "\"!",
 							TextualScenarioPackage.Literals.MESSAGE__NAME)
+					} else if (element instanceof CombinedFragment) {
+						error(String.format(
+							"The same " + element.keyword + " with expression \" " + element.expression +
+								"\" and timelines " + element.timelines + " is already used in text editor!"
+						), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION)
 					}
 					return true
 				}
 			}
 
 			if (element instanceof CombinedFragment) {
-				if (checkDuplicated(message, element, names) == true) {
+				if (checkDuplicated(elementToCheck, element, names) == true) {
 					return true
 				}
 			}
@@ -344,6 +350,11 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			error(SAME_SOURCE_AND_TARGET_ERROR,
 							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
 		}
+	}
+	
+	@Check
+	def checkDuplicatedCombinedFragment(CombinedFragment combinedFragment) {
+		checkDuplicated(combinedFragment, TextualScenarioHelper.getModelContainer(combinedFragment), newHashSet)
 	}
 	
 	/*
@@ -738,13 +749,22 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		p.name + ":" + p.keyword
 	}
 
-	def getMessagesMapKey(EObject message) {
-		if (message instanceof SequenceMessageType) {
-			return message.name + ":" + message.arrow + ":" + message.source + ":" + message.target
+	def getElementMapKey(EObject element) {
+		
+		if (element instanceof CombinedFragment) {
+			var key = element.keyword + element.expression
+			for (String timeline : element.timelines.toSet.sort) {
+				key = key + ":" + timeline
+			}
+			return key
+			
+		}
+		if (element instanceof SequenceMessageType) {
+			return element.name + ":" + element.arrow + ":" + element.source + ":" + element.target
 		} 
 		
-		if (message instanceof ArmTimerMessage) {
-			return message.participant + ":" + message.name
+		if (element instanceof ArmTimerMessage) {
+			return element.participant + ":" + element.name
 		}
 	}
 }
