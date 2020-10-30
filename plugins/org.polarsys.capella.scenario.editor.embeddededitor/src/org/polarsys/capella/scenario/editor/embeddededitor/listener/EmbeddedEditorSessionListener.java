@@ -26,6 +26,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.navigator.CommonNavigator;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
@@ -70,6 +71,8 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
 
   protected static ISelectionListener createSelectionListener() {
     return (part, selection) -> {
+      EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+      IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
       if (part instanceof DDiagramEditor) {
         Object newInput = handleSelection(part, selection);
 
@@ -81,8 +84,6 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
           DRepresentationDescriptor desc = (DRepresentationDescriptor) newInput;
           if (desc.getTarget() instanceof Scenario) {
             Scenario sc = (Scenario) desc.getTarget();
-            IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-            EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
             boolean toRefresh = false;
             if (eeView == null) {
               // Show it if not found.
@@ -106,8 +107,12 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
               eeView.refreshTitleBar(sc.getName());
             }
             currentSelected = newInput;
+          } else if (eeView != null && activePage != null) {
+            activePage.hideView(eeView);
           }
         }
+      } else if (!(part instanceof CommonNavigator) && eeView != null && activePage != null) {
+        activePage.hideView(eeView);
       }
     };
   }
