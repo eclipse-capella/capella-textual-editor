@@ -698,9 +698,21 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	}
 	
 	/*
-	 * check if a the smallList is a subset in the containerList
+	 * check if the smallList is a subset in the containerList
 	 */
 	def boolean isASubset(List<String> smallList, List<String> containerList) {
+		for (element : smallList) {
+			if(!containerList.contains(element)) {
+				return false
+			}
+		}
+		return true
+	}
+	
+	/*
+	 * check if the smallList is a sublist in the containerList
+	 */
+	def boolean isASublist(List<String> smallList, List<String> containerList) {
 		for (var i = 0; i < containerList.size; i++) {
 			if (i < containerList.size &&  (i + smallList.size) <= containerList.size) {
 				var subset = containerList.subList(i, i + smallList.size)

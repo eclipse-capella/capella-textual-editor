@@ -865,7 +865,8 @@ public class DiagramToXtextCommands {
   private static void generateStateFragment(InteractionState interactionState, EList<TimeLapse> timeLapses,
       Deque<Block> blockOperands, EList<Element> elements, TextualScenarioFactory factory) {
     for (EObject timeLapse : timeLapses) {
-      if (timeLapse instanceof StateFragment && ((StateFragment) timeLapse).getStart().equals(interactionState)) {
+      if (timeLapse instanceof StateFragment && interactionState != null &&
+          interactionState.equals(((StateFragment) timeLapse).getStart())) {
         String timelineName = interactionState.getCovered().getName();
         org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment xtextStateFragment = createStateFragment(
             factory, timeLapse, timelineName);
