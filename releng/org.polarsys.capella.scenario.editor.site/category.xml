@@ -3,6 +3,10 @@
    <feature id="org.polarsys.capella.scenario.editor.feature" version="0.9.0.qualifier">
       <category name="org.polarsys.capella.scenario.editor"/>
    </feature>
+   <feature id="org.polarsys.capella.scenario.editor.xtext.feature" version="0.9.0.qualifier">
+      <category name="org.polarsys.capella.scenario.xtext.editor"/>
+   </feature>
    <category-def name="org.polarsys.capella.scenario.editor" label="TextualScenarioEditor"/>
+   <category-def name="org.polarsys.capella.scenario.xtext.editor" label="TextualScenarioEditor_Xtext"/>
    
 </site>

@@ -27,10 +27,6 @@
       %license
    </license>
 
-   <includes
-         id="org.polarsys.capella.scenario.editor.xtext.feature"
-         version="0.0.0"/>
-
    <plugin
          id="org.polarsys.capella.scenario.editor"
          download-size="0"
