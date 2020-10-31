@@ -27,6 +27,20 @@
       %license
    </license>
 
+   <includes
+         id="org.eclipse.xtext.sdk"
+         version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.xtext.builder"/>
+      <import plugin="org.eclipse.xtext.ui"/>
+      <import plugin="org.eclipse.xtext.util"/>
+      <import plugin="com.google.inject"/>
+      <import plugin="org.eclipse.xtext"/>
+      <import plugin="org.eclipse.xtext.common.types"/>
+      <import plugin="org.eclipse.xtext.common.types.ui"/>
+   </requires>
+
    <plugin
          id="org.polarsys.capella.scenario.editor"
          download-size="0"
