@@ -26,6 +26,8 @@ import org.eclipse.xtext.ui.editor.model.XtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.polarsys.capella.common.data.behavior.AbstractEvent;
 import org.polarsys.capella.common.data.modellingcore.AbstractNamedElement;
+import org.polarsys.capella.common.queries.interpretor.QueryInterpretor;
+import org.polarsys.capella.common.queries.queryContext.QueryContext;
 import org.polarsys.capella.core.data.capellacommon.AbstractState;
 import org.polarsys.capella.core.data.capellacommon.Mode;
 import org.polarsys.capella.core.data.capellacommon.State;
@@ -45,13 +47,21 @@ import org.polarsys.capella.core.data.interaction.StateFragment;
 import org.polarsys.capella.core.data.interaction.properties.controllers.DataFlowHelper;
 import org.polarsys.capella.core.data.interaction.properties.dialogs.sequenceMessage.model.SelectInvokedOperationModelForSharedDataAndEvent;
 import org.polarsys.capella.core.data.la.LogicalArchitecture;
+import org.polarsys.capella.core.data.oa.OperationalActor;
+import org.polarsys.capella.core.data.oa.OperationalAnalysis;
 import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
+import org.polarsys.capella.core.libraries.extendedqueries.QueryIdentifierConstants;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
+import org.polarsys.capella.core.model.helpers.OperationalAnalysisExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
+import org.polarsys.capella.core.model.helpers.queries.filters.RemoveActorsFilter;
+import org.polarsys.capella.core.sequencediag.InteractionAspectService;
+import org.polarsys.capella.core.sequencediag.ScenarioService;
 import org.polarsys.capella.core.sirius.analysis.FaServices;
 import org.polarsys.capella.core.sirius.analysis.InteractionServices;
 import org.polarsys.capella.core.sirius.analysis.OAServices;
+import org.polarsys.capella.core.sirius.analysis.queries.interactionServices.GetISScopeInsertComponents;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 
 public class EmbeddedEditorInstanceHelper {
@@ -243,9 +253,8 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableAbstractFunctions() {
-    Collection<? extends EObject> elements = FaServices.getFaServices().getAllAbstractFunctions(
+    return FaServices.getFaServices().getAllAbstractFunctions(
         BlockArchitectureExt.getRootBlockArchitecture(EmbeddedEditorInstance.getAssociatedScenarioDiagram()));
-    return elements;
   }
 
   /**
@@ -255,8 +264,16 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableComponents() {
-    Collection<? extends EObject> elements = (new InteractionServices())
-        .getESScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+	  Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+	  List<Part> elements = (new InteractionServices())
+        .getISScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+    
+	for (InstanceRole role : scenario.getOwnedInstanceRoles()) {
+		if (role.getRepresentedInstance() instanceof Part) {
+			elements.add((Part) role.getRepresentedInstance());
+		}
+	}
+    
     return elements;
   }
 
@@ -267,9 +284,14 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableActors() {
-    Collection<? extends EObject> elements = (new InteractionServices())
-        .getESScopeInsertActors(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
-    return elements;
+	Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+    BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
+    if (analysis instanceof OperationalAnalysis) {
+    	return getOESScopeInsertEntitiesRoles(scenario).stream()
+    			.filter(x -> x instanceof Part && ((Part)x).getAbstractType() instanceof OperationalActor)
+    			.collect(Collectors.toList());
+    }
+    return (new InteractionServices()).getISScopeInsertActors(scenario);
   }
 
   /**
@@ -279,13 +301,20 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableRoles() {
-    Collection<? extends EObject> elements = OAServices.getService()
-        .getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram()).stream()
-        .filter(x -> x instanceof Role).collect(Collectors.toList());
-    ;
-    return elements;
+	    return getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram())
+	    		.stream().filter(x -> x instanceof Role).collect(Collectors.toList());
   }
-
+	  
+  private static Collection<EObject> getOESScopeInsertEntitiesRoles(Scenario scenario) {
+	    Collection<EObject> roots = new ArrayList<EObject>();
+	    roots.addAll(new ScenarioService().getAllMultiInstanceRoleParts(scenario));
+	    BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
+	    if (analysis instanceof OperationalAnalysis) {
+	      roots.addAll(OperationalAnalysisExt.getAllRoles((OperationalAnalysis) analysis));
+	    }
+	    return roots;
+  }
+  
   /**
    * returns the list of available elements that could be inserted for the given keyword (which can be actor, component,
    * function, entity, role, activity, configuration_item)

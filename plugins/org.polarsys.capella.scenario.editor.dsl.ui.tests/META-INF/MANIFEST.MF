@@ -13,3 +13,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtext.xbase.junit,
  org.eclipse.xtext.xbase.testing
 Automatic-Module-Name: org.polarsys.capella.scenario.editor.dsl.ui.tests
+Import-Package: org.hamcrest.core,
+ org.junit;version="4.5.0",
+ org.junit.runners.model;version="4.5.0",
+ org.junit.runner;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runner.manipulation;version="4.5.0",
+ org.junit.runner.notification;version="4.5.0"

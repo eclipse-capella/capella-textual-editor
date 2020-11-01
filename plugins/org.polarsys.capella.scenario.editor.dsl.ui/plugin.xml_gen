@@ -58,20 +58,20 @@
 			<and>
 				<reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
 				<with variable="activeEditor">
-					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="org.polarsys.capella.scenario.editor.dsl.TextualScenario"
+					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName" 
+						value="org.polarsys.capella.scenario.editor.dsl.TextualScenario" 
 						forcePluginActivation="true"/>
-				</with>
+				</with>		
 			</and>
 		</definition>
 		<definition id="org.polarsys.capella.scenario.editor.dsl.TextualScenario.XtextEditor.opened">
 			<and>
 				<reference definitionId="isXtextEditorActive"/>
 				<with variable="activeEditor">
-					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="org.polarsys.capella.scenario.editor.dsl.TextualScenario"
+					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName" 
+						value="org.polarsys.capella.scenario.editor.dsl.TextualScenario" 
 						forcePluginActivation="true"/>
-				</with>
+				</with>		
 			</and>
 		</definition>
 	</extension>
@@ -154,7 +154,7 @@
 		</menuContribution>
 		<!-- copy qualified name -->
 		<menuContribution locationURI="popup:#TextEditorContext?after=copy">
-			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName" 
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
 					<reference definitionId="org.polarsys.capella.scenario.editor.dsl.TextualScenario.Editor.opened" />
@@ -170,7 +170,7 @@
 			</command>
 		</menuContribution>
 		<menuContribution locationURI="popup:org.eclipse.xtext.ui.outline?after=additions">
-			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName" 
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
 					<and>
@@ -203,15 +203,6 @@
 				</reference>
 			</activeWhen>
 		</handler>
-	</extension>
-	<extension point="org.eclipse.core.contenttype.contentTypes">
-		<content-type
-			base-type="org.eclipse.core.runtime.text"
-			file-extensions="sc"
-			id="org.polarsys.capella.scenario.editor.dsl.TextualScenario.contenttype"
-			name="TextualScenario File"
-			priority="normal">
-		</content-type>
 	</extension>
 	<!-- adding resource factories -->
 	<extension
@@ -248,15 +239,6 @@
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.expensive"/>
 		<persistent value="true"/>
-	</extension>
-	<extension point="org.eclipse.ui.preferencePages">
-		<page
-			category="org.polarsys.capella.scenario.editor.dsl.TextualScenario"
-			class="org.polarsys.capella.scenario.editor.dsl.ui.TextualScenarioExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
-			id="org.polarsys.capella.scenario.editor.dsl.TextualScenario.validator.preferencePage"
-			name="Errors/Warnings">
-			<keywordReference id="org.polarsys.capella.scenario.editor.dsl.ui.keyword_TextualScenario"/>
-		</page>
 	</extension>
 	<extension point="org.eclipse.xtext.builder.participant">
 		<participant
@@ -406,18 +388,12 @@
 			class="org.polarsys.capella.scenario.editor.dsl.ui.TextualScenarioExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="sc">
 		</viewer>
-		<contentTypeBinding
-			contentTypeId="org.polarsys.capella.scenario.editor.dsl.TextualScenario.contenttype"
-			contentViewerId="org.polarsys.capella.scenario.editor.dsl.TextualScenario.compare.contentViewers" />
 	</extension>
 	<extension point="org.eclipse.compare.contentMergeViewers">
 		<viewer id="org.polarsys.capella.scenario.editor.dsl.TextualScenario.compare.contentMergeViewers"
 			class="org.polarsys.capella.scenario.editor.dsl.ui.TextualScenarioExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="sc" label="TextualScenario Compare">
 		</viewer>
-		<contentTypeBinding
-			contentTypeId="org.polarsys.capella.scenario.editor.dsl.TextualScenario.contenttype"
-			contentMergeViewerId="org.polarsys.capella.scenario.editor.dsl.TextualScenario.compare.contentMergeViewers" />
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">
 		<provider id="org.polarsys.capella.scenario.editor.dsl.TextualScenario.editors.documentProviders"

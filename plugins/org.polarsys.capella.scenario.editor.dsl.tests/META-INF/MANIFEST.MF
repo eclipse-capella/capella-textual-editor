@@ -8,5 +8,13 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.polarsys.capella.scenario.editor.dsl.tests;x-internal=true
 Require-Bundle: org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
- org.eclipse.xtext.xbase.testing
+ org.eclipse.xtext.xbase.testing,
+ org.eclipse.xtext.junit4
 Automatic-Module-Name: org.polarsys.capella.scenario.editor.dsl.tests
+Import-Package: org.hamcrest.core,
+ org.junit;version="4.5.0",
+ org.junit.runners.model;version="4.5.0",
+ org.junit.runner;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runner.manipulation;version="4.5.0",
+ org.junit.runner.notification;version="4.5.0"

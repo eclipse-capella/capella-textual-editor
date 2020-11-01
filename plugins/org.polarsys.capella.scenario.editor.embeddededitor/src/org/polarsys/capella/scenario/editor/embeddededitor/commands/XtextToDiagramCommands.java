@@ -93,36 +93,39 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 
 public class XtextToDiagramCommands {
   public static void process(Scenario scenario, EmbeddedEditorView embeddedEditorViewPart) {
-    if (embeddedEditorViewPart != null) {
-      TextualScenarioProvider p = embeddedEditorViewPart.getProvider();
-      XtextResource resource = p.getResource();
+    if (scenario != null) {
+      if (embeddedEditorViewPart != null) {
+        TextualScenarioProvider p = embeddedEditorViewPart.getProvider();
+        XtextResource resource = p.getResource();
 
-      List<Issue> issues = HelperCommands.getValidationIsuesTextResource(resource);
-      if (issues == null || issues.isEmpty()) {
-        EList<EObject> content = resource.getContents();
-        Model domainModel = (Model) content.get(0);
+        List<Issue> issues = HelperCommands.getValidationIsuesTextResource(resource);
+        if (issues == null || issues.isEmpty()) {
+          EList<EObject> content = resource.getContents();
+          Model domainModel = (Model) content.get(0);
 
-        // get participants
-        EList<Participant> participants = domainModel.getParticipants();
+          // get participants
+          EList<Participant> participants = domainModel.getParticipants();
 
-        // get messages
-        EList<Element> messages = domainModel.getElements();
+          // get messages
+          EList<Element> messages = domainModel.getElements();
 
-        doEditingOnParticipants(scenario, participants);
+          doEditingOnParticipants(scenario, participants);
 
-        doEditingOnElements(scenario, messages);
+          doEditingOnElements(scenario, messages);
 
-        
-        // do refresh - when the messages associated with the removed actors are deleted too,
-        // a refresh is needed to update also the editor
-        
-        //EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-        //Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-        //DiagramToXtextCommands.process(scenarioDiagram, eeView);
-      } else {
-        MessageDialog.openError(Display.getCurrent().getActiveShell(), "Invalid data",
-            "Please fix the errors in the textual editor! \n" + issues);
+          // do refresh - when the messages associated with the removed actors are deleted too,
+          // a refresh is needed to update also the editor
+          // EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+          // Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+          // DiagramToXtextCommands.process(scenarioDiagram, eeView);
+        } else {
+          MessageDialog.openError(Display.getCurrent().getActiveShell(), "Invalid data",
+              "Please fix the errors in the textual editor! \n" + issues);
+        }
       }
+    } else {
+      MessageDialog.openError(Display.getCurrent().getActiveShell(), "Unknowned scenario",
+          "The associated scenario diagram is unknown!");
     }
   }
 

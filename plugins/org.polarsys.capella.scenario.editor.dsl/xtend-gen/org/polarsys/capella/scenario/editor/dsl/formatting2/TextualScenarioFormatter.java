@@ -27,11 +27,13 @@ package org.polarsys.capella.scenario.editor.dsl.formatting2;
 import com.google.inject.Inject;
 import java.util.Arrays;
 import java.util.function.Consumer;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.formatting2.AbstractFormatter2;
 import org.eclipse.xtext.formatting2.IFormattableDocument;
 import org.eclipse.xtext.formatting2.IHiddenRegionFormatter;
 import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion;
+import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegionsFinder;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -53,8 +55,10 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
   private TextualScenarioGrammarAccess _textualScenarioGrammarAccess;
   
   protected void _format(final Model model, @Extension final IFormattableDocument document) {
-    final ISemanticRegion begin = this.textRegionExtensions.regionFor(model).feature(TextualScenarioPackage.Literals.MODEL__BEGIN);
-    final ISemanticRegion end = this.textRegionExtensions.regionFor(model).feature(TextualScenarioPackage.Literals.MODEL__END);
+    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(model);
+    final ISemanticRegion begin = _regionFor.feature(TextualScenarioPackage.Literals.MODEL__BEGIN);
+    ISemanticRegionsFinder _regionFor_1 = this.textRegionExtensions.regionFor(model);
+    final ISemanticRegion end = _regionFor_1.feature(TextualScenarioPackage.Literals.MODEL__END);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.noSpace();
     };
@@ -67,37 +71,46 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       it.indent();
     };
     document.<ISemanticRegion, ISemanticRegion>interior(begin, end, _function_2);
+    EList<Participant> _participants = model.getParticipants();
     final Consumer<Participant> _function_3 = (Participant element) -> {
       document.<Participant>format(element);
     };
-    model.getParticipants().forEach(_function_3);
+    _participants.forEach(_function_3);
+    EList<Element> _elements = model.getElements();
     final Consumer<Element> _function_4 = (Element element) -> {
       document.<Element>format(element);
     };
-    model.getElements().forEach(_function_4);
+    _elements.forEach(_function_4);
   }
   
   protected void _format(final Message message, @Extension final IFormattableDocument document) {
+    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(message);
+    ISemanticRegion _feature = _regionFor.feature(TextualScenarioPackage.Literals.MESSAGE__NAME);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
-    document.append(this.textRegionExtensions.regionFor(message).feature(TextualScenarioPackage.Literals.MESSAGE__NAME), _function);
+    document.append(_feature, _function);
   }
   
   protected void _format(final Participant participant, @Extension final IFormattableDocument document) {
-    final ISemanticRegion p = this.textRegionExtensions.regionFor(participant).feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME);
+    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(participant);
+    final ISemanticRegion p = _regionFor.feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME);
+    ISemanticRegionsFinder _regionFor_1 = this.textRegionExtensions.regionFor(participant);
+    ISemanticRegion _feature = _regionFor_1.feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
-    document.append(this.textRegionExtensions.regionFor(participant).feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME), _function);
+    document.append(_feature, _function);
   }
   
   protected void _format(final CombinedFragment fragment, @Extension final IFormattableDocument document) {
-    this.format(fragment.getBlock(), document);
+    Block _block = fragment.getBlock();
+    this.format(_block, document);
+    EList<Operand> _operands = fragment.getOperands();
     final Consumer<Operand> _function = (Operand element) -> {
       document.<Operand>format(element);
     };
-    fragment.getOperands().forEach(_function);
+    _operands.forEach(_function);
     final Procedure1<IHiddenRegionFormatter> _function_1 = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
@@ -105,12 +118,15 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
   }
   
   protected void _format(final Operand operand, @Extension final IFormattableDocument document) {
-    this.format(operand.getBlock(), document);
+    Block _block = operand.getBlock();
+    this.format(_block, document);
   }
   
   protected void _format(final Block block, @Extension final IFormattableDocument document) {
-    final ISemanticRegion begin = this.textRegionExtensions.regionFor(block).feature(TextualScenarioPackage.Literals.BLOCK__BEGIN);
-    final ISemanticRegion end = this.textRegionExtensions.regionFor(block).feature(TextualScenarioPackage.Literals.BLOCK__END);
+    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(block);
+    final ISemanticRegion begin = _regionFor.feature(TextualScenarioPackage.Literals.BLOCK__BEGIN);
+    ISemanticRegionsFinder _regionFor_1 = this.textRegionExtensions.regionFor(block);
+    final ISemanticRegion end = _regionFor_1.feature(TextualScenarioPackage.Literals.BLOCK__END);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
@@ -119,17 +135,20 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       it.indent();
     };
     document.<ISemanticRegion, ISemanticRegion>interior(begin, end, _function_1);
+    EList<Element> _blockElements = block.getBlockElements();
     final Consumer<Element> _function_2 = (Element element) -> {
       document.<Element>format(element);
     };
-    block.getBlockElements().forEach(_function_2);
+    _blockElements.forEach(_function_2);
   }
   
   protected void _format(final StateFragment stateFragment, @Extension final IFormattableDocument document) {
+    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(stateFragment);
+    ISemanticRegion _feature = _regionFor.feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
-    document.append(this.textRegionExtensions.regionFor(stateFragment).feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME), _function);
+    document.append(_feature, _function);
   }
   
   public void format(final Object fragment, final IFormattableDocument document) {

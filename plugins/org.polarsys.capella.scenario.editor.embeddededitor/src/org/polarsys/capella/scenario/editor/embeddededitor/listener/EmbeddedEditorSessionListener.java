@@ -16,10 +16,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManagerListener;
-import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.sequence.business.internal.metamodel.SequenceDDiagramSpec;
 import org.eclipse.sirius.diagram.ui.tools.api.editor.DDiagramEditor;
-import org.eclipse.sirius.ui.business.api.dialect.DialectEditor;
-import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
@@ -63,7 +61,7 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
       if (selection instanceof IStructuredSelection) {
         IStructuredSelection selectionStructure = (IStructuredSelection) selection;
         Object firstElement = selectionStructure.getFirstElement();
-        result = CapellaAdapterHelper.resolveDescriptorOrBusinessObject(firstElement);
+        result = CapellaAdapterHelper.resolveSemanticObject(firstElement);
       }
     }
     return result;
@@ -80,10 +78,10 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
          * when a new diagram of type scenario is opened, we use the class EmbeddedEditorInstance to save the current
          * scenario and we update the content of the embedded xtext editor
          */
-        if (newInput instanceof DRepresentationDescriptor) {
-          DRepresentationDescriptor desc = (DRepresentationDescriptor) newInput;
-          if (desc.getTarget() instanceof Scenario) {
-            Scenario sc = (Scenario) desc.getTarget();
+        if (newInput instanceof SequenceDDiagramSpec) {
+          SequenceDDiagramSpec diagram = (SequenceDDiagramSpec) newInput;
+          if (diagram.getTarget() instanceof Scenario) {
+            Scenario sc = (Scenario) diagram.getTarget();
             boolean toRefresh = false;
             if (eeView == null) {
               // Show it if not found.
@@ -98,8 +96,6 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
             
             if (toRefresh || currentSelected == null || !newInput.equals(currentSelected)) {
               // set the diagram
-              DialectEditor dEditor = (DialectEditor) part;
-              DDiagram diagram = (DDiagram) dEditor.getRepresentation();
               EmbeddedEditorInstance.setDDiagram(diagram);
               
               // refresh the text editor

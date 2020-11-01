@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0
+ *  
+ *  SPDX-License-Identifier: EPL-2.0
+ *  
+ *  Contributors:
+ *     Thales - initial API and implementation
+ ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -32,6 +44,7 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
+import org.polarsys.capella.core.data.information.ExchangeItem;
 import org.polarsys.capella.core.model.helpers.CapellaElementExt;
 import org.polarsys.capella.scenario.editor.dsl.helpers.TextualScenarioHelper;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
@@ -62,15 +75,18 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
    */
   @Override
   public void completeKeyword(final Keyword keyword, final ContentAssistContext contentAssistContext, final ICompletionProposalAcceptor acceptor) {
-    boolean _isParticipantKeyword = TextualScenarioHelper.isParticipantKeyword(keyword.getValue());
+    String _value = keyword.getValue();
+    boolean _isParticipantKeyword = TextualScenarioHelper.isParticipantKeyword(_value);
     if (_isParticipantKeyword) {
-      boolean _checkValidKeyword = EmbeddedEditorInstanceHelper.checkValidKeyword(keyword.getValue());
+      String _value_1 = keyword.getValue();
+      boolean _checkValidKeyword = EmbeddedEditorInstanceHelper.checkValidKeyword(_value_1);
       if (_checkValidKeyword) {
         super.completeKeyword(keyword, contentAssistContext, acceptor);
       }
     } else {
       final String[] messageKeywords = { "->", "->x", "->+", "->>" };
-      boolean _contains = ((List<String>)Conversions.doWrapArray(messageKeywords)).contains(keyword.getValue());
+      String _value_2 = keyword.getValue();
+      boolean _contains = ((List<String>)Conversions.doWrapArray(messageKeywords)).contains(_value_2);
       boolean _not = (!_contains);
       if (_not) {
         super.completeKeyword(keyword, contentAssistContext, acceptor);
@@ -170,14 +186,16 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       String _name = ((Participant) el).getName();
       String _plus = ("\"" + _name);
       String _plus_1 = (_plus + "\"");
-      acceptor.accept(
-        this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+      String _name_1 = ((Participant) el).getName();
+      ICompletionProposal _createCompletionProposal = this.createCompletionProposal(_plus_1, _name_1, null, context);
+      acceptor.accept(_createCompletionProposal);
     }
   }
   
   @Override
   public void completeSequenceMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    acceptor.accept(this.createCompletionProposal("->", "-> : Sequence Message", null, context));
+    ICompletionProposal _createCompletionProposal = this.createCompletionProposal("->", "-> : Sequence Message", null, context);
+    acceptor.accept(_createCompletionProposal);
   }
   
   @Override
@@ -188,17 +206,21 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       String _name = ((Participant) el).getName();
       String _plus = ("\"" + _name);
       String _plus_1 = (_plus + "\"");
-      acceptor.accept(
-        this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+      String _name_1 = ((Participant) el).getName();
+      ICompletionProposal _createCompletionProposal = this.createCompletionProposal(_plus_1, _name_1, null, context);
+      acceptor.accept(_createCompletionProposal);
     }
   }
   
   @Override
   public void completeSequenceMessage_Name(final EObject messageObj, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject _rootModel = context.getRootModel();
-    String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) _rootModel).getElements());
+    EList<Element> _elements = ((Model) _rootModel).getElements();
+    String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(_elements);
     SequenceMessage message = ((SequenceMessage) messageObj);
-    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
+    String _source = message.getSource();
+    String _target = message.getTarget();
+    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(_source, _target);
     String elementName = new String();
     for (final EObject element : exchangesAvailable) {
       {
@@ -206,18 +228,23 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
         ((Model) _rootModel_1).getElements();
         boolean _isInterfaceScenario = EmbeddedEditorInstanceHelper.isInterfaceScenario();
         if (_isInterfaceScenario) {
-          elementName = CapellaElementExt.getName(((ExchangeItemAllocation) element).getAllocatedItem());
+          ExchangeItem _allocatedItem = ((ExchangeItemAllocation) element).getAllocatedItem();
+          String _name = CapellaElementExt.getName(_allocatedItem);
+          elementName = _name;
         } else {
-          elementName = CapellaElementExt.getName(element);
+          String _name_1 = CapellaElementExt.getName(element);
+          elementName = _name_1;
         }
         EObject _rootModel_2 = context.getRootModel();
-        boolean _messageAlreadyInserted = this.messageAlreadyInserted(((Model) _rootModel_2), message.getSource(), message.getTarget(), elementName);
+        String _source_1 = message.getSource();
+        String _target_1 = message.getTarget();
+        boolean _messageAlreadyInserted = this.messageAlreadyInserted(((Model) _rootModel_2), _source_1, _target_1, elementName);
         boolean _not = (!_messageAlreadyInserted);
         if (_not) {
           String exchangeType = TextualScenarioHelper.getExchangeType(element);
           if (((scenarioExchangesType == null) || scenarioExchangesType.equals(exchangeType))) {
-            acceptor.accept(
-              this.createCompletionProposal((("\"" + elementName) + "\""), (("\"" + elementName) + "\""), null, context));
+            ICompletionProposal _createCompletionProposal = this.createCompletionProposal((("\"" + elementName) + "\""), (("\"" + elementName) + "\""), null, context);
+            acceptor.accept(_createCompletionProposal);
           }
         }
       }
@@ -227,10 +254,12 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   @Override
   public void completeCreateMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     if (((!EmbeddedEditorInstanceHelper.isFSScenario()) && (!EmbeddedEditorInstanceHelper.isESScenario()))) {
-      acceptor.accept(this.createCompletionProposal("->+", "->+ : Create Message", null, context));
+      ICompletionProposal _createCompletionProposal = this.createCompletionProposal("->+", "->+ : Create Message", null, context);
+      acceptor.accept(_createCompletionProposal);
     }
     if ((EmbeddedEditorInstanceHelper.isInteractionScenario() && (!EmbeddedEditorInstanceHelper.isFSScenario()))) {
-      acceptor.accept(this.createCompletionProposal("->+", "->+ : Create Message", null, context));
+      ICompletionProposal _createCompletionProposal_1 = this.createCompletionProposal("->+", "->+ : Create Message", null, context);
+      acceptor.accept(_createCompletionProposal_1);
     }
   }
   
@@ -240,14 +269,16 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     EObject _rootModel = context.getRootModel();
     EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
-      boolean _equals = ((Participant) el).getName().equals(source);
+      String _name = ((Participant) el).getName();
+      boolean _equals = _name.equals(source);
       boolean _not = (!_equals);
       if (_not) {
-        String _name = ((Participant) el).getName();
-        String _plus = ("\"" + _name);
+        String _name_1 = ((Participant) el).getName();
+        String _plus = ("\"" + _name_1);
         String _plus_1 = (_plus + "\"");
-        acceptor.accept(
-          this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+        String _name_2 = ((Participant) el).getName();
+        ICompletionProposal _createCompletionProposal = this.createCompletionProposal(_plus_1, _name_2, null, context);
+        acceptor.accept(_createCompletionProposal);
       }
     }
   }
@@ -259,16 +290,19 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeCreateMessage_DoubleDot(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    acceptor.accept(this.createCompletionProposal(":", ":", null, context));
+    ICompletionProposal _createCompletionProposal = this.createCompletionProposal(":", ":", null, context);
+    acceptor.accept(_createCompletionProposal);
   }
   
   @Override
   public void completeDeleteMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     if (((!EmbeddedEditorInstanceHelper.isFSScenario()) && (!EmbeddedEditorInstanceHelper.isESScenario()))) {
-      acceptor.accept(this.createCompletionProposal("->x", "->x : Delete Message", null, context));
+      ICompletionProposal _createCompletionProposal = this.createCompletionProposal("->x", "->x : Delete Message", null, context);
+      acceptor.accept(_createCompletionProposal);
     }
     if ((EmbeddedEditorInstanceHelper.isInteractionScenario() && (!EmbeddedEditorInstanceHelper.isFSScenario()))) {
-      acceptor.accept(this.createCompletionProposal("->x", "->x : Delete Message", null, context));
+      ICompletionProposal _createCompletionProposal_1 = this.createCompletionProposal("->x", "->x : Delete Message", null, context);
+      acceptor.accept(_createCompletionProposal_1);
     }
   }
   
@@ -278,14 +312,16 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     EObject _rootModel = context.getRootModel();
     EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
-      boolean _equals = ((Participant) el).getName().equals(source);
+      String _name = ((Participant) el).getName();
+      boolean _equals = _name.equals(source);
       boolean _not = (!_equals);
       if (_not) {
-        String _name = ((Participant) el).getName();
-        String _plus = ("\"" + _name);
+        String _name_1 = ((Participant) el).getName();
+        String _plus = ("\"" + _name_1);
         String _plus_1 = (_plus + "\"");
-        acceptor.accept(
-          this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+        String _name_2 = ((Participant) el).getName();
+        ICompletionProposal _createCompletionProposal = this.createCompletionProposal(_plus_1, _name_2, null, context);
+        acceptor.accept(_createCompletionProposal);
       }
     }
   }
@@ -300,8 +336,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       Integer _get = timelinesToPropose.get(timelineToPropose);
       boolean _greaterEqualsThan = ((_get).intValue() >= 1);
       if (_greaterEqualsThan) {
-        acceptor.accept(
-          this.createCompletionProposal((("\"" + timelineToPropose) + "\""), timelineToPropose, null, context));
+        ICompletionProposal _createCompletionProposal = this.createCompletionProposal((("\"" + timelineToPropose) + "\""), timelineToPropose, null, context);
+        acceptor.accept(_createCompletionProposal);
       }
     }
   }
@@ -310,22 +346,24 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     List<Element> elements = TextualScenarioHelper.getElements(modelContainer);
     for (int i = 0; (i < elements.size()); i++) {
       {
-        boolean _equals = elements.get(i).equals(participantDeactivation);
+        Element _get = elements.get(i);
+        boolean _equals = _get.equals(participantDeactivation);
         if (_equals) {
           for (int j = 0; (j <= i); j++) {
-            this.updateHashMap(timelinesToPropose, elements.get(j), participantDeactivation);
+            Element _get_1 = elements.get(j);
+            this.updateHashMap(timelinesToPropose, _get_1, participantDeactivation);
           }
           return timelinesToPropose;
         }
-        Element _get = elements.get(i);
-        if ((_get instanceof CombinedFragment)) {
-          Element _get_1 = elements.get(i);
-          this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((CombinedFragment) _get_1), timelinesToPropose);
+        Element _get_1 = elements.get(i);
+        if ((_get_1 instanceof CombinedFragment)) {
+          Element _get_2 = elements.get(i);
+          this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((CombinedFragment) _get_2), timelinesToPropose);
         }
-        Element _get_2 = elements.get(i);
-        if ((_get_2 instanceof Operand)) {
-          Element _get_3 = elements.get(i);
-          this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((Operand) _get_3), timelinesToPropose);
+        Element _get_3 = elements.get(i);
+        if ((_get_3 instanceof Operand)) {
+          Element _get_4 = elements.get(i);
+          this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((Operand) _get_4), timelinesToPropose);
         }
       }
     }
@@ -356,16 +394,20 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     boolean _tripleNotEquals = (_execution != null);
     if (_tripleNotEquals) {
       Integer _xifexpression_1 = null;
-      boolean _containsKey = timelinesToPropose.containsKey(sequenceMessage.getTarget());
+      String _target = sequenceMessage.getTarget();
+      boolean _containsKey = timelinesToPropose.containsKey(_target);
       if (_containsKey) {
         Integer _xblockexpression = null;
         {
-          Integer value = timelinesToPropose.get(sequenceMessage.getTarget());
-          _xblockexpression = timelinesToPropose.put(sequenceMessage.getTarget(), Integer.valueOf(((((Integer) value)).intValue() + 1)));
+          String _target_1 = sequenceMessage.getTarget();
+          Integer value = timelinesToPropose.get(_target_1);
+          String _target_2 = sequenceMessage.getTarget();
+          _xblockexpression = timelinesToPropose.put(_target_2, Integer.valueOf(((((Integer) value)).intValue() + 1)));
         }
         _xifexpression_1 = _xblockexpression;
       } else {
-        _xifexpression_1 = timelinesToPropose.put(sequenceMessage.getTarget(), Integer.valueOf(1));
+        String _target_1 = sequenceMessage.getTarget();
+        _xifexpression_1 = timelinesToPropose.put(_target_1, Integer.valueOf(1));
       }
       _xifexpression = _xifexpression_1;
     }
@@ -378,16 +420,19 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     boolean _tripleNotEquals = (_execution != null);
     if (_tripleNotEquals) {
       Integer _xifexpression_1 = null;
-      boolean _containsKey = timelinesToPropose.containsKey(armTimer.getParticipant());
+      String _participant = armTimer.getParticipant();
+      boolean _containsKey = timelinesToPropose.containsKey(_participant);
       if (_containsKey) {
         Integer _xblockexpression = null;
         {
-          Integer value = timelinesToPropose.get(armTimer.getParticipant());
+          String _participant_1 = armTimer.getParticipant();
+          Integer value = timelinesToPropose.get(_participant_1);
           _xblockexpression = value = Integer.valueOf(((((Integer) value)).intValue() + 1));
         }
         _xifexpression_1 = _xblockexpression;
       } else {
-        _xifexpression_1 = timelinesToPropose.put(armTimer.getParticipant(), Integer.valueOf(1));
+        String _participant_1 = armTimer.getParticipant();
+        _xifexpression_1 = timelinesToPropose.put(_participant_1, Integer.valueOf(1));
       }
       _xifexpression = _xifexpression_1;
     }
@@ -396,12 +441,15 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   public Integer updateHashMapWithParticipantDeactivation(final HashMap<String, Integer> timelinesToPropose, final ParticipantDeactivation participantDeactivation) {
     Integer _xifexpression = null;
-    boolean _containsKey = timelinesToPropose.containsKey(participantDeactivation.getName());
+    String _name = participantDeactivation.getName();
+    boolean _containsKey = timelinesToPropose.containsKey(_name);
     if (_containsKey) {
       Integer _xblockexpression = null;
       {
-        Integer value = timelinesToPropose.get(participantDeactivation.getName());
-        _xblockexpression = timelinesToPropose.put(participantDeactivation.getName(), Integer.valueOf(((((Integer) value)).intValue() - 1)));
+        String _name_1 = participantDeactivation.getName();
+        Integer value = timelinesToPropose.get(_name_1);
+        String _name_2 = participantDeactivation.getName();
+        _xblockexpression = timelinesToPropose.put(_name_2, Integer.valueOf(((((Integer) value)).intValue() - 1)));
       }
       _xifexpression = _xblockexpression;
     }
@@ -410,7 +458,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeDeleteMessage_DoubleDot(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    acceptor.accept(this.createCompletionProposal(":", ":", null, context));
+    ICompletionProposal _createCompletionProposal = this.createCompletionProposal(":", ":", null, context);
+    acceptor.accept(_createCompletionProposal);
   }
   
   @Override
@@ -423,7 +472,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     boolean _isFSScenario = EmbeddedEditorInstanceHelper.isFSScenario();
     boolean _not = (!_isFSScenario);
     if (_not) {
-      acceptor.accept(this.createCompletionProposal("->>", "->> : Arm Timer", null, context));
+      ICompletionProposal _createCompletionProposal = this.createCompletionProposal("->>", "->> : Arm Timer", null, context);
+      acceptor.accept(_createCompletionProposal);
     }
   }
   
@@ -435,24 +485,28 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       String _name = ((Participant) el).getName();
       String _plus = ("\"" + _name);
       String _plus_1 = (_plus + "\"");
-      acceptor.accept(
-        this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+      String _name_1 = ((Participant) el).getName();
+      ICompletionProposal _createCompletionProposal = this.createCompletionProposal(_plus_1, _name_1, null, context);
+      acceptor.accept(_createCompletionProposal);
     }
   }
   
   @Override
   public void completeArmTimerMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    acceptor.accept(this.createCompletionProposal("\"Arm Timer\"", "\"Arm Timer\"", null, context));
+    ICompletionProposal _createCompletionProposal = this.createCompletionProposal("\"Arm Timer\"", "\"Arm Timer\"", null, context);
+    acceptor.accept(_createCompletionProposal);
   }
   
   @Override
   public void completeArmTimerMessage_DoubleDot(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    acceptor.accept(this.createCompletionProposal(":", ":", null, context));
+    ICompletionProposal _createCompletionProposal = this.createCompletionProposal(":", ":", null, context);
+    acceptor.accept(_createCompletionProposal);
   }
   
   @Override
   public void completeStateFragment_On(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    acceptor.accept(this.createCompletionProposal(DslConstants.ON, DslConstants.ON, null, context));
+    ICompletionProposal _createCompletionProposal = this.createCompletionProposal(DslConstants.ON, DslConstants.ON, null, context);
+    acceptor.accept(_createCompletionProposal);
   }
   
   @Override
@@ -475,17 +529,19 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       keywords.add(DslConstants.FUNCTION);
     }
     for (final String keyword : keywords) {
-      acceptor.accept(this.createCompletionProposal(keyword, keyword, null, context));
+      ICompletionProposal _createCompletionProposal = this.createCompletionProposal(keyword, keyword, null, context);
+      acceptor.accept(_createCompletionProposal);
     }
   }
   
   @Override
   public void completeStateFragment_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    List<String> _availableStateFragments = EmbeddedEditorInstanceHelper.getAvailableStateFragments(
-      ((StateFragment) model).getKeyword(), ((StateFragment) model).getTimeline());
+    String _keyword = ((StateFragment) model).getKeyword();
+    String _timeline = ((StateFragment) model).getTimeline();
+    List<String> _availableStateFragments = EmbeddedEditorInstanceHelper.getAvailableStateFragments(_keyword, _timeline);
     for (final String stateFragment : _availableStateFragments) {
-      acceptor.accept(
-        this.createCompletionProposal((("\"" + stateFragment) + "\""), (("\"" + stateFragment) + "\""), null, context));
+      ICompletionProposal _createCompletionProposal = this.createCompletionProposal((("\"" + stateFragment) + "\""), (("\"" + stateFragment) + "\""), null, context);
+      acceptor.accept(_createCompletionProposal);
     }
   }
   
@@ -494,14 +550,17 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     EObject _rootModel = context.getRootModel();
     EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
-      boolean _contains = ((CombinedFragment) model).getTimelines().contains(((Participant) el).getName());
+      EList<String> _timelines = ((CombinedFragment) model).getTimelines();
+      String _name = ((Participant) el).getName();
+      boolean _contains = _timelines.contains(_name);
       boolean _not = (!_contains);
       if (_not) {
-        String _name = ((Participant) el).getName();
-        String _plus = ("\"" + _name);
+        String _name_1 = ((Participant) el).getName();
+        String _plus = ("\"" + _name_1);
         String _plus_1 = (_plus + "\"");
-        acceptor.accept(
-          this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+        String _name_2 = ((Participant) el).getName();
+        ICompletionProposal _createCompletionProposal = this.createCompletionProposal(_plus_1, _name_2, null, context);
+        acceptor.accept(_createCompletionProposal);
       }
     }
   }
@@ -524,19 +583,24 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   public void completeCreateDeleteMessageName(final EObject model, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     SequenceMessageType message = ((SequenceMessageType) model);
-    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
+    String _source = message.getSource();
+    String _target = message.getTarget();
+    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(_source, _target);
     String elementName = new String();
     for (final EObject element : exchangesAvailable) {
       {
         boolean _isInterfaceScenario = EmbeddedEditorInstanceHelper.isInterfaceScenario();
         if (_isInterfaceScenario) {
-          elementName = CapellaElementExt.getName(((ExchangeItemAllocation) element).getAllocatedItem());
+          ExchangeItem _allocatedItem = ((ExchangeItemAllocation) element).getAllocatedItem();
+          String _name = CapellaElementExt.getName(_allocatedItem);
+          elementName = _name;
         } else {
-          elementName = CapellaElementExt.getName(element);
+          String _name_1 = CapellaElementExt.getName(element);
+          elementName = _name_1;
         }
         if ((elementName != null)) {
-          acceptor.accept(
-            this.createCompletionProposal((("\"" + elementName) + "\""), (("\"" + elementName) + "\""), null, context));
+          ICompletionProposal _createCompletionProposal = this.createCompletionProposal((("\"" + elementName) + "\""), (("\"" + elementName) + "\""), null, context);
+          acceptor.accept(_createCompletionProposal);
         }
       }
     }

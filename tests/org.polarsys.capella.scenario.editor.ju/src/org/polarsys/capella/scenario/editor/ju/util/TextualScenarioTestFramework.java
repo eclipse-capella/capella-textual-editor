@@ -32,7 +32,7 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.DDiagramElement;
 import org.polarsys.capella.test.diagram.common.ju.context.DiagramContext;
 import org.polarsys.capella.test.diagram.common.ju.step.crud.OpenDiagramStep;
-import org.polarsys.capella.test.framework.api.NonDirtyTestCase;
+import org.polarsys.capella.test.framework.api.BasicTestCase;
 import org.polarsys.capella.test.framework.context.SessionContext;
 import org.polarsys.capella.common.data.modellingcore.AbstractType;
 import org.polarsys.capella.common.helpers.EObjectLabelProviderHelper;
@@ -46,7 +46,7 @@ import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHel
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
-public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
+public abstract class TextualScenarioTestFramework extends BasicTestCase {
   public static final String simpleDiagramName = "[IS] CapabilityRealization 1 (Simple)";
   public static final String simpleFileContent = "[IS]_CapabilityRealization_1_Simple";
   protected String invalidContentErrMsg = "Invalid content in diagram {0}.\n Text expected in editor:\n{1}\nFound:\n{2}";

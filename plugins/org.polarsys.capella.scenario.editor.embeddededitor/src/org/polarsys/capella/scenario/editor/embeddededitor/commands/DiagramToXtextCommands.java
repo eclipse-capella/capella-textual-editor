@@ -18,12 +18,16 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResource;
 import org.polarsys.capella.common.data.modellingcore.AbstractType;
 import org.polarsys.capella.core.data.capellacommon.AbstractState;
 import org.polarsys.capella.core.data.capellacommon.Mode;
 import org.polarsys.capella.core.data.capellacommon.State;
+import org.polarsys.capella.core.data.cs.AbstractActor;
 import org.polarsys.capella.core.data.cs.Component;
+import org.polarsys.capella.core.data.ctx.Actor;
 import org.polarsys.capella.core.data.epbs.ConfigurationItem;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
 import org.polarsys.capella.core.data.helpers.interaction.services.ExecutionEndExt;
@@ -44,6 +48,7 @@ import org.polarsys.capella.core.data.interaction.StateFragment;
 import org.polarsys.capella.core.data.interaction.CombinedFragment;
 import org.polarsys.capella.core.data.oa.Entity;
 import org.polarsys.capella.core.data.oa.OperationalActivity;
+import org.polarsys.capella.core.data.oa.OperationalActor;
 import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.model.helpers.AbstractFragmentExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
@@ -78,7 +83,7 @@ public class DiagramToXtextCommands {
 
       TextualScenarioFactory factory = new TextualScenarioFactoryImpl();
       Model domainModel = HelperCommands.getModel(embeddedEditorViewPart);
-      if (domainModel != null) {
+      if (domainModel != null && scenario != null) {
         HelperCommands.clearModel(domainModel);
 
         // Generate Participants
@@ -93,10 +98,18 @@ public class DiagramToXtextCommands {
           String serialized = ((XtextResource) domainModel.eResource()).getSerializer().serialize(domainModel);
           EmbeddedEditorInstanceHelper.updateModel(serialized);
         } catch (Exception e) {
-          System.err.println("Error refreshing diagram from Textual Editor");
+        	showDialogUnableToRefresh();
+			System.err.println("Error refreshing diagram from Textual Editor");
         }
       }
+      else {
+    	  showDialogUnableToRefresh();
+      }
     }
+  }
+  
+  private static void showDialogUnableToRefresh() {
+	  MessageDialog.openError(Display.getCurrent().getActiveShell(), "Unable to refresh", "Error on refreshing data to Textual Editor!");
   }
 
   /**
@@ -139,25 +152,20 @@ public class DiagramToXtextCommands {
    * @param participants
    * @param factory
    */
-  private static void createParticipantComponent(AbstractType irType,
-      InstanceRole instanceRole,
-      EList<Participant> participants, TextualScenarioFactory factory) {
-    if (irType instanceof Entity) {
-      if (((Entity) irType).isActor()) {
-        addActor(instanceRole.getName(), participants, factory);
-      } else {
-        addEntity(instanceRole.getName(), participants, factory);
-      }
-    } else if (irType instanceof ConfigurationItem) {
-      addConfigItem(instanceRole.getName(), participants, factory);
-    } else if (irType instanceof Component) {
-      if (((Component) irType).isActor()) {
-        addActor(instanceRole.getName(), participants, factory);
-      } else {
-        addComponent(instanceRole.getName(), participants, factory);
-      }
-    }
-  }
+	private static void createParticipantComponent(AbstractType irType, InstanceRole instanceRole,
+			EList<Participant> participants, TextualScenarioFactory factory) {
+		if (irType instanceof OperationalActor) {
+			addActor(instanceRole.getName(), participants, factory);
+		} else if (irType instanceof Entity) {
+			addEntity(instanceRole.getName(), participants, factory);
+		} else if (irType instanceof ConfigurationItem) {
+			addConfigItem(instanceRole.getName(), participants, factory);
+		} else if (irType instanceof AbstractActor) {
+			addActor(instanceRole.getName(), participants, factory);
+		} else if (irType instanceof Component) {
+			addComponent(instanceRole.getName(), participants, factory);
+		}
+	}
   
   /**
    * create the xtext function type object

@@ -32,6 +32,7 @@ import org.polarsys.capella.scenario.editor.dsl.TextualScenarioStandaloneSetupGe
 @SuppressWarnings("all")
 public class TextualScenarioStandaloneSetup extends TextualScenarioStandaloneSetupGenerated {
   public static void doSetup() {
-    new TextualScenarioStandaloneSetup().createInjectorAndDoEMFRegistration();
+    TextualScenarioStandaloneSetup _textualScenarioStandaloneSetup = new TextualScenarioStandaloneSetup();
+    _textualScenarioStandaloneSetup.createInjectorAndDoEMFRegistration();
   }
 }

@@ -45,7 +45,8 @@ public class EmbeddedEditorInstance {
   }
 
   public static Scenario getAssociatedScenarioDiagram() {
-    return (Scenario) ((SequenceDDiagram) diagram).getTarget();
+    return (diagram instanceof SequenceDDiagram && ((SequenceDDiagram) diagram).getTarget() instanceof Scenario) ? 
+    		(Scenario) ((SequenceDDiagram) diagram).getTarget() : null;
   }
 
   public static DDiagram getDDiagram() {
