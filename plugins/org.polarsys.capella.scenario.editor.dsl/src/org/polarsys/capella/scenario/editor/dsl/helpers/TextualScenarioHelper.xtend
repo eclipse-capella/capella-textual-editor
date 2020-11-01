@@ -86,11 +86,14 @@ class TextualScenarioHelper {
 	}
 	
 	def static participantsDefinedBeforeNames(EObject element) {
-		var model = getModelContainer(element) as Model
-		var participants = participantsDefinedBefore(element, model)
 		var participantsNames = newArrayList
-		for(participant : participants) {
-			participantsNames.add(participant.name)
+		var container = getModelContainer(element)
+		if (container instanceof Model) {
+			var model = container as Model
+			var participants = participantsDefinedBefore(element, model)
+			for (participant : participants) {
+				participantsNames.add(participant.name)
+			}
 		}	
 		return participantsNames
 	}
@@ -109,7 +112,8 @@ class TextualScenarioHelper {
 			return (modelContainer as Model).elements
 		}
 		if (modelContainer instanceof CombinedFragment) {
-			var elements = (modelContainer as CombinedFragment).block.blockElements
+			var elements = newArrayList
+			elements.addAll((modelContainer as CombinedFragment).block.blockElements)
 			var operands = (modelContainer as CombinedFragment).operands
 			for(operand : operands) {
 				elements.addAll(operand.block.blockElements)
@@ -128,7 +132,9 @@ class TextualScenarioHelper {
 	def static EObject getModelContainer(EObject object) {
 		if(object instanceof Model)
 			return object as Model
-		return getModelContainer(object.eContainer)	
+		if(object !== null)		
+			return getModelContainer(object.eContainer)
+		return null
 	}
 	
 	/*
@@ -136,14 +142,15 @@ class TextualScenarioHelper {
 	 * (the container can be the model or a combined fragment)
 	 */
 	def static EObject getDirectContainer(EObject element) {
-		var container = element.eContainer
-		if(container instanceof Model ||
-			container instanceof CombinedFragment
-		) {
-			return container
-		}
+		if (element !== null) {
+			var container = element.eContainer
+			if (container instanceof Model || container instanceof CombinedFragment) {
+				return container
+			}
+			return getDirectContainer(container)
 
-		return getDirectContainer(container)
+		}
+		return null
 	}
 	
 }

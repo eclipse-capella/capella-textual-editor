@@ -307,7 +307,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   }
   
   public HashMap<String, Integer> createTimelinesHashMapToProposeForDeactivation(final ParticipantDeactivation participantDeactivation, final EObject modelContainer, final HashMap<String, Integer> timelinesToPropose) {
-    EList<Element> elements = TextualScenarioHelper.getElements(modelContainer);
+    List<Element> elements = TextualScenarioHelper.getElements(modelContainer);
     for (int i = 0; (i < elements.size()); i++) {
       {
         boolean _equals = elements.get(i).equals(participantDeactivation);
