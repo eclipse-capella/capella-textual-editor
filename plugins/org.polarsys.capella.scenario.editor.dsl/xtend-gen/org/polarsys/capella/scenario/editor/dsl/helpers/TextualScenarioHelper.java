@@ -100,12 +100,15 @@ public class TextualScenarioHelper {
   }
   
   public static ArrayList<String> participantsDefinedBeforeNames(final EObject element) {
-    EObject _modelContainer = TextualScenarioHelper.getModelContainer(element);
-    Model model = ((Model) _modelContainer);
-    EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(element, model);
     ArrayList<String> participantsNames = CollectionLiterals.<String>newArrayList();
-    for (final Participant participant : participants) {
-      participantsNames.add(participant.getName());
+    EObject container = TextualScenarioHelper.getModelContainer(element);
+    if ((container != null)) {
+      EObject _modelContainer = TextualScenarioHelper.getModelContainer(element);
+      Model model = ((Model) _modelContainer);
+      EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(element, model);
+      for (final Participant participant : participants) {
+        participantsNames.add(participant.getName());
+      }
     }
     return participantsNames;
   }
@@ -118,12 +121,13 @@ public class TextualScenarioHelper {
   /**
    * get all elements on the same level as modelContainer
    */
-  public static EList<Element> getElements(final EObject modelContainer) {
+  public static List<Element> getElements(final EObject modelContainer) {
     if ((modelContainer instanceof Model)) {
       return ((Model) modelContainer).getElements();
     }
     if ((modelContainer instanceof CombinedFragment)) {
-      EList<Element> elements = ((CombinedFragment) modelContainer).getBlock().getBlockElements();
+      ArrayList<Element> elements = CollectionLiterals.<Element>newArrayList();
+      elements.addAll(((CombinedFragment) modelContainer).getBlock().getBlockElements());
       EList<Operand> operands = ((CombinedFragment) modelContainer).getOperands();
       for (final Operand operand : operands) {
         elements.addAll(operand.getBlock().getBlockElements());
@@ -143,7 +147,10 @@ public class TextualScenarioHelper {
     if ((object instanceof Model)) {
       return ((Model) object);
     }
-    return TextualScenarioHelper.getModelContainer(object.eContainer());
+    if ((object != null)) {
+      return TextualScenarioHelper.getModelContainer(object.eContainer());
+    }
+    return null;
   }
   
   /**
@@ -151,11 +158,13 @@ public class TextualScenarioHelper {
    * (the container can be the model or a combined fragment)
    */
   public static EObject getDirectContainer(final EObject element) {
-    EObject container = element.eContainer();
-    if (((container instanceof Model) || 
-      (container instanceof CombinedFragment))) {
-      return container;
+    if ((element != null)) {
+      EObject container = element.eContainer();
+      if (((container instanceof Model) || (container instanceof CombinedFragment))) {
+        return container;
+      }
+      return TextualScenarioHelper.getDirectContainer(container);
     }
-    return TextualScenarioHelper.getDirectContainer(container);
+    return null;
   }
 }

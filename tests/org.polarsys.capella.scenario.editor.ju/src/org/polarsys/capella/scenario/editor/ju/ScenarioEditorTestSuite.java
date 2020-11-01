@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.polarsys.capella.scenario.editor.ju.testcases.ArmTimerMessagesFromXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.CreateDeleteMessagesFromXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.DeleteCombinedFragmentFromXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.DeleteStateFragmentFromXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.ReloadDataFromDiagramToTextTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.SaveDataFromXtextToDiagramTestCase;
 import org.polarsys.capella.test.framework.api.BasicTestArtefact;
@@ -45,6 +49,10 @@ public class ScenarioEditorTestSuite extends BasicTestSuite {
     List<BasicTestArtefact> tests = new ArrayList<BasicTestArtefact>();
     tests.add(new ReloadDataFromDiagramToTextTestCase());
     tests.add(new SaveDataFromXtextToDiagramTestCase());
+    tests.add(new ArmTimerMessagesFromXtextToDiagramTestCase());
+    tests.add(new CreateDeleteMessagesFromXtextToDiagramTestCase());
+    tests.add(new DeleteCombinedFragmentFromXtextToDiagramTestCase());
+    tests.add(new DeleteStateFragmentFromXtextToDiagramTestCase());
     return tests;
   }
 }

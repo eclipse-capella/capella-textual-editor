@@ -131,7 +131,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
     if (_isESScenario) {
       EObject model = TextualScenarioHelper.getModelContainer(message);
-      if ((model != null)) {
+      if ((model instanceof Model)) {
         String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) model).getElements());
         String exchangeType = TextualScenarioHelper.getMessageExchangeType(message);
         if (((scenarioExchangesType != null) && (!scenarioExchangesType.equals(exchangeType)))) {
@@ -177,7 +177,11 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     boolean _xblockexpression = false;
     {
       EObject model = TextualScenarioHelper.getModelContainer(message);
-      _xblockexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
+      }
+      _xblockexpression = _xifexpression;
     }
     return _xblockexpression;
   }
@@ -187,13 +191,17 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     boolean _xblockexpression = false;
     {
       EObject model = TextualScenarioHelper.getModelContainer(message);
-      _xblockexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
+      }
+      _xblockexpression = _xifexpression;
     }
     return _xblockexpression;
   }
   
   public boolean checkDuplicated(final EObject elementToCheck, final EObject model, final HashSet<String> names) {
-    EList<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getElements(model);
     for (final Element element : elements) {
       {
         if ((((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage)) || 
@@ -260,7 +268,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public void checkDeactivateMessages(final EObject model) {
     int index = 0;
     LinkedList<String> messageTargets = CollectionLiterals.<String>newLinkedList();
-    EList<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getElements(model);
     for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
@@ -398,7 +406,16 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   @Check
   public boolean checkDuplicatedCombinedFragment(final CombinedFragment combinedFragment) {
-    return this.checkDuplicated(combinedFragment, TextualScenarioHelper.getModelContainer(combinedFragment), CollectionLiterals.<String>newHashSet());
+    boolean _xblockexpression = false;
+    {
+      EObject model = TextualScenarioHelper.getModelContainer(combinedFragment);
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkDuplicated(combinedFragment, model, CollectionLiterals.<String>newHashSet());
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
   }
   
   /**
@@ -408,12 +425,14 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   @Check
   public void checkTimelineUsedAfterDeleteMessage(final CombinedFragment combinedFragment) {
     EObject model = TextualScenarioHelper.getModelContainer(combinedFragment);
-    int index = 0;
-    EList<String> _timelines = combinedFragment.getTimelines();
-    for (final String timeline : _timelines) {
-      int _plusPlus = index++;
-      this.checkElementAfterDelete(((Model) model), combinedFragment, timeline, 
-        TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES, _plusPlus);
+    if ((model instanceof Model)) {
+      int index = 0;
+      EList<String> _timelines = combinedFragment.getTimelines();
+      for (final String timeline : _timelines) {
+        int _plusPlus = index++;
+        this.checkElementAfterDelete(((Model) model), combinedFragment, timeline, 
+          TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES, _plusPlus);
+      }
     }
   }
   
@@ -426,8 +445,12 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     boolean _xblockexpression = false;
     {
       EObject model = TextualScenarioHelper.getModelContainer(fragment);
-      _xblockexpression = this.checkElementAfterDelete(((Model) model), fragment, fragment.getTimeline(), 
-        TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE, 0);
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkElementAfterDelete(((Model) model), fragment, fragment.getTimeline(), 
+          TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE, 0);
+      }
+      _xblockexpression = _xifexpression;
     }
     return _xblockexpression;
   }
@@ -441,8 +464,12 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     boolean _xblockexpression = false;
     {
       EObject model = TextualScenarioHelper.getModelContainer(armTimer);
-      _xblockexpression = this.checkElementAfterDelete(((Model) model), armTimer, armTimer.getParticipant(), 
-        TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0);
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkElementAfterDelete(((Model) model), armTimer, armTimer.getParticipant(), 
+          TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0);
+      }
+      _xblockexpression = _xifexpression;
     }
     return _xblockexpression;
   }
@@ -456,8 +483,12 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     boolean _xblockexpression = false;
     {
       EObject model = TextualScenarioHelper.getModelContainer(message);
-      _xblockexpression = this.checkElementAfterDelete(((Model) model), message, message.getSource(), 
-        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE, 0);
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkElementAfterDelete(((Model) model), message, message.getSource(), 
+          TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE, 0);
+      }
+      _xblockexpression = _xifexpression;
     }
     return _xblockexpression;
   }
@@ -471,14 +502,18 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     boolean _xblockexpression = false;
     {
       EObject model = TextualScenarioHelper.getModelContainer(message);
-      _xblockexpression = this.checkElementAfterDelete(((Model) model), message, message.getTarget(), 
-        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET, 0);
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkElementAfterDelete(((Model) model), message, message.getTarget(), 
+          TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET, 0);
+      }
+      _xblockexpression = _xifexpression;
     }
     return _xblockexpression;
   }
   
   public boolean checkElementAfterDelete(final EObject model, final EObject checkedElement, final String target, final EAttribute checkedAttribute, final int index) {
-    EList<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getElements(model);
     for (final EObject element : elements) {
       {
         boolean _equals = element.equals(checkedElement);
@@ -514,16 +549,14 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     this.checkCreateOrDeleteCouldBeUsed();
     this.checkSameSourceAndTarget(createMessage);
     EObject model = TextualScenarioHelper.getModelContainer(createMessage);
-    boolean _checkCreateMessageValid = this.checkCreateMessageValid(((Model) model), createMessage);
-    boolean _not = (!_checkCreateMessageValid);
-    if (_not) {
+    if (((model instanceof Model) && (!this.checkCreateMessageValid(((Model) model), createMessage)))) {
       this.errorCreateMessage(createMessage.getTarget());
     }
   }
   
   public boolean checkCreateMessageValid(final EObject model, final CreateMessage createMessage) {
     String target = createMessage.getTarget();
-    EList<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getElements(model);
     for (final EObject element : elements) {
       {
         if ((element instanceof SequenceMessageType)) {
@@ -621,7 +654,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     LinkedList<String> messageWithExecutionTargets = CollectionLiterals.<String>newLinkedList();
     LinkedList<Integer> messageWithExecutionTargetsIndex = CollectionLiterals.<Integer>newLinkedList();
     int index = 0;
-    EList<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getElements(model);
     for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {

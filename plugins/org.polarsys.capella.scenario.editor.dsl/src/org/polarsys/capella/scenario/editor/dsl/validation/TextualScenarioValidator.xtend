@@ -32,7 +32,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage
 import java.util.HashSet
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
 import org.eclipse.emf.ecore.EAttribute
 import java.util.List
 
@@ -105,7 +104,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkMessagesExchangeType(SequenceMessage message) {
 		if (EmbeddedEditorInstanceHelper.isESScenario()) {
 			var model = TextualScenarioHelper.getModelContainer(message)
-			if (model !== null) {
+			if (model instanceof Model) {
 				var scenarioExchangesType = TextualScenarioHelper.
 					getScenarioAllowedExchangesType((model as Model).elements)
 				var exchangeType = TextualScenarioHelper.getMessageExchangeType(message)
@@ -147,14 +146,16 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	
 	@Check
 	def checkDuplicatedSequenceMessageNames(SequenceMessage message) {
-		var model = TextualScenarioHelper.getModelContainer(message) 
-		checkDuplicated(message, model as Model, newHashSet)	
+		var model = TextualScenarioHelper.getModelContainer(message)
+		if(model instanceof Model) 
+			checkDuplicated(message, model as Model, newHashSet)	
 	}
 	
 	@Check
 	def checkDuplicatedArmTimerMessageNames(ArmTimerMessage message) {
 		var model = TextualScenarioHelper.getModelContainer(message) 
-		checkDuplicated(message, model as Model, newHashSet)	
+		if(model instanceof Model)
+			checkDuplicated(message, model as Model, newHashSet)	
 	}
 	
 	def boolean checkDuplicated(EObject elementToCheck, EObject model, HashSet<String> names) {
@@ -354,7 +355,9 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	
 	@Check
 	def checkDuplicatedCombinedFragment(CombinedFragment combinedFragment) {
-		checkDuplicated(combinedFragment, TextualScenarioHelper.getModelContainer(combinedFragment), newHashSet)
+		var model = TextualScenarioHelper.getModelContainer(combinedFragment)
+		if(model instanceof Model)
+			checkDuplicated(combinedFragment, model, newHashSet)
 	}
 	
 	/*
@@ -364,10 +367,12 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkTimelineUsedAfterDeleteMessage(CombinedFragment combinedFragment) {
 		var model = TextualScenarioHelper.getModelContainer(combinedFragment)
-		var index = 0
-		for (timeline : combinedFragment.timelines) {
-			checkElementAfterDelete(model as Model, combinedFragment, timeline,
-				TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES, index++)
+		if (model instanceof Model) {
+			var index = 0
+			for (timeline : combinedFragment.timelines) {
+				checkElementAfterDelete(model as Model, combinedFragment, timeline,
+					TextualScenarioPackage.Literals.COMBINED_FRAGMENT__TIMELINES, index++)
+			}
 		}
 	}
 
@@ -378,8 +383,9 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkTimelineUsedAfterDeleteMessage(StateFragment fragment) {
 		var model = TextualScenarioHelper.getModelContainer(fragment)
-		checkElementAfterDelete(model as Model, fragment, fragment.timeline,
-			TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE, 0)
+		if (model instanceof Model)
+			checkElementAfterDelete(model as Model, fragment, fragment.timeline,
+				TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE, 0)
 	}
 
 	/*
@@ -389,8 +395,9 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkParticipantUsedAfterDeleteMessage(ArmTimerMessage armTimer) {
 		var model = TextualScenarioHelper.getModelContainer(armTimer)
-		checkElementAfterDelete(model as Model, armTimer, armTimer.participant,
-			TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0)
+		if (model instanceof Model)
+			checkElementAfterDelete(model as Model, armTimer, armTimer.participant,
+				TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0)
 	}
 
 	/*
@@ -400,8 +407,9 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkMessageSourceUsedAfterDeleteMessage(SequenceMessageType message) {
 		var model = TextualScenarioHelper.getModelContainer(message)
-		checkElementAfterDelete(model as Model, message, message.source,
-			TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE, 0)
+		if (model instanceof Model)
+			checkElementAfterDelete(model as Model, message, message.source,
+				TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE, 0)
 	}
 	
 	/*
@@ -411,8 +419,9 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	@Check
 	def checkMessageTargetUsedAfterDeleteMessage(SequenceMessageType message) {
 		var model = TextualScenarioHelper.getModelContainer(message)
-		checkElementAfterDelete(model as Model, message, message.target,
-			TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET, 0)
+		if (model instanceof Model)
+			checkElementAfterDelete(model as Model, message, message.target,
+				TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET, 0)
 	}
 	
 
@@ -455,7 +464,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		// check if source and target are the same
 		checkSameSourceAndTarget(createMessage)
 		var model = TextualScenarioHelper.getModelContainer(createMessage)
-		if (!checkCreateMessageValid(model as Model, createMessage)) {
+		if (model instanceof Model && !checkCreateMessageValid(model as Model, createMessage)) {
 			errorCreateMessage(createMessage.target)
 		}
 	}
