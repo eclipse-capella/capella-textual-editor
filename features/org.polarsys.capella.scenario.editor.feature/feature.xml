@@ -27,6 +27,10 @@
       %license
    </license>
 
+   <includes
+         id="org.eclipse.xtext.sdk"
+         version="0.0.0"/>
+
    <plugin
          id="org.polarsys.capella.scenario.editor"
          download-size="0"
@@ -64,6 +68,13 @@
 
    <plugin
          id="org.polarsys.capella.scenario.editor.embeddededitor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.inject"
          download-size="0"
          install-size="0"
          version="0.0.0"
