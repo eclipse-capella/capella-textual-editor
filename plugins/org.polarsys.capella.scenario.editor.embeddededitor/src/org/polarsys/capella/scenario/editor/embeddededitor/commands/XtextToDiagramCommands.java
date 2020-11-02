@@ -93,36 +93,40 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 
 public class XtextToDiagramCommands {
   public static void process(Scenario scenario, EmbeddedEditorView embeddedEditorViewPart) {
-    if (embeddedEditorViewPart != null) {
-      TextualScenarioProvider p = embeddedEditorViewPart.getProvider();
-      XtextResource resource = p.getResource();
+    if (scenario != null) {
+      if (embeddedEditorViewPart != null) {
+        TextualScenarioProvider p = embeddedEditorViewPart.getProvider();
+        XtextResource resource = p.getResource();
 
-      List<Issue> issues = HelperCommands.getValidationIsuesTextResource(resource);
-      if (issues == null || issues.isEmpty()) {
-        EList<EObject> content = resource.getContents();
-        Model domainModel = (Model) content.get(0);
+        List<Issue> issues = HelperCommands.getValidationIsuesTextResource(resource);
+        if (issues == null || issues.isEmpty()) {
+          EList<EObject> content = resource.getContents();
+          Model domainModel = (Model) content.get(0);
 
-        // get participants
-        EList<Participant> participants = domainModel.getParticipants();
+          // get participants
+          EList<Participant> participants = domainModel.getParticipants();
 
-        // get messages
-        EList<Element> messages = domainModel.getElements();
+          // get messages
+          EList<Element> messages = domainModel.getElements();
 
-        doEditingOnParticipants(scenario, participants);
+          doEditingOnParticipants(scenario, participants);
 
-        doEditingOnElements(scenario, messages);
+          doEditingOnElements(scenario, messages);
 
-        
-        // do refresh - when the messages associated with the removed actors are deleted too,
-        // a refresh is needed to update also the editor
-        
-        //EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-        //Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-        //DiagramToXtextCommands.process(scenarioDiagram, eeView);
-      } else {
-        MessageDialog.openError(Display.getCurrent().getActiveShell(), "Invalid data",
-            "Please fix the errors in the textual editor! \n" + issues);
+          // do refresh - when the messages associated with the removed actors are deleted too,
+          // a refresh is needed to update also the editor
+
+          // EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+          // Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+          // DiagramToXtextCommands.process(scenarioDiagram, eeView);
+        } else {
+          MessageDialog.openError(Display.getCurrent().getActiveShell(), "Invalid data",
+              "Please fix the errors in the textual editor! \n" + issues);
+        }
       }
+    } else {
+      MessageDialog.openError(Display.getCurrent().getActiveShell(), "Unknowned scenario",
+          "The associated diagram scenario is unknown!");
     }
   }
 
@@ -134,7 +138,7 @@ public class XtextToDiagramCommands {
    * @param participants
    *          List of participants defined in the xtext editor
    * @param messages
-   *          
+   * 
    */
   private static void doEditingOnParticipants(Scenario scenario, EList<Participant> participants) {
     // Make sure your element is attached to a resource, otherwise this will return null
@@ -151,7 +155,8 @@ public class XtextToDiagramCommands {
 
           String instanceName = ((Participant) participant).getName();
           // if the participant doesn't exist, create it
-          if (instanceRoles.stream().filter(ir -> ir.getName().equals(instanceName)).collect(Collectors.toList()).isEmpty()) {
+          if (instanceRoles.stream().filter(ir -> ir.getName().equals(instanceName)).collect(Collectors.toList())
+              .isEmpty()) {
             instanceRole = InteractionFactory.eINSTANCE.createInstanceRole();
             instanceRole.setName(instanceName);
 
@@ -181,19 +186,17 @@ public class XtextToDiagramCommands {
   }
 
   /**
-   * Remove all instance roles that are in the diagram, but not in the editor. 
-   * Remove all related elements.
+   * Remove all instance roles that are in the diagram, but not in the editor. Remove all related elements.
    * 
    * @param scenario
    *          The scenario diagram
    * @param participants
    *          Participants from editor
    */
-  private static void removeParticipantsFromDiagram(Scenario scenario,
-      EList<Participant> participants) {
+  private static void removeParticipantsFromDiagram(Scenario scenario, EList<Participant> participants) {
     List<InstanceRole> irToRemove = new ArrayList<>();
     EList<InstanceRole> instanceRoles = scenario.getOwnedInstanceRoles();
-    
+
     for (InstanceRole ir : instanceRoles) {
       List<String> participantsName = participants.stream().map(x -> x.getName()).collect(Collectors.toList());
       if (!participantsName.contains(ir.getName())) {
@@ -254,14 +257,14 @@ public class XtextToDiagramCommands {
    *          The participant that has just been deleted
    */
   private static void removeParticipantRelatedMessages(Scenario scenario, String participantName) {
-    List<SequenceMessage> messagesToBeDeleted = new ArrayList();    
-    EList<SequenceMessage> messages = scenario.getOwnedMessages();   
-    
+    List<SequenceMessage> messagesToBeDeleted = new ArrayList();
+    EList<SequenceMessage> messages = scenario.getOwnedMessages();
+
     for (SequenceMessage message : messages) {
-      if (message.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName) ||
-          message.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName)) {
-          messagesToBeDeleted.add(message);
-       }
+      if (message.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName)
+          || message.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName)) {
+        messagesToBeDeleted.add(message);
+      }
     }
     for (SequenceMessage message : messagesToBeDeleted) {
       removeMessageFromScenario(scenario, message);
@@ -278,13 +281,13 @@ public class XtextToDiagramCommands {
    */
   protected static void removeParticipantRelatedStateFragments(Scenario scenario, String participantName) {
     List<TimeLapse> stateFragmentsToBeDeleted = scenario.getOwnedTimeLapses().stream()
-        .filter(timelapse -> timelapse instanceof StateFragment 
+        .filter(timelapse -> timelapse instanceof StateFragment
             && timelapse.getStart().getCoveredInstanceRoles().get(0).getName().equals(participantName))
         .collect(Collectors.toList());
-    
+
     for (TimeLapse timeLapse : stateFragmentsToBeDeleted) {
       removeStateFragmentFromScenario(scenario, timeLapse);
-    } 
+    }
   }
 
   /**
@@ -300,12 +303,12 @@ public class XtextToDiagramCommands {
         .filter(timelapse -> timelapse instanceof CombinedFragment
             && timelapse.getStart().getCoveredInstanceRoles().contains(instanceRole))
         .collect(Collectors.toList());
-    
+
     for (TimeLapse timeLapse : combinedFragmentsToBeDeleted) {
       removeCombinedFragmentFromScenario(scenario, timeLapse);
-    }   
+    }
   }
-  
+
   /**
    * Synchronize graphical ordering in diagram
    */
@@ -316,7 +319,7 @@ public class XtextToDiagramCommands {
     Diagram diagram = null;
     for (AnnotationEntry annotationEntry : ownedAnnotationEntries) {
       if ((annotationEntry != null) && (annotationEntry.getData() instanceof Diagram)) {
-        diagram = (Diagram)annotationEntry.getData();
+        diagram = (Diagram) annotationEntry.getData();
         break;
       }
     }
@@ -328,8 +331,8 @@ public class XtextToDiagramCommands {
   }
 
   /**
-   * Create and put in order all objects necessary to display the text scenario in the Capella diagram. 
-   * This includes sequence messages, combined fragments, state fragments
+   * Create and put in order all objects necessary to display the text scenario in the Capella diagram. This includes
+   * sequence messages, combined fragments, state fragments
    * 
    * @param scenario
    *          The scenario diagram
@@ -352,14 +355,13 @@ public class XtextToDiagramCommands {
 
         // Reorder scenario, this means reordering the interaction fragments and sequence messages lists
         reorderCapellaScenario(scenario, elements);
-        
+
         // refresh visual editor
         syncGraphicalOrdering();
       }
 
       /**
-       * Reorder interaction fragments and messages (their start, end and execution end) according to the xtext
-       * scenario
+       * Reorder interaction fragments and messages (their start, end and execution end) according to the xtext scenario
        * 
        * @param scenario
        *          The scenario diagram
@@ -375,7 +377,7 @@ public class XtextToDiagramCommands {
         reorderCapellaFragments(scenario, elements, capellaSequenceMessages, interactionFragments,
             executionEndsToProcess);
 
-        // Replace sequence message list and interaction fragments list in the real scenario 
+        // Replace sequence message list and interaction fragments list in the real scenario
         // with the newly computed lists
         scenario.getOwnedInteractionFragments().clear();
         scenario.getOwnedInteractionFragments().addAll(interactionFragments);
@@ -385,8 +387,7 @@ public class XtextToDiagramCommands {
       }
 
       /**
-       * Reorder interaction fragments and messages (their start, end and execution end) according to the xtext
-       * scenario
+       * Reorder interaction fragments and messages (their start, end and execution end) according to the xtext scenario
        * 
        * @param scenario
        *          The scenario diagram
@@ -401,8 +402,8 @@ public class XtextToDiagramCommands {
           EObject elementFromXtext = iterator.next();
 
           if (elementFromXtext instanceof ParticipantDeactivation) {
-            reorderCapellaDeactivationMessages((ParticipantDeactivation) elementFromXtext,
-                interactionFragments, capellaSequenceMessages, executionEndsToProcess);
+            reorderCapellaDeactivationMessages((ParticipantDeactivation) elementFromXtext, interactionFragments,
+                capellaSequenceMessages, executionEndsToProcess);
           } else if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) {
             reorderCapellaSequenceMessages(scenario,
                 (org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) elementFromXtext,
@@ -415,9 +416,9 @@ public class XtextToDiagramCommands {
               // start the Combined Fragment Block
               interactionFragments.add(capellaCombinedFragment.getStart());
 
-              List<InteractionOperand> orderedCapellaOperands = 
-                  getOrderedCapellaInteractionOperands(scenario, textCombinedFragment, capellaCombinedFragment);
-              
+              List<InteractionOperand> orderedCapellaOperands = getOrderedCapellaInteractionOperands(scenario,
+                  textCombinedFragment, capellaCombinedFragment);
+
               // add content in the first operand of the Combined Fragment Block
               interactionFragments.add(orderedCapellaOperands.get(0));
               reorderCapellaFragments(scenario, textCombinedFragment.getBlock().getBlockElements(),
@@ -460,15 +461,14 @@ public class XtextToDiagramCommands {
        *          The new list of ordered interaction fragments that will be used to update the Capella diagram
        *          according to the xtext scenario
        * @param capellaSequenceMessages
-       *          The new list of Capella sequence messages that will be used to update the Capella diagram
-       *          according to the xtext scenario
+       *          The new list of Capella sequence messages that will be used to update the Capella diagram according to
+       *          the xtext scenario
        * @param executionEndsToProcess
        *          List of execution ends that have to be processed (moved on the correct order in the list of
        *          interaction fragments.
        */
       private void reorderCapellaDeactivationMessages(ParticipantDeactivation participantDeactivationMessage,
-          List<InteractionFragment> interactionFragments,
-          List<SequenceMessage> capellaSequenceMessages,
+          List<InteractionFragment> interactionFragments, List<SequenceMessage> capellaSequenceMessages,
           List<InteractionFragment> executionEndsToProcess) {
         // This is a ParticipantDeactivationMessage, so the execution on the corresponding timeline finished.
         // We must move the interaction fragment representing the execution end on the correct position in the
@@ -494,8 +494,8 @@ public class XtextToDiagramCommands {
        *          The new list of ordered interaction fragments that will be used to update the Capella diagram
        *          according to the xtext scenario
        * @param capellaSequenceMessages
-       *          The new list of Capella sequence messages that will be used to update the Capella diagram
-       *          according to the xtext scenario
+       *          The new list of Capella sequence messages that will be used to update the Capella diagram according to
+       *          the xtext scenario
        * @param executionEndsToProcess
        *          List of execution ends that have to be processed (moved on the correct order in the list of
        *          interaction fragments.
@@ -520,7 +520,7 @@ public class XtextToDiagramCommands {
               // For simple messages, execution end will be added here, if no return branch
               if (!hasExecution(elementFromXtext)) {
                 if (!hasReturn(elementFromXtext)) {
-                  if(execution != null)
+                  if (execution != null)
                     interactionFragments.add(execution.getFinish());
                 } else {
                   // Simple message has return branch, add the return sequence message here
@@ -536,7 +536,7 @@ public class XtextToDiagramCommands {
               } else {
                 // For withExecution messages, execution end will be added when deactivate message will be found.
                 // At that point, the return message will be moved in order, too, if this is the case
-                if(execution != null)
+                if (execution != null)
                   executionEndsToProcess.add(execution.getFinish());
               }
             }
@@ -552,24 +552,27 @@ public class XtextToDiagramCommands {
        * @return true if instance roles found, false otherwise
        */
       private boolean foundInstanceRolesOnMessageEnds(Message elementFromXtext) {
-        if (elementFromXtext instanceof SequenceMessageType) {   
-          InstanceRole source = EmbeddedEditorInstanceHelper.getInstanceRole(((SequenceMessageType) elementFromXtext).getSource());
-          InstanceRole target = EmbeddedEditorInstanceHelper.getInstanceRole(((SequenceMessageType) elementFromXtext).getTarget());
+        if (elementFromXtext instanceof SequenceMessageType) {
+          InstanceRole source = EmbeddedEditorInstanceHelper
+              .getInstanceRole(((SequenceMessageType) elementFromXtext).getSource());
+          InstanceRole target = EmbeddedEditorInstanceHelper
+              .getInstanceRole(((SequenceMessageType) elementFromXtext).getTarget());
           return source != null && target != null;
         }
         if (elementFromXtext instanceof ArmTimerMessage) {
-          InstanceRole timeline = EmbeddedEditorInstanceHelper.getInstanceRole(((ArmTimerMessage) elementFromXtext).getParticipant());
+          InstanceRole timeline = EmbeddedEditorInstanceHelper
+              .getInstanceRole(((ArmTimerMessage) elementFromXtext).getParticipant());
           return timeline != null;
         }
         return false;
       }
-      
+
     });
   }
 
   /**
-   * Create all objects necessary to display the text scenario in the Capella diagram. 
-   * This includes sequence messages, combined fragments, state fragments
+   * Create all objects necessary to display the text scenario in the Capella diagram. This includes sequence messages,
+   * combined fragments, state fragments
    * 
    * @param scenario
    *          The scenario diagram
@@ -578,16 +581,15 @@ public class XtextToDiagramCommands {
    */
   private static void editElements(Scenario scenario, EList<Element> elements) {
     EList<SequenceMessage> sequenceMessages = scenario.getOwnedMessages();
-    List<EObject> previousStateFragments = new ArrayList <>();
+    List<EObject> previousStateFragments = new ArrayList<>();
     for (Iterator<Element> iterator = elements.iterator(); iterator.hasNext();) {
       EObject xtextElement = iterator.next();
 
       if (xtextElement instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
           && !(xtextElement instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation)) {
         // This is a sequence message, it can be with execution and/or with return
-        org.polarsys.capella.scenario.editor.dsl.textualScenario.Message seqMessage = 
-            (org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) xtextElement;
-        
+        org.polarsys.capella.scenario.editor.dsl.textualScenario.Message seqMessage = (org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) xtextElement;
+
         InstanceRole source = null;
         InstanceRole target = null;
         if (seqMessage instanceof SequenceMessageType) {
@@ -597,17 +599,17 @@ public class XtextToDiagramCommands {
           source = EmbeddedEditorInstanceHelper.getInstanceRole(((ArmTimerMessage) seqMessage).getParticipant());
           target = source;
         }
-        
+
         if (!foundMessageBySourceTargetAndName(sequenceMessages, seqMessage)) {
           SequenceMessage sequenceMessage = createCapellaSequenceMessage(scenario, source, target, seqMessage);
           sequenceMessages.add(sequenceMessage);
-          
+
           // if message has return branch, create corresponding Capella return message
           if (hasReturn(seqMessage)) {
-            SequenceMessage opposingSequenceMessage = createCapellaSequenceMessage(scenario, target, source,
-                seqMessage, true);
+            SequenceMessage opposingSequenceMessage = createCapellaSequenceMessage(scenario, target, source, seqMessage,
+                true);
             Execution execution = getExecutionForSequenceMessage(scenario, sequenceMessage);
-            if(execution != null)
+            if (execution != null)
               execution.setFinish(opposingSequenceMessage.getSendingEnd());
             sequenceMessages.add(opposingSequenceMessage);
           }
@@ -619,7 +621,7 @@ public class XtextToDiagramCommands {
             (org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) xtextElement);
         if (capellaFragment == null) {
           InteractionFragment lastInteractionFragment = null;
-          
+
           if (!sequenceMessages.isEmpty()) {
             SequenceMessage lastSequenceMessage = sequenceMessages.get(sequenceMessages.size() - 1);
             lastInteractionFragment = lastSequenceMessage.getReceivingEnd();
@@ -653,17 +655,17 @@ public class XtextToDiagramCommands {
    *          List of sequence messages to search into
    * @param source
    *          Source instance role
-   * @param target 
+   * @param target
    *          Target instance role
    * @param messageName
    *          Message name
    * @return true if a message with these attributes was found, false otherwise
    */
-  private static boolean foundMessageBySourceTargetAndName(EList<SequenceMessage> sequenceMessages, 
+  private static boolean foundMessageBySourceTargetAndName(EList<SequenceMessage> sequenceMessages,
       org.polarsys.capella.scenario.editor.dsl.textualScenario.Message seqMessage) {
     List<SequenceMessage> msgsFilteredByNameTargetSource = sequenceMessages.stream()
         .filter(x -> isSameMessage(seqMessage, x))
-        
+
         .collect(Collectors.toList());
     return !msgsFilteredByNameTargetSource.isEmpty();
   }
@@ -677,10 +679,11 @@ public class XtextToDiagramCommands {
    */
   private static boolean hasReturn(Message elementFromXtext) {
     if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage)
-      return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) elementFromXtext).getReturn() != null;
+      return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) elementFromXtext)
+          .getReturn() != null;
     return false;
   }
-  
+
   /**
    * Check to see if the given message has execution (withExecution keyword present)
    * 
@@ -690,23 +693,25 @@ public class XtextToDiagramCommands {
    */
   protected static boolean hasExecution(Message elementFromXtext) {
     if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-      return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) elementFromXtext).getExecution() != null;
+      return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) elementFromXtext)
+          .getExecution() != null;
     }
     if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) {
-      return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) elementFromXtext).getExecution() != null;
+      return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) elementFromXtext)
+          .getExecution() != null;
     }
     return false;
   }
 
   /**
-   * Create/update a state fragment using the information in the xtext scenario 
+   * Create/update a state fragment using the information in the xtext scenario
    * 
    * @param scenario
    *          The scenario diagram
    * @param xtextElement
    *          The element representing the state fragment in the xtext scenario
    * @param previousEditorStateFragments
-   *           The list of previously occurring matching state fragments
+   *          The list of previously occurring matching state fragments
    */
   private static void editStateFragment(Scenario scenario,
       org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment xtextElement,
@@ -729,8 +734,8 @@ public class XtextToDiagramCommands {
     if (relatedElement == null)
       return;
 
-    List<TimeLapse> capellaStateFragments = getStateFragmentsWithGivenAttributes(scenario,
-        instanceRole, xtextElement, relatedElement);
+    List<TimeLapse> capellaStateFragments = getStateFragmentsWithGivenAttributes(scenario, instanceRole, xtextElement,
+        relatedElement);
 
     if (capellaStateFragments.isEmpty() || capellaStateFragments.size() < simillarStateFragments.size()) {
       InteractionState interactionStateStart = createInteractionState(DslConstants.START, relatedElement, instanceRole);
@@ -746,7 +751,7 @@ public class XtextToDiagramCommands {
   }
 
   /**
-   * Return a list of state fragments with the given attributes (instance role and related element) 
+   * Return a list of state fragments with the given attributes (instance role and related element)
    * 
    * @param scenario
    *          The scenario diagram
@@ -755,7 +760,7 @@ public class XtextToDiagramCommands {
    * @param xtextElement
    *          The element representing the state fragment in the xtext scenario
    * @param previousEditorStateFragments
-   *           The list of previously occurring matching state fragments
+   *          The list of previously occurring matching state fragments
    * @param relatedElement
    *          The element representing Capella abstract function or abstract state related with a state fragment
    * @return the list of state fragments with the given attributes
@@ -793,8 +798,7 @@ public class XtextToDiagramCommands {
     if (stateFragment.getKeyword().equals(DslConstants.FUNCTION)) {
       return getCorrespondingCapellaAbstractFunction(instanceRole, stateFragment.getName());
     }
-    return getCorrespondingCapellaAbstractState(instanceRole, stateFragment.getName(),
-        stateFragment.getKeyword());
+    return getCorrespondingCapellaAbstractState(instanceRole, stateFragment.getName(), stateFragment.getKeyword());
   }
 
   /**
@@ -832,10 +836,11 @@ public class XtextToDiagramCommands {
    * @param relatedElement
    *          The related abstract function or abstract state for the given state fragment
    * @param instanceRole
-   *          Timeline (instance role) for the interaction state 
+   *          Timeline (instance role) for the interaction state
    * @return the newly created interaction state
    */
-  private static InteractionState createInteractionState(String name, EObject relatedElement, InstanceRole instanceRole) {
+  private static InteractionState createInteractionState(String name, EObject relatedElement,
+      InstanceRole instanceRole) {
 
     InteractionState interactionState = InteractionFactory.eINSTANCE.createInteractionState();
     interactionState.setName(name);
@@ -856,13 +861,13 @@ public class XtextToDiagramCommands {
    * @param scenario
    *          The scenario diagram
    * @param instanceRole
-   *          Timeline (instance role) for the interaction state 
+   *          Timeline (instance role) for the interaction state
    * @param name
    *          Name of the abstract function
-   * @return the corresponding Capella abstract function or null if no abstract function with the given attributes was found
+   * @return the corresponding Capella abstract function or null if no abstract function with the given attributes was
+   *         found
    */
-  private static AbstractFunction getCorrespondingCapellaAbstractFunction(InstanceRole instanceRole,
-      String name) {
+  private static AbstractFunction getCorrespondingCapellaAbstractFunction(InstanceRole instanceRole, String name) {
     List<AbstractFunction> availableFunctions = EmbeddedEditorInstanceHelper.getAllocatedFunctions(instanceRole);
 
     for (AbstractFunction availableFunction : availableFunctions) {
@@ -878,15 +883,15 @@ public class XtextToDiagramCommands {
    * @param scenario
    *          The scenario diagram
    * @param instanceRole
-   *          Timeline (instance role) for the interaction state 
+   *          Timeline (instance role) for the interaction state
    * @param name
    *          Name of the abstract state
    * @param keyword
    *          STATE or MODE
    * @return the corresponding Capella abstract state or null if no abstract state with the given attributes was found
    */
-  private static AbstractState getCorrespondingCapellaAbstractState(InstanceRole instanceRole,
-      String name, String keyword) {
+  private static AbstractState getCorrespondingCapellaAbstractState(InstanceRole instanceRole, String name,
+      String keyword) {
     List<AbstractState> availableStates;
 
     if (keyword.equals(DslConstants.STATE)) {
@@ -908,7 +913,7 @@ public class XtextToDiagramCommands {
    * @param scenario
    *          The scenario diagram
    * @param sequenceMessage
-   *          Capella sequence message 
+   *          Capella sequence message
    * @return the Execution object or null if no execution found
    */
   private static Execution getExecutionForSequenceMessage(Scenario scenario, SequenceMessage sequenceMessage) {
@@ -931,11 +936,10 @@ public class XtextToDiagramCommands {
    * @param scenario
    *          The scenario diagram
    * @param elementFromXtext
-   *          The element representing the message in the xtext editor 
+   *          The element representing the message in the xtext editor
    * @return the corresponding Capella sequence message or null if no message found
    */
-  private static SequenceMessage getCorrespondingCapellaSequenceMessage(Scenario scenario,
-      Message elementFromXtext) {
+  private static SequenceMessage getCorrespondingCapellaSequenceMessage(Scenario scenario, Message elementFromXtext) {
     EList<SequenceMessage> sequenceMessages = scenario.getOwnedMessages();
 
     for (SequenceMessage sm : sequenceMessages) {
@@ -1015,16 +1019,16 @@ public class XtextToDiagramCommands {
   private static List<InteractionOperand> getOrderedCapellaInteractionOperands(Scenario scenario,
       org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment textCombinedFragment,
       CombinedFragment capellaCombinedFragment) {
-    List<InteractionOperand> orderedOperands = new ArrayList<>(
-        1 + textCombinedFragment.getOperands().size());
+    List<InteractionOperand> orderedOperands = new ArrayList<>(1 + textCombinedFragment.getOperands().size());
 
     orderedOperands.add(getFirstCapellaInteractionOperand(scenario, textCombinedFragment, capellaCombinedFragment));
 
     List<InteractionOperand> processedOperands = new ArrayList<>();
     processedOperands.add(orderedOperands.get(0));
-    
+
     for (Operand textOperandBlock : textCombinedFragment.getOperands()) {
-      orderedOperands.add(getCapellaInteractionOperand(scenario, textOperandBlock, capellaCombinedFragment, processedOperands));
+      orderedOperands
+          .add(getCapellaInteractionOperand(scenario, textOperandBlock, capellaCombinedFragment, processedOperands));
     }
 
     return orderedOperands;
@@ -1087,8 +1091,8 @@ public class XtextToDiagramCommands {
       InteractionFragment element = iterator.next();
       if (element instanceof FragmentEnd) {
         CombinedFragment candidateCombinedFragment = (CombinedFragment) ((FragmentEnd) element).getAbstractFragment();
-        if (candidateCombinedFragment.getOperator().toString().equalsIgnoreCase(textCombinedFragment.getKeyword())) {          
-          //check timelines
+        if (candidateCombinedFragment.getOperator().toString().equalsIgnoreCase(textCombinedFragment.getKeyword())) {
+          // check timelines
           if (haveSameTimelines(textCombinedFragment, candidateCombinedFragment)) {
             List<InteractionOperand> capellaOperands = candidateCombinedFragment.getReferencedOperands();
             if (capellaOperands.size() == textCombinedFragment.getOperands().size() + 1
@@ -1114,11 +1118,11 @@ public class XtextToDiagramCommands {
   private static boolean haveSameTimelines(
       org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment textCombinedFragment,
       CombinedFragment capellaCombinedFragment) {
-    
-    EList<String> xtextTimelines = textCombinedFragment.getTimelines();    
+
+    EList<String> xtextTimelines = textCombinedFragment.getTimelines();
     List<String> capellaTimelines = capellaCombinedFragment.getStart().getCoveredInstanceRoles().stream()
         .map(role -> role.getName()).collect(Collectors.toList());
-    
+
     xtextTimelines.sort(Comparator.naturalOrder());
     capellaTimelines.sort(Comparator.naturalOrder());
     return xtextTimelines.equals(capellaTimelines);
@@ -1136,16 +1140,16 @@ public class XtextToDiagramCommands {
   private static boolean operandsHaveSameExpressions(
       org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment textCombinedFragment,
       List<InteractionOperand> capellaOperands) {
-    
-    //check expression on first operand
+
+    // check expression on first operand
     InteractionOperand capellaOperand = capellaOperands.get(0);
     Operand xtextOperand;
     boolean operandsHaveSameExpressions = true;
     if (!HelperCommands.getExpressionText(capellaOperand).equals(textCombinedFragment.getExpression())) {
       operandsHaveSameExpressions = false;
     }
-    
-    //check expression on the rest of the operands           
+
+    // check expression on the rest of the operands
     int i = 1;
     while (i < capellaOperands.size() && operandsHaveSameExpressions) {
       capellaOperand = capellaOperands.get(i);
@@ -1159,8 +1163,8 @@ public class XtextToDiagramCommands {
   }
 
   /**
-   * Remove all messages that are in the diagram, but not in the editor. 
-   * Remove all related elements (execution, interaction fragments, etc)
+   * Remove all messages that are in the diagram, but not in the editor. Remove all related elements (execution,
+   * interaction fragments, etc)
    * 
    * @param scenario
    *          The scenario diagram
@@ -1183,10 +1187,9 @@ public class XtextToDiagramCommands {
       removeMessageFromScenario(scenario, sequenceMessage);
     }
   }
-  
+
   /**
-   * Remove all state fragments that are in the diagram, but not in the editor. 
-   * Remove all related elements.
+   * Remove all state fragments that are in the diagram, but not in the editor. Remove all related elements.
    * 
    * @param scenario
    *          The scenario diagram
@@ -1195,20 +1198,19 @@ public class XtextToDiagramCommands {
    */
   private static void cleanUpStateFragments(Scenario scenario, EList<Element> xTextElements) {
     // Delete all diagram state fragments that don't appear in the xtext scenario
-    List<EObject> allXtextStateFragments =  xTextElements.stream()
+    List<EObject> allXtextStateFragments = xTextElements.stream()
         .filter(element -> element instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment)
         .collect(Collectors.toList());
 
     List<TimeLapse> stateFragmentsToBeDeleted = getCapellaStateFragmentsToBeDeleted(scenario, allXtextStateFragments);
-    
+
     for (TimeLapse timeLapse : stateFragmentsToBeDeleted) {
       removeStateFragmentFromScenario(scenario, timeLapse);
     }
   }
 
   /**
-   * Remove all combined fragments that are in the diagram, but not in the editor. 
-   * Remove all related elements.
+   * Remove all combined fragments that are in the diagram, but not in the editor. Remove all related elements.
    * 
    * @param scenario
    *          The scenario diagram
@@ -1217,20 +1219,20 @@ public class XtextToDiagramCommands {
    */
   private static void cleanUpCombinedFragments(Scenario scenario, EList<Element> xTextElements) {
     // Delete all diagram combined fragments that don't appear in the xtext scenario
-    List<EObject> allXtextCombinedFragments =  xTextElements.stream()
+    List<EObject> allXtextCombinedFragments = xTextElements.stream()
         .filter(element -> element instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment)
         .collect(Collectors.toList());
 
-    List<TimeLapse> combinedFragmentsToBeDeleted = getCapellaCombinedFragmentsToBeDeleted(scenario, allXtextCombinedFragments);
-    
+    List<TimeLapse> combinedFragmentsToBeDeleted = getCapellaCombinedFragmentsToBeDeleted(scenario,
+        allXtextCombinedFragments);
+
     for (TimeLapse timeLapse : combinedFragmentsToBeDeleted) {
       removeCombinedFragmentFromScenario(scenario, timeLapse);
     }
   }
 
   /**
-   * Return the list of Capella combined fragments to be deleted (the ones that don't have corresponding 
-   * xtext elements)
+   * Return the list of Capella combined fragments to be deleted (the ones that don't have corresponding xtext elements)
    * 
    * @param scenario
    *          The scenario diagram
@@ -1243,17 +1245,16 @@ public class XtextToDiagramCommands {
     // We mark for deletion all combined fragments in scenario that don't have corresponding xtext fragments
     List<TimeLapse> capellaCombinedFragments = scenario.getOwnedTimeLapses().stream()
         .filter(timelapse -> timelapse instanceof CombinedFragment).collect(Collectors.toList());
-    
-    List<org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment> processedXtextCombinedFragments = 
-        new ArrayList<>();
+
+    List<org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment> processedXtextCombinedFragments = new ArrayList<>();
     List<TimeLapse> combinedFragmentsToBeDeleted = new ArrayList<>();
-    
+
     for (TimeLapse timeLapse : capellaCombinedFragments) {
       if (!foundCapellaCombinedFragmentInXText(timeLapse, allXtextCombinedFragments, processedXtextCombinedFragments)) {
         combinedFragmentsToBeDeleted.add(timeLapse);
       }
     }
-    
+
     return combinedFragmentsToBeDeleted;
   }
 
@@ -1272,9 +1273,10 @@ public class XtextToDiagramCommands {
       List<EObject> allXtextCombinedFragments,
       List<org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment> processedXtextCombinedFragments) {
     for (EObject xtextCombinedFragment : allXtextCombinedFragments) {
-      if (!processedXtextCombinedFragments.contains(xtextCombinedFragment) 
+      if (!processedXtextCombinedFragments.contains(xtextCombinedFragment)
           && isSameCombinedFragment(xtextCombinedFragment, timeLapse)) {
-        processedXtextCombinedFragments.add((org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) xtextCombinedFragment);
+        processedXtextCombinedFragments
+            .add((org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) xtextCombinedFragment);
         return true;
       }
     }
@@ -1294,16 +1296,15 @@ public class XtextToDiagramCommands {
     if (!(fragment instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment)) {
       return false;
     }
-    org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment xtextCombinedFragment = 
-        (org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) fragment;   
-    CombinedFragment correspondingCapellaFragment = getCorrespondingCapellaCombinedFragment((Scenario) timeLapse.eContainer(), xtextCombinedFragment);
-    
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment xtextCombinedFragment = (org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) fragment;
+    CombinedFragment correspondingCapellaFragment = getCorrespondingCapellaCombinedFragment(
+        (Scenario) timeLapse.eContainer(), xtextCombinedFragment);
+
     return timeLapse.equals(correspondingCapellaFragment);
   }
 
   /**
-   * Return the list of Capella state fragments to be deleted (the ones that don't have corresponding 
-   * xtext elements)
+   * Return the list of Capella state fragments to be deleted (the ones that don't have corresponding xtext elements)
    * 
    * @param scenario
    *          The scenario diagram
@@ -1316,17 +1317,16 @@ public class XtextToDiagramCommands {
     // We mark for deletion all state fragments in scenario that don't have corresponding xtext fragments
     List<TimeLapse> capellaStateFragments = scenario.getOwnedTimeLapses().stream()
         .filter(timelapse -> timelapse instanceof StateFragment).collect(Collectors.toList());
-    
-    List<org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment> processedXtextStateFragments = 
-        new ArrayList<>();
+
+    List<org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment> processedXtextStateFragments = new ArrayList<>();
     List<TimeLapse> stateFragmentsToBeDeleted = new ArrayList<>();
-    
+
     for (TimeLapse timeLapse : capellaStateFragments) {
       if (!foundCapellaStateFragmentInXText(timeLapse, allXtextStateFragments, processedXtextStateFragments)) {
         stateFragmentsToBeDeleted.add(timeLapse);
       }
     }
-    
+
     return stateFragmentsToBeDeleted;
   }
 
@@ -1377,7 +1377,7 @@ public class XtextToDiagramCommands {
     // Remove sequence message
     scenario.getOwnedMessages().remove(sequenceMessage);
   }
-  
+
   /**
    * Remove a state fragment from scenario. Remove all related elements.
    * 
@@ -1386,14 +1386,15 @@ public class XtextToDiagramCommands {
    * @param timeLapse
    *          The timelapse of the state fragment
    */
-  private static void removeStateFragmentFromScenario(Scenario scenario, TimeLapse timeLapse) {    
+  private static void removeStateFragmentFromScenario(Scenario scenario, TimeLapse timeLapse) {
     StateFragment stateFragment = (StateFragment) timeLapse;
-    
+
     // Remove state fragment
     scenario.getOwnedTimeLapses().remove(timeLapse);
-    
+
     // Remove interaction fragments
-    scenario.getOwnedInteractionFragments().removeAll(Arrays.asList(stateFragment.getStart(), stateFragment.getFinish()));
+    scenario.getOwnedInteractionFragments()
+        .removeAll(Arrays.asList(stateFragment.getStart(), stateFragment.getFinish()));
   }
 
   /**
@@ -1406,13 +1407,13 @@ public class XtextToDiagramCommands {
    */
   private static void removeCombinedFragmentFromScenario(Scenario scenario, TimeLapse timeLapse) {
     CombinedFragment combinedFragment = (CombinedFragment) timeLapse;
-    
+
     // Remove combined fragment
     scenario.getOwnedTimeLapses().remove(timeLapse);
-    
+
     // Remove interaction fragments (start, finish, operands)
-    scenario.getOwnedInteractionFragments().removeAll(Arrays.asList(combinedFragment.getStart(), combinedFragment.getFinish(), 
-        combinedFragment.getReferencedOperands()));
+    scenario.getOwnedInteractionFragments().removeAll(Arrays.asList(combinedFragment.getStart(),
+        combinedFragment.getFinish(), combinedFragment.getReferencedOperands()));
   }
 
   /**
@@ -1445,12 +1446,12 @@ public class XtextToDiagramCommands {
    *          List of already considered xtext state fragments
    * @return true if a corresponding state fragment is found, false otherwise
    */
-  private static boolean foundCapellaStateFragmentInXText(TimeLapse timelapse,
-      List<EObject> allXtextStateFragments, List<org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment> processedXtextStateFragments) {
+  private static boolean foundCapellaStateFragmentInXText(TimeLapse timelapse, List<EObject> allXtextStateFragments,
+      List<org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment> processedXtextStateFragments) {
     for (EObject stateFragment : allXtextStateFragments) {
-      if (!processedXtextStateFragments.contains(stateFragment) 
-          && isSameStateFragment(stateFragment, timelapse)) {
-        processedXtextStateFragments.add((org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment) stateFragment);
+      if (!processedXtextStateFragments.contains(stateFragment) && isSameStateFragment(stateFragment, timelapse)) {
+        processedXtextStateFragments
+            .add((org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment) stateFragment);
         return true;
       }
     }
@@ -1458,7 +1459,8 @@ public class XtextToDiagramCommands {
   }
 
   /**
-   * Return the list of all xtext sequence messages. The search is done recursively when combined fragments are encountered
+   * Return the list of all xtext sequence messages. The search is done recursively when combined fragments are
+   * encountered
    * 
    * @param textMessages
    *          List of messages in the xtext editor
@@ -1510,10 +1512,9 @@ public class XtextToDiagramCommands {
     MessageKind xtextMessageKind = null;
     String capellaMessageName = seqMessage.getName();
     MessageKind capellaMessageKind = seqMessage.getKind();
-    
+
     if (xtextElement instanceof SequenceMessageType) {
-      org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType message = 
-          (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextElement;
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType message = (org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextElement;
       sendingEnd = seqMessage.getSendingEnd();
       receivingEnd = seqMessage.getReceivingEnd();
       source = message.getSource();
@@ -1521,8 +1522,7 @@ public class XtextToDiagramCommands {
       xtextMessageName = message.getName();
       xtextMessageKind = getSequenceMessageKind(message, false);
     } else if (xtextElement instanceof ArmTimerMessage) {
-      org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage armTimerMessage = 
-          (org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) xtextElement;
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage armTimerMessage = (org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) xtextElement;
       sendingEnd = seqMessage.getSendingEnd();
       receivingEnd = seqMessage.getReceivingEnd();
       source = armTimerMessage.getParticipant();
@@ -1530,11 +1530,11 @@ public class XtextToDiagramCommands {
       xtextMessageName = armTimerMessage.getName();
       xtextMessageKind = getSequenceMessageKind(armTimerMessage, false);
     }
-    
-    return sendingEnd == null ? false : 
-      isSameMessage(source, target, sendingEnd, receivingEnd, xtextMessageName, capellaMessageName, xtextMessageKind, capellaMessageKind);
+
+    return sendingEnd == null ? false
+        : isSameMessage(source, target, sendingEnd, receivingEnd, xtextMessageName, capellaMessageName,
+            xtextMessageKind, capellaMessageKind);
   }
-  
 
   /**
    * Check if the two messages match
@@ -1563,8 +1563,7 @@ public class XtextToDiagramCommands {
         && source.equals(sendingEnd.getCoveredInstanceRoles().get(0).getName())
         && !receivingEnd.getCoveredInstanceRoles().isEmpty()
         && target.equals(receivingEnd.getCoveredInstanceRoles().get(0).getName())
-        && messageName.equals(capellaMessageName)
-        && xtextMessageKind.equals(capellaMessageKind)) {
+        && messageName.equals(capellaMessageName) && xtextMessageKind.equals(capellaMessageKind)) {
       return true;
     }
     return false;
@@ -1583,11 +1582,11 @@ public class XtextToDiagramCommands {
     if (!(fragment instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment)) {
       return false;
     }
-    org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment stateFragment = 
-        (org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment) fragment;
+    org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment stateFragment = (org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment) fragment;
     StateFragment capellaStateFragment = (StateFragment) timelapse;
-       
-    return (stateFragment.getTimeline().equals(capellaStateFragment.getStart().getCoveredInstanceRoles().get(0).getName())
+
+    return (stateFragment.getTimeline()
+        .equals(capellaStateFragment.getStart().getCoveredInstanceRoles().get(0).getName())
         && stateFragment.getKeyword().equals(EmbeddedEditorInstanceHelper.getStateFragmentType(capellaStateFragment))
         && stateFragment.getName().equals(EmbeddedEditorInstanceHelper.getStateFragmentName(capellaStateFragment)));
   }
@@ -1613,21 +1612,22 @@ public class XtextToDiagramCommands {
   /*
    * Create a capella sequence message and set all data needed by a capella sequence message : sending end, receiving
    * end, execution etc
-   * @param scenario
-   *          The scenario diagram
-   * @param source
-   *          Source of the Capella sequence message
-   * @param target
-   *          Target of the Capella sequence message
-   * @param seqMessage
-   *          The element representing the sequence message in the xtext editor 
-   * @param isReplyMessage
-   *          True if this is the message representing the return branch of a sequence message with return branch
+   * 
+   * @param scenario The scenario diagram
+   * 
+   * @param source Source of the Capella sequence message
+   * 
+   * @param target Target of the Capella sequence message
+   * 
+   * @param seqMessage The element representing the sequence message in the xtext editor
+   * 
+   * @param isReplyMessage True if this is the message representing the return branch of a sequence message with return
+   * branch
+   * 
    * @return the newly created Capella sequence message
    */
   private static SequenceMessage createCapellaSequenceMessage(Scenario scenario, InstanceRole source,
-      InstanceRole target, Message seqMessage,
-      boolean isReplyMessage) {
+      InstanceRole target, Message seqMessage, boolean isReplyMessage) {
     // create Capella SequenceMessage
     SequenceMessage sequenceMessage = InteractionFactory.eINSTANCE.createSequenceMessage();
     sequenceMessage.setName(seqMessage.getName());
@@ -1646,9 +1646,9 @@ public class XtextToDiagramCommands {
     scenario.getOwnedInteractionFragments().add(receivingEnd);
 
     // execution end - CREATE and DELETE messages don't have an execution
-    if (!isReplyMessage && 
-        (seqMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage ||
-         seqMessage instanceof ArmTimerMessage)) {
+    if (!isReplyMessage
+        && (seqMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage
+            || seqMessage instanceof ArmTimerMessage)) {
       ExecutionEnd executionEnd = InteractionFactory.eINSTANCE.createExecutionEnd();
       if (!hasReturn(seqMessage)) {
         // do not add this execution end to the interaction fragments list, as we will add the sending end of the reply
@@ -1686,7 +1686,7 @@ public class XtextToDiagramCommands {
     } else {
       exchanges = EmbeddedEditorInstanceHelper.getExchangeMessages(source.getName(), target.getName());
     }
-    
+
     if (EmbeddedEditorInstanceHelper.isInterfaceScenario()) {
       exchanges = exchanges.stream()
           .filter(ex -> ((ExchangeItemAllocation) ex).getAllocatedItem().getName().equals(seqMessage.getName()))
@@ -1715,12 +1715,13 @@ public class XtextToDiagramCommands {
   private static MessageKind getSequenceMessageKind(Message seqMessage, boolean isReplyMessage) {
     if (seqMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
       return isReplyMessage ? MessageKind.REPLY
-          : ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage).getReturn() != null ? 
-              MessageKind.SYNCHRONOUS_CALL : MessageKind.ASYNCHRONOUS_CALL; 
+          : ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) seqMessage).getReturn() != null
+              ? MessageKind.SYNCHRONOUS_CALL
+              : MessageKind.ASYNCHRONOUS_CALL;
     }
     if (seqMessage instanceof CreateMessage) {
       return MessageKind.CREATE;
-    } 
+    }
     if (seqMessage instanceof DeleteMessage) {
       return MessageKind.DELETE;
     }
@@ -1731,20 +1732,20 @@ public class XtextToDiagramCommands {
   }
 
   /**
-   * Move the interaction fragment representing the execution end to the correct position in the interaction
-   * fragments list, according to the xtext scenario
+   * Move the interaction fragment representing the execution end to the correct position in the interaction fragments
+   * list, according to the xtext scenario
    * 
    * @param fragments
-   *          The new list of ordered interaction fragments that will be used to update the Capella diagram
-   *          according to the xtext scenario
+   *          The new list of ordered interaction fragments that will be used to update the Capella diagram according to
+   *          the xtext scenario
    * @param instanceRole
    *          Timeline in the deactivation message
    * @param executionEndsToProcess
-   *          List of execution ends that have to be processed (moved on the correct order in the list of
-   *          interaction fragments.
+   *          List of execution ends that have to be processed (moved on the correct order in the list of interaction
+   *          fragments.
    * @param sequenceMessages
-   *          The new list of Capella sequence messages that will be used to update the Capella diagram
-   *          according to the xtext scenario
+   *          The new list of Capella sequence messages that will be used to update the Capella diagram according to the
+   *          xtext scenario
    */
   private static void doDeactivationSequenceMessageForReorder(List<InteractionFragment> fragments,
       InstanceRole instanceRole, List<InteractionFragment> executionEndsToProcess,
@@ -1782,8 +1783,8 @@ public class XtextToDiagramCommands {
    * @param instanceRole
    *          Timeline for which we search the latest execution
    * @param executionEndsToProcess
-   *          List of execution ends that have to be processed (moved on the correct order in the list of
-   *          interaction fragments.
+   *          List of execution ends that have to be processed (moved on the correct order in the list of interaction
+   *          fragments.
    * @return the execution end for the latest execution on the given timeline
    */
   private static InteractionFragment getLatestExecutionEndOnTimeline(InstanceRole instanceRole,
@@ -1801,8 +1802,8 @@ public class XtextToDiagramCommands {
    * @param xtextCombinedFragment
    *          xtext combined fragment
    * @param lastInteractionFragment
-   *          The last interaction fragment before the given combined fragment. If null, the combined fragment
-   *          will be the first object in the Capella diagram
+   *          The last interaction fragment before the given combined fragment. If null, the combined fragment will be
+   *          the first object in the Capella diagram
    */
   private static void createCapellaCombinedFragmentBlock(Scenario scenario,
       org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment xtextCombinedFragment,
@@ -1829,12 +1830,14 @@ public class XtextToDiagramCommands {
     else
       ScenarioExt.moveEndOnBeginingOfScenario(start);
 
-    CombinedFragment combinedFragment = createCombinedFragment(start, finish, InteractionOperatorKind.getByName(xtextCombinedFragment.getKeyword().toUpperCase()));
+    CombinedFragment combinedFragment = createCombinedFragment(start, finish,
+        InteractionOperatorKind.getByName(xtextCombinedFragment.getKeyword().toUpperCase()));
     scenario.getOwnedTimeLapses().add(combinedFragment);
 
     Block firstBlock = xtextCombinedFragment.getBlock();
     if (firstBlock != null) {
-      InteractionOperand operand = createInteractionOperand(start.getCoveredInstanceRoles(), xtextCombinedFragment.getExpression());
+      InteractionOperand operand = createInteractionOperand(start.getCoveredInstanceRoles(),
+          xtextCombinedFragment.getExpression());
       combinedFragment.getReferencedOperands().add(operand);
       scenario.getOwnedInteractionFragments().add(operand);
       ScenarioExt.moveEndOnScenario(operand, start);
@@ -1864,7 +1867,8 @@ public class XtextToDiagramCommands {
    *          The expression for the operand
    * @return the newly created interaction operand
    */
-  private static InteractionOperand createInteractionOperand(EList<InstanceRole> coveredInstanceRoles, String condition) {
+  private static InteractionOperand createInteractionOperand(EList<InstanceRole> coveredInstanceRoles,
+      String condition) {
     InteractionOperand operand = InteractionFactory.eINSTANCE.createInteractionOperand();
     operand.setName("operand");
     operand.getCoveredInstanceRoles().addAll(coveredInstanceRoles);

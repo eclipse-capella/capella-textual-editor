@@ -10,7 +10,7 @@
       </category>
       <view
             id="org.eclipse.xtext.example.domainmodel.embeddededitor.views.EmbeddedEditorView"
-            name="Scenario Editor"
+            name="Textual Editor"
             icon="icons/Scenario.gif"
             class="org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView"
             category="org.eclipse.xtext.example.domainmodel.embeddededitor"

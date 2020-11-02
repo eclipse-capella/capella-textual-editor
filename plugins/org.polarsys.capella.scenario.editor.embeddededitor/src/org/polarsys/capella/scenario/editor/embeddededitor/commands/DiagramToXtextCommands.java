@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResource;
 import org.polarsys.capella.common.data.modellingcore.AbstractType;
 import org.polarsys.capella.core.data.capellacommon.AbstractState;
@@ -78,7 +80,7 @@ public class DiagramToXtextCommands {
 
       TextualScenarioFactory factory = new TextualScenarioFactoryImpl();
       Model domainModel = HelperCommands.getModel(embeddedEditorViewPart);
-      if (domainModel != null) {
+      if (domainModel != null && scenario != null) {
         HelperCommands.clearModel(domainModel);
 
         // Generate Participants
@@ -93,10 +95,17 @@ public class DiagramToXtextCommands {
           String serialized = ((XtextResource) domainModel.eResource()).getSerializer().serialize(domainModel);
           EmbeddedEditorInstanceHelper.updateModel(serialized);
         } catch (Exception e) {
-          System.err.println("Error refreshing diagram from Textual Editor");
+          showDialogUnableToRefresh();
+          System.err.println("Error refreshing diagram to Textual Editor");
         }
+      } else {
+        showDialogUnableToRefresh();
       }
     }
+  }
+  
+  private static void showDialogUnableToRefresh() {
+    MessageDialog.openError(Display.getCurrent().getActiveShell(), "Unable to refresh", "Error on refreshing data to Textual Editor");
   }
 
   /**

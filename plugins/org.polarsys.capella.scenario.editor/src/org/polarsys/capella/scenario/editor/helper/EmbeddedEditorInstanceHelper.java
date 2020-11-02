@@ -242,7 +242,7 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  public static Collection<? extends EObject> getAvailableAbstractFunctions() {
+  private static Collection<? extends EObject> getAvailableAbstractFunctions() {
     Collection<? extends EObject> elements = FaServices.getFaServices().getAllAbstractFunctions(
         BlockArchitectureExt.getRootBlockArchitecture(EmbeddedEditorInstance.getAssociatedScenarioDiagram()));
     return elements;
@@ -254,7 +254,7 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  public static Collection<? extends EObject> getAvailableComponents() {
+  private static Collection<? extends EObject> getAvailableComponents() {
     Collection<? extends EObject> elements = (new InteractionServices())
         .getESScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
     return elements;
@@ -266,7 +266,7 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  public static Collection<? extends EObject> getAvailableActors() {
+  private static Collection<? extends EObject> getAvailableActors() {
     Collection<? extends EObject> elements = (new InteractionServices())
         .getESScopeInsertActors(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
     return elements;
@@ -278,7 +278,7 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  public static Collection<? extends EObject> getAvailableRoles() {
+  private static Collection<? extends EObject> getAvailableRoles() {
     Collection<? extends EObject> elements = OAServices.getService()
         .getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram()).stream()
         .filter(x -> x instanceof Role).collect(Collectors.toList());
