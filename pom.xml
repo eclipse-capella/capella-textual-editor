@@ -21,7 +21,7 @@
   <name>Capella Textual Editor Addon</name>
   <groupId>org.polarsys</groupId>
   <artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
-  <version>0.9.0-SNAPSHOT</version>
+  <version>0.7.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -111,7 +111,7 @@
 						<artifact>
 							<groupId>org.polarsys</groupId>
 							<artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
-							<version>0.9.0-SNAPSHOT</version>
+							<version>0.7.0-SNAPSHOT</version>
 							<classifier>releng/org.polarsys.capella.scenario.editor.update/capella.target-definition</classifier>
 						</artifact>
 					</target>
