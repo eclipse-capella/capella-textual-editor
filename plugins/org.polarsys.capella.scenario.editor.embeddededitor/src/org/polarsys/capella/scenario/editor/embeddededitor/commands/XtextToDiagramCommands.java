@@ -31,10 +31,7 @@ import org.eclipse.gmf.runtime.notation.Diagram;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
-import org.eclipse.sirius.diagram.sequence.business.internal.layout.flag.SequenceEventAbsoluteBoundsFlagger;
-import org.eclipse.sirius.diagram.sequence.business.internal.operation.SynchronizeGraphicalOrderingOperation;
 import org.eclipse.sirius.diagram.sequence.business.internal.refresh.RefreshLayoutCommand;
-import org.eclipse.sirius.diagram.ui.business.internal.operation.AbstractModelChangeOperation;
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResource;
@@ -51,6 +48,7 @@ import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.data.information.AbstractInstance;
 import org.polarsys.capella.core.data.information.datavalue.DatavalueFactory;
 import org.polarsys.capella.core.data.information.datavalue.OpaqueExpression;
+import org.polarsys.capella.core.data.interaction.AbstractFragment;
 import org.polarsys.capella.core.data.interaction.CombinedFragment;
 import org.polarsys.capella.core.data.interaction.Event;
 import org.polarsys.capella.core.data.interaction.EventReceiptOperation;
@@ -65,6 +63,7 @@ import org.polarsys.capella.core.data.interaction.InteractionFragment;
 import org.polarsys.capella.core.data.interaction.InteractionOperand;
 import org.polarsys.capella.core.data.interaction.InteractionOperatorKind;
 import org.polarsys.capella.core.data.interaction.InteractionState;
+import org.polarsys.capella.core.data.interaction.InteractionUse;
 import org.polarsys.capella.core.data.interaction.MessageEnd;
 import org.polarsys.capella.core.data.interaction.MessageKind;
 import org.polarsys.capella.core.data.interaction.Scenario;
@@ -379,7 +378,7 @@ public class XtextToDiagramCommands {
 
         // Replace sequence message list and interaction fragments list in the real scenario
         // with the newly computed lists
-        scenario.getOwnedInteractionFragments().clear();
+        scenario.getOwnedInteractionFragments().removeIf(x -> !(x instanceof FragmentEnd && ((FragmentEnd)x).getAbstractFragment() instanceof InteractionUse));
         scenario.getOwnedInteractionFragments().addAll(interactionFragments);
 
         scenario.getOwnedMessages().clear();
@@ -1090,8 +1089,13 @@ public class XtextToDiagramCommands {
     for (Iterator<InteractionFragment> iterator = fragments.iterator(); iterator.hasNext();) {
       InteractionFragment element = iterator.next();
       if (element instanceof FragmentEnd) {
-        CombinedFragment candidateCombinedFragment = (CombinedFragment) ((FragmentEnd) element).getAbstractFragment();
-        if (candidateCombinedFragment.getOperator().toString().equalsIgnoreCase(textCombinedFragment.getKeyword())) {
+        AbstractFragment abstractFragment = ((FragmentEnd) element).getAbstractFragment();
+        CombinedFragment candidateCombinedFragment = null;
+        if (abstractFragment instanceof CombinedFragment) {
+          candidateCombinedFragment = (CombinedFragment) abstractFragment;
+        }
+        if (candidateCombinedFragment != null
+            && candidateCombinedFragment.getOperator().toString().equalsIgnoreCase(textCombinedFragment.getKeyword())) {
           // check timelines
           if (haveSameTimelines(textCombinedFragment, candidateCombinedFragment)) {
             List<InteractionOperand> capellaOperands = candidateCombinedFragment.getReferencedOperands();
