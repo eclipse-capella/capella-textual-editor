@@ -23,8 +23,9 @@
 			<img width="760" align="middle" border="0" src="Images/IS_System_SyncButtons.png"/>
 		</p>
 		<h2 id="Syntax_for_the_Textual_Scenario_Editor">Syntax for the Textual Scenario Editor</h2>
-		<h3 id="Adding_Instance_Roles">Adding Instance Roles</h3>
-		<p>Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture level on which our diagram is located, we can add instance roles specifying a keyword (actor, component, function etc) and the name of the instance role (currently the parts associated need to exist already).</p>
+		<p>The syntax supported in the textual editor for IS, FS, ES Capella Scenarios is presented in the following paragraphs.</p>
+		<h3 id="Participants">Participants</h3>
+		<p>Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture level on which our diagram is located, we can insert instance roles specifying a keyword (actor, component, function etc) and the name of the instance role (currently the parts associated need to already exist).</p>
 		<h4 id="Keywords">Keywords</h4>
 		<ul>
 			<li>
@@ -53,8 +54,8 @@
 		<p>
 			<img align="middle" border="0" src="Images/Keywords_Participants_Examples.png"/>
 		</p>
-		<h3 id="Adding_Messages">Adding Messages</h3>
-		<p>The user can create messages between participants assuming the fact that the exchange already exists.</p>
+		<h3 id="Messages">Messages</h3>
+		<p>The user can insert messages between participants assuming the fact that the exchange already exists between the selected source and target participant.</p>
 		<ul>
 			<li>
 				<b> sequence messages </b>: it will add a sequence messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
@@ -92,7 +93,13 @@
 				</ul>
 			</li>
 			<li>
-				<b> create messages </b>: it will add a create messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
+				<b> return branch </b>: to mark that a message has a return, the 
+				<b>withReturn</b> keyword can be used; if the message does not return immediately and other events occur on its execution, then the 
+				<b>withExecution</b> keyword can be used in the same time with the 
+				<b>withReturn</b> keyword to mark that the current message is a complex message and has a return.
+			</li>
+			<li>
+				<b> create messages </b>: it will add a create message between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
 				<ul>
 					<li>
 						<b> "source_ir" -&gt;+ "target_ir" : "msg" </b>
@@ -117,6 +124,19 @@
 					</li>
 				</ul>
 			</li>
+			<li>
+				<b> arm timer </b>: it will add an arm timer on the given timeline.
+				<ul>
+					<li>
+						<b> -&gt;&gt; "timeline" : "msg" </b>
+					</li>
+					<li>example:
+						<dl>
+							<dd>-&gt;&gt; "A 1" : "arm_timer" </dd>
+						</dl>
+					</li>
+				</ul>
+			</li>
 		</ul>
 		<h4 id="Examples_2">Examples</h4>
 		<p>
@@ -133,6 +153,110 @@
 			<br/>
 
 			<img align="middle" border="0" src="Images/OAS_OA_SeqMessages_Interaction.png"/>
+
+			<br/>
+
+			<img align="middle" border="0" src="Images/FS_WithReturn_WithExecution.png"/>
+		</p>
+		<h3 id="Combined_Fragments">Combined Fragments</h3>
+		<p>The user can define a combined fragment from the text using the syntax below:</p>
+		<ul>
+			<li>for 
+				<b>ALT</b>:
+				<dl>
+					<dd>
+						<dl>
+							<dd>
+								<b>alt</b> “condition A” 
+								<b>over</b> timeline1, timeline2,… {
+								<dl>
+									<dd>[something]</dd>
+								</dl>
+							</dd>
+							<dd>} 
+								<b>else</b> “condition B” {
+								<dl>
+									<dd>[something_else]</dd>
+								</dl>
+							</dd>
+							<dd>} 
+								<b>else</b> “condition C” {
+								<dl>
+									<dd>[something_else]</dd>
+								</dl>
+							</dd>
+							<dd>}</dd>
+						</dl>
+					</dd>
+				</dl>
+			</li>
+			<li>for the other combined fragments: 
+				<b>PAR, LOOP, ASSERT, CONSIDER, CRITICAL, IGNORE, NEG, OPT, SEQ, STRICT, UNSET</b>':
+				<dl>
+					<dd>
+						<dl>
+							<dd>
+								<b>par</b> “condition A” 
+								<b>over</b> timeline1, timeline2,… {
+								<dl>
+									<dd>[something]</dd>
+								</dl>
+							</dd>
+							<dd>} “condition B” {
+								<dl>
+									<dd>[something_else]</dd>
+								</dl>
+							</dd>
+							<dd>} “condition C” {
+								<dl>
+									<dd>[something_else]</dd>
+								</dl>
+							</dd>
+							<dd>}</dd>
+						</dl>
+					</dd>
+				</dl>
+			</li>
+		</ul>
+		<h4 id="Examples_3">Examples</h4>
+		<p>
+			<img align="middle" border="0" src="Images/ES_Combined_Fragments.png"/>
+
+			<br/>
+		</p>
+		<h3 id="State._Modes._Allocated_Functions">State. Modes. Allocated Functions</h3>
+		<p>The following syntax can be used in order to define state, modes and allocated functions in the textual mode:</p>
+		<ul>
+			<li>state
+				<ul>
+					<li>
+						<b>on</b> “Timeline” 
+						<b>state</b> “State_name” 
+					</li>
+				</ul>
+			</li>
+			<li>mode
+				<ul>
+					<li>
+						<b>on</b> “Timeline” 
+						<b>mode</b> “Mode_name” 
+					</li>
+				</ul>
+			</li>
+			<li>allocated functions
+				<ul>
+					<li>
+						<b>on</b> “Timeline” 
+						<b>function</b> “Function_name” 
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h4 id="Examples_4">Examples</h4>
+		<p>
+			<img align="middle" border="0" src="Images/ES_FS_States_Modes_AllocFunctions.png"/>
+
+			<br/>
 		</p>
 	</body>
 </html>
