@@ -15,13 +15,13 @@
 	
 	<groupId>org.polarsys</groupId>
 	<artifactId>org.polarsys.capella.scenario.editor.plugins</artifactId>
-	<version>0.9.0-SNAPSHOT</version>
+	<version>0.7.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<parent>
 		<groupId>org.polarsys</groupId>
 		<artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.7.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 
