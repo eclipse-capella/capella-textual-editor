@@ -27,8 +27,10 @@ In order to maintain consistency between diagram and text, two buttons are avail
 
 ==Syntax for the Textual Scenario Editor==
 
-===Adding Instance Roles===
-Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture level on which our diagram is located, we can add instance roles specifying a keyword (actor, component, function etc) and the name of the instance role (currently the parts associated need to exist already).
+The syntax supported in the textual editor for IS, FS, ES Capella Scenarios is presented in the following paragraphs.
+
+===Participants===
+Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture level on which our diagram is located, we can insert instance roles specifying a keyword (actor, component, function etc) and the name of the instance role (currently the parts associated need to already exist).
 
 ====Keywords====
 * ''' actor ''': it will create an instance role representing an actor; this keyword is available for IS, ES diagrams at Operational, System, Logical and Physical Level.
@@ -43,8 +45,8 @@ Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture le
 
 [[Image:Images/Keywords_Participants_Examples.png|center]]
 
-===Adding Messages===
-The user can create messages between participants assuming the fact that the exchange already exists.
+===Messages===
+The user can insert messages between participants assuming the fact that the exchange already exists between the selected source and target participant.
 
 * ''' sequence messages ''': it will add a sequence messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
 ** ''' source_ir" -> "target_ir" : "msg" '''
@@ -56,7 +58,8 @@ The user can create messages between participants assuming the fact that the exc
 ::: "A 1" -> "A 2" ''' withExecution ''' : "exec"
 ::: "A 2" -> "A 3"
 ::: '''deactivate''' "A 2"
-* ''' create messages ''': it will add a create messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
+* ''' return branch ''': to mark that a message has a return, the '''withReturn''' keyword can be used; if the message does not return immediately and other events occur on its execution, then the '''withExecution''' keyword can be used in the same time with the '''withReturn''' keyword to mark that the current message is a complex message and has a return.
+* ''' create messages ''': it will add a create message between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
 ** ''' "source_ir" ->+ "target_ir" : "msg" '''
 ** example:
 ::: "A 1" ->+ "A 2" : "msg" 
@@ -64,7 +67,10 @@ The user can create messages between participants assuming the fact that the exc
 ** ''' "source_ir" ->x "target_ir" : "msg" '''
 ** example:
 :::"A 1" ->x "A 2" : "msg" 
-
+* ''' arm timer ''': it will add an arm timer on the given timeline.
+** ''' ->> "timeline" : "msg" '''
+** example:
+::: ->> "A 1" : "arm_timer" 
 ==== Examples ====
 
 [[Image:Images/IS_System_SeqMessages.png|center]]
@@ -74,4 +80,45 @@ The user can create messages between participants assuming the fact that the exc
 <br>
 <br>
 [[Image:Images/OAS_OA_SeqMessages_Interaction.png|center]]
+<br>
+[[Image:Images/FS_WithReturn_WithExecution.png|center]]
+
+===Combined Fragments===
+
+The user can define a combined fragment from the text using the syntax below:
+* for '''ALT''':
+::: '''alt''' “condition A” '''over''' timeline1, timeline2,… {
+::::[something]
+:::} '''else''' “condition B” {
+::::[something_else]
+:::} '''else''' “condition C” {
+::::[something_else]
+:::}
+* for the other combined fragments: '''PAR, LOOP, ASSERT, CONSIDER, CRITICAL, IGNORE, NEG, OPT, SEQ, STRICT, UNSET'''':
+::: '''par''' “condition A” '''over''' timeline1, timeline2,… {
+::::[something]
+:::} “condition B” {
+::::[something_else]
+:::} “condition C” {
+::::[something_else]
+:::}
+
+==== Examples ====
+
+[[Image:Images/ES_Combined_Fragments.png|center]]
+<br>
+
+===State. Modes. Allocated Functions===
+The following syntax can be used in order to define state, modes and allocated functions in the textual mode:
+* state
+**'''on''' “Timeline” '''state''' “State_name” 
+* mode
+**'''on''' “Timeline” '''mode''' “Mode_name” 
+* allocated functions
+**'''on''' “Timeline” '''function''' “Function_name” 
+
+==== Examples ====
+
+[[Image:Images/ES_FS_States_Modes_AllocFunctions.png|center]]
+<br>
 
