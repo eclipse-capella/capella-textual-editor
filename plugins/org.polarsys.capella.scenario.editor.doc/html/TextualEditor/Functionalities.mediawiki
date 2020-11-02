@@ -1,0 +1,77 @@
+<!--
+	Copyright (c) 2020 THALES GLOBAL SERVICES.
+	
+	This program and the accompanying materials are made available under the
+	terms of the Eclipse Public License 2.0 which is available at
+	http://www.eclipse.org/legal/epl-2.0
+	
+	SPDX-License-Identifier: EPL-2.0
+	
+	Contributors:
+	   Thales - initial API and implementation
+-->
+
+=Functionalities=
+
+Once the Textual Scenario Add-On is installed, you will be able to edit scenarios in textual mode.
+
+==Textual Scenario View==
+
+When creating a new scenario diagram (OES, OAS, IS, FS, ES), the scenario editor is displayed as a separate view. The user shall be able to edit a scenario in the embedded Textual Scenario Editor. If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.
+
+===Consistency of the data===
+In order to maintain consistency between diagram and text, two buttons are available:
+* ''' refresh button ''': on pressing the refresh button, the text editor is updated with the data from the diagram
+* ''' save button ''': on pressing the save button, the diagram is updated with the content described by the textual scenario associated to the current diagram
+[[Image:Images/IS_System_SyncButtons.png|center|760px]]
+
+==Syntax for the Textual Scenario Editor==
+
+===Adding Instance Roles===
+Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture level on which our diagram is located, we can add instance roles specifying a keyword (actor, component, function etc) and the name of the instance role (currently the parts associated need to exist already).
+
+====Keywords====
+* ''' actor ''': it will create an instance role representing an actor; this keyword is available for IS, ES diagrams at Operational, System, Logical and Physical Level.
+* ''' component ''': it will create an instance role representing a component; this keyword is available for IS, ES diagrams at System, Logical and Physical Level.
+* ''' configuration_item ''': it will create an instance role representing a configuration item; this keyword is available for IS diagrams at EPBS Level.
+* ''' entity ''': it will create an instance role representing an entity; this keyword is available for OES diagrams at Operational Level.
+* ''' role ''': it will create an instance role representing a role; this keyword is available for OES diagrams at Operational Level.
+* ''' function ''': it will create an instance role representing a function; this keyword is available for FS diagrams.
+* ''' activity ''': it will create an instance role representing an activity; this keyword is available for OAS diagrams.
+
+====Examples====
+
+[[Image:Images/Keywords_Participants_Examples.png|center]]
+
+===Adding Messages===
+The user can create messages between participants assuming the fact that the exchange already exists.
+
+* ''' sequence messages ''': it will add a sequence messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
+** ''' source_ir" -> "target_ir" : "msg" '''
+** example:
+::: "A 1" -> "A 2" : "exec" 
+* ''' activate execution ''': in Capella, we always activate an execution after each sequence message '''' -> ''''; each sequence message implies an activation 
+* ''' deactivate execution ''': the '''' deactivate '''' keyword is used to deactivate a message; if we have a simple sequence message which ends immediately, the deactivation keyword is not required; if we have a sequence messages that ends later, we shall add the '''' withExecution '''' keyword and it is mandatory to deactivate the message when needed.
+** example:
+::: "A 1" -> "A 2" ''' withExecution ''' : "exec"
+::: "A 2" -> "A 3"
+::: '''deactivate''' "A 2"
+* ''' create messages ''': it will add a create messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
+** ''' "source_ir" ->+ "target_ir" : "msg" '''
+** example:
+::: "A 1" ->+ "A 2" : "msg" 
+* ''' delete messages ''': it will add a delete messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
+** ''' "source_ir" ->x "target_ir" : "msg" '''
+** example:
+:::"A 1" ->x "A 2" : "msg" 
+
+==== Examples ====
+
+[[Image:Images/IS_System_SeqMessages.png|center]]
+<br>
+<br>
+[[Image:Images/IS_System_SeqMessages_FE.png|center]]
+<br>
+<br>
+[[Image:Images/OAS_OA_SeqMessages_Interaction.png|center]]
+

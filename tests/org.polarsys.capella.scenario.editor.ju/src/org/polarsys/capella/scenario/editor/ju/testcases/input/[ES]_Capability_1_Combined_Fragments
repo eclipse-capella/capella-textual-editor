@@ -1,0 +1,14 @@
+scenario {
+	component "System"
+	actor "SA 3"
+	actor "SA 2"
+	par "123" over "SA 3" "SA 2" {
+		"SA 3" -> "SA 2" : "c1"
+	} "456" {
+		"SA 3" -> "SA 2" : "c2"
+		"SA 2" -> "SA 3" withReturn : "cr2"
+	}
+	opt "123" over "SA 3" "SA 2" {
+		"SA 3" -> "SA 2" : "c3"
+	}
+}
