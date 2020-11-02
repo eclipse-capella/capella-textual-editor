@@ -3,6 +3,14 @@
 	<topic href="html/TextualEditor/Functionalities.html" label="Scenario">
 	    <topic href="html/TextualEditor/Functionalities.html#Textual_Scenario_View" label="Textual Scenario View"></topic>
      <topic href="html/TextualEditor/Functionalities.html#Syntax_for_the_Textual_Scenario_Editor" label="Syntax for the Textual Scenario Editor">
+        <topic href="html/TextualEditor/Functionalities.html#Participants" label="Participants">
+        </topic>
+        <topic href="html/TextualEditor/Functionalities.html#Messages" label="Messages">
+        </topic>
+        <topic href="html/TextualEditor/Functionalities.html#Combined_Fragments" label="Combined Fragments">
+        </topic>
+        <topic href="html/TextualEditor/Functionalities.html#State._Modes._Allocated_Functions" label="State, Modes, Allocated Functions">
+        </topic>
      </topic>
 		
 	</topic>
