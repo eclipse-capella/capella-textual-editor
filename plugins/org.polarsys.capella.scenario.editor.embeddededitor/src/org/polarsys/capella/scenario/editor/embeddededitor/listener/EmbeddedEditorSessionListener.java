@@ -25,6 +25,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
+import org.eclipse.ui.part.ViewPart;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
@@ -107,8 +108,8 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
             activePage.hideView(eeView);
           }
         }
-      } else if (!(part instanceof CommonNavigator) && eeView != null && activePage != null) {
-        activePage.hideView(eeView);
+      } else if ((!(part instanceof CommonNavigator) && !(part instanceof ViewPart)) && eeView != null && activePage != null) {
+	        activePage.hideView(eeView);
       }
     };
   }

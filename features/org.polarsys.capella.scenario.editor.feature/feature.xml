@@ -31,6 +31,10 @@
          id="org.eclipse.xtext.sdk"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.xtend.sdk"
+         version="0.0.0"/>
+
    <plugin
          id="org.polarsys.capella.scenario.editor"
          download-size="0"
