@@ -5,27 +5,28 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Editor Category"
+            name="Editor"
             id="org.eclipse.xtext.example.domainmodel.embeddededitor">
       </category>
       <view
             id="org.eclipse.xtext.example.domainmodel.embeddededitor.views.EmbeddedEditorView"
             name="Textual Editor"
-            icon="icons/Scenario.gif"
+            icon="icons/capella_edit_16.gif"
             class="org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView"
             category="org.eclipse.xtext.example.domainmodel.embeddededitor"
             inject="true">
       </view>
    </extension>
-   <extension
+      <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
+            targetID="capella.sirius.perspective">
          <view
                id="org.eclipse.xtext.example.domainmodel.embeddededitor.views.EmbeddedEditorView"
-               relative="org.eclipse.ui.views.ProblemView"
-               relationship="right"
-               ratio="0.5">
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.PropertySheet"
+               >
          </view>
       </perspectiveExtension>
    </extension>

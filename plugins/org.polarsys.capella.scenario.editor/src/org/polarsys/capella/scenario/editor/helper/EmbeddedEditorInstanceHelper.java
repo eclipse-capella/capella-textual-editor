@@ -21,13 +21,19 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
+import org.eclipse.sirius.diagram.ui.tools.api.editor.DDiagramEditor;
+import org.eclipse.sirius.viewpoint.DRepresentation;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.XtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.polarsys.capella.common.data.behavior.AbstractEvent;
 import org.polarsys.capella.common.data.modellingcore.AbstractNamedElement;
-import org.polarsys.capella.common.queries.interpretor.QueryInterpretor;
-import org.polarsys.capella.common.queries.queryContext.QueryContext;
 import org.polarsys.capella.core.data.capellacommon.AbstractState;
 import org.polarsys.capella.core.data.capellacommon.Mode;
 import org.polarsys.capella.core.data.capellacommon.State;
@@ -36,7 +42,6 @@ import org.polarsys.capella.core.data.cs.BlockArchitecture;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
 import org.polarsys.capella.core.data.cs.Part;
 import org.polarsys.capella.core.data.ctx.SystemAnalysis;
-import org.polarsys.capella.core.data.ctx.SystemFunction;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
@@ -51,17 +56,12 @@ import org.polarsys.capella.core.data.oa.OperationalActor;
 import org.polarsys.capella.core.data.oa.OperationalAnalysis;
 import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
-import org.polarsys.capella.core.libraries.extendedqueries.QueryIdentifierConstants;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
 import org.polarsys.capella.core.model.helpers.OperationalAnalysisExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
-import org.polarsys.capella.core.model.helpers.queries.filters.RemoveActorsFilter;
-import org.polarsys.capella.core.sequencediag.InteractionAspectService;
 import org.polarsys.capella.core.sequencediag.ScenarioService;
 import org.polarsys.capella.core.sirius.analysis.FaServices;
 import org.polarsys.capella.core.sirius.analysis.InteractionServices;
-import org.polarsys.capella.core.sirius.analysis.OAServices;
-import org.polarsys.capella.core.sirius.analysis.queries.interactionServices.GetISScopeInsertComponents;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 
 public class EmbeddedEditorInstanceHelper {
@@ -520,5 +520,56 @@ public class EmbeddedEditorInstanceHelper {
       return capellaStateFragment.getRelatedAbstractState().getName();
     }
     return null;
+  }
+
+  /*
+   * get the list of opened and diagrams
+   */
+  private static List<DDiagram> getOpenedRepresentations() {
+    List<DDiagram> diagrams = new ArrayList<DDiagram>();
+    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    if (activePage == null) {
+      return null;
+    }
+    for (IEditorReference ref : activePage.getEditorReferences()) {
+      IEditorPart editor = ref.getEditor(false);
+      if (editor != null && editor instanceof DDiagramEditor) {
+        DDiagramEditor dEditor = (DDiagramEditor) editor;
+        DRepresentation representation = dEditor.getRepresentation();
+        if (representation instanceof DDiagram) {
+          diagrams.add((DDiagram) representation);
+        }
+      }
+    }
+    return diagrams;
+  }
+
+  /*
+   * get the first opened sequence diagram
+   */
+  public static DDiagram getFirstOpenedRepresentation() {
+    List<DDiagram> diagrams = getOpenedRepresentations();
+    if (!diagrams.isEmpty()) {
+      return diagrams.get(0);
+    }
+    return null;
+  }
+
+  /*
+   * In case we have a sequence diagram, set the initial diagram to this opened one
+   */
+  public static void setOpenedRepresentation() {
+    DDiagram diagram = getFirstOpenedRepresentation();
+    if (diagram instanceof SequenceDDiagram) {
+      EmbeddedEditorInstance.setDDiagram(diagram);
+    }
+  }
+
+  /*
+   * check if the associated diagram of the text editor is opened
+   */
+  public static boolean isOpenedRepresentation() {
+    List<DDiagram> diagrams = getOpenedRepresentations();
+    return diagrams.contains(EmbeddedEditorInstance.getDDiagram());
   }
 }

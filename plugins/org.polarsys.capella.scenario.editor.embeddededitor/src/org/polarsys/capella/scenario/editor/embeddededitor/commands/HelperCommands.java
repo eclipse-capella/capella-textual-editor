@@ -1,9 +1,12 @@
 package org.polarsys.capella.scenario.editor.embeddededitor.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.validation.CheckMode;
 import org.eclipse.xtext.validation.IResourceValidator;
@@ -17,6 +20,11 @@ import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorV
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 public class HelperCommands {
+  public static final String DIALOG_TITLE_UNABLE_TO_REFRESH = "Unable to refresh";
+  public static final String DIALOG_MESSAGE_ERROR_REFRESH = "Error on refreshing data to Textual Editor!";
+  public static final String DIALOG_TITLE_UNABLE_TO_SAVE = "Unable to save";
+  public static final String DIALOG_MESSAGE_ERROR_SAVE = "Error on saving data to diagram!";
+  
   public static String getExpressionText(InteractionOperand operand) {
     Constraint guard = operand.getGuard();
     if (guard != null) {
@@ -31,7 +39,23 @@ public class HelperCommands {
     if(validator != null) {
     	return validator.validate(resource, CheckMode.ALL, null);
     }
-    return null;
+    return new ArrayList<>();
+  }
+  
+  public static String getFormattedIssues(List<Issue> issues) {
+    StringBuilder sb = new StringBuilder();
+    String newLine = "\r\n";
+    int maxDisplay = 3;
+    sb.append(newLine + newLine + "Found " + issues.size() + " issues:" + newLine);
+    for (int i = 0; i < maxDisplay && i < issues.size(); i++) {
+      Issue issue = issues.get(i);
+      sb.append(
+          issue.getMessage() + " (line : " + issue.getLineNumber() + " column : " + issue.getColumn() + ")" + newLine);
+    }
+    if (issues.size() > maxDisplay) {
+      sb.append(newLine + "... " + (issues.size() - maxDisplay) + " more!" + newLine);
+    }
+    return sb.toString();
   }
   
   /**
@@ -75,5 +99,8 @@ public class HelperCommands {
       domainModel.setEnd("}");
     }
   }
-
+  
+  public static void showDialogTextualEditor(String title, String message) {
+    MessageDialog.openError(Display.getCurrent().getActiveShell(), title, message);
+  }
 }
