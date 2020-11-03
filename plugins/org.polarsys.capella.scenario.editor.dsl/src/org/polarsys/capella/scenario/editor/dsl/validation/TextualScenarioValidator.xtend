@@ -165,17 +165,18 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage ||
 				element instanceof CombinedFragment) {
 				if (!names.add(getElementMapKey(element)) && element.equals(elementToCheck)) {
-					if (element instanceof SequenceMessageType) {
-						var source = (element as SequenceMessageType).source
-						var target = (element as SequenceMessageType).target
-						error(
-							'The same exchange is already used in text editor between \"' + source + "\" and \"" +
-								target + "\"!", TextualScenarioPackage.Literals.MESSAGE__NAME)
-					} else if (element instanceof ArmTimerMessage) {
-						error('The same exchange is already used in text editor on timeline \"' +
-							(element as ArmTimerMessage).participant + "\"!",
-							TextualScenarioPackage.Literals.MESSAGE__NAME)
-					} else if (element instanceof CombinedFragment) {
+//					if (element instanceof SequenceMessageType) {
+//						var source = (element as SequenceMessageType).source
+//						var target = (element as SequenceMessageType).target
+//						error(
+//							'The same exchange is already used in text editor between \"' + source + "\" and \"" +
+//								target + "\"!", TextualScenarioPackage.Literals.MESSAGE__NAME)
+//					} else if (element instanceof ArmTimerMessage) {
+//						error('The same exchange is already used in text editor on timeline \"' +
+//							(element as ArmTimerMessage).participant + "\"!",
+//							TextualScenarioPackage.Literals.MESSAGE__NAME)
+//					} else 
+					if (element instanceof CombinedFragment) {
 						error(String.format(
 							"The same " + element.keyword + " with expression \" " + element.expression +
 								"\" and timelines " + element.timelines + " is already used in text editor!"
