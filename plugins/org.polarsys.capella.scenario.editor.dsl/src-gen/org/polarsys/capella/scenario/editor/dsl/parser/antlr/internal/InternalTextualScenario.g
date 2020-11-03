@@ -326,6 +326,15 @@ ruleElement returns [EObject current=null]
 			$current = $this_StateFragment_2.current;
 			afterParserOrEnumRuleCall();
 		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementAccess().getReferenceParserRuleCall_3());
+		}
+		this_Reference_3=ruleReference
+		{
+			$current = $this_Reference_3.current;
+			afterParserOrEnumRuleCall();
+		}
 	)
 ;
 
@@ -726,6 +735,15 @@ ruleMessage returns [EObject current=null]
 		this_ParticipantDeactivation_2=ruleParticipantDeactivation
 		{
 			$current = $this_ParticipantDeactivation_2.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getMessageAccess().getLostFoundMessageParserRuleCall_3());
+		}
+		this_LostFoundMessage_3=ruleLostFoundMessage
+		{
+			$current = $this_LostFoundMessage_3.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -1204,6 +1222,208 @@ ruleArmTimerMessage returns [EObject current=null]
 	)
 ;
 
+// Entry rule entryRuleLostFoundMessage
+entryRuleLostFoundMessage returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getLostFoundMessageRule()); }
+	iv_ruleLostFoundMessage=ruleLostFoundMessage
+	{ $current=$iv_ruleLostFoundMessage.current; }
+	EOF;
+
+// Rule LostFoundMessage
+ruleLostFoundMessage returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getLostFoundMessageAccess().getLostMessageParserRuleCall_0());
+		}
+		this_LostMessage_0=ruleLostMessage
+		{
+			$current = $this_LostMessage_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getLostFoundMessageAccess().getFoundMessageParserRuleCall_1());
+		}
+		this_FoundMessage_1=ruleFoundMessage
+		{
+			$current = $this_FoundMessage_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleLostMessage
+entryRuleLostMessage returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getLostMessageRule()); }
+	iv_ruleLostMessage=ruleLostMessage
+	{ $current=$iv_ruleLostMessage.current; }
+	EOF;
+
+// Rule LostMessage
+ruleLostMessage returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				lv_arrow_0_0='->o'
+				{
+					newLeafNode(lv_arrow_0_0, grammarAccess.getLostMessageAccess().getArrowOKeyword_0_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getLostMessageRule());
+					}
+					setWithLastConsumed($current, "arrow", lv_arrow_0_0, "->o");
+				}
+			)
+		)
+		(
+			(
+				lv_participant_1_0=RULE_STRING
+				{
+					newLeafNode(lv_participant_1_0, grammarAccess.getLostMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getLostMessageRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"participant",
+						lv_participant_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		(
+			(
+				lv_doubleDot_2_0=':'
+				{
+					newLeafNode(lv_doubleDot_2_0, grammarAccess.getLostMessageAccess().getDoubleDotColonKeyword_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getLostMessageRule());
+					}
+					setWithLastConsumed($current, "doubleDot", lv_doubleDot_2_0, ":");
+				}
+			)
+		)
+		(
+			(
+				lv_name_3_0=RULE_STRING
+				{
+					newLeafNode(lv_name_3_0, grammarAccess.getLostMessageAccess().getNameSTRINGTerminalRuleCall_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getLostMessageRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_3_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleFoundMessage
+entryRuleFoundMessage returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getFoundMessageRule()); }
+	iv_ruleFoundMessage=ruleFoundMessage
+	{ $current=$iv_ruleFoundMessage.current; }
+	EOF;
+
+// Rule FoundMessage
+ruleFoundMessage returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				lv_arrow_0_0='o->'
+				{
+					newLeafNode(lv_arrow_0_0, grammarAccess.getFoundMessageAccess().getArrowOKeyword_0_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getFoundMessageRule());
+					}
+					setWithLastConsumed($current, "arrow", lv_arrow_0_0, "o->");
+				}
+			)
+		)
+		(
+			(
+				lv_participant_1_0=RULE_STRING
+				{
+					newLeafNode(lv_participant_1_0, grammarAccess.getFoundMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getFoundMessageRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"participant",
+						lv_participant_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		(
+			(
+				lv_doubleDot_2_0=':'
+				{
+					newLeafNode(lv_doubleDot_2_0, grammarAccess.getFoundMessageAccess().getDoubleDotColonKeyword_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getFoundMessageRule());
+					}
+					setWithLastConsumed($current, "doubleDot", lv_doubleDot_2_0, ":");
+				}
+			)
+		)
+		(
+			(
+				lv_name_3_0=RULE_STRING
+				{
+					newLeafNode(lv_name_3_0, grammarAccess.getFoundMessageAccess().getNameSTRINGTerminalRuleCall_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getFoundMessageRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_3_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+	)
+;
+
 // Entry rule entryRuleParticipantDeactivation
 entryRuleParticipantDeactivation returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getParticipantDeactivationRule()); }
@@ -1414,7 +1634,7 @@ ruleCombinedFragment returns [EObject current=null]
 						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)
-		)
+		)?
 		(
 			(
 				lv_over_2_0='over'
@@ -1535,7 +1755,7 @@ ruleOperand returns [EObject current=null]
 						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)
-		)
+		)?
 		(
 			(
 				{
@@ -1728,6 +1948,89 @@ ruleStateFragment returns [EObject current=null]
 				}
 			)
 		)
+	)
+;
+
+// Entry rule entryRuleReference
+entryRuleReference returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getReferenceRule()); }
+	iv_ruleReference=ruleReference
+	{ $current=$iv_ruleReference.current; }
+	EOF;
+
+// Rule Reference
+ruleReference returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				lv_keyword_0_0='ref'
+				{
+					newLeafNode(lv_keyword_0_0, grammarAccess.getReferenceAccess().getKeywordRefKeyword_0_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getReferenceRule());
+					}
+					setWithLastConsumed($current, "keyword", lv_keyword_0_0, "ref");
+				}
+			)
+		)
+		(
+			(
+				lv_name_1_0=RULE_STRING
+				{
+					newLeafNode(lv_name_1_0, grammarAccess.getReferenceAccess().getNameSTRINGTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getReferenceRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		(
+			(
+				lv_over_2_0='over'
+				{
+					newLeafNode(lv_over_2_0, grammarAccess.getReferenceAccess().getOverOverKeyword_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getReferenceRule());
+					}
+					setWithLastConsumed($current, "over", lv_over_2_0, "over");
+				}
+			)
+		)
+		(
+			(
+				lv_timelines_3_0=RULE_STRING
+				{
+					newLeafNode(lv_timelines_3_0, grammarAccess.getReferenceAccess().getTimelinesSTRINGTerminalRuleCall_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getReferenceRule());
+					}
+					addWithLastConsumed(
+						$current,
+						"timelines",
+						lv_timelines_3_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)+
 	)
 ;
 

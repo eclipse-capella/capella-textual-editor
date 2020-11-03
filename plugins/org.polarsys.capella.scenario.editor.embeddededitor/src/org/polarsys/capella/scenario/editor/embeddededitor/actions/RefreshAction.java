@@ -18,8 +18,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.embeddededitor.commands.DiagramToXtextCommands;
+import org.polarsys.capella.scenario.editor.embeddededitor.commands.HelperCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
+import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 public class RefreshAction extends Action {
   public static final String IMG_REFRESH = "icons/refresh.gif";
@@ -36,6 +38,11 @@ public class RefreshAction extends Action {
     EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
     Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
 
-    DiagramToXtextCommands.process(scenarioDiagram, eeView);
+    if (EmbeddedEditorInstanceHelper.isOpenedRepresentation()) {
+      DiagramToXtextCommands.process(scenarioDiagram, eeView);
+    } else {
+      HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
+          HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH + " The associated diagram is not opened!");
+    }
   }
 }

@@ -33,14 +33,18 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Entity;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.GenericComponent;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.GenericFunction;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Role;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
@@ -187,6 +191,27 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass lostFoundMessageEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass lostMessageEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass foundMessageEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass participantDeactivationEClass = null;
 
   /**
@@ -216,6 +241,13 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   private EClass stateFragmentEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass referenceEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -671,6 +703,72 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
+  public EClass getLostFoundMessage()
+  {
+    return lostFoundMessageEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getLostFoundMessage_Arrow()
+  {
+    return (EAttribute)lostFoundMessageEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getLostFoundMessage_Participant()
+  {
+    return (EAttribute)lostFoundMessageEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getLostFoundMessage_DoubleDot()
+  {
+    return (EAttribute)lostFoundMessageEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getLostMessage()
+  {
+    return lostMessageEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getFoundMessage()
+  {
+    return foundMessageEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getParticipantDeactivation()
   {
     return participantDeactivationEClass;
@@ -913,6 +1011,61 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
+  public EClass getReference()
+  {
+    return referenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getReference_Keyword()
+  {
+    return (EAttribute)referenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getReference_Name()
+  {
+    return (EAttribute)referenceEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getReference_Over()
+  {
+    return (EAttribute)referenceEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getReference_Timelines()
+  {
+    return (EAttribute)referenceEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public TextualScenarioFactory getTextualScenarioFactory()
   {
     return (TextualScenarioFactory)getEFactoryInstance();
@@ -991,6 +1144,15 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__EXECUTION);
     createEAttribute(armTimerMessageEClass, ARM_TIMER_MESSAGE__DOUBLE_DOT);
 
+    lostFoundMessageEClass = createEClass(LOST_FOUND_MESSAGE);
+    createEAttribute(lostFoundMessageEClass, LOST_FOUND_MESSAGE__ARROW);
+    createEAttribute(lostFoundMessageEClass, LOST_FOUND_MESSAGE__PARTICIPANT);
+    createEAttribute(lostFoundMessageEClass, LOST_FOUND_MESSAGE__DOUBLE_DOT);
+
+    lostMessageEClass = createEClass(LOST_MESSAGE);
+
+    foundMessageEClass = createEClass(FOUND_MESSAGE);
+
     participantDeactivationEClass = createEClass(PARTICIPANT_DEACTIVATION);
     createEAttribute(participantDeactivationEClass, PARTICIPANT_DEACTIVATION__KEYWORD);
 
@@ -1017,6 +1179,12 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     createEAttribute(stateFragmentEClass, STATE_FRAGMENT__TIMELINE);
     createEAttribute(stateFragmentEClass, STATE_FRAGMENT__KEYWORD);
     createEAttribute(stateFragmentEClass, STATE_FRAGMENT__NAME);
+
+    referenceEClass = createEClass(REFERENCE);
+    createEAttribute(referenceEClass, REFERENCE__KEYWORD);
+    createEAttribute(referenceEClass, REFERENCE__NAME);
+    createEAttribute(referenceEClass, REFERENCE__OVER);
+    createEAttribute(referenceEClass, REFERENCE__TIMELINES);
   }
 
   /**
@@ -1063,9 +1231,13 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     createMessageEClass.getESuperTypes().add(this.getSequenceMessageType());
     deleteMessageEClass.getESuperTypes().add(this.getSequenceMessageType());
     armTimerMessageEClass.getESuperTypes().add(this.getMessage());
+    lostFoundMessageEClass.getESuperTypes().add(this.getMessage());
+    lostMessageEClass.getESuperTypes().add(this.getLostFoundMessage());
+    foundMessageEClass.getESuperTypes().add(this.getLostFoundMessage());
     participantDeactivationEClass.getESuperTypes().add(this.getMessage());
     combinedFragmentEClass.getESuperTypes().add(this.getElement());
     stateFragmentEClass.getESuperTypes().add(this.getElement());
+    referenceEClass.getESuperTypes().add(this.getElement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1121,6 +1293,15 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     initEAttribute(getArmTimerMessage_Execution(), ecorePackage.getEString(), "execution", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getArmTimerMessage_DoubleDot(), ecorePackage.getEString(), "doubleDot", null, 0, 1, ArmTimerMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(lostFoundMessageEClass, LostFoundMessage.class, "LostFoundMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getLostFoundMessage_Arrow(), ecorePackage.getEString(), "arrow", null, 0, 1, LostFoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getLostFoundMessage_Participant(), ecorePackage.getEString(), "participant", null, 0, 1, LostFoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getLostFoundMessage_DoubleDot(), ecorePackage.getEString(), "doubleDot", null, 0, 1, LostFoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(lostMessageEClass, LostMessage.class, "LostMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(foundMessageEClass, FoundMessage.class, "FoundMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
     initEClass(participantDeactivationEClass, ParticipantDeactivation.class, "ParticipantDeactivation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getParticipantDeactivation_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, ParticipantDeactivation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1147,6 +1328,12 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
     initEAttribute(getStateFragment_Timeline(), ecorePackage.getEString(), "timeline", null, 0, 1, StateFragment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getStateFragment_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, StateFragment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getStateFragment_Name(), ecorePackage.getEString(), "name", null, 0, 1, StateFragment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(referenceEClass, Reference.class, "Reference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getReference_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getReference_Name(), ecorePackage.getEString(), "name", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getReference_Over(), ecorePackage.getEString(), "over", null, 0, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getReference_Timelines(), ecorePackage.getEString(), "timelines", null, 0, -1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);
