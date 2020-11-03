@@ -43,6 +43,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
 
@@ -132,6 +133,13 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     document.append(this.textRegionExtensions.regionFor(stateFragment).feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME), _function);
   }
   
+  protected void _format(final Reference reference, @Extension final IFormattableDocument document) {
+    final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
+      it.newLine();
+    };
+    document.append(this.textRegionExtensions.regionFor(reference).feature(TextualScenarioPackage.Literals.REFERENCE__TIMELINES), _function);
+  }
+  
   public void format(final Object fragment, final IFormattableDocument document) {
     if (fragment instanceof XtextResource) {
       _format((XtextResource)fragment, document);
@@ -141,6 +149,9 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       return;
     } else if (fragment instanceof Message) {
       _format((Message)fragment, document);
+      return;
+    } else if (fragment instanceof Reference) {
+      _format((Reference)fragment, document);
       return;
     } else if (fragment instanceof StateFragment) {
       _format((StateFragment)fragment, document);

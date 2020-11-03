@@ -56,6 +56,7 @@ import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
+import org.polarsys.capella.core.sequencediag.ScenarioService;
 import org.polarsys.capella.core.sirius.analysis.FaServices;
 import org.polarsys.capella.core.sirius.analysis.InteractionServices;
 import org.polarsys.capella.core.sirius.analysis.OAServices;
@@ -565,6 +566,73 @@ public class EmbeddedEditorInstanceHelper {
       return capellaStateFragment.getRelatedAbstractState().getName();
     }
     return null;
+  } 
+
+  /*
+   * get the list of opened and diagrams
+   */
+  private static List<DDiagram> getOpenedRepresentations() {
+    List<DDiagram> diagrams = new ArrayList<DDiagram>();
+    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    if (activePage == null) {
+      return null;
+    }
+    for (IEditorReference ref : activePage.getEditorReferences()) {
+      IEditorPart editor = ref.getEditor(false);
+      if (editor != null && editor instanceof DDiagramEditor) {
+        DDiagramEditor dEditor = (DDiagramEditor) editor;
+        DRepresentation representation = dEditor.getRepresentation();
+        if (representation instanceof DDiagram) {
+          diagrams.add((DDiagram) representation);
+        }
+      }
+    }
+    return diagrams;
+  }
+
+  /*
+   * get the first opened sequence diagram
+   */
+  public static DDiagram getFirstOpenedRepresentation() {
+    List<DDiagram> diagrams = getOpenedRepresentations();
+    if (!diagrams.isEmpty()) {
+      return diagrams.get(0);
+    }
+    return null;
+  }
+
+  /*
+   * In case we have a sequence diagram, set the initial diagram to this opened one
+   */
+  public static void setOpenedRepresentation() {
+    DDiagram diagram = getFirstOpenedRepresentation();
+    if (diagram instanceof SequenceDDiagram) {
+      EmbeddedEditorInstance.setDDiagram(diagram);
+    }
+  }
+
+  /*
+   * check if the associated diagram of the text editor is opened
+   */
+  public static boolean isOpenedRepresentation() {
+    List<DDiagram> diagrams = getOpenedRepresentations();
+    return diagrams.contains(EmbeddedEditorInstance.getDDiagram());
+  }
+
+  public static void refreshAssociatedDiagram() {
+    DDiagram diagram = EmbeddedEditorInstance.getDDiagram();
+    if(diagram != null) {
+      DialectManager.INSTANCE.refresh(diagram, new NullProgressMonitor());
+    }
+  }
+  /*
+   *  Get all possible scenario references 
+   */
+  public static List<String> getReferencedScenariosName() {
+    ScenarioService scenarioService = new ScenarioService();
+    Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+    List<EObject> referenceScope = scenarioService.getReferenceScope(currentScenario); 
+    return referenceScope.stream().map(x -> ((Scenario)x).getName()).collect(Collectors.toList());
   }
   
 

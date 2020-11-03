@@ -37,10 +37,13 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.ConfigurationIte
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Entity;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Role;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
@@ -90,8 +93,14 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 			case TextualScenarioPackage.ENTITY:
 				sequence_Entity(context, (Entity) semanticObject); 
 				return; 
+			case TextualScenarioPackage.FOUND_MESSAGE:
+				sequence_FoundMessage(context, (FoundMessage) semanticObject); 
+				return; 
 			case TextualScenarioPackage.FUNCTION:
 				sequence_Function(context, (Function) semanticObject); 
+				return; 
+			case TextualScenarioPackage.LOST_MESSAGE:
+				sequence_LostMessage(context, (LostMessage) semanticObject); 
 				return; 
 			case TextualScenarioPackage.MODEL:
 				sequence_Model(context, (Model) semanticObject); 
@@ -101,6 +110,9 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 				return; 
 			case TextualScenarioPackage.PARTICIPANT_DEACTIVATION:
 				sequence_ParticipantDeactivation(context, (ParticipantDeactivation) semanticObject); 
+				return; 
+			case TextualScenarioPackage.REFERENCE:
+				sequence_Reference(context, (Reference) semanticObject); 
 				return; 
 			case TextualScenarioPackage.ROLE:
 				sequence_Role(context, (Role) semanticObject); 
@@ -208,7 +220,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *             keyword='strict' | 
 	 *             keyword='unset'
 	 *         ) 
-	 *         expression=STRING 
+	 *         expression=STRING? 
 	 *         over='over' 
 	 *         timelines+=STRING+ 
 	 *         block=Block 
@@ -357,6 +369,36 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns FoundMessage
+	 *     Message returns FoundMessage
+	 *     LostFoundMessage returns FoundMessage
+	 *     FoundMessage returns FoundMessage
+	 *
+	 * Constraint:
+	 *     (arrow='o->' participant=STRING doubleDot=':' name=STRING)
+	 */
+	protected void sequence_FoundMessage(ISerializationContext context, FoundMessage semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW));
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__PARTICIPANT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__PARTICIPANT));
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__DOUBLE_DOT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__DOUBLE_DOT));
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getFoundMessageAccess().getArrowOKeyword_0_0(), semanticObject.getArrow());
+		feeder.accept(grammarAccess.getFoundMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0(), semanticObject.getParticipant());
+		feeder.accept(grammarAccess.getFoundMessageAccess().getDoubleDotColonKeyword_2_0(), semanticObject.getDoubleDot());
+		feeder.accept(grammarAccess.getFoundMessageAccess().getNameSTRINGTerminalRuleCall_3_0(), semanticObject.getName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     Participant returns Function
 	 *     GenericFunction returns Function
 	 *     Function returns Function
@@ -380,6 +422,36 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	
 	/**
 	 * Contexts:
+	 *     Element returns LostMessage
+	 *     Message returns LostMessage
+	 *     LostFoundMessage returns LostMessage
+	 *     LostMessage returns LostMessage
+	 *
+	 * Constraint:
+	 *     (arrow='->o' participant=STRING doubleDot=':' name=STRING)
+	 */
+	protected void sequence_LostMessage(ISerializationContext context, LostMessage semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW));
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__PARTICIPANT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__PARTICIPANT));
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__DOUBLE_DOT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__DOUBLE_DOT));
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getLostMessageAccess().getArrowOKeyword_0_0(), semanticObject.getArrow());
+		feeder.accept(grammarAccess.getLostMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0(), semanticObject.getParticipant());
+		feeder.accept(grammarAccess.getLostMessageAccess().getDoubleDotColonKeyword_2_0(), semanticObject.getDoubleDot());
+		feeder.accept(grammarAccess.getLostMessageAccess().getNameSTRINGTerminalRuleCall_3_0(), semanticObject.getName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     Model returns Model
 	 *
 	 * Constraint:
@@ -395,7 +467,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     Operand returns Operand
 	 *
 	 * Constraint:
-	 *     (keyword='else'? expression=STRING block=Block)
+	 *     (keyword='else'? expression=STRING? block=Block)
 	 */
 	protected void sequence_Operand(ISerializationContext context, Operand semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -422,6 +494,19 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 		feeder.accept(grammarAccess.getParticipantDeactivationAccess().getKeywordDeactivateKeyword_0_0(), semanticObject.getKeyword());
 		feeder.accept(grammarAccess.getParticipantDeactivationAccess().getNameSTRINGTerminalRuleCall_1_0(), semanticObject.getName());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Element returns Reference
+	 *     Reference returns Reference
+	 *
+	 * Constraint:
+	 *     (keyword='ref' name=STRING over='over' timelines+=STRING+)
+	 */
+	protected void sequence_Reference(ISerializationContext context, Reference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

@@ -39,6 +39,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import java.util.HashMap
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -413,6 +414,28 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 		ICompletionProposalAcceptor acceptor) {
 		for (EObject el : TextualScenarioHelper.participantsDefinedBefore(model, context.rootModel as Model)) {
 			if (!(model as CombinedFragment).timelines.contains((el as Participant).name)) {
+				acceptor.accept(
+					createCompletionProposal("\"" + (el as Participant).name + "\"", (el as Participant).name, null,
+						context))
+			}
+		}
+	}
+	
+	override completeReference_Over(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) { 
+		acceptor.accept(
+					createCompletionProposal("over", "over", null,
+						context))
+	}
+	override completeReference_Name(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		var referencedScenarios = EmbeddedEditorInstanceHelper.getReferencedScenariosName()
+		for (referencedScenario : referencedScenarios) {
+			acceptor.accept(createCompletionProposal("\"" + referencedScenario + "\"", referencedScenario, null, context))
+		}
+	}
+	
+	override completeReference_Timelines(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		for (EObject el : TextualScenarioHelper.participantsDefinedBefore(model, context.rootModel as Model)) {
+			if (!(model as Reference).timelines.contains((el as Participant).name)) {
 				acceptor.accept(
 					createCompletionProposal("\"" + (el as Participant).name + "\"", (el as Participant).name, null,
 						context))
