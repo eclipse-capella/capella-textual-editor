@@ -73,14 +73,14 @@ public class DiagramToXtextCommands {
    * @return
    */
   public static void process(Scenario scenario, EmbeddedEditorView embeddedEditorViewPart) {
-    if (embeddedEditorViewPart != null) {
+    if (scenario != null && embeddedEditorViewPart != null) {
       TextualScenarioProvider textualScenarioProvider = embeddedEditorViewPart.getProvider();
       XtextResource resource = textualScenarioProvider.getResource();
       EList<EObject> content = resource.getContents();
 
       TextualScenarioFactory factory = new TextualScenarioFactoryImpl();
       Model domainModel = HelperCommands.getModel(embeddedEditorViewPart);
-      if (domainModel != null && scenario != null) {
+      if (domainModel != null) {
         HelperCommands.clearModel(domainModel);
 
         // Generate Participants
@@ -95,17 +95,17 @@ public class DiagramToXtextCommands {
           String serialized = ((XtextResource) domainModel.eResource()).getSerializer().serialize(domainModel);
           EmbeddedEditorInstanceHelper.updateModel(serialized);
         } catch (Exception e) {
-          showDialogUnableToRefresh();
-          System.err.println("Error refreshing diagram to Textual Editor");
+          HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
+              HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH);
         }
       } else {
-        showDialogUnableToRefresh();
+        HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
+            HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH);
       }
+    } else {
+      HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
+          HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH + " Unknown associated scenario!");
     }
-  }
-  
-  private static void showDialogUnableToRefresh() {
-    MessageDialog.openError(Display.getCurrent().getActiveShell(), "Unable to refresh", "Error on refreshing data to Textual Editor");
   }
 
   /**
