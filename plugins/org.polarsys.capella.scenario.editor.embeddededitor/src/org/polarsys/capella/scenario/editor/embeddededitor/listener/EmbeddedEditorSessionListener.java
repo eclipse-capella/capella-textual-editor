@@ -97,7 +97,7 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
               }
             }
           }
-        } else {
+        } else if(currentSelected != null){
           currentSelected = null;
           EmbeddedEditorInstance.setDDiagram(null);
         }
