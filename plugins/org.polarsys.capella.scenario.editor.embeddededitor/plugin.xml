@@ -43,5 +43,25 @@
             class="org.polarsys.capella.scenario.editor.embeddededitor.listener.EmbeddedEditorSessionListener">
       </listener>
    </extension>
+   
+   	<extension
+         point="org.eclipse.ui.bindings">
+	      <key
+	      	contextId="org.eclipse.xtext.ui.embeddedTextEditorScope"
+            schemeId="org.polarsys.capella.core.defaultAcceleratorConfiguration"
+            sequence="F2"/>
+     	 <key
+     	 	contextId="org.eclipse.xtext.ui.embeddedTextEditorScope"
+            schemeId="org.polarsys.capella.core.defaultAcceleratorConfiguration"
+            sequence="CTRL+HOME"/>
+     	 <key
+     	 	contextId="org.eclipse.xtext.ui.embeddedTextEditorScope"
+            schemeId="org.polarsys.capella.core.defaultAcceleratorConfiguration"
+            sequence="CTRL+L"/>
+         <key
+     	 	contextId="org.eclipse.xtext.ui.embeddedTextEditorScope"
+            schemeId="org.polarsys.capella.core.defaultAcceleratorConfiguration"
+            sequence="CTRL+SHIFT+Y"/>
+    </extension>  
 
 </plugin>
