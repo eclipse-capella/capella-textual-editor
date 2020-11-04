@@ -21,7 +21,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyTitle;
 import org.eclipse.ui.part.ViewPart;
@@ -33,6 +35,7 @@ import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.dsl.ui.internal.DslActivator;
 import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.actions.XtextEditorActionFactory;
+import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 import com.google.inject.Injector;
 
@@ -121,5 +124,11 @@ public class EmbeddedEditorView extends ViewPart {
 
   @Override
   public void setFocus() {
+  }
+  
+  @Override
+  public void init(IViewSite site) throws PartInitException {
+    super.init(site);
+    EmbeddedEditorInstanceHelper.setOpenedRepresentation();
   }
 }
