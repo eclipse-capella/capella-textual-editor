@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResource;
 import org.polarsys.capella.common.data.modellingcore.AbstractType;
 import org.polarsys.capella.core.data.capellacommon.AbstractState;
