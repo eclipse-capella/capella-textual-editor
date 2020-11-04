@@ -17,9 +17,11 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
+import org.polarsys.capella.scenario.editor.embeddededitor.commands.HelperCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.commands.XtextToDiagramCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
+import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 public class SaveAction extends Action {
   public SaveAction() {
@@ -32,7 +34,12 @@ public class SaveAction extends Action {
   public void run() {
     EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
     Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-
-    XtextToDiagramCommands.process(scenarioDiagram, eeView);
+    
+    if (EmbeddedEditorInstanceHelper.isOpenedRepresentation()) {
+      XtextToDiagramCommands.process(scenarioDiagram, eeView);
+    } else {
+      HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_SAVE,
+          HelperCommands.DIALOG_MESSAGE_ERROR_SAVE + " The associated diagram is not opened!");
+    }
   }
 }

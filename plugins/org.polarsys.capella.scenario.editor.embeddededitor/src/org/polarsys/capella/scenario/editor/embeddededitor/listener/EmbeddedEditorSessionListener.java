@@ -16,16 +16,13 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManagerListener;
-import org.eclipse.sirius.diagram.sequence.business.internal.metamodel.SequenceDDiagramSpec;
+import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
 import org.eclipse.sirius.diagram.ui.tools.api.editor.DDiagramEditor;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.navigator.CommonNavigator;
-import org.eclipse.ui.part.ViewPart;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
@@ -58,58 +55,52 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
 
   public static Object handleSelection(IWorkbenchPart part, ISelection selection) {
     Object result = null;
+
     if (selection != null && !selection.isEmpty() && (!(part instanceof EmbeddedEditorView))) {
+
       if (selection instanceof IStructuredSelection) {
         IStructuredSelection selectionStructure = (IStructuredSelection) selection;
         Object firstElement = selectionStructure.getFirstElement();
         result = CapellaAdapterHelper.resolveSemanticObject(firstElement);
       }
+
     }
     return result;
   }
 
   protected static ISelectionListener createSelectionListener() {
     return (part, selection) -> {
-      EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-      IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-      if (part instanceof DDiagramEditor) {
+
+      if (part instanceof IWorkbenchPart) {
         Object newInput = handleSelection(part, selection);
 
         /*
          * when a new diagram of type scenario is opened, we use the class EmbeddedEditorInstance to save the current
          * scenario and we update the content of the embedded xtext editor
          */
-        if (newInput instanceof SequenceDDiagramSpec) {
-          SequenceDDiagramSpec diagram = (SequenceDDiagramSpec) newInput;
+        if (newInput instanceof SequenceDDiagram) {
+
+          SequenceDDiagram diagram = (SequenceDDiagram) newInput;
           if (diagram.getTarget() instanceof Scenario) {
+
             Scenario sc = (Scenario) diagram.getTarget();
-            boolean toRefresh = false;
-            if (eeView == null) {
-              // Show it if not found.
-              try {
-                eeView = (EmbeddedEditorView) activePage.showView(EmbeddedEditorView.ID);
-                toRefresh = true;
-              } catch (PartInitException e) {
-                System.err.println("Cannot open Textual Editor View");
+            if (currentSelected == null || !newInput.equals(currentSelected)) {
+              EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+              if (eeView != null && (currentSelected == null || part instanceof DDiagramEditor)) {
+                // set the diagram
+                EmbeddedEditorInstance.setDDiagram(diagram);
+
+                // refresh the text editor
+                DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
+                eeView.refreshTitleBar(sc.getName());
+                currentSelected = newInput;
               }
-              activePage.activate(eeView);
             }
-            
-            if (toRefresh || currentSelected == null || !newInput.equals(currentSelected)) {
-              // set the diagram
-              EmbeddedEditorInstance.setDDiagram(diagram);
-              
-              // refresh the text editor
-              DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
-              eeView.refreshTitleBar(sc.getName());
-            }
-            currentSelected = newInput;
-          } else if (eeView != null && activePage != null) {
-            activePage.hideView(eeView);
           }
+        } else {
+          currentSelected = null;
+          EmbeddedEditorInstance.setDDiagram(null);
         }
-      } else if ((!(part instanceof CommonNavigator) && !(part instanceof ViewPart)) && eeView != null && activePage != null) {
-	        activePage.hideView(eeView);
       }
     };
   }
