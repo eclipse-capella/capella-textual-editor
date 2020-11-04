@@ -28,13 +28,11 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.gmf.runtime.notation.Diagram;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
 import org.eclipse.sirius.diagram.sequence.business.internal.operation.SynchronizeGraphicalOrderingOperation;
 import org.eclipse.sirius.diagram.sequence.business.internal.refresh.RefreshLayoutCommand;
 import org.eclipse.sirius.viewpoint.description.AnnotationEntry;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.validation.Issue;
 import org.polarsys.capella.common.helpers.EObjectExt;
@@ -101,7 +99,7 @@ public class XtextToDiagramCommands {
         XtextResource resource = p.getResource();
 
         List<Issue> issues = HelperCommands.getValidationIsuesTextResource(resource);
-        if (issues == null || issues.isEmpty()) {
+        if (issues.isEmpty()) {
           EList<EObject> content = resource.getContents();
           Model domainModel = (Model) content.get(0);
 
@@ -122,13 +120,12 @@ public class XtextToDiagramCommands {
           // Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
           // DiagramToXtextCommands.process(scenarioDiagram, eeView);
         } else {
-          MessageDialog.openError(Display.getCurrent().getActiveShell(), "Invalid data",
-              "Please fix the errors in the textual editor! \n" + issues);
+          HelperCommands.showDialogTextualEditor("Invalid data", "Please fix the errors in the textual editor!" +
+              HelperCommands.getFormattedIssues(issues));
         }
       }
     } else {
-      MessageDialog.openError(Display.getCurrent().getActiveShell(), "Unknowned scenario",
-          "The associated diagram scenario is unknown!");
+      HelperCommands.showDialogTextualEditor("Unknowned scenario", "The associated scenario diagram is unknown!");
     }
   }
 
