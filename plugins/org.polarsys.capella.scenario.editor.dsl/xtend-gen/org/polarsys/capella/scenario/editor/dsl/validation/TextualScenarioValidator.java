@@ -207,20 +207,6 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         if ((((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage)) || 
           (element instanceof CombinedFragment))) {
           if (((!names.add(this.getElementMapKey(element))) && element.equals(elementToCheck))) {
-            if ((element instanceof CombinedFragment)) {
-              String _keyword = ((CombinedFragment)element).getKeyword();
-              String _plus = ("The same " + _keyword);
-              String _plus_1 = (_plus + " with expression \" ");
-              String _expression = ((CombinedFragment)element).getExpression();
-              String _plus_2 = (_plus_1 + _expression);
-              String _plus_3 = (_plus_2 + 
-                "\" and timelines ");
-              EList<String> _timelines = ((CombinedFragment)element).getTimelines();
-              String _plus_4 = (_plus_3 + _timelines);
-              String _plus_5 = (_plus_4 + " is already used in text editor!");
-              this.error(
-                String.format(_plus_5), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION);
-            }
             return true;
           }
         }
@@ -679,7 +665,6 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   /**
    * Expression shall not be empty
    */
-  @Check
   public void checkCombinedFragmentEmptyExpression(final CombinedFragment combinedFragment) {
     if (((combinedFragment.getExpression() == null) || combinedFragment.getExpression().isEmpty())) {
       this.error(
@@ -691,7 +676,6 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   /**
    * Expression shall not be empty
    */
-  @Check
   public void checkOperandEmptyExpression(final Operand operand) {
     if (((operand.getExpression() == null) || operand.getExpression().isEmpty())) {
       this.error(
