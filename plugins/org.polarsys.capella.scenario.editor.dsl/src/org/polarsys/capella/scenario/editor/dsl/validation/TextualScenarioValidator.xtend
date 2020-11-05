@@ -34,6 +34,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage
 import java.util.HashSet
 import org.eclipse.emf.ecore.EAttribute
 import java.util.List
+import java.util.Set
 
 /**
  * This class contains custom validation rules. 
@@ -107,8 +108,8 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			if (model instanceof Model) {
 				var scenarioExchangesType = TextualScenarioHelper.
 					getScenarioAllowedExchangesType((model as Model).elements)
-				var exchangeType = TextualScenarioHelper.getMessageExchangeType(message)
-				if (scenarioExchangesType !== null && !scenarioExchangesType.equals(exchangeType)) {
+				var exchangeTypes = TextualScenarioHelper.getAllMessageExchangeType(message) as Set
+				if (scenarioExchangesType !== null && !exchangeTypes.contains(scenarioExchangesType)) {
 					error('Exchange type can not be used, expected ' + scenarioExchangesType + "!",
 						TextualScenarioPackage.Literals.MESSAGE__NAME)
 				}

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
@@ -132,9 +133,10 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     if (_isESScenario) {
       EObject model = TextualScenarioHelper.getModelContainer(message);
       if ((model instanceof Model)) {
-        String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) model).getElements());
-        String exchangeType = TextualScenarioHelper.getMessageExchangeType(message);
-        if (((scenarioExchangesType != null) && (!scenarioExchangesType.equals(exchangeType)))) {
+        Object scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) model).getElements());
+        Set _allMessageExchangeType = TextualScenarioHelper.getAllMessageExchangeType(message);
+        Set exchangeTypes = ((Set) _allMessageExchangeType);
+        if (((scenarioExchangesType != null) && (!exchangeTypes.contains(scenarioExchangesType)))) {
           this.error((("Exchange type can not be used, expected " + scenarioExchangesType) + "!"), 
             TextualScenarioPackage.Literals.MESSAGE__NAME);
         }
