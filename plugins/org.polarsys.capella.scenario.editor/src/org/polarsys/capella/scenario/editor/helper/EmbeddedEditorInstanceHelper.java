@@ -45,6 +45,7 @@ import org.polarsys.capella.core.data.ctx.SystemAnalysis;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
+import org.polarsys.capella.core.data.information.AbstractInstance;
 import org.polarsys.capella.core.data.interaction.InstanceRole;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.ScenarioKind;
@@ -79,12 +80,16 @@ public class EmbeddedEditorInstanceHelper {
       if (checkValidKeyword(keyword)) {
         List<InstanceRole> availableInstanceRoleForKeyword;
         if (keyword.equals(DslConstants.FUNCTION) || keyword.equals(DslConstants.ACTIVITY)) {
-          availableInstanceRoleForKeyword = getAvailableElements(keyword).stream()
-              .map(element -> ((AbstractFunction) element).getRepresentingInstanceRoles()).flatMap(Collection::stream)
+          availableInstanceRoleForKeyword = getAvailableElements(keyword)
+              .stream()
+              .map(element -> ((AbstractFunction) element).getRepresentingInstanceRoles())
+              .flatMap(Collection::stream)
               .distinct().collect(Collectors.toList());
         } else {
-          availableInstanceRoleForKeyword = getAvailableElements(keyword).stream()
-              .map(element -> ((Part) element).getRepresentingInstanceRoles()).flatMap(Collection::stream).distinct()
+          availableInstanceRoleForKeyword = getAvailableElements(keyword)
+              .stream()
+              .map(element -> ((AbstractInstance) element).getRepresentingInstanceRoles())
+              .flatMap(Collection::stream).distinct()
               .collect(Collectors.toList());
         }
         instanceRoles.addAll(availableInstanceRoleForKeyword);
