@@ -75,32 +75,34 @@ public class DiagramToXtextCommands {
   public static void process(Scenario scenario, EmbeddedEditorView embeddedEditorViewPart) {
     if (scenario != null && embeddedEditorViewPart != null) {
       TextualScenarioProvider textualScenarioProvider = embeddedEditorViewPart.getProvider();
-      XtextResource resource = textualScenarioProvider.getResource();
-      EList<EObject> content = resource.getContents();
+      if (textualScenarioProvider != null) {
+        XtextResource resource = textualScenarioProvider.getResource();
+        EList<EObject> content = resource.getContents();
 
-      TextualScenarioFactory factory = new TextualScenarioFactoryImpl();
-      Model domainModel = HelperCommands.getModel(embeddedEditorViewPart);
-      if (domainModel != null) {
-        HelperCommands.clearModel(domainModel);
+        TextualScenarioFactory factory = new TextualScenarioFactoryImpl();
+        Model domainModel = HelperCommands.getModel(embeddedEditorViewPart);
+        if (domainModel != null) {
+          HelperCommands.clearModel(domainModel);
 
-        // Generate Participants
-        generateParticipants(domainModel, scenario, factory);
+          // Generate Participants
+          generateParticipants(domainModel, scenario, factory);
 
-        // Generate Sequence Messages
-        generateElements(domainModel, scenario, factory);
+          // Generate Sequence Messages
+          generateElements(domainModel, scenario, factory);
 
-        content.add(domainModel);
+          content.add(domainModel);
 
-        try {
-          String serialized = ((XtextResource) domainModel.eResource()).getSerializer().serialize(domainModel);
-          EmbeddedEditorInstanceHelper.updateModel(serialized);
-        } catch (Exception e) {
+          try {
+            String serialized = ((XtextResource) domainModel.eResource()).getSerializer().serialize(domainModel);
+            EmbeddedEditorInstanceHelper.updateModel(serialized);
+          } catch (Exception e) {
+            HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
+                HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH);
+          }
+        } else {
           HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
               HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH);
         }
-      } else {
-        HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
-            HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH);
       }
     } else {
       HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
