@@ -196,7 +196,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   @Override
   public void completeSequenceMessage_Name(final EObject messageObj, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject _rootModel = context.getRootModel();
-    String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) _rootModel).getElements());
+    Object scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) _rootModel).getElements());
     SequenceMessage message = ((SequenceMessage) messageObj);
     List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
     String elementName = new String();
