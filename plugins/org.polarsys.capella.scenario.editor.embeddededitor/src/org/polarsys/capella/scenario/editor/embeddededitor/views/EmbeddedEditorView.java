@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,10 +32,12 @@ import org.eclipse.ui.texteditor.spelling.SpellingService;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditor;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditorFactory;
+import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.dsl.ui.internal.DslActivator;
 import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.actions.XtextEditorActionFactory;
+import org.polarsys.capella.scenario.editor.embeddededitor.commands.HelperCommands;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 import com.google.inject.Injector;
@@ -102,6 +105,9 @@ public class EmbeddedEditorView extends ViewPart {
     EmbeddedEditor editor = factory.newEditor(provider).withParent(parent);
     editor.createPartialEditor();
     EmbeddedEditorInstance.setEmbeddedEditor(editor);
+    
+    // do a refresh of diagram and of the title bar
+    HelperCommands.refreshTextEditor(this);
   }
 
   public TextualScenarioProvider getProvider() {

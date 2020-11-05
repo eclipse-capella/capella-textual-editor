@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -48,9 +36,9 @@ import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
  */
 @SuppressWarnings("all")
 public class TextualScenarioHelper {
-  private final static String TYPE_FE = "FE";
+  private static final String TYPE_FE = "FE";
   
-  private final static String TYPE_CE = "CE";
+  private static final String TYPE_CE = "CE";
   
   /**
    * calculate the type of exchanges allowed to be declared in the text
@@ -74,9 +62,7 @@ public class TextualScenarioHelper {
           }
           if ((element instanceof CombinedFragment)) {
             CombinedFragment combinedFragment = ((CombinedFragment) element);
-            Block _block = combinedFragment.getBlock();
-            EList<Element> _blockElements = _block.getBlockElements();
-            return TextualScenarioHelper.getScenarioAllowedExchangesType(_blockElements);
+            return TextualScenarioHelper.getScenarioAllowedExchangesType(combinedFragment.getBlock().getBlockElements());
           }
         }
       }
@@ -85,9 +71,7 @@ public class TextualScenarioHelper {
   }
   
   public static String getMessageExchangeType(final SequenceMessage message) {
-    String _source = message.getSource();
-    String _target = message.getTarget();
-    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(_source, _target);
+    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
     for (final AbstractEventOperation exchange : exchangesAvailable) {
       if (((message.getName() != null) && message.getName().equals(CapellaElementExt.getName(exchange)))) {
         return TextualScenarioHelper.getExchangeType(exchange);
@@ -122,8 +106,7 @@ public class TextualScenarioHelper {
       Model model = ((Model) container);
       EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(element, model);
       for (final Participant participant : participants) {
-        String _name = participant.getName();
-        participantsNames.add(_name);
+        participantsNames.add(participant.getName());
       }
     }
     return participantsNames;
@@ -143,14 +126,10 @@ public class TextualScenarioHelper {
     }
     if ((modelContainer instanceof CombinedFragment)) {
       ArrayList<Element> elements = CollectionLiterals.<Element>newArrayList();
-      Block _block = ((CombinedFragment) modelContainer).getBlock();
-      EList<Element> _blockElements = _block.getBlockElements();
-      elements.addAll(_blockElements);
+      elements.addAll(((CombinedFragment) modelContainer).getBlock().getBlockElements());
       EList<Operand> operands = ((CombinedFragment) modelContainer).getOperands();
       for (final Operand operand : operands) {
-        Block _block_1 = operand.getBlock();
-        EList<Element> _blockElements_1 = _block_1.getBlockElements();
-        elements.addAll(_blockElements_1);
+        elements.addAll(operand.getBlock().getBlockElements());
       }
       return elements;
     }
@@ -168,8 +147,7 @@ public class TextualScenarioHelper {
       return ((Model) object);
     }
     if ((object != null)) {
-      EObject _eContainer = object.eContainer();
-      return TextualScenarioHelper.getModelContainer(_eContainer);
+      return TextualScenarioHelper.getModelContainer(object.eContainer());
     }
     return null;
   }
