@@ -32,6 +32,7 @@ import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.embeddededitor.commands.DiagramToXtextCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
+import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 /*
  * Listener to session change events, to control when the embedded editor is displayed and linked to a diagram
@@ -58,13 +59,16 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
 
   public static Object handleSelection(IWorkbenchPart part, ISelection selection) {
     Object result = null;
-    if (selection != null && !selection.isEmpty() && (!(part instanceof EmbeddedEditorView))) {
-      if (selection instanceof IStructuredSelection) {
+    
+    if (selection != null && !selection.isEmpty() &&
+        (!(part instanceof EmbeddedEditorView)) &&
+        (selection instanceof IStructuredSelection)) {
+      
         IStructuredSelection selectionStructure = (IStructuredSelection) selection;
         Object firstElement = selectionStructure.getFirstElement();
         result = CapellaAdapterHelper.resolveDescriptorOrBusinessObject(firstElement);
-      }
     }
+    
     return result;
   }
 
@@ -78,32 +82,33 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
          * when a new diagram of type scenario is opened, we use the class EmbeddedEditorInstance to save the current
          * scenario and we update the content of the embedded xtext editor
          */
-        if (newInput instanceof DRepresentationDescriptor && 
-            ((DRepresentationDescriptor) newInput).getDescription() instanceof SequenceDiagramDescription) {
+        if (newInput instanceof DRepresentationDescriptor) {
+          if (((DRepresentationDescriptor) newInput).getDescription() instanceof SequenceDiagramDescription) {
 
-          DRepresentationDescriptor descriptor = (DRepresentationDescriptor) newInput;
-          if (descriptor.getTarget() instanceof Scenario) {
+            DRepresentationDescriptor descriptor = (DRepresentationDescriptor) newInput;
+            if (descriptor.getTarget() instanceof Scenario) {
 
-            Scenario sc = (Scenario) descriptor.getTarget();
-            if (currentSelected == null || !newInput.equals(currentSelected)) {
-              EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-              DRepresentation representation = descriptor.getRepresentation();
-              if (eeView != null && representation instanceof DDiagram &&
-                  (currentSelected == null || part instanceof DDiagramEditor)) {
+              Scenario sc = (Scenario) descriptor.getTarget();
+              if (currentSelected == null || !newInput.equals(currentSelected)) {
+                EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+                DRepresentation representation = descriptor.getRepresentation();
+                if (eeView != null && representation instanceof DDiagram
+                    && (currentSelected == null || part instanceof DDiagramEditor)) {
 
-                // set the diagram
-                EmbeddedEditorInstance.setDDiagram((DDiagram)representation);
-
-                // refresh the text editor
-                DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
-                eeView.refreshTitleBar(sc.getName());
-                currentSelected = newInput;
+                  // set the diagram
+                  EmbeddedEditorInstance.setDDiagram((DDiagram) representation);
+                  
+                  // refresh the text editor
+                  DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
+                  eeView.refreshTitleBar(sc.getName());
+                  currentSelected = newInput;
+                }
               }
             }
+          } else if (currentSelected != null) {
+            currentSelected = null;
+            EmbeddedEditorInstance.setDDiagram(null);
           }
-        } else {
-          currentSelected = null;
-          EmbeddedEditorInstance.setDDiagram(null);
         }
       }
     };

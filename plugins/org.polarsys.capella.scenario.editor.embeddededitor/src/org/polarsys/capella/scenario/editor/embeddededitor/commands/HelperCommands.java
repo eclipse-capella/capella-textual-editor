@@ -7,6 +7,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.validation.CheckMode;
@@ -15,6 +16,8 @@ import org.eclipse.xtext.validation.Issue;
 import org.polarsys.capella.core.data.capellacore.Constraint;
 import org.polarsys.capella.core.data.information.datavalue.OpaqueExpression;
 import org.polarsys.capella.core.data.interaction.InteractionOperand;
+import org.polarsys.capella.core.data.interaction.Scenario;
+import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
@@ -103,5 +106,20 @@ public class HelperCommands {
 
   public static void showDialogTextualEditor(String title, String message) {
     MessageDialog.openError(Display.getCurrent().getActiveShell(), title, message);
+  }
+  
+  /*
+   * refresh the text editor with the content from diagram
+   */
+  public static void refreshTextEditor(EmbeddedEditorView eeView) {
+    DDiagram diagram = EmbeddedEditorInstance.getDDiagram();
+    if(diagram != null) {
+      Scenario scenario= EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+      if(scenario != null) {
+        // refresh the text editor
+        DiagramToXtextCommands.process(scenario, eeView); // update the embedded editor text view
+        eeView.refreshTitleBar(scenario.getName()); 
+      }
+    }
   }
 }
