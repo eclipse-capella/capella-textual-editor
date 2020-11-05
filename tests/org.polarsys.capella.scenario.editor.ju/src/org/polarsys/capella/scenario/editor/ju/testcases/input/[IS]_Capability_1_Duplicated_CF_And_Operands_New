@@ -1,0 +1,8 @@
+scenario {
+	component "System"
+	actor "SA 2"
+	actor "SA 3"
+	"SA 2" -> "SA 3" : "fe1"
+	on "SA 3" function "SystemFunction 2"
+	on "SA 2" function "SystemFunction 1"
+}
