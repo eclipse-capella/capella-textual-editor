@@ -352,7 +352,9 @@ public class XtextToDiagramCommands {
 
         // This list will store Capella messages that have already been matched with an xtext message
         List<SequenceMessage> processedCapellaMessages = new ArrayList<>();
-        editElements(scenario, elements, processedCapellaMessages);
+        // This list will store Capella combined fragments that have already been matched with an xtext combined fragment
+        ArrayList<CombinedFragment> processedCapellaCombinedFragments = new ArrayList<>();
+        editElements(scenario, elements, processedCapellaMessages, processedCapellaCombinedFragments);
 
         // Reorder scenario, this means reordering the interaction fragments and sequence messages lists
         reorderCapellaScenario(scenario, elements);
@@ -377,8 +379,10 @@ public class XtextToDiagramCommands {
         List<InteractionFragment> executionEndsToProcess = new ArrayList<>();
         // this list will store Capella messages that are already matched with xtext messages
         List<SequenceMessage> processedCapellaMessages = new ArrayList<>();
+        // this list will store Capella combined fragments that are already matched with xtext combined fragments
+        ArrayList<CombinedFragment> processedCapellaCombinedFragments = new ArrayList<>();
         reorderCapellaFragments(scenario, elements, capellaSequenceMessages, interactionFragments,
-            executionEndsToProcess, processedCapellaMessages);
+            executionEndsToProcess, processedCapellaMessages, processedCapellaCombinedFragments);
 
         // Replace sequence message list and interaction fragments list in the real scenario
         // with the newly computed lists
@@ -397,10 +401,12 @@ public class XtextToDiagramCommands {
        * @param elements
        *          The list of elements in editor
        * @param processedCapellaMessages 
+       * @param processedCapellaCombinedFragments 
        */
       private void reorderCapellaFragments(Scenario scenario, EList<Element> elements,
           List<SequenceMessage> capellaSequenceMessages, List<InteractionFragment> interactionFragments,
-          List<InteractionFragment> executionEndsToProcess, List<SequenceMessage> processedCapellaMessages) {
+          List<InteractionFragment> executionEndsToProcess, List<SequenceMessage> processedCapellaMessages, 
+          ArrayList<CombinedFragment> processedCapellaCombinedFragments) {
 
         for (Iterator<Element> iterator = elements.iterator(); iterator.hasNext();) {
           EObject elementFromXtext = iterator.next();
@@ -416,7 +422,7 @@ public class XtextToDiagramCommands {
             org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment textCombinedFragment = 
                 (org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) elementFromXtext;
             CombinedFragment capellaCombinedFragment = getCorrespondingCapellaCombinedFragment(scenario,
-                textCombinedFragment);
+                textCombinedFragment, processedCapellaCombinedFragments);
             if (capellaCombinedFragment != null) {
               // start the Combined Fragment Block
               interactionFragments.add(capellaCombinedFragment.getStart());
@@ -427,7 +433,8 @@ public class XtextToDiagramCommands {
               // add content in the first operand of the Combined Fragment Block
               interactionFragments.add(orderedCapellaOperands.get(0));
               reorderCapellaFragments(scenario, textCombinedFragment.getBlock().getBlockElements(),
-                  capellaSequenceMessages, interactionFragments, executionEndsToProcess, processedCapellaMessages);
+                  capellaSequenceMessages, interactionFragments, executionEndsToProcess, processedCapellaMessages, 
+                  processedCapellaCombinedFragments);
 
               // reorder the other operands
               EList<Operand> textOperands = textCombinedFragment.getOperands();
@@ -436,7 +443,8 @@ public class XtextToDiagramCommands {
                 // add content in the first operand of the Combined Fragment Block
                 interactionFragments.add(operand);
                 reorderCapellaFragments(scenario, textOperands.get(i).getBlock().getBlockElements(),
-                    capellaSequenceMessages, interactionFragments, executionEndsToProcess, processedCapellaMessages);
+                    capellaSequenceMessages, interactionFragments, executionEndsToProcess, processedCapellaMessages, 
+                    processedCapellaCombinedFragments);
               }
 
               // finish the Combined Fragment Block
@@ -584,9 +592,10 @@ public class XtextToDiagramCommands {
    * @param elements
    *          The list of elements in editor
    * @param processedCapellaMessages 
+   * @param processedCapellaCombinedFragments 
    */
   private static void editElements(Scenario scenario, EList<Element> elements, 
-      List<SequenceMessage> processedCapellaMessages) {
+      List<SequenceMessage> processedCapellaMessages, ArrayList<CombinedFragment> processedCapellaCombinedFragments) {
     EList<SequenceMessage> capellaSequenceMessages = scenario.getOwnedMessages();
     List<EObject> previousStateFragments = new ArrayList <>();
     for (Iterator<Element> iterator = elements.iterator(); iterator.hasNext();) {
@@ -627,7 +636,8 @@ public class XtextToDiagramCommands {
         // Check if we need to create CombinedFragment
 
         CombinedFragment capellaFragment = getCorrespondingCapellaCombinedFragment(scenario,
-            (org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) xtextElement);
+            (org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) xtextElement, 
+            processedCapellaCombinedFragments);
         if (capellaFragment == null) {
           InteractionFragment lastInteractionFragment = null;
           
@@ -637,15 +647,15 @@ public class XtextToDiagramCommands {
           }
           createCapellaCombinedFragmentBlock(scenario,
               (org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) xtextElement,
-              lastInteractionFragment, processedCapellaMessages);
+              lastInteractionFragment, processedCapellaMessages, processedCapellaCombinedFragments);
         } else {
           // combined fragment found, check its contents
           editElements(scenario,
               ((org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) xtextElement).getBlock()
-                  .getBlockElements(), processedCapellaMessages);
+                  .getBlockElements(), processedCapellaMessages, processedCapellaCombinedFragments);
           for (Operand operand : ((org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) xtextElement)
               .getOperands()) {
-            editElements(scenario, operand.getBlock().getBlockElements(), processedCapellaMessages);
+            editElements(scenario, operand.getBlock().getBlockElements(), processedCapellaMessages, processedCapellaCombinedFragments);
           }
         }
       } else if (xtextElement instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment) {
@@ -1100,10 +1110,12 @@ public class XtextToDiagramCommands {
    *          The scenario diagram
    * @param textCombinedFragment
    *          The element representing the combined fragment in the xtext editor
+   * @param processedCapellaCombinedFragments 
    * @return the corresponding Capella combined fragment or null if not found
    */
   private static CombinedFragment getCorrespondingCapellaCombinedFragment(Scenario scenario,
-      org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment textCombinedFragment) {
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment textCombinedFragment, 
+      ArrayList<CombinedFragment> processedCapellaCombinedFragments) {
     EList<InteractionFragment> fragments = scenario.getOwnedInteractionFragments();
 
     for (Iterator<InteractionFragment> iterator = fragments.iterator(); iterator.hasNext();) {
@@ -1115,12 +1127,14 @@ public class XtextToDiagramCommands {
           candidateCombinedFragment = (CombinedFragment) abstractFragment;
         }
         if (candidateCombinedFragment != null
+            && !processedCapellaCombinedFragments.contains(candidateCombinedFragment)
             && candidateCombinedFragment.getOperator().toString().equalsIgnoreCase(textCombinedFragment.getKeyword())) {
           // check timelines
           if (haveSameTimelines(textCombinedFragment, candidateCombinedFragment)) {
             List<InteractionOperand> capellaOperands = candidateCombinedFragment.getReferencedOperands();
             if (capellaOperands.size() == textCombinedFragment.getOperands().size() + 1
                 && operandsHaveSameExpressions(textCombinedFragment, capellaOperands)) {
+              processedCapellaCombinedFragments.add(candidateCombinedFragment);
               return candidateCombinedFragment;
             }
           }
@@ -1868,12 +1882,13 @@ public class XtextToDiagramCommands {
    * @param lastInteractionFragment
    *          The last interaction fragment before the given combined fragment. If null, the combined fragment will be
    *          the first object in the Capella diagram
+   * @param processedCapellaCombinedFragments 
    * @param processedXtextMessages 
    */
   private static void createCapellaCombinedFragmentBlock(Scenario scenario,
       org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment xtextCombinedFragment,
       InteractionFragment lastInteractionFragment, 
-      List<SequenceMessage> processedCapellaMessages) {
+      List<SequenceMessage> processedCapellaMessages, ArrayList<CombinedFragment> processedCapellaCombinedFragments) {
 
     // generate CombinedFragment, FramentEnd, FragmentEnd, IntreationOperands from xtext combined fragment
     FragmentEnd start = InteractionFactory.eINSTANCE.createFragmentEnd();
@@ -1899,6 +1914,7 @@ public class XtextToDiagramCommands {
     CombinedFragment combinedFragment = createCombinedFragment(start, finish, 
         InteractionOperatorKind.getByName(xtextCombinedFragment.getKeyword().toUpperCase()));
     scenario.getOwnedTimeLapses().add(combinedFragment);
+    processedCapellaCombinedFragments.add(combinedFragment);
 
     Block firstBlock = xtextCombinedFragment.getBlock();
     if (firstBlock != null) {
@@ -1908,7 +1924,7 @@ public class XtextToDiagramCommands {
       scenario.getOwnedInteractionFragments().add(operand);
       ScenarioExt.moveEndOnScenario(operand, start);
 
-      editElements(scenario, firstBlock.getBlockElements(), processedCapellaMessages);
+      editElements(scenario, firstBlock.getBlockElements(), processedCapellaMessages, processedCapellaCombinedFragments);
 
       InteractionOperand prevEnd = operand;
       for (Operand operandBlock : xtextCombinedFragment.getOperands()) {
@@ -1919,7 +1935,7 @@ public class XtextToDiagramCommands {
         ScenarioExt.moveEndOnScenario(operand2, prevEnd);
         prevEnd = operand2;
 
-        editElements(scenario, operandBlock.getBlock().getBlockElements(), processedCapellaMessages);
+        editElements(scenario, operandBlock.getBlock().getBlockElements(), processedCapellaMessages, processedCapellaCombinedFragments);
       }
     }
   }

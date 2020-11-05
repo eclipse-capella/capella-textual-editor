@@ -176,12 +176,12 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 //							(element as ArmTimerMessage).participant + "\"!",
 //							TextualScenarioPackage.Literals.MESSAGE__NAME)
 //					} else 
-					if (element instanceof CombinedFragment) {
-						error(String.format(
-							"The same " + element.keyword + " with expression \" " + element.expression +
-								"\" and timelines " + element.timelines + " is already used in text editor!"
-						), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION)
-					}
+//					if (element instanceof CombinedFragment) {
+//						error(String.format(
+//							"The same " + element.keyword + " with expression \" " + element.expression +
+//								"\" and timelines " + element.timelines + " is already used in text editor!"
+//						), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION)
+//					}
 					return true
 				}
 			}
@@ -610,7 +610,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	/*
 	 * Expression shall not be empty
 	 */
-	@Check
+//	@Check
 	def checkCombinedFragmentEmptyExpression(CombinedFragment combinedFragment) {
 		if (combinedFragment.expression === null || combinedFragment.expression.isEmpty) {
 			error(
@@ -623,7 +623,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	/*
 	 * Expression shall not be empty
 	 */
-	@Check
+//	@Check
 	def checkOperandEmptyExpression(Operand operand) {
 		if (operand.expression === null || operand.expression.isEmpty) {
 			error(
