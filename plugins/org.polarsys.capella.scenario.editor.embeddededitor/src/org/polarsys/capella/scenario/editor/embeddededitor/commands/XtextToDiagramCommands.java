@@ -1212,7 +1212,7 @@ public class XtextToDiagramCommands {
   private static void cleanUpMessages(Scenario scenario, EList<Element> messages) {
     // Delete all diagram messages that don't appear in the xtext scenario
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                List<Message> allXtextSequenceMessages = getAllXtextSequenceMessages(messages);
+    List<Message> allXtextSequenceMessages = getAllXtextSequenceMessages(messages);
     
     List<SequenceMessage> messagesToBeDeleted = getCapellaSequenceMessagesToBeDeleted(scenario, allXtextSequenceMessages);
     for (SequenceMessage sequenceMessage : messagesToBeDeleted) {

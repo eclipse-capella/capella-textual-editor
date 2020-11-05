@@ -2,7 +2,24 @@ scenario {
 	component "System"
 	actor "SA 2"
 	actor "SA 3"
-	"SA 2" -> "SA 3" : "fe1"
-	on "SA 3" function "SystemFunction 2"
-	on "SA 2" function "SystemFunction 1"
+	alt "" over "SA 3" "SA 2" {
+		"SA 2" -> "SA 3" : "m1"
+	} else "" {
+		"SA 2" -> "SA 3" : "m1"
+	}
+	alt "" over "SA 3" "SA 2" {
+		"SA 2" -> "SA 3" : "m2"
+	} else "" {
+		"SA 2" -> "SA 3" : "m1"
+	}
+	par "" over "System" "SA 3" "SA 2" {
+		"System" -> "SA 3" : "create1"
+	} "" {
+		"System" -> "SA 2" : "delete2"
+	}
+	par "" over "System" "SA 3" "SA 2" {
+		"SA 2" -> "SA 3" withReturn : "m3"
+	} "" {
+		"System" -> "SA 2" withReturn : "m4"
+	}
 }

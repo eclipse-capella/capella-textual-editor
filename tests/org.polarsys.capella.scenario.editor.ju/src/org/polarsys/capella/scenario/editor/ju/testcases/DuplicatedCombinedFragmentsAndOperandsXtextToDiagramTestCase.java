@@ -14,7 +14,7 @@ public class DuplicatedCombinedFragmentsAndOperandsXtextToDiagramTestCase extend
   @Override
   public void test() throws Exception {
     init();
-    List<String> elementsNew = new ArrayList<String>(Arrays.asList("SA 2 -> SA 3 : m1", "SA 2 -> SA 3 : m1"));
+    List<String> elementsNew = new ArrayList<String>();
     
     testUpdateDiagram(duplicatedCFAndOperandsDiagramName, duplicatedCFAndOperandsFileContentExpected, 
         "[IS]_Capability_1_Duplicated_CF_And_Operands_New", elementsNew);
