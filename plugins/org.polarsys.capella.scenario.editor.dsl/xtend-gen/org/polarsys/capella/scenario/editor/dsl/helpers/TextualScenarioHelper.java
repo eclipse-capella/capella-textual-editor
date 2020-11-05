@@ -13,10 +13,13 @@
 package org.polarsys.capella.scenario.editor.dsl.helpers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Conversions;
 import org.polarsys.capella.core.data.fa.ComponentExchange;
 import org.polarsys.capella.core.data.fa.FunctionalExchange;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
@@ -43,7 +46,7 @@ public class TextualScenarioHelper {
   /**
    * calculate the type of exchanges allowed to be declared in the text
    */
-  public static String getScenarioAllowedExchangesType(final EList<Element> elements) {
+  public static Object getScenarioAllowedExchangesType(final EList<Element> elements) {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
     if (_isESScenario) {
       boolean _isCEScenario = EmbeddedEditorInstanceHelper.isCEScenario();
@@ -70,14 +73,46 @@ public class TextualScenarioHelper {
     return null;
   }
   
-  public static String getMessageExchangeType(final SequenceMessage message) {
+  /**
+   * we return CE or FE or null in case we allow both or other type
+   */
+  public static Object getMessageExchangeType(final SequenceMessage message) {
     List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
+    HashSet<Object> _newHashSet = CollectionLiterals.<Object>newHashSet();
+    Set<Object> allowedTypes = ((Set<Object>) _newHashSet);
     for (final AbstractEventOperation exchange : exchangesAvailable) {
       if (((message.getName() != null) && message.getName().equals(CapellaElementExt.getName(exchange)))) {
-        return TextualScenarioHelper.getExchangeType(exchange);
+        String type = TextualScenarioHelper.getExchangeType(exchange);
+        if ((type != null)) {
+          allowedTypes.add(type);
+        }
       }
     }
+    int _size = allowedTypes.size();
+    boolean _equals = (_size == 1);
+    if (_equals) {
+      final Set<Object> _converted_allowedTypes = (Set<Object>)allowedTypes;
+      return ((Object[])Conversions.unwrapArray(_converted_allowedTypes, Object.class))[0];
+    }
     return null;
+  }
+  
+  /**
+   * we return a list of available exchanges CE or FE
+   */
+  public static Set getAllMessageExchangeType(final SequenceMessage message) {
+    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
+    HashSet<Object> _newHashSet = CollectionLiterals.<Object>newHashSet();
+    Set<Object> allowedTypes = ((Set<Object>) _newHashSet);
+    for (final AbstractEventOperation exchange : exchangesAvailable) {
+      if (((message.getName() != null) && message.getName().equals(CapellaElementExt.getName(exchange)))) {
+        String type = TextualScenarioHelper.getExchangeType(exchange);
+        if ((type != null)) {
+          allowedTypes.add(type);
+        }
+      }
+    }
+    return allowedTypes;
   }
   
   public static String getExchangeType(final EObject exchangeElement) {
@@ -102,9 +137,8 @@ public class TextualScenarioHelper {
   public static ArrayList<String> participantsDefinedBeforeNames(final EObject element) {
     ArrayList<String> participantsNames = CollectionLiterals.<String>newArrayList();
     EObject container = TextualScenarioHelper.getModelContainer(element);
-    if ((container != null)) {
-      EObject _modelContainer = TextualScenarioHelper.getModelContainer(element);
-      Model model = ((Model) _modelContainer);
+    if ((container instanceof Model)) {
+      Model model = ((Model) container);
       EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(element, model);
       for (final Participant participant : participants) {
         participantsNames.add(participant.getName());
