@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.command.Command;
@@ -84,6 +85,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
@@ -349,6 +351,7 @@ public class XtextToDiagramCommands {
         cleanUpMessages(scenario, elements);
         cleanUpStateFragments(scenario, elements);
         cleanUpCombinedFragments(scenario, elements);
+        cleanUpReferences(scenario, elements);
 
         // This list will store Capella messages that have already been matched with an xtext message
         List<SequenceMessage> processedCapellaMessages = new ArrayList<>();
@@ -386,7 +389,7 @@ public class XtextToDiagramCommands {
 
         // Replace sequence message list and interaction fragments list in the real scenario
         // with the newly computed lists
-        scenario.getOwnedInteractionFragments().removeIf(x -> !(x instanceof FragmentEnd && ((FragmentEnd)x).getAbstractFragment() instanceof InteractionUse));
+        scenario.getOwnedInteractionFragments().clear();
         scenario.getOwnedInteractionFragments().addAll(interactionFragments);
 
         scenario.getOwnedMessages().clear();
@@ -456,6 +459,12 @@ public class XtextToDiagramCommands {
             if (stateFragment != null) {
               interactionFragments.add(stateFragment.getStart());
               interactionFragments.add(stateFragment.getFinish());
+            }
+          } else if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference) {
+            InteractionUse reference = getCorrespondingCapellaReference(scenario, (Reference) elementFromXtext, interactionFragments);
+            if (reference != null) {
+              interactionFragments.add(reference.getStart());
+              interactionFragments.add(reference.getFinish());
             }
           }
         }
@@ -598,6 +607,7 @@ public class XtextToDiagramCommands {
       List<SequenceMessage> processedCapellaMessages, ArrayList<CombinedFragment> processedCapellaCombinedFragments) {
     EList<SequenceMessage> capellaSequenceMessages = scenario.getOwnedMessages();
     List<EObject> previousStateFragments = new ArrayList <>();
+    List<EObject> previousReferences = new ArrayList<>();
     for (Iterator<Element> iterator = elements.iterator(); iterator.hasNext();) {
       EObject xtextElement = iterator.next();
 
@@ -663,6 +673,11 @@ public class XtextToDiagramCommands {
         editStateFragment(scenario,
             (org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment) xtextElement,
             previousStateFragments);
+      } else if (xtextElement instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference) {
+        previousReferences.add(xtextElement);
+        editReference(scenario,
+            (org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference) xtextElement,
+            previousReferences);
       }
     }
   }
@@ -1989,6 +2004,246 @@ public class XtextToDiagramCommands {
     combinedFragment.setName("combined fragment");
 
     return combinedFragment;
+  }
+  
+  /**
+   * Create/update a reference using the information in the xtext scenario
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param xtextElement
+   *          The element representing the reference in the xtext scenario
+   * @param previousEditorReference
+   *          The list of previously occurring references
+   */
+  private static void editReference(Scenario scenario, org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference xtextElement,
+      List<EObject> previousEditorReference) {
+
+    List<InstanceRole> instanceRoles = new ArrayList<>();
+    for (String timeline : xtextElement.getTimelines()) {
+      instanceRoles.add(EmbeddedEditorInstanceHelper.getInstanceRole(timeline));
+    }
+    
+    List<EObject> simillarReferences = previousEditorReference.stream()
+        .filter(x -> ((Reference) x).getName().equals(xtextElement.getName())
+            && haveSameTimelines((Reference) x, xtextElement))
+        .collect(Collectors.toList());
+
+    // get capella references (timelapse) with the same attributes as xtext reference
+    List<TimeLapse> capellaReferences = scenario.getOwnedTimeLapses().stream()
+        .filter(x -> x instanceof InteractionUse && isSameReference(xtextElement, x)).collect(Collectors.toList());
+
+    if (capellaReferences.isEmpty() || capellaReferences.size() < simillarReferences.size()) {
+      createCapellaReference(scenario, instanceRoles, xtextElement);   
+    }
+  }
+  
+  
+  /*
+   * Check if two references have the same timelines
+   */
+  private static boolean haveSameTimelines(Reference ref1, Reference ref2) {
+    return ref1.getTimelines().stream().collect(Collectors.toSet())
+        .equals(ref2.getTimelines().stream().collect(Collectors.toSet()));
+  }
+  
+  
+  /**
+   * Creates a Capella reference - create fragments end and add them to owned interaction 
+   * fragments and interaction use to owned timelapses.
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param instanceRoles
+   *          instance roles covered by reference
+   * @param xtextElement
+   *          xtext reference
+   */
+  private static void createCapellaReference(Scenario scenario, List<InstanceRole> instanceRoles, Reference xtextElement) {
+    FragmentEnd start = InteractionFactory.eINSTANCE.createFragmentEnd();
+    FragmentEnd finish = InteractionFactory.eINSTANCE.createFragmentEnd();
+
+    start.getCoveredInstanceRoles().addAll(instanceRoles);
+    finish.getCoveredInstanceRoles().addAll(instanceRoles);
+    
+    start.setName("start");
+    finish.setName("end");
+
+    scenario.getOwnedInteractionFragments().add(start);
+    scenario.getOwnedInteractionFragments().add(finish);
+    
+    InteractionUse reference = createInteractionUse(scenario, start, finish, xtextElement);
+    scenario.getOwnedTimeLapses().add(reference);
+  }
+  
+  /**
+   * Creates a Capella interaction use, with all its elements.
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param start
+   *          fragment end - start
+   * @param finish
+   *          fragment end - finish
+   * @param xtextElement
+   *          xtext reference
+   * @return the newly created Capella interactionUse
+   */
+  private static InteractionUse createInteractionUse(Scenario scenario, FragmentEnd start, FragmentEnd finish, Reference xtextElement) {
+    InteractionUse interactionUse = InteractionFactory.eINSTANCE.createInteractionUse("interactionUse");
+    interactionUse.setStart(start);
+    interactionUse.setFinish(finish);
+    for (Scenario sc : scenario.getReferencedScenarios()) {
+      if (sc.getName().equals(xtextElement.getName())) {
+        interactionUse.setReferencedScenario(sc);
+      }
+    }
+    return interactionUse;
+  }
+
+
+
+ /**
+   * Return the corresponding Capella reference for the given xtext element
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param reference
+   *          The element representing the reference in the xtext editor
+   * @param interactionFragments
+   *          List of timelapses where we search for the reference
+   * @return the corresponding Capella reference or null if not found
+   */
+  private static InteractionUse getCorrespondingCapellaReference(Scenario scenario, Reference reference,
+      List<InteractionFragment> interactionFragments) {
+    List<TimeLapse> filteredTimeLapses = scenario.getOwnedTimeLapses().stream().filter(x -> x instanceof InteractionUse
+        && isSameReference(reference, x) && !interactionFragments.contains(((InteractionUse) x).getStart()))
+        .collect(Collectors.toList());
+    if (!filteredTimeLapses.isEmpty())
+      return (InteractionUse) filteredTimeLapses.get(0);
+    return null;
+  }
+  
+  
+  
+   /**
+   * Remove all references that are in the diagram, but not in the editor.
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param xTextElements
+   *          List of elements in the xtext editor
+   */
+  private static void cleanUpReferences(Scenario scenario, EList<Element> xTextElements) {
+     List<EObject> allXtextReferences = xTextElements.stream()
+        .filter(element -> element instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference)
+        .collect(Collectors.toList());
+    
+    List<TimeLapse> referencesToBeDeleted = getCapellaReferencesToBeDeleted(scenario, allXtextReferences);
+    
+    for (TimeLapse timeLapse : referencesToBeDeleted) {
+      removeReferenceFromScenario(scenario, timeLapse);
+    }
+  }
+  
+  
+   /**
+   * Return the list of Capella references to be deleted (the ones that don't have corresponding xtext elements)
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param allXtextReferences
+   *          List of all references elements in the xtext editor
+   * @return the list of Capella references to be deleted
+   */
+  private static List<TimeLapse> getCapellaReferencesToBeDeleted(Scenario scenario, List<EObject> allXtextReferences) {
+    List<TimeLapse> capellaReferences = scenario.getOwnedTimeLapses().stream()
+        .filter(timelapse -> timelapse instanceof InteractionUse).collect(Collectors.toList());
+    List<Reference> processedXtextReferences = new ArrayList<>();
+    List<TimeLapse> referencesToBeDeleted = new ArrayList<>();
+
+    for (TimeLapse timeLapse : capellaReferences) {
+      if (!foundCapellaReferenceInXText(timeLapse, allXtextReferences, processedXtextReferences)) {
+        referencesToBeDeleted.add(timeLapse);
+      }
+    }
+    return referencesToBeDeleted;
+  }
+  
+  
+  
+   
+  /**
+   * Remove a reference from scenario. Remove the interaction fragments.
+   * 
+   * @param scenario
+   *          The scenario diagram
+   * @param timeLapse
+   *          The timelapse of the reference
+   */
+  private static void removeReferenceFromScenario(Scenario scenario, TimeLapse timeLapse) {
+    InteractionUse reference = (InteractionUse) timeLapse;
+
+    // Remove reference
+    scenario.getOwnedTimeLapses().remove(timeLapse);
+
+    // Remove interaction fragments
+    scenario.getOwnedInteractionFragments().removeAll(Arrays.asList(reference.getStart(), reference.getFinish()));
+  }
+  
+  
+  
+  /**
+   * Check if a Capella reference has a correspondent in xtext scenario
+   * 
+   * @param timelapse
+   *          Timelapse of the reference
+   * @param allXtextReferences
+   *          List of all references in the xtext scenario
+   * @param processedXtextStateFragments
+   *          List of already processed xtext references
+   * @return true if a corresponding reference is found, false otherwise
+   */
+  private static boolean foundCapellaReferenceInXText(TimeLapse timelapse, List<EObject> allXtextReferences,
+      List<org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference> processedXtextReferences) {
+    for (EObject reference : allXtextReferences) {
+      if (!processedXtextReferences.contains(reference) && isSameReference(reference, timelapse)) {
+        processedXtextReferences.add((org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference) reference);
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  
+  
+  
+  /**
+   * Check if the two state fragments match
+   * 
+   * @param reference
+   *          xtext reference
+   * @param timelapse
+   *          Timelapse of a Capella reference
+   * @return true if the two references match, false otherwise
+   */
+  private static boolean isSameReference(EObject reference, TimeLapse timelapse) {
+    if (!(reference instanceof Reference)) {
+      return false;
+    }
+
+    Reference xtextReference = (Reference) reference;
+    InteractionUse capellaReference = (InteractionUse) timelapse;
+    if (!(xtextReference.getName().equals(capellaReference.getReferencedScenario().getName()))) {
+      return false;
+    }
+
+    Set<String> capellaTimelines = capellaReference.getStart().getCoveredInstanceRoles().stream().map(x -> x.getName())
+        .collect(Collectors.toSet());
+    if (!capellaTimelines.equals(xtextReference.getTimelines().stream().collect(Collectors.toSet()))) {
+      return false;
+    }
+    return true;
   }
 
   /**

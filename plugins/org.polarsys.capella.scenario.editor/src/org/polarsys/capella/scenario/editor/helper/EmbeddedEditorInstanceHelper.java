@@ -56,6 +56,7 @@ import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
+import org.polarsys.capella.core.sequencediag.ScenarioService;
 import org.polarsys.capella.core.sirius.analysis.FaServices;
 import org.polarsys.capella.core.sirius.analysis.InteractionServices;
 import org.polarsys.capella.core.sirius.analysis.OAServices;
@@ -550,5 +551,15 @@ public class EmbeddedEditorInstanceHelper {
   public static boolean isOpenedRepresentation() {
     List<DDiagram> diagrams = getOpenedRepresentations();
     return diagrams.contains(EmbeddedEditorInstance.getDDiagram());
+  }
+  
+  /*
+   *  Get all possible scenario references 
+   */
+  public static List<String> getReferencedScenariosName() {
+    ScenarioService scenarioService = new ScenarioService();
+    Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+    List<EObject> referenceScope = scenarioService.getReferenceScope(currentScenario); 
+    return referenceScope.stream().map(x -> ((Scenario)x).getName()).collect(Collectors.toList());
   }
 }
