@@ -18,7 +18,6 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManagerListener;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.sequence.description.SequenceDiagramDescription;
-import org.eclipse.sirius.diagram.ui.tools.api.editor.DDiagramEditor;
 import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
@@ -88,26 +87,21 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
             DRepresentationDescriptor descriptor = (DRepresentationDescriptor) newInput;
             if (descriptor.getTarget() instanceof Scenario) {
 
+              DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
               Scenario sc = (Scenario) descriptor.getTarget();
-              if (currentSelected == null || !newInput.equals(currentSelected)) {
+              if (currentDiagram == null || !newInput.equals(currentDiagram)) {
                 EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
                 DRepresentation representation = descriptor.getRepresentation();
-                if (eeView != null && representation instanceof DDiagram
-                    && (currentSelected == null || part instanceof DDiagramEditor)) {
-
+                if (eeView != null && representation instanceof DDiagram) {
                   // set the diagram
                   EmbeddedEditorInstance.setDDiagram((DDiagram) representation);
-                  
+
                   // refresh the text editor
                   DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
                   eeView.refreshTitleBar(sc.getName());
-                  currentSelected = newInput;
                 }
               }
             }
-          } else if (currentSelected != null) {
-            currentSelected = null;
-            EmbeddedEditorInstance.setDDiagram(null);
           }
         }
       }
