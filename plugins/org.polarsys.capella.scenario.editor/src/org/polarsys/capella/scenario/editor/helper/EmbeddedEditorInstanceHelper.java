@@ -19,8 +19,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
 import org.eclipse.sirius.diagram.ui.tools.api.editor.DDiagramEditor;
@@ -638,5 +640,12 @@ public class EmbeddedEditorInstanceHelper {
   public static boolean isOpenedRepresentation() {
     List<DDiagram> diagrams = getOpenedRepresentations();
     return diagrams.contains(EmbeddedEditorInstance.getDDiagram());
+  }
+  
+  public static void refreshAssociatedDiagram() {
+    DDiagram diagram = EmbeddedEditorInstance.getDDiagram();
+    if(diagram != null) {
+      DialectManager.INSTANCE.refresh(diagram, new NullProgressMonitor());
+    }
   }
 }
