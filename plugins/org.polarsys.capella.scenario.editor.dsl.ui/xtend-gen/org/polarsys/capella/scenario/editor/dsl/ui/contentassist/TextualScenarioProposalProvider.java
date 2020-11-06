@@ -43,6 +43,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
@@ -495,6 +496,37 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
       boolean _contains = ((CombinedFragment) model).getTimelines().contains(((Participant) el).getName());
+      boolean _not = (!_contains);
+      if (_not) {
+        String _name = ((Participant) el).getName();
+        String _plus = ("\"" + _name);
+        String _plus_1 = (_plus + "\"");
+        acceptor.accept(
+          this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+      }
+    }
+  }
+  
+  @Override
+  public void completeReference_Over(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    acceptor.accept(
+      this.createCompletionProposal("over", "over", null, context));
+  }
+  
+  @Override
+  public void completeReference_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    List<String> referencedScenarios = EmbeddedEditorInstanceHelper.getReferencedScenariosName();
+    for (final String referencedScenario : referencedScenarios) {
+      acceptor.accept(this.createCompletionProposal((("\"" + referencedScenario) + "\""), referencedScenario, null, context));
+    }
+  }
+  
+  @Override
+  public void completeReference_Timelines(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    EObject _rootModel = context.getRootModel();
+    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(model, ((Model) _rootModel));
+    for (final EObject el : _participantsDefinedBefore) {
+      boolean _contains = ((Reference) model).getTimelines().contains(((Participant) el).getName());
       boolean _not = (!_contains);
       if (_not) {
         String _name = ((Participant) el).getName();

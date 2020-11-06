@@ -24,10 +24,8 @@ import org.polarsys.capella.core.data.fa.ComponentExchange
 import org.polarsys.capella.core.data.fa.FunctionalExchange
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
