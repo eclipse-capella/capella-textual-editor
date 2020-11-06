@@ -1,0 +1,11 @@
+scenario {
+	role "Role 1"
+	role "Role 2"
+	"Role 1" ->+ "Role 2" : "create_role"
+	"Role 1" -> "Role 2" withReturn : "i"
+	loop "" over "Role 1" "Role 2" {
+		"Role 1" -> "Role 2" : "i"
+	} "" {
+		"Role 1" -> "Role 2" : "i"
+	}
+}

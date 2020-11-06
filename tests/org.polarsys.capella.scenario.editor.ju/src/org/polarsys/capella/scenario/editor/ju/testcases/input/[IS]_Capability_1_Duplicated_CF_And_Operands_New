@@ -1,0 +1,15 @@
+scenario {
+	component "System"
+	actor "SA 2"
+	actor "SA 3"
+	alt "" over "SA 3" "SA 2" {
+		"SA 2" -> "SA 3" : "m1"
+	} else "" {
+		"SA 2" -> "SA 3" : "m1"
+	}
+	alt "" over "SA 3" "SA 2" {
+		"SA 2" -> "SA 3" : "m2"
+	} else "" {
+		"SA 2" -> "SA 3" : "m1"
+	}
+}
