@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -63,20 +51,17 @@ import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
  */
 @SuppressWarnings("all")
 public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
-  public final static String INVALID_NAME = "invalidName";
+  public static final String INVALID_NAME = "invalidName";
   
-  public final static String DUPLICATED_NAME = "duplicatedName";
+  public static final String DUPLICATED_NAME = "duplicatedName";
   
-  public final static String DUPLICATED_MESSAGES_NAME = "duplicatedMessageName";
+  public static final String DUPLICATED_MESSAGES_NAME = "duplicatedMessageName";
   
-  public final static String SAME_SOURCE_AND_TARGET_ERROR = "Invalid element! Source and target must be different!";
+  public static final String SAME_SOURCE_AND_TARGET_ERROR = "Invalid element! Source and target must be different!";
   
   @Check
   public void checkPartExists(final Participant participant) {
-    String _keyword = participant.getKeyword();
-    List<String> _availablePartNames = EmbeddedEditorInstanceHelper.getAvailablePartNames(_keyword);
-    String _name = participant.getName();
-    boolean _contains = _availablePartNames.contains(_name);
+    boolean _contains = EmbeddedEditorInstanceHelper.getAvailablePartNames(participant.getKeyword()).contains(participant.getName());
     boolean _not = (!_contains);
     if (_not) {
       if ((participant instanceof Function)) {
@@ -90,12 +75,11 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   @Check
   public void checkParticipantKeywordIsValid(final Participant participant) {
-    String _keyword = participant.getKeyword();
-    boolean _checkValidKeyword = EmbeddedEditorInstanceHelper.checkValidKeyword(_keyword);
+    boolean _checkValidKeyword = EmbeddedEditorInstanceHelper.checkValidKeyword(participant.getKeyword());
     boolean _not = (!_checkValidKeyword);
     if (_not) {
-      String _keyword_1 = participant.getKeyword();
-      String _plus = ("\'" + _keyword_1);
+      String _keyword = participant.getKeyword();
+      String _plus = ("\'" + _keyword);
       String _plus_1 = (_plus + "\' can not be used in this diagram!");
       this.error(_plus_1, 
         TextualScenarioPackage.Literals.PARTICIPANT__KEYWORD);
@@ -104,18 +88,15 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   @Check
   public void checkMessagesExist(final SequenceMessageType message) {
-    String _source = message.getSource();
-    String _target = message.getTarget();
-    List<String> _exchangeNames = EmbeddedEditorInstanceHelper.getExchangeNames(_source, _target);
-    String _name = message.getName();
-    boolean _contains = _exchangeNames.contains(_name);
+    boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), message.getTarget()).contains(
+      message.getName());
     boolean _not = (!_contains);
     if (_not) {
-      String _source_1 = message.getSource();
-      String _plus = ("Exchange does not exist between \"" + _source_1);
+      String _source = message.getSource();
+      String _plus = ("Exchange does not exist between \"" + _source);
       String _plus_1 = (_plus + "\" and \"");
-      String _target_1 = message.getTarget();
-      String _plus_2 = (_plus_1 + _target_1);
+      String _target = message.getTarget();
+      String _plus_2 = (_plus_1 + _target);
       String _plus_3 = (_plus_2 + "\"!");
       this.error(_plus_3, TextualScenarioPackage.Literals.MESSAGE__NAME);
     }
@@ -127,16 +108,14 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   @Check
   public void checkParticipantsInvolvedExist(final SequenceMessageType message) {
     ArrayList<String> participantsDefined = TextualScenarioHelper.participantsDefinedBeforeNames(message);
-    String _source = message.getSource();
-    boolean _contains = participantsDefined.contains(_source);
+    boolean _contains = participantsDefined.contains(message.getSource());
     boolean _not = (!_contains);
     if (_not) {
       this.error(
         "Source participant not defined in text editor!", 
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
     }
-    String _target = message.getTarget();
-    boolean _contains_1 = participantsDefined.contains(_target);
+    boolean _contains_1 = participantsDefined.contains(message.getTarget());
     boolean _not_1 = (!_contains_1);
     if (_not_1) {
       this.error(
@@ -154,10 +133,10 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     if (_isESScenario) {
       EObject model = TextualScenarioHelper.getModelContainer(message);
       if ((model instanceof Model)) {
-        EList<Element> _elements = ((Model) model).getElements();
-        String scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(_elements);
-        String exchangeType = TextualScenarioHelper.getMessageExchangeType(message);
-        if (((scenarioExchangesType != null) && (!scenarioExchangesType.equals(exchangeType)))) {
+        Object scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) model).getElements());
+        Set _allMessageExchangeType = TextualScenarioHelper.getAllMessageExchangeType(message);
+        Set exchangeTypes = ((Set) _allMessageExchangeType);
+        if (((scenarioExchangesType != null) && (!exchangeTypes.contains(scenarioExchangesType)))) {
           this.error((("Exchange type can not be used, expected " + scenarioExchangesType) + "!"), 
             TextualScenarioPackage.Literals.MESSAGE__NAME);
         }
@@ -177,8 +156,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     EList<Participant> _participants = model.getParticipants();
     for (final Participant p : _participants) {
       {
-        String _participantsMapKey = this.getParticipantsMapKey(p);
-        boolean _add = names.add(_participantsMapKey);
+        boolean _add = names.add(this.getParticipantsMapKey(p));
         boolean _not = (!_add);
         if (_not) {
           this.error(
@@ -203,8 +181,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       EObject model = TextualScenarioHelper.getModelContainer(message);
       boolean _xifexpression = false;
       if ((model instanceof Model)) {
-        HashSet<String> _newHashSet = CollectionLiterals.<String>newHashSet();
-        _xifexpression = this.checkDuplicated(message, ((Model) model), _newHashSet);
+        _xifexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
       }
       _xblockexpression = _xifexpression;
     }
@@ -218,8 +195,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       EObject model = TextualScenarioHelper.getModelContainer(message);
       boolean _xifexpression = false;
       if ((model instanceof Model)) {
-        HashSet<String> _newHashSet = CollectionLiterals.<String>newHashSet();
-        _xifexpression = this.checkDuplicated(message, ((Model) model), _newHashSet);
+        _xifexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
       }
       _xblockexpression = _xifexpression;
     }
@@ -257,8 +233,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
                   EList<String> _timelines = ((CombinedFragment)element).getTimelines();
                   String _plus_6 = (_plus_5 + _timelines);
                   String _plus_7 = (_plus_6 + " is already used in text editor!");
-                  String _format = String.format(_plus_7);
-                  this.error(_format, TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION);
+                  this.error(
+                    String.format(_plus_7), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION);
                 }
               }
             }
@@ -298,17 +274,14 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
-          String _target = ((SequenceMessage) obj).getTarget();
-          messageTargets.add(_target);
+          messageTargets.add(((SequenceMessage) obj).getTarget());
         }
         if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
-          String _participant = ((ArmTimerMessage) obj).getParticipant();
-          messageTargets.add(_participant);
+          messageTargets.add(((ArmTimerMessage) obj).getParticipant());
         }
         if ((obj instanceof ParticipantDeactivation)) {
           ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
-          String _name = deactivation.getName();
-          boolean removed = messageTargets.remove(_name);
+          boolean removed = messageTargets.remove(deactivation.getName());
           if ((!removed)) {
             if ((model instanceof Model)) {
               this.error(
@@ -335,20 +308,16 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   @Check
   public void checkDefinedTimelinesMessages(final SequenceMessageType message) {
     ArrayList<String> participantsNames = TextualScenarioHelper.participantsDefinedBeforeNames(message);
-    String _source = message.getSource();
-    boolean _contains = participantsNames.contains(_source);
+    boolean _contains = participantsNames.contains(message.getSource());
     boolean _not = (!_contains);
     if (_not) {
-      String _format = String.format("Timeline not defined in text editor!");
-      this.error(_format, TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
+      this.error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
       return;
     }
-    String _target = message.getTarget();
-    boolean _contains_1 = participantsNames.contains(_target);
+    boolean _contains_1 = participantsNames.contains(message.getTarget());
     boolean _not_1 = (!_contains_1);
     if (_not_1) {
-      String _format_1 = String.format("Timeline not defined in text editor!");
-      this.error(_format_1, TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
+      this.error(String.format("Timeline not defined in text editor!"), TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
       return;
     }
   }
@@ -385,17 +354,13 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     EList<String> _timelines = container.getTimelines();
     String _plus_3 = (_plus_2 + _timelines);
     String msg = String.format(_plus_3);
-    EList<String> _timelines_1 = container.getTimelines();
-    String _source = message.getSource();
-    boolean _contains = _timelines_1.contains(_source);
+    boolean _contains = container.getTimelines().contains(message.getSource());
     boolean _not = (!_contains);
     if (_not) {
       this.error(msg, 
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
     }
-    EList<String> _timelines_2 = container.getTimelines();
-    String _target = message.getTarget();
-    boolean _contains_1 = _timelines_2.contains(_target);
+    boolean _contains_1 = container.getTimelines().contains(message.getTarget());
     boolean _not_1 = (!_contains_1);
     if (_not_1) {
       this.error(msg, 
@@ -423,9 +388,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       this.error("Arm Timer can not be used in this diagram!", 
         TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__ARROW);
     }
-    ArrayList<String> _participantsDefinedBeforeNames = TextualScenarioHelper.participantsDefinedBeforeNames(armTimer);
-    String _participant = armTimer.getParticipant();
-    boolean _contains = _participantsDefinedBeforeNames.contains(_participant);
+    boolean _contains = TextualScenarioHelper.participantsDefinedBeforeNames(armTimer).contains(armTimer.getParticipant());
     boolean _not = (!_contains);
     if (_not) {
       this.error("Timeline not defined in text editor!", 
@@ -434,9 +397,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   public void checkSameSourceAndTarget(final SequenceMessageType message) {
-    String _source = message.getSource();
-    String _target = message.getTarget();
-    boolean _equals = _source.equals(_target);
+    boolean _equals = message.getSource().equals(message.getTarget());
     if (_equals) {
       this.error(TextualScenarioValidator.SAME_SOURCE_AND_TARGET_ERROR, 
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
@@ -452,8 +413,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       EObject model = TextualScenarioHelper.getModelContainer(combinedFragment);
       boolean _xifexpression = false;
       if ((model instanceof Model)) {
-        HashSet<String> _newHashSet = CollectionLiterals.<String>newHashSet();
-        _xifexpression = this.checkDuplicated(combinedFragment, model, _newHashSet);
+        _xifexpression = this.checkDuplicated(combinedFragment, model, CollectionLiterals.<String>newHashSet());
       }
       _xblockexpression = _xifexpression;
     }
@@ -489,8 +449,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       EObject model = TextualScenarioHelper.getModelContainer(fragment);
       boolean _xifexpression = false;
       if ((model instanceof Model)) {
-        String _timeline = fragment.getTimeline();
-        _xifexpression = this.checkElementAfterDelete(((Model) model), fragment, _timeline, 
+        _xifexpression = this.checkElementAfterDelete(((Model) model), fragment, fragment.getTimeline(), 
           TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE, 0);
       }
       _xblockexpression = _xifexpression;
@@ -509,8 +468,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       EObject model = TextualScenarioHelper.getModelContainer(armTimer);
       boolean _xifexpression = false;
       if ((model instanceof Model)) {
-        String _participant = armTimer.getParticipant();
-        _xifexpression = this.checkElementAfterDelete(((Model) model), armTimer, _participant, 
+        _xifexpression = this.checkElementAfterDelete(((Model) model), armTimer, armTimer.getParticipant(), 
           TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0);
       }
       _xblockexpression = _xifexpression;
@@ -529,8 +487,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       EObject model = TextualScenarioHelper.getModelContainer(message);
       boolean _xifexpression = false;
       if ((model instanceof Model)) {
-        String _source = message.getSource();
-        _xifexpression = this.checkElementAfterDelete(((Model) model), message, _source, 
+        _xifexpression = this.checkElementAfterDelete(((Model) model), message, message.getSource(), 
           TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE, 0);
       }
       _xblockexpression = _xifexpression;
@@ -549,8 +506,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       EObject model = TextualScenarioHelper.getModelContainer(message);
       boolean _xifexpression = false;
       if ((model instanceof Model)) {
-        String _target = message.getTarget();
-        _xifexpression = this.checkElementAfterDelete(((Model) model), message, _target, 
+        _xifexpression = this.checkElementAfterDelete(((Model) model), message, message.getTarget(), 
           TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET, 0);
       }
       _xblockexpression = _xifexpression;
@@ -567,13 +523,12 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           return true;
         }
         if ((element instanceof DeleteMessage)) {
-          String _target = ((DeleteMessage) element).getTarget();
-          boolean _equals_1 = _target.equals(target);
+          boolean _equals_1 = ((DeleteMessage) element).getTarget().equals(target);
           if (_equals_1) {
-            String _format = String.format(
-              (("Element \"" + target) + 
-                "\" can not be used at this point! A delete message was already defined on this timeline."));
-            this.error(_format, checkedAttribute, index);
+            this.error(
+              String.format(
+                (("Element \"" + target) + 
+                  "\" can not be used at this point! A delete message was already defined on this timeline.")), checkedAttribute, index);
             return true;
           }
         }
@@ -597,8 +552,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     this.checkSameSourceAndTarget(createMessage);
     EObject model = TextualScenarioHelper.getModelContainer(createMessage);
     if (((model instanceof Model) && (!this.checkCreateMessageValid(((Model) model), createMessage)))) {
-      String _target = createMessage.getTarget();
-      this.errorCreateMessage(_target);
+      this.errorCreateMessage(createMessage.getTarget());
     }
   }
   
@@ -618,15 +572,13 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           }
         }
         if ((element instanceof ArmTimerMessage)) {
-          String _participant = ((ArmTimerMessage) element).getParticipant();
-          boolean _equals_1 = _participant.equals(target);
+          boolean _equals_1 = ((ArmTimerMessage) element).getParticipant().equals(target);
           if (_equals_1) {
             return false;
           }
         }
         if ((element instanceof CombinedFragment)) {
-          EList<String> _timelines = ((CombinedFragment) element).getTimelines();
-          boolean _contains = _timelines.contains(target);
+          boolean _contains = ((CombinedFragment) element).getTimelines().contains(target);
           if (_contains) {
             return false;
           } else {
@@ -638,8 +590,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           }
         }
         if ((element instanceof StateFragment)) {
-          String _timeline = ((StateFragment) element).getTimeline();
-          boolean _equals_2 = _timeline.equals(target);
+          boolean _equals_2 = ((StateFragment) element).getTimeline().equals(target);
           if (_equals_2) {
             return false;
           }
@@ -650,8 +601,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   public void errorCreateMessage(final String target) {
-    String _format = String.format((("Target \"" + target) + "\" can not be used in a create message at this point! Other operations were already defined on this timeline."));
-    this.error(_format, 
+    this.error(String.format((("Target \"" + target) + "\" can not be used in a create message at this point! Other operations were already defined on this timeline.")), 
       TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
   }
   
@@ -660,39 +610,32 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkStateFragment(final StateFragment fragment) {
-    ArrayList<String> _participantsDefinedBeforeNames = TextualScenarioHelper.participantsDefinedBeforeNames(fragment);
-    String _timeline = fragment.getTimeline();
-    boolean _contains = _participantsDefinedBeforeNames.contains(_timeline);
+    boolean _contains = TextualScenarioHelper.participantsDefinedBeforeNames(fragment).contains(fragment.getTimeline());
     boolean _not = (!_contains);
     if (_not) {
-      String _keyword = fragment.getKeyword();
-      String _format = String.format("Timeline not defined in text editor!", _keyword);
-      this.error(_format, 
+      this.error(String.format("Timeline not defined in text editor!", fragment.getKeyword()), 
         TextualScenarioPackage.Literals.STATE_FRAGMENT__TIMELINE);
       return;
     }
     String scenarioType = EmbeddedEditorInstanceHelper.getScenarioType();
     if ((fragment.getKeyword().equals(DslConstants.FUNCTION) && scenarioType.equals(DslConstants.FUNCTIONAL))) {
-      String _format_1 = String.format("\'function\' can not be used in this diagram!");
-      this.error(_format_1, 
+      this.error(String.format("\'function\' can not be used in this diagram!"), 
         TextualScenarioPackage.Literals.STATE_FRAGMENT__KEYWORD);
       return;
     }
-    String _keyword_1 = fragment.getKeyword();
-    String _timeline_1 = fragment.getTimeline();
-    List<String> availableStateFragments = EmbeddedEditorInstanceHelper.getAvailableStateFragments(_keyword_1, _timeline_1);
-    String _name = fragment.getName();
-    boolean _contains_1 = availableStateFragments.contains(_name);
+    List<String> availableStateFragments = EmbeddedEditorInstanceHelper.getAvailableStateFragments(fragment.getKeyword(), 
+      fragment.getTimeline());
+    boolean _contains_1 = availableStateFragments.contains(fragment.getName());
     boolean _not_1 = (!_contains_1);
     if (_not_1) {
-      String _keyword_2 = fragment.getKeyword();
-      String _plus = ("This " + _keyword_2);
+      String _keyword = fragment.getKeyword();
+      String _plus = ("This " + _keyword);
       String _plus_1 = (_plus + " does not exist or is not available for \"");
-      String _timeline_2 = fragment.getTimeline();
-      String _plus_2 = (_plus_1 + _timeline_2);
+      String _timeline = fragment.getTimeline();
+      String _plus_2 = (_plus_1 + _timeline);
       String _plus_3 = (_plus_2 + "\"!");
-      String _format_2 = String.format(_plus_3);
-      this.error(_format_2, TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME);
+      this.error(
+        String.format(_plus_3), TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME);
     }
   }
   
@@ -717,13 +660,11 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
-          String _target = ((SequenceMessage) obj).getTarget();
-          messageWithExecutionTargets.add(_target);
+          messageWithExecutionTargets.add(((SequenceMessage) obj).getTarget());
           messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
         }
         if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
-          String _participant = ((ArmTimerMessage) obj).getParticipant();
-          messageWithExecutionTargets.add(_participant);
+          messageWithExecutionTargets.add(((ArmTimerMessage) obj).getParticipant());
           messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
         }
         if ((obj instanceof ParticipantDeactivation)) {
@@ -739,15 +680,15 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     for (int i = 0; (i < messageWithExecutionTargets.size()); i++) {
       if ((model instanceof Model)) {
-        Integer _get = messageWithExecutionTargetsIndex.get(i);
         this.error(
           "Deactivation keyword expected for a withExecution message!", 
-          TextualScenarioPackage.Literals.MODEL__ELEMENTS, (_get).intValue());
+          TextualScenarioPackage.Literals.MODEL__ELEMENTS, 
+          (messageWithExecutionTargetsIndex.get(i)).intValue());
       } else {
-        String _get_1 = messageWithExecutionTargets.get(i);
         this.error(
           "Deactivation keyword expected for a withExecution message!", 
-          TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, _get_1);
+          TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, 
+          messageWithExecutionTargets.get(i));
       }
     }
   }
@@ -910,8 +851,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public boolean innerCombinedFragment(final CombinedFragment combinedFragment, final CombinedFragment container) {
     EList<String> _timelines = combinedFragment.getTimelines();
     for (final String timeline : _timelines) {
-      EList<String> _timelines_1 = container.getTimelines();
-      boolean _contains = _timelines_1.contains(timeline);
+      boolean _contains = container.getTimelines().contains(timeline);
       if (_contains) {
         return true;
       }
@@ -931,9 +871,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       String _keyword = ((CombinedFragment)element).getKeyword();
       String _expression = ((CombinedFragment)element).getExpression();
       String key = (_keyword + _expression);
-      EList<String> _timelines = ((CombinedFragment)element).getTimelines();
-      Set<String> _set = IterableExtensions.<String>toSet(_timelines);
-      List<String> _sort = IterableExtensions.<String>sort(_set);
+      List<String> _sort = IterableExtensions.<String>sort(IterableExtensions.<String>toSet(((CombinedFragment)element).getTimelines()));
       for (final String timeline : _sort) {
         key = ((key + ":") + timeline);
       }

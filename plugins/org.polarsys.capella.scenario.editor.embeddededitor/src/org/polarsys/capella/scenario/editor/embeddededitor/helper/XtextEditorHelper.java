@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.polarsys.capella.scenario.editor.embeddededitor.helper;
 
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
@@ -20,7 +21,9 @@ public class XtextEditorHelper {
 
   public static EmbeddedEditorView getActiveEmbeddedEditorView() {
     IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-    EmbeddedEditorView eeView = (EmbeddedEditorView) activePage.findView(EmbeddedEditorView.ID);
-    return eeView;
+    IViewPart view = activePage.findView(EmbeddedEditorView.ID);
+    if(view instanceof EmbeddedEditorView)
+      return (EmbeddedEditorView) activePage.findView(EmbeddedEditorView.ID);
+    return null;
   }
 }
