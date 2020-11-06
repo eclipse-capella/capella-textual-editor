@@ -323,6 +323,7 @@ public class XtextToDiagramCommands {
       Command refreshLayoutCommand = new RefreshLayoutCommand(TransactionUtil.getEditingDomain(dDiagram), diagram,
           true);
       refreshLayoutCommand.execute();
+      EmbeddedEditorInstanceHelper.refreshAssociatedDiagram();
     }
   }
 
