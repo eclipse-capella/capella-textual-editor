@@ -35,6 +35,8 @@ import java.util.HashSet
 import org.eclipse.emf.ecore.EAttribute
 import java.util.List
 import java.util.Set
+import java.util.LinkedList
+import org.eclipse.emf.ecore.EReference
 
 /**
  * This class contains custom validation rules. 
@@ -197,61 +199,110 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	
 	@Check
 	def checkDeactivateMessagesModel(Model model) {
-		checkDeactivateMessages(model)	
+		checkDeactivateMessages(model, model, newLinkedList, newLinkedList,
+			TextualScenarioPackage.Literals.MODEL__ELEMENTS)
 	}
-	
+
 	@Check
 	def checkDeactivateMessagesBlock(Block block) {
-		checkDeactivateMessages(block)
+		checkDeactivateMessages(
+			TextualScenarioHelper.getModelContainer(block),
+			TextualScenarioHelper.getDirectContainer(block),
+			newLinkedList,
+			newLinkedList,
+			TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS
+		)
 	}
-	
 	
 	/*
 	 * Checks on deactivation keyword
 	 * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
 	 */
-	def checkDeactivateMessages(EObject model) {
+	def void checkDeactivateMessages(
+		EObject model,
+		EObject parentContainer,
+		LinkedList<String> messageTargets,
+		LinkedList<EObject> messageTargetsContainer,
+		EReference refFeature
+	) {
 		var index = 0
 		// a message shall occur before a deactivation
 		// keep this array with the targets of each encountered message to check that the message happens before deactivation
-		var messageTargets = newLinkedList
 		var elements = TextualScenarioHelper.getElements(model)
 		for (obj : elements) {
 			if (obj instanceof SequenceMessage && (obj as SequenceMessage).execution !== null) {
 				// add the already encountered messages to the list
 				messageTargets.add((obj as SequenceMessage).target)
+				messageTargetsContainer.add(model)
 			}
-			
+
 			if (obj instanceof ArmTimerMessage && (obj as ArmTimerMessage).execution !== null) {
 				// add the already encountered messages to the list
 				messageTargets.add((obj as ArmTimerMessage).participant)
+				messageTargetsContainer.add(model)
 			}
-			
-			
-			if (obj instanceof ParticipantDeactivation) {
-				var deactivation = obj as ParticipantDeactivation
 
-				// if we already encountered a message with target ad deactivation.name, 
-				// we will remove the message from the messages list, because this message is matched with a deactivation
-				var removed = messageTargets.remove(deactivation.name)
-				if (!removed) {
-					// if the deactivation is not matched in a previous message, display an error
-					if (model instanceof Model) {
-						error(
-							'Deactivation keyword not expected!',
-							TextualScenarioPackage.Literals.MODEL__ELEMENTS,
-							index
-						)
-					} else if (model instanceof Block) {
-						error(
-							'Deactivation keyword not expected!',
-							TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
-							index
-						)
-					}
-				}
+			if (obj instanceof CombinedFragment) {
+				checkDeactivateMessages(obj, parentContainer, messageTargets, messageTargetsContainer, refFeature)
+			}
+
+			if (obj instanceof ParticipantDeactivation) {
+				showErrorDeactivateMessages(
+					obj as ParticipantDeactivation,
+					model,
+					parentContainer,
+					messageTargets,
+					messageTargetsContainer,
+					refFeature,
+					index
+				)
+
 			}
 			index++
+		}
+	}
+
+	def showErrorDeactivateMessages(
+		ParticipantDeactivation deactivation,
+		EObject model,
+		EObject parentContainer,
+		LinkedList<String> messageTargets,
+		LinkedList<EObject> messageTargetsContainer,
+		EReference refFeature,
+		int index
+	) {
+		// if we already encountered a message with target ad deactivation.name, 
+		// we will remove the message from the messages list, because this message is matched with a deactivation
+		var indexOfTarget = messageTargets.indexOf(deactivation.name)
+		if (indexOfTarget < 0) {
+			for (EObject container : messageTargetsContainer) {
+				if (model.equals(messageTargetsContainer))
+					error(
+						'Deactivation keyword not expected!',
+						refFeature,
+						index
+					)
+			}
+		} else {
+			var container = messageTargetsContainer.get(indexOfTarget)
+			var target = messageTargets.get(indexOfTarget)
+			var deactivationContainer = TextualScenarioHelper.getDirectContainer(deactivation)
+			// same container or parallel timeline allowed (if the message is on another timeline
+			// but the execution is closed inside a combined fragment on another timeline
+			if (model.equals(container) || (deactivationContainer instanceof CombinedFragment &&
+				!(deactivationContainer as CombinedFragment).timelines.contains(target)
+						)) {
+				messageTargets.remove(indexOfTarget)
+				messageTargetsContainer.remove(indexOfTarget)
+			} else {
+				if (model.equals(parentContainer)) {
+					error(
+						'Deactivation keyword not expected! Deactivation shall be put at the same level with the withExecution message!',
+						refFeature,
+						index
+					)
+				}
+			}
 		}
 	}
 
@@ -550,19 +601,63 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 */
 	@Check
 	def checkWithExecutionHasDeactivateModel(Model model) {
-		 checkWithExecutionHasDeactivate(model)
+		var messageWithExecutionTargets = newLinkedList
+		var messageWithExecutionTargetsIndex = newLinkedList
+		var messageWithExecutionTargetsContainer = newLinkedList
+		checkWithExecutionHasDeactivate(model, messageWithExecutionTargets, messageWithExecutionTargetsIndex,
+			messageWithExecutionTargetsContainer)
+			
+		showErrorWithExecutionHasDeactivate(model, messageWithExecutionTargets,
+			messageWithExecutionTargetsIndex,
+			messageWithExecutionTargetsContainer,
+			TextualScenarioPackage.Literals.MODEL__ELEMENTS)
 	}
 	
 	@Check
 	def checkWithExecutionHasDeactivateBlock(Block block) {
-		checkWithExecutionHasDeactivate(block)
-	}
-		
-	def checkWithExecutionHasDeactivate(EObject model) {
-		// keep a list with the target of the messages that contains the withExecution keyword
-		// keep also a list with the index on which withExecution message is found, to know on which line to show an error
 		var messageWithExecutionTargets = newLinkedList
 		var messageWithExecutionTargetsIndex = newLinkedList
+		var messageWithExecutionTargetsContainer = newLinkedList
+		
+		checkWithExecutionHasDeactivate(TextualScenarioHelper.getModelContainer(block),
+			messageWithExecutionTargets,
+			messageWithExecutionTargetsIndex,
+			messageWithExecutionTargetsContainer)
+			
+		showErrorWithExecutionHasDeactivate(TextualScenarioHelper.getDirectContainer(block),
+			messageWithExecutionTargets,
+			messageWithExecutionTargetsIndex,
+			messageWithExecutionTargetsContainer,
+			TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS)
+	}
+	
+	def void showErrorWithExecutionHasDeactivate(EObject model,
+		LinkedList<String> messageWithExecutionTargets,
+		LinkedList<Integer> messageWithExecutionTargetsIndex,
+		LinkedList<EObject> messageWithExecutionTargetsContainer,
+		EReference refFeature
+	) {
+		// if not all withExecution messages were matched with a deactivation, show an error
+		// use the index list to know on which message to display the error
+		for (var i = 0; i < messageWithExecutionTargets.size; i++) {
+			var container = messageWithExecutionTargetsContainer.get(i)
+			if(model.equals(container)) {
+				error(
+					'Deactivation keyword expected for a withExecution message!',
+					refFeature,
+					messageWithExecutionTargetsIndex.get(i)
+				)
+			}
+		}
+	}
+		
+	def void checkWithExecutionHasDeactivate(EObject model,
+		LinkedList<String> messageWithExecutionTargets,
+		LinkedList<Integer> messageWithExecutionTargetsIndex,
+		LinkedList<EObject> messageWithExecutionTargetsContainer
+	) {
+		// keep a list with the target of the messages that contains the withExecution keyword
+		// keep also a list with the index on which withExecution message is found, to know on which line to show an error
 		var index = 0
 		var elements = TextualScenarioHelper.getElements(model)
 		for (obj : elements) {
@@ -570,11 +665,17 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				// add the SequenceMessage with execution to a list
 				messageWithExecutionTargets.add((obj as SequenceMessage).target)
 				messageWithExecutionTargetsIndex.add(index)
+				messageWithExecutionTargetsContainer.add(model)
 			}
 			
 			if (obj instanceof ArmTimerMessage && (obj as ArmTimerMessage).execution !== null) {
 				messageWithExecutionTargets.add((obj as ArmTimerMessage).participant)
 				messageWithExecutionTargetsIndex.add(index)
+				messageWithExecutionTargetsContainer.add(model)
+			}
+			
+			if(obj instanceof CombinedFragment) {
+				checkWithExecutionHasDeactivate(obj, messageWithExecutionTargets, messageWithExecutionTargetsIndex, messageWithExecutionTargetsContainer)
 			}
 			
 			if (obj instanceof ParticipantDeactivation) {
@@ -584,26 +685,10 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				if (indexOfTarget >= 0) {
 					messageWithExecutionTargets.remove(indexOfTarget)
 					messageWithExecutionTargetsIndex.remove(indexOfTarget)
+					messageWithExecutionTargetsContainer.remove(indexOfTarget)
 				}
 			}
 			index++
-		}
-		// if not all withExecution messages were matched with a deactivation, show an error
-		// use the index list to know on which message to display the error
-		for (var i = 0; i < messageWithExecutionTargets.size; i++) {
-			if (model instanceof Model) {
-				error(
-					'Deactivation keyword expected for a withExecution message!',
-					TextualScenarioPackage.Literals.MODEL__ELEMENTS,
-					messageWithExecutionTargetsIndex.get(i)
-				)
-			} else {
-				error(
-					'Deactivation keyword expected for a withExecution message!',
-					TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
-					messageWithExecutionTargets.get(i)
-				)
-			}
 		}
 	}
 	
