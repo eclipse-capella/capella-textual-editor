@@ -16,8 +16,10 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManagerListener;
+import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
 import org.eclipse.sirius.diagram.ui.tools.api.editor.DDiagramEditor;
+import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
@@ -35,7 +37,6 @@ import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorV
  */
 public class EmbeddedEditorSessionListener implements SessionManagerListener {
   private static ISelectionListener selectionListener;
-  static Object currentSelected;
 
   @Override
   public void notify(Session session, int notification) {
@@ -83,23 +84,20 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
           SequenceDDiagram diagram = (SequenceDDiagram) newInput;
           if (diagram.getTarget() instanceof Scenario) {
 
+            DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
             Scenario sc = (Scenario) diagram.getTarget();
-            if (currentSelected == null || !newInput.equals(currentSelected)) {
+            if (currentDiagram == null || !newInput.equals(currentDiagram)) {
               EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-              if (eeView != null && (currentSelected == null || part instanceof DDiagramEditor)) {
+              if (eeView != null) {
                 // set the diagram
                 EmbeddedEditorInstance.setDDiagram(diagram);
 
                 // refresh the text editor
                 DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
                 eeView.refreshTitleBar(sc.getName());
-                currentSelected = newInput;
               }
             }
           }
-        } else if(currentSelected != null){
-          currentSelected = null;
-          EmbeddedEditorInstance.setDDiagram(null);
         }
       }
     };
