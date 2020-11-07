@@ -26,6 +26,8 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType
+import java.util.Set
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -37,7 +39,7 @@ class TextualScenarioHelper {
 	/*
 	 * calculate the type of exchanges allowed to be declared in the text
 	 */
-	def static String getScenarioAllowedExchangesType(EList<Element> elements) {
+	def static getScenarioAllowedExchangesType(EList<Element> elements) {
 		if (EmbeddedEditorInstanceHelper.isESScenario()) {
 			if(EmbeddedEditorInstanceHelper.isCEScenario())
 				return TYPE_CE
@@ -56,15 +58,41 @@ class TextualScenarioHelper {
 		}
 		return null
 	}
-	
+	/*
+	 * we return CE or FE or null in case we allow both or other type
+	 */
 	def static getMessageExchangeType(SequenceMessage message) {
 		var exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource, message.getTarget)
+		var allowedTypes = newHashSet as Set<Object>
 		for(exchange : exchangesAvailable) {
 			if(message.name !== null && message.name.equals(CapellaElementExt.getName(exchange))) {
-				return getExchangeType(exchange)
+				var type = getExchangeType(exchange)
+				if(type !== null)
+					allowedTypes.add(type)
 			}
 		}
+		if(allowedTypes.size() == 1) {
+			return allowedTypes.get(0)
+		}
+		
 		return null
+	}
+	
+	/*
+	 * we return a list of available exchanges CE or FE
+	 */
+	def static Set getAllMessageExchangeType(SequenceMessage message) {
+		var exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource, message.getTarget)
+		var allowedTypes = newHashSet as Set<Object>
+		for(exchange : exchangesAvailable) {
+			if(message.name !== null && message.name.equals(CapellaElementExt.getName(exchange))) {
+				var type = getExchangeType(exchange)
+				if(type !== null)
+					allowedTypes.add(type)
+			}
+		}
+		
+		return allowedTypes
 	}
 	
 	def static getExchangeType(EObject exchangeElement) {
