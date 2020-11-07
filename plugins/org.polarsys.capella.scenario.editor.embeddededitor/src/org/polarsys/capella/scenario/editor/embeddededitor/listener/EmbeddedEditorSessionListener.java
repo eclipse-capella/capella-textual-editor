@@ -88,10 +88,10 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
             if (descriptor.getTarget() instanceof Scenario) {
 
               DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
+              DRepresentation representation = descriptor.getRepresentation();
               Scenario sc = (Scenario) descriptor.getTarget();
-              if (currentDiagram == null || !newInput.equals(currentDiagram)) {
+              if (currentDiagram == null || !currentDiagram.equals(representation)) {
                 EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-                DRepresentation representation = descriptor.getRepresentation();
                 if (eeView != null && representation instanceof DDiagram) {
                   // set the diagram
                   EmbeddedEditorInstance.setDDiagram((DDiagram) representation);

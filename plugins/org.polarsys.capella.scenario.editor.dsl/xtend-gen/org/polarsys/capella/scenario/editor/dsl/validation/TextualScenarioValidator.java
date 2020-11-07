@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -31,9 +19,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -240,22 +230,15 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   @Check
   public void checkDeactivateMessagesModel(final Model model) {
-    this.checkDeactivateMessages(model);
-  }
-  
-  @Check
-  public void checkDeactivateMessagesBlock(final Block block) {
-    this.checkDeactivateMessages(block);
+    this.checkDeactivateMessages(model, CollectionLiterals.<String>newLinkedList(), model.getElements());
   }
   
   /**
    * Checks on deactivation keyword
    * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
    */
-  public void checkDeactivateMessages(final EObject model) {
+  public void checkDeactivateMessages(final EObject container, final LinkedList<String> messageTargets, final List<Element> elements) {
     int index = 0;
-    LinkedList<String> messageTargets = CollectionLiterals.<String>newLinkedList();
-    List<Element> elements = TextualScenarioHelper.getElements(model);
     for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
@@ -264,26 +247,43 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
           messageTargets.add(((ArmTimerMessage) obj).getParticipant());
         }
+        if ((obj instanceof CombinedFragment)) {
+          CombinedFragment cf = ((CombinedFragment) obj);
+          this.checkDeactivateMessages(cf.getBlock(), messageTargets, 
+            cf.getBlock().getBlockElements());
+          final Consumer<Operand> _function = (Operand operand) -> {
+            this.checkDeactivateMessages(operand.getBlock(), messageTargets, 
+              operand.getBlock().getBlockElements());
+          };
+          cf.getOperands().forEach(_function);
+        }
         if ((obj instanceof ParticipantDeactivation)) {
-          ParticipantDeactivation deactivation = ((ParticipantDeactivation) obj);
-          boolean removed = messageTargets.remove(deactivation.getName());
-          if ((!removed)) {
-            if ((model instanceof Model)) {
-              this.error(
-                "Deactivation keyword not expected!", 
-                TextualScenarioPackage.Literals.MODEL__ELEMENTS, index);
-            } else {
-              if ((model instanceof Block)) {
-                this.error(
-                  "Deactivation keyword not expected!", 
-                  TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, index);
-              }
-            }
+          EReference refFeature = TextualScenarioPackage.Literals.MODEL__ELEMENTS;
+          if ((container instanceof Block)) {
+            refFeature = TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS;
           }
+          this.showErrorDeactivateMessages(
+            ((ParticipantDeactivation) obj), container, messageTargets, refFeature, index);
         }
         index++;
       }
     }
+  }
+  
+  public String showErrorDeactivateMessages(final ParticipantDeactivation deactivation, final EObject container, final LinkedList<String> messageTargets, final EReference refFeature, final int index) {
+    String _xblockexpression = null;
+    {
+      int indexOfTarget = messageTargets.lastIndexOf(deactivation.getName());
+      String _xifexpression = null;
+      if ((indexOfTarget < 0)) {
+        this.error(
+          "Deactivation keyword not expected!", container, refFeature, index);
+      } else {
+        _xifexpression = messageTargets.remove(indexOfTarget);
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
   }
   
   /**
@@ -635,51 +635,69 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
    */
   @Check
   public void checkWithExecutionHasDeactivateModel(final Model model) {
-    this.checkWithExecutionHasDeactivate(model);
-  }
-  
-  @Check
-  public void checkWithExecutionHasDeactivateBlock(final Block block) {
-    this.checkWithExecutionHasDeactivate(block);
-  }
-  
-  public void checkWithExecutionHasDeactivate(final EObject model) {
     LinkedList<String> messageWithExecutionTargets = CollectionLiterals.<String>newLinkedList();
     LinkedList<Integer> messageWithExecutionTargetsIndex = CollectionLiterals.<Integer>newLinkedList();
+    LinkedList<EObject> messageWithExecutionTargetsContainer = CollectionLiterals.<EObject>newLinkedList();
+    this.checkWithExecutionHasDeactivate(model, messageWithExecutionTargets, messageWithExecutionTargetsIndex, messageWithExecutionTargetsContainer, 
+      model.getElements());
+    this.showErrorWithExecutionHasDeactivate(messageWithExecutionTargets, messageWithExecutionTargetsIndex, messageWithExecutionTargetsContainer);
+  }
+  
+  public void showErrorWithExecutionHasDeactivate(final LinkedList<String> messageWithExecutionTargets, final LinkedList<Integer> messageWithExecutionTargetsIndex, final LinkedList<EObject> messageWithExecutionTargetsContainer) {
+    for (int i = 0; (i < messageWithExecutionTargets.size()); i++) {
+      {
+        EObject container = messageWithExecutionTargetsContainer.get(i);
+        if ((container instanceof Model)) {
+          this.error(
+            "Deactivation keyword expected for a withExecution message!", container, 
+            TextualScenarioPackage.Literals.MODEL__ELEMENTS, 
+            (messageWithExecutionTargetsIndex.get(i)).intValue());
+        } else {
+          if ((container instanceof Block)) {
+            this.error(
+              "Deactivation keyword expected for a withExecution message!", container, 
+              TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, 
+              messageWithExecutionTargets.get(i));
+          }
+        }
+      }
+    }
+  }
+  
+  public void checkWithExecutionHasDeactivate(final EObject container, final LinkedList<String> messageWithExecutionTargets, final LinkedList<Integer> messageWithExecutionTargetsIndex, final LinkedList<EObject> messageWithExecutionTargetsContainer, final List<Element> elements) {
     int index = 0;
-    List<Element> elements = TextualScenarioHelper.getElements(model);
     for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageWithExecutionTargets.add(((SequenceMessage) obj).getTarget());
           messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
+          messageWithExecutionTargetsContainer.add(container);
         }
         if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
           messageWithExecutionTargets.add(((ArmTimerMessage) obj).getParticipant());
           messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
+          messageWithExecutionTargetsContainer.add(container);
+        }
+        if ((obj instanceof CombinedFragment)) {
+          CombinedFragment cf = ((CombinedFragment) obj);
+          this.checkWithExecutionHasDeactivate(cf.getBlock(), messageWithExecutionTargets, messageWithExecutionTargetsIndex, messageWithExecutionTargetsContainer, 
+            cf.getBlock().getBlockElements());
+          final Consumer<Operand> _function = (Operand operand) -> {
+            this.checkWithExecutionHasDeactivate(operand.getBlock(), messageWithExecutionTargets, messageWithExecutionTargetsIndex, messageWithExecutionTargetsContainer, 
+              operand.getBlock().getBlockElements());
+          };
+          cf.getOperands().forEach(_function);
         }
         if ((obj instanceof ParticipantDeactivation)) {
           String targetName = ((ParticipantDeactivation) obj).getName();
-          int indexOfTarget = messageWithExecutionTargets.indexOf(targetName);
+          int indexOfTarget = messageWithExecutionTargets.lastIndexOf(targetName);
           if ((indexOfTarget >= 0)) {
             messageWithExecutionTargets.remove(indexOfTarget);
             messageWithExecutionTargetsIndex.remove(indexOfTarget);
+            messageWithExecutionTargetsContainer.remove(indexOfTarget);
           }
         }
         index++;
-      }
-    }
-    for (int i = 0; (i < messageWithExecutionTargets.size()); i++) {
-      if ((model instanceof Model)) {
-        this.error(
-          "Deactivation keyword expected for a withExecution message!", 
-          TextualScenarioPackage.Literals.MODEL__ELEMENTS, 
-          (messageWithExecutionTargetsIndex.get(i)).intValue());
-      } else {
-        this.error(
-          "Deactivation keyword expected for a withExecution message!", 
-          TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, 
-          messageWithExecutionTargets.get(i));
       }
     }
   }
