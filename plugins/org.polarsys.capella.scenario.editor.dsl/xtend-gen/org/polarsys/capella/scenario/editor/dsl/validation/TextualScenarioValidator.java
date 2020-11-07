@@ -257,31 +257,29 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   @Check
   public void checkDeactivateMessagesModel(final Model model) {
-    this.checkDeactivateMessages(model, CollectionLiterals.<String>newLinkedList(), CollectionLiterals.<EObject>newLinkedList(), model.getElements());
+    this.checkDeactivateMessages(model, CollectionLiterals.<String>newLinkedList(), model.getElements());
   }
   
   /**
    * Checks on deactivation keyword
    * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
    */
-  public void checkDeactivateMessages(final EObject container, final LinkedList<String> messageTargets, final LinkedList<EObject> messageTargetsContainer, final List<Element> elements) {
+  public void checkDeactivateMessages(final EObject container, final LinkedList<String> messageTargets, final List<Element> elements) {
     int index = 0;
     for (final Element obj : elements) {
       {
         if (((obj instanceof SequenceMessage) && (((SequenceMessage) obj).getExecution() != null))) {
           messageTargets.add(((SequenceMessage) obj).getTarget());
-          messageTargetsContainer.add(container);
         }
         if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
           messageTargets.add(((ArmTimerMessage) obj).getParticipant());
-          messageTargetsContainer.add(container);
         }
         if ((obj instanceof CombinedFragment)) {
           CombinedFragment cf = ((CombinedFragment) obj);
-          this.checkDeactivateMessages(cf.getBlock(), messageTargets, messageTargetsContainer, 
+          this.checkDeactivateMessages(cf.getBlock(), messageTargets, 
             cf.getBlock().getBlockElements());
           final Consumer<Operand> _function = (Operand operand) -> {
-            this.checkDeactivateMessages(operand.getBlock(), messageTargets, messageTargetsContainer, 
+            this.checkDeactivateMessages(operand.getBlock(), messageTargets, 
               operand.getBlock().getBlockElements());
           };
           cf.getOperands().forEach(_function);
@@ -292,49 +290,27 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
             refFeature = TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS;
           }
           this.showErrorDeactivateMessages(
-            ((ParticipantDeactivation) obj), container, messageTargets, messageTargetsContainer, refFeature, index);
+            ((ParticipantDeactivation) obj), container, messageTargets, refFeature, index);
         }
         index++;
       }
     }
   }
   
-  public EObject showErrorDeactivateMessages(final ParticipantDeactivation deactivation, final EObject container, final LinkedList<String> messageTargets, final LinkedList<EObject> messageTargetsContainer, final EReference refFeature, final int index) {
-    EObject _xifexpression = null;
-    boolean _contains = messageTargets.contains(deactivation.getName());
-    boolean _not = (!_contains);
-    if (_not) {
-      this.error(
-        "Deactivation keyword not expected!", container, refFeature, index);
-    } else {
-      EObject _xblockexpression = null;
-      {
-        int indexOfTarget = messageTargets.lastIndexOf(deactivation.getName());
-        EObject targetContainer = messageTargetsContainer.get(indexOfTarget);
-        String target = messageTargets.get(indexOfTarget);
-        EObject deactivationContainer = TextualScenarioHelper.getDirectContainer(deactivation);
-        EObject _xifexpression_1 = null;
-        if ((container.equals(targetContainer) || ((deactivationContainer instanceof CombinedFragment) && 
-          (!((CombinedFragment) deactivationContainer).getTimelines().contains(target))))) {
-          EObject _xblockexpression_1 = null;
-          {
-            messageTargets.remove(indexOfTarget);
-            _xblockexpression_1 = messageTargetsContainer.remove(indexOfTarget);
-          }
-          _xifexpression_1 = _xblockexpression_1;
-        } else {
-          boolean _equals = container.equals(targetContainer);
-          boolean _not_1 = (!_equals);
-          if (_not_1) {
-            this.error(
-              "Deactivation keyword not expected! Deactivation shall be put at the same level with the withExecution message!", container, refFeature, index);
-          }
-        }
-        _xblockexpression = _xifexpression_1;
+  public String showErrorDeactivateMessages(final ParticipantDeactivation deactivation, final EObject container, final LinkedList<String> messageTargets, final EReference refFeature, final int index) {
+    String _xblockexpression = null;
+    {
+      int indexOfTarget = messageTargets.lastIndexOf(deactivation.getName());
+      String _xifexpression = null;
+      if ((indexOfTarget < 0)) {
+        this.error(
+          "Deactivation keyword not expected!", container, refFeature, index);
+      } else {
+        _xifexpression = messageTargets.remove(indexOfTarget);
       }
-      _xifexpression = _xblockexpression;
+      _xblockexpression = _xifexpression;
     }
-    return _xifexpression;
+    return _xblockexpression;
   }
   
   /**
