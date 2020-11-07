@@ -200,7 +200,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	
 	@Check
 	def checkDeactivateMessagesModel(Model model) {
-		checkDeactivateMessages(model, newLinkedList, newLinkedList, model.elements)
+		checkDeactivateMessages(model, newLinkedList, model.elements)
 	}
 	
 	/*
@@ -209,7 +209,6 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 */
 	def void checkDeactivateMessages(EObject container,
 		LinkedList<String> messageTargets,
-		LinkedList<EObject> messageTargetsContainer,
 		List<Element> elements) {
 		var index = 0
 		// a message shall occur before a deactivation
@@ -218,26 +217,22 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			if (obj instanceof SequenceMessage && (obj as SequenceMessage).execution !== null) {
 				// add the already encountered messages to the list
 				messageTargets.add((obj as SequenceMessage).target)
-				messageTargetsContainer.add(container)
 			}
 			
 			if (obj instanceof ArmTimerMessage && (obj as ArmTimerMessage).execution !== null) {
 				// add the already encountered messages to the list
 				messageTargets.add((obj as ArmTimerMessage).participant)
-				messageTargetsContainer.add(container)
 			}
 			
 			if (obj instanceof CombinedFragment) {
 				var cf = obj as CombinedFragment
 				checkDeactivateMessages(cf.block,
 					messageTargets,
-					messageTargetsContainer,
 					cf.block.blockElements
 				)
 				cf.operands.forEach[operand | 
 					checkDeactivateMessages(operand.block,
 						messageTargets,
-						messageTargetsContainer,
 						operand.block.blockElements
 					)
 				]
@@ -252,7 +247,6 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 					obj as ParticipantDeactivation,
 					container,
 					messageTargets,
-					messageTargetsContainer,
 					refFeature,
 					index
 				)
@@ -265,13 +259,13 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		ParticipantDeactivation deactivation,
 		EObject container,
 		LinkedList<String> messageTargets,
-		LinkedList<EObject> messageTargetsContainer,
 		EReference refFeature,
 		int index
 	) {
 		// if we already encountered a message with target ad deactivation.name, 
 		// we will remove the message from the messages list, because this message is matched with a deactivation
-		if (!messageTargets.contains(deactivation.name)) {
+		var indexOfTarget = messageTargets.lastIndexOf(deactivation.name)
+		if (indexOfTarget < 0) {
 			error(
 				'Deactivation keyword not expected!',
 				container,
@@ -279,29 +273,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				index
 			)
 		} else {
-			var indexOfTarget = messageTargets.lastIndexOf(deactivation.name)
-			var targetContainer = messageTargetsContainer.get(indexOfTarget)
-			var target = messageTargets.get(indexOfTarget)
-			var deactivationContainer = TextualScenarioHelper.getDirectContainer(deactivation)
-			
-			// same container or parallel timeline allowed (if the message is on another timeline
-			// but the execution is closed inside a combined fragment on another timeline
-			if (container.equals(targetContainer) || (deactivationContainer instanceof CombinedFragment &&
-				!(deactivationContainer as CombinedFragment).timelines.contains(target)
-							)) {
-				messageTargets.remove(indexOfTarget)
-				messageTargetsContainer.remove(indexOfTarget)
-			}
-			else {
-				if (!container.equals(targetContainer)) {
-					error(
-						'Deactivation keyword not expected! Deactivation shall be put at the same level with the withExecution message!',
-						container,
-						refFeature,
-						index
-					)
-				}
-			}
+			messageTargets.remove(indexOfTarget)
 		}
 	}
 
