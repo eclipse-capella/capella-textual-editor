@@ -171,7 +171,7 @@ public class TextualScenarioHelper {
     if ((modelContainer instanceof Block)) {
       return ((Block) modelContainer).getBlockElements();
     }
-    return null;
+    return CollectionLiterals.<Element>newArrayList();
   }
   
   /**

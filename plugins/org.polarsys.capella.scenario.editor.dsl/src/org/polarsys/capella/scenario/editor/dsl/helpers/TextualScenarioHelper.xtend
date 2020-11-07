@@ -151,6 +151,7 @@ class TextualScenarioHelper {
 		if (modelContainer instanceof Block) {
 			return (modelContainer as Block).blockElements
 		}
+		return newArrayList
 	}
 	
 	/*
