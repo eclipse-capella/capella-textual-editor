@@ -35,6 +35,8 @@ import java.util.HashSet
 import org.eclipse.emf.ecore.EAttribute
 import java.util.List
 import java.util.Set
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference
+import java.util.HashMap
 
 /**
  * This class contains custom validation rules. 
@@ -508,6 +510,12 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 					return false
 				} 
 			}
+			
+			if (element instanceof Reference) {
+				if ((element as Reference).timelines.contains(target)) {
+					return false;
+				}
+			}
 		}
 		return true
 	}
@@ -693,7 +701,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	def checkContainedCombinedFragment(CombinedFragment combinedFragment) {
 		var container = TextualScenarioHelper.getDirectContainer(combinedFragment)
 		if (container instanceof CombinedFragment) {
-			var upperContainer = getContainerCombinedFragmentTimelines(combinedFragment, container)
+			var upperContainer = getContainerCombinedFragmentTimelines(combinedFragment.timelines, container)
 			if (upperContainer !== null && upperContainer instanceof CombinedFragment) {
 				error(
 					'Timelines covered by this ' + combinedFragment.keyword +
@@ -705,15 +713,70 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 	
-	def EObject getContainerCombinedFragmentTimelines(CombinedFragment combinedFragment, CombinedFragment container) {
+	@Check
+	def checkReference(Reference reference) {
+		// check duplicated timelines
+		var hashMap = new HashMap<String, Integer>()
+		var index = 0;
+		for (timeline : reference.timelines) {
+			if (hashMap.get(timeline) == null) {
+				hashMap.put(timeline, 1)
+			} else {
+				error('Duplicated timeline!',
+				TextualScenarioPackage.Literals.REFERENCE__TIMELINES, index)
+			}
+			index++
+		}
+		
+		// check valid timeline (participant exists in xtext)
+		var participantsDefined = TextualScenarioHelper.participantsDefinedBeforeNames(reference);
+		index = 0
+		for (timeline : reference.timelines) {
+			if (!participantsDefined.contains(timeline)) {
+				error('Timeline not defined in text editor!',
+				TextualScenarioPackage.Literals.REFERENCE__TIMELINES, index)
+			}
+			index++
+		}
+		
+		// check reference exists
+		if (!EmbeddedEditorInstanceHelper.referencedScenariosName.contains(reference.name)) {
+			error('Referenced scenario does not exist!',
+				TextualScenarioPackage.Literals.REFERENCE__NAME)
+		}
+		
+		// check that timelines are a subset of combined fragment timelines
+		var container = TextualScenarioHelper.getDirectContainer(reference)
+		if (container instanceof CombinedFragment) {
+			var upperContainer = getContainerCombinedFragmentTimelines(reference.timelines, container)
+			if (upperContainer !== null && upperContainer instanceof CombinedFragment) {
+				error(
+					'Timelines covered by this reference must be a subset of the parent covered timelines ' +
+						(upperContainer as CombinedFragment).timelines + "!",
+					TextualScenarioPackage.Literals.REFERENCE__TIMELINES
+				)
+			}
+		}
+		// check timeline used after delete message
+		var model = TextualScenarioHelper.getModelContainer(reference)
+		if (model instanceof Model) {
+			index = 0
+			for (timeline : reference.timelines) {
+				checkElementAfterDelete(model as Model, reference, timeline,
+					TextualScenarioPackage.Literals.REFERENCE__TIMELINES, index++)
+			}
+		}
+	}
+	
+	def EObject getContainerCombinedFragmentTimelines(List<String> timelines, CombinedFragment container) {
 		// timeline must be a subset of the parent timeline
-		if (innerCombinedFragment(combinedFragment, container) &&
-			!isASubset(combinedFragment.timelines, (container as CombinedFragment).timelines)) {
+		if (innerCombinedFragment(timelines, container) &&
+			!isASubset(timelines, (container as CombinedFragment).timelines)) {
 			return container
 		} else {
 			var upperContainer = TextualScenarioHelper.getDirectContainer(container)
 			if (upperContainer instanceof CombinedFragment) {
-				return getContainerCombinedFragmentTimelines(combinedFragment, upperContainer as CombinedFragment);
+				return getContainerCombinedFragmentTimelines(timelines, upperContainer as CombinedFragment);
 			}
 		}
 		return null
@@ -748,10 +811,10 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	 * we consider that it is a inner combined fragment if it has some same timelines as the parent
 	 * added this due to the limitation that a paralel combined fragment in diagram, is represented inside the text
 	 */
-	def boolean innerCombinedFragment(CombinedFragment combinedFragment, CombinedFragment container) {
-		for(timeline : combinedFragment.timelines) {
-				if(container.timelines.contains(timeline))
-					return true
+	def boolean innerCombinedFragment(List<String> timelines, CombinedFragment container) {
+		for (timeline : timelines) {
+			if (container.timelines.contains(timeline))
+				return true
 		}
 		return false
 	}

@@ -95,11 +95,15 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
       case TextualScenarioPackage.CREATE_MESSAGE: return createCreateMessage();
       case TextualScenarioPackage.DELETE_MESSAGE: return createDeleteMessage();
       case TextualScenarioPackage.ARM_TIMER_MESSAGE: return createArmTimerMessage();
+      case TextualScenarioPackage.LOST_FOUND_MESSAGE: return createLostFoundMessage();
+      case TextualScenarioPackage.LOST_MESSAGE: return createLostMessage();
+      case TextualScenarioPackage.FOUND_MESSAGE: return createFoundMessage();
       case TextualScenarioPackage.PARTICIPANT_DEACTIVATION: return createParticipantDeactivation();
       case TextualScenarioPackage.COMBINED_FRAGMENT: return createCombinedFragment();
       case TextualScenarioPackage.OPERAND: return createOperand();
       case TextualScenarioPackage.BLOCK: return createBlock();
       case TextualScenarioPackage.STATE_FRAGMENT: return createStateFragment();
+      case TextualScenarioPackage.REFERENCE: return createReference();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -327,6 +331,42 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
    * @generated
    */
   @Override
+  public LostFoundMessage createLostFoundMessage()
+  {
+    LostFoundMessageImpl lostFoundMessage = new LostFoundMessageImpl();
+    return lostFoundMessage;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public LostMessage createLostMessage()
+  {
+    LostMessageImpl lostMessage = new LostMessageImpl();
+    return lostMessage;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public FoundMessage createFoundMessage()
+  {
+    FoundMessageImpl foundMessage = new FoundMessageImpl();
+    return foundMessage;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public ParticipantDeactivation createParticipantDeactivation()
   {
     ParticipantDeactivationImpl participantDeactivation = new ParticipantDeactivationImpl();
@@ -379,6 +419,18 @@ public class TextualScenarioFactoryImpl extends EFactoryImpl implements TextualS
   {
     StateFragmentImpl stateFragment = new StateFragmentImpl();
     return stateFragment;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Reference createReference()
+  {
+    ReferenceImpl reference = new ReferenceImpl();
+    return reference;
   }
 
   /**

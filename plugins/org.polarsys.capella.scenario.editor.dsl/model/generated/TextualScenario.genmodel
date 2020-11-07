@@ -47,6 +47,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/execution"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ArmTimerMessage/doubleDot"/>
     </genClasses>
+    <genClasses ecoreClass="TextualScenario.ecore#//LostFoundMessage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//LostFoundMessage/arrow"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//LostFoundMessage/participant"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//LostFoundMessage/doubleDot"/>
+    </genClasses>
+    <genClasses ecoreClass="TextualScenario.ecore#//LostMessage"/>
+    <genClasses ecoreClass="TextualScenario.ecore#//FoundMessage"/>
     <genClasses ecoreClass="TextualScenario.ecore#//ParticipantDeactivation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ParticipantDeactivation/keyword"/>
     </genClasses>
@@ -73,6 +80,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//StateFragment/timeline"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//StateFragment/keyword"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//StateFragment/name"/>
+    </genClasses>
+    <genClasses ecoreClass="TextualScenario.ecore#//Reference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/keyword"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/over"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//Reference/timelines"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

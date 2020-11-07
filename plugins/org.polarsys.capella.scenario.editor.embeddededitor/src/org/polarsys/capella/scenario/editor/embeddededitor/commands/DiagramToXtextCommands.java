@@ -15,6 +15,7 @@ package org.polarsys.capella.scenario.editor.embeddededitor.commands;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -37,12 +38,14 @@ import org.polarsys.capella.core.data.interaction.InteractionFragment;
 import org.polarsys.capella.core.data.interaction.InteractionOperand;
 import org.polarsys.capella.core.data.interaction.InteractionOperatorKind;
 import org.polarsys.capella.core.data.interaction.InteractionState;
+import org.polarsys.capella.core.data.interaction.InteractionUse;
 import org.polarsys.capella.core.data.interaction.MessageEnd;
 import org.polarsys.capella.core.data.interaction.MessageKind;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.SequenceMessage;
 import org.polarsys.capella.core.data.interaction.TimeLapse;
 import org.polarsys.capella.core.data.interaction.StateFragment;
+import org.polarsys.capella.core.data.interaction.AbstractFragment;
 import org.polarsys.capella.core.data.interaction.CombinedFragment;
 import org.polarsys.capella.core.data.oa.Entity;
 import org.polarsys.capella.core.data.oa.OperationalActivity;
@@ -57,6 +60,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioFactory;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioFactoryImpl;
 import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
@@ -350,7 +354,15 @@ public class DiagramToXtextCommands {
         generateDeactivatioOnMessages((ExecutionEnd) ends[i], messagesToDeactivate, blockOperands, elements, factory);
         i++;
       } else if (ends[i] instanceof FragmentEnd) {
-        i = processCombinedFragments(ends, i, combinedFragments, blockOperands, elements, scenario, factory);
+        AbstractFragment abstractFragment = ((FragmentEnd) ends[i]).getAbstractFragment();
+        if (abstractFragment instanceof CombinedFragment) {
+          i = processCombinedFragments(ends, i, combinedFragments, blockOperands, elements, scenario, factory);
+        } else if (abstractFragment instanceof InteractionUse) {
+          if (((FragmentEnd) ends[i]).getName().equals("start")) {
+            generateReference((InteractionUse) abstractFragment, factory, elements, blockOperands);
+          }
+          i++;
+        }
       } else if (ends[i] instanceof InteractionOperand) {
         generateOperandsOnCombinedFragment((InteractionOperand) ends[i], combinedFragments, blockOperands, factory);
         i++;
@@ -928,5 +940,51 @@ public class DiagramToXtextCommands {
     xtextStateFragment.setTimeline(timelineName);
 
     return xtextStateFragment;
+  }
+  
+  /**
+   * process those ends in the ends array that are related to a reference
+   * 
+   * @param abstractFragment
+   *  - the InteractionState Capella object processed from the ends Interaction Fragments array
+   * @param blockOperands
+   *  - the stack of currently encountered and unclosed operands (contained in a combined fragment)
+   *  - we pass this stack when generating the xtext states because we may encounter a state object in an operand of a combined fragment
+   * @param elements
+   *  - the elements (messages, combined fragments, states) that are directly in the model object (not the ones encountered in a combined fragment)
+   * @param factory
+   *  - the Textual Scenario Factory that we use to create xtext objects and add them to the model 
+   */ 
+  private static void generateReference(InteractionUse abstractFragment, TextualScenarioFactory factory, EList<Element> elements, Deque<Block> blockOperands) {
+    EList<InstanceRole> coveredInstanceRoles = abstractFragment.getStart().getCoveredInstanceRoles();
+    List<String> timelines = coveredInstanceRoles.stream().map(x -> x.getName()).collect(Collectors.toList());
+    String name = abstractFragment.getReferencedScenario().getName();
+    
+    Reference xtextReference = createXtextReference(name, timelines, factory);
+    if (blockOperands.isEmpty()) {
+      elements.add(xtextReference);
+    } else {
+      blockOperands.peek().getBlockElements().add(xtextReference);
+    }
+  }
+  
+  /**
+   * Create a new Reference object and set the name, keyword, over and timelines
+   * 
+   * @param factory
+   *          - this is the factory to create StateFragment
+   * @param name
+   *          - the state fragment from diagram
+   * @param timelinesNames
+   *          - the names of the timelines
+   * @return - Reference the new created Reference
+   */
+  private static Reference createXtextReference(String name, List<String> timelinesNames, TextualScenarioFactory factory) {
+    Reference xtextReference = factory.createReference();
+    xtextReference.setKeyword("ref");
+    xtextReference.setOver("over");
+    xtextReference.getTimelines().addAll(timelinesNames);
+    xtextReference.setName(name);
+    return xtextReference;
   }
 }
