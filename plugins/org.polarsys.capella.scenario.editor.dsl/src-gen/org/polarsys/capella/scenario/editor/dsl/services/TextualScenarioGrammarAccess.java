@@ -660,33 +660,33 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	public class LostMessageElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.LostMessage");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cArrowAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final Keyword cArrowOKeyword_0_0 = (Keyword)cArrowAssignment_0.eContents().get(0);
-		private final Assignment cParticipantAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cParticipantSTRINGTerminalRuleCall_1_0 = (RuleCall)cParticipantAssignment_1.eContents().get(0);
+		private final Assignment cSourceAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cSourceSTRINGTerminalRuleCall_0_0 = (RuleCall)cSourceAssignment_0.eContents().get(0);
+		private final Assignment cArrowAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cArrowOKeyword_1_0 = (Keyword)cArrowAssignment_1.eContents().get(0);
 		private final Assignment cDoubleDotAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final Keyword cDoubleDotColonKeyword_2_0 = (Keyword)cDoubleDotAssignment_2.eContents().get(0);
 		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cNameSTRINGTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
 		
 		//LostMessage:
-		//	arrow='->o' participant=STRING doubleDot=':' name=STRING;
+		//	source=STRING arrow='->o' doubleDot=':' name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//arrow='->o' participant=STRING doubleDot=':' name=STRING
+		//source=STRING arrow='->o' doubleDot=':' name=STRING
 		public Group getGroup() { return cGroup; }
 		
-		//arrow='->o'
-		public Assignment getArrowAssignment_0() { return cArrowAssignment_0; }
-		
-		//'->o'
-		public Keyword getArrowOKeyword_0_0() { return cArrowOKeyword_0_0; }
-		
-		//participant=STRING
-		public Assignment getParticipantAssignment_1() { return cParticipantAssignment_1; }
+		//source=STRING
+		public Assignment getSourceAssignment_0() { return cSourceAssignment_0; }
 		
 		//STRING
-		public RuleCall getParticipantSTRINGTerminalRuleCall_1_0() { return cParticipantSTRINGTerminalRuleCall_1_0; }
+		public RuleCall getSourceSTRINGTerminalRuleCall_0_0() { return cSourceSTRINGTerminalRuleCall_0_0; }
+		
+		//arrow='->o'
+		public Assignment getArrowAssignment_1() { return cArrowAssignment_1; }
+		
+		//'->o'
+		public Keyword getArrowOKeyword_1_0() { return cArrowOKeyword_1_0; }
 		
 		//doubleDot=':'
 		public Assignment getDoubleDotAssignment_2() { return cDoubleDotAssignment_2; }
@@ -705,18 +705,18 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cArrowAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cArrowOKeyword_0_0 = (Keyword)cArrowAssignment_0.eContents().get(0);
-		private final Assignment cParticipantAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cParticipantSTRINGTerminalRuleCall_1_0 = (RuleCall)cParticipantAssignment_1.eContents().get(0);
+		private final Assignment cTargetAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cTargetSTRINGTerminalRuleCall_1_0 = (RuleCall)cTargetAssignment_1.eContents().get(0);
 		private final Assignment cDoubleDotAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final Keyword cDoubleDotColonKeyword_2_0 = (Keyword)cDoubleDotAssignment_2.eContents().get(0);
 		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cNameSTRINGTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
 		
 		//FoundMessage:
-		//	arrow='o->' participant=STRING doubleDot=':' name=STRING;
+		//	arrow='o->' target=STRING doubleDot=':' name=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//arrow='o->' participant=STRING doubleDot=':' name=STRING
+		//arrow='o->' target=STRING doubleDot=':' name=STRING
 		public Group getGroup() { return cGroup; }
 		
 		//arrow='o->'
@@ -725,11 +725,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//'o->'
 		public Keyword getArrowOKeyword_0_0() { return cArrowOKeyword_0_0; }
 		
-		//participant=STRING
-		public Assignment getParticipantAssignment_1() { return cParticipantAssignment_1; }
+		//target=STRING
+		public Assignment getTargetAssignment_1() { return cTargetAssignment_1; }
 		
 		//STRING
-		public RuleCall getParticipantSTRINGTerminalRuleCall_1_0() { return cParticipantSTRINGTerminalRuleCall_1_0; }
+		public RuleCall getTargetSTRINGTerminalRuleCall_1_0() { return cTargetSTRINGTerminalRuleCall_1_0; }
 		
 		//doubleDot=':'
 		public Assignment getDoubleDotAssignment_2() { return cDoubleDotAssignment_2; }
@@ -1331,7 +1331,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//LostMessage:
-	//	arrow='->o' participant=STRING doubleDot=':' name=STRING;
+	//	source=STRING arrow='->o' doubleDot=':' name=STRING;
 	public LostMessageElements getLostMessageAccess() {
 		return pLostMessage;
 	}
@@ -1341,7 +1341,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//FoundMessage:
-	//	arrow='o->' participant=STRING doubleDot=':' name=STRING;
+	//	arrow='o->' target=STRING doubleDot=':' name=STRING;
 	public FoundMessageElements getFoundMessageAccess() {
 		return pFoundMessage;
 	}

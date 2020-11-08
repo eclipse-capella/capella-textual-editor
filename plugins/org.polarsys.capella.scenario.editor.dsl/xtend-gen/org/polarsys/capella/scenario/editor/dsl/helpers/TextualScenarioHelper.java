@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -138,12 +126,8 @@ public class TextualScenarioHelper {
     return null;
   }
   
-  public static EList<Participant> participantsDefinedBefore(final EObject element, final Model rootModel) {
-    if ((element instanceof Model)) {
-      return ((Model) element).getParticipants();
-    } else {
-      return rootModel.getParticipants();
-    }
+  public static EList<Participant> participantsDefinedBefore(final Model rootModel) {
+    return rootModel.getParticipants();
   }
   
   public static ArrayList<String> participantsDefinedBeforeNames(final EObject element) {
@@ -151,7 +135,7 @@ public class TextualScenarioHelper {
     EObject container = TextualScenarioHelper.getModelContainer(element);
     if ((container instanceof Model)) {
       Model model = ((Model) container);
-      EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(element, model);
+      EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(model);
       for (final Participant participant : participants) {
         participantsNames.add(participant.getName());
       }

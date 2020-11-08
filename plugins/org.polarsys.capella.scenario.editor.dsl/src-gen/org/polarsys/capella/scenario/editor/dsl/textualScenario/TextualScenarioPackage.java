@@ -908,22 +908,13 @@ public interface TextualScenarioPackage extends EPackage
   int LOST_FOUND_MESSAGE__ARROW = MESSAGE_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Participant</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LOST_FOUND_MESSAGE__PARTICIPANT = MESSAGE_FEATURE_COUNT + 1;
-
-  /**
    * The feature id for the '<em><b>Double Dot</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int LOST_FOUND_MESSAGE__DOUBLE_DOT = MESSAGE_FEATURE_COUNT + 2;
+  int LOST_FOUND_MESSAGE__DOUBLE_DOT = MESSAGE_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Lost Found Message</em>' class.
@@ -932,7 +923,7 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    * @ordered
    */
-  int LOST_FOUND_MESSAGE_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 3;
+  int LOST_FOUND_MESSAGE_FEATURE_COUNT = MESSAGE_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.LostMessageImpl <em>Lost Message</em>}' class.
@@ -963,15 +954,6 @@ public interface TextualScenarioPackage extends EPackage
   int LOST_MESSAGE__ARROW = LOST_FOUND_MESSAGE__ARROW;
 
   /**
-   * The feature id for the '<em><b>Participant</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LOST_MESSAGE__PARTICIPANT = LOST_FOUND_MESSAGE__PARTICIPANT;
-
-  /**
    * The feature id for the '<em><b>Double Dot</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -981,13 +963,22 @@ public interface TextualScenarioPackage extends EPackage
   int LOST_MESSAGE__DOUBLE_DOT = LOST_FOUND_MESSAGE__DOUBLE_DOT;
 
   /**
+   * The feature id for the '<em><b>Source</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LOST_MESSAGE__SOURCE = LOST_FOUND_MESSAGE_FEATURE_COUNT + 0;
+
+  /**
    * The number of structural features of the '<em>Lost Message</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int LOST_MESSAGE_FEATURE_COUNT = LOST_FOUND_MESSAGE_FEATURE_COUNT + 0;
+  int LOST_MESSAGE_FEATURE_COUNT = LOST_FOUND_MESSAGE_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.FoundMessageImpl <em>Found Message</em>}' class.
@@ -1018,15 +1009,6 @@ public interface TextualScenarioPackage extends EPackage
   int FOUND_MESSAGE__ARROW = LOST_FOUND_MESSAGE__ARROW;
 
   /**
-   * The feature id for the '<em><b>Participant</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FOUND_MESSAGE__PARTICIPANT = LOST_FOUND_MESSAGE__PARTICIPANT;
-
-  /**
    * The feature id for the '<em><b>Double Dot</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1036,13 +1018,22 @@ public interface TextualScenarioPackage extends EPackage
   int FOUND_MESSAGE__DOUBLE_DOT = LOST_FOUND_MESSAGE__DOUBLE_DOT;
 
   /**
+   * The feature id for the '<em><b>Target</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOUND_MESSAGE__TARGET = LOST_FOUND_MESSAGE_FEATURE_COUNT + 0;
+
+  /**
    * The number of structural features of the '<em>Found Message</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FOUND_MESSAGE_FEATURE_COUNT = LOST_FOUND_MESSAGE_FEATURE_COUNT + 0;
+  int FOUND_MESSAGE_FEATURE_COUNT = LOST_FOUND_MESSAGE_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ParticipantDeactivationImpl <em>Participant Deactivation</em>}' class.
@@ -1746,17 +1737,6 @@ public interface TextualScenarioPackage extends EPackage
   EAttribute getLostFoundMessage_Arrow();
 
   /**
-   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage#getParticipant <em>Participant</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Participant</em>'.
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage#getParticipant()
-   * @see #getLostFoundMessage()
-   * @generated
-   */
-  EAttribute getLostFoundMessage_Participant();
-
-  /**
    * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage#getDoubleDot <em>Double Dot</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1778,6 +1758,17 @@ public interface TextualScenarioPackage extends EPackage
   EClass getLostMessage();
 
   /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage#getSource <em>Source</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Source</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage#getSource()
+   * @see #getLostMessage()
+   * @generated
+   */
+  EAttribute getLostMessage_Source();
+
+  /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage <em>Found Message</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1786,6 +1777,17 @@ public interface TextualScenarioPackage extends EPackage
    * @generated
    */
   EClass getFoundMessage();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getTarget <em>Target</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Target</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getTarget()
+   * @see #getFoundMessage()
+   * @generated
+   */
+  EAttribute getFoundMessage_Target();
 
   /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation <em>Participant Deactivation</em>}'.
@@ -2436,14 +2438,6 @@ public interface TextualScenarioPackage extends EPackage
     EAttribute LOST_FOUND_MESSAGE__ARROW = eINSTANCE.getLostFoundMessage_Arrow();
 
     /**
-     * The meta object literal for the '<em><b>Participant</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute LOST_FOUND_MESSAGE__PARTICIPANT = eINSTANCE.getLostFoundMessage_Participant();
-
-    /**
      * The meta object literal for the '<em><b>Double Dot</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2462,6 +2456,14 @@ public interface TextualScenarioPackage extends EPackage
     EClass LOST_MESSAGE = eINSTANCE.getLostMessage();
 
     /**
+     * The meta object literal for the '<em><b>Source</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute LOST_MESSAGE__SOURCE = eINSTANCE.getLostMessage_Source();
+
+    /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.FoundMessageImpl <em>Found Message</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2470,6 +2472,14 @@ public interface TextualScenarioPackage extends EPackage
      * @generated
      */
     EClass FOUND_MESSAGE = eINSTANCE.getFoundMessage();
+
+    /**
+     * The meta object literal for the '<em><b>Target</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FOUND_MESSAGE__TARGET = eINSTANCE.getFoundMessage_Target();
 
     /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ParticipantDeactivationImpl <em>Participant Deactivation</em>}' class.

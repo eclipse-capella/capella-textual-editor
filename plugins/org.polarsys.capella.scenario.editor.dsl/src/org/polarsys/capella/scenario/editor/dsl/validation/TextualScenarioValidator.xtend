@@ -40,6 +40,8 @@ import java.util.HashMap
 import java.util.LinkedList
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
 import org.eclipse.emf.ecore.EReference
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage
 
 /**
  * This class contains custom validation rules. 
@@ -369,6 +371,35 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 	
+	@Check
+	def checkLostMessage(LostMessage message) {
+		// check arm timer could be used in opened diagram
+		if (!EmbeddedEditorInstanceHelper.isESScenario()) {
+			error("Lost message can not be used in this diagram!",
+							TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW)
+		}
+		
+		// check timeline exist
+		if (!TextualScenarioHelper.participantsDefinedBeforeNames(message).contains(message.source)) {
+			error("Timeline not defined in text editor!",
+							TextualScenarioPackage.Literals.LOST_MESSAGE__SOURCE)
+		}
+	}
+		
+	@Check
+	def checkFoundMessage(FoundMessage message) {
+		// check arm timer could be used in opened diagram
+		if (!EmbeddedEditorInstanceHelper.isESScenario()) {
+			error("Found message can not be used in this diagram!",
+							TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW)
+		}
+		
+		// check timeline exist
+		if (!TextualScenarioHelper.participantsDefinedBeforeNames(message).contains(message.target)) {
+			error("Timeline not defined in text editor!",
+							TextualScenarioPackage.Literals.FOUND_MESSAGE__TARGET)
+		}
+	}
 	
 	def checkSameSourceAndTarget(SequenceMessageType message) {
 		if (message.source.equals(message.target)) {
@@ -424,6 +455,30 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		if (model instanceof Model)
 			checkElementAfterDelete(model as Model, armTimer, armTimer.participant,
 				TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0)
+	}
+	
+	/*
+	 * check if a participant involved in a lost message was used after a delete message was already defined 
+	 * on the previous lines on the same timeline
+	 */
+	@Check
+	def checkParticipantUsedAfterLostMessage(LostMessage message) {
+		var model = TextualScenarioHelper.getModelContainer(message)
+		if (model instanceof Model)
+			checkElementAfterDelete(model as Model, message, message.source,
+				TextualScenarioPackage.Literals.LOST_MESSAGE__SOURCE, 0)
+	}
+	
+	/*
+	 * check if a participant involved in a lost message was used after a delete message was already defined 
+	 * on the previous lines on the same timeline
+	 */
+	@Check
+	def checkParticipantUsedAfterFoundMessage(FoundMessage message) {
+		var model = TextualScenarioHelper.getModelContainer(message)
+		if (model instanceof Model)
+			checkElementAfterDelete(model as Model, message, message.target,
+				TextualScenarioPackage.Literals.FOUND_MESSAGE__TARGET, 0)
 	}
 
 	/*
@@ -513,6 +568,18 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			
 			if (element instanceof ArmTimerMessage) {
 				if ((element as ArmTimerMessage).participant.equals(target)) {
+					 return false
+				}
+			}
+			
+			if (element instanceof LostMessage) {
+				if ((element as LostMessage).source.equals(target)) {
+					 return false
+				}
+			}
+			
+			if (element instanceof FoundMessage) {
+				if ((element as FoundMessage).target.equals(target)) {
 					 return false
 				}
 			}

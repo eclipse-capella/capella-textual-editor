@@ -375,14 +375,14 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     FoundMessage returns FoundMessage
 	 *
 	 * Constraint:
-	 *     (arrow='o->' participant=STRING doubleDot=':' name=STRING)
+	 *     (arrow='o->' target=STRING doubleDot=':' name=STRING)
 	 */
 	protected void sequence_FoundMessage(ISerializationContext context, FoundMessage semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW));
-			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__PARTICIPANT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__PARTICIPANT));
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.FOUND_MESSAGE__TARGET) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.FOUND_MESSAGE__TARGET));
 			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__DOUBLE_DOT) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__DOUBLE_DOT));
 			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME) == ValueTransient.YES)
@@ -390,7 +390,7 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getFoundMessageAccess().getArrowOKeyword_0_0(), semanticObject.getArrow());
-		feeder.accept(grammarAccess.getFoundMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0(), semanticObject.getParticipant());
+		feeder.accept(grammarAccess.getFoundMessageAccess().getTargetSTRINGTerminalRuleCall_1_0(), semanticObject.getTarget());
 		feeder.accept(grammarAccess.getFoundMessageAccess().getDoubleDotColonKeyword_2_0(), semanticObject.getDoubleDot());
 		feeder.accept(grammarAccess.getFoundMessageAccess().getNameSTRINGTerminalRuleCall_3_0(), semanticObject.getName());
 		feeder.finish();
@@ -428,22 +428,22 @@ public class TextualScenarioSemanticSequencer extends AbstractDelegatingSemantic
 	 *     LostMessage returns LostMessage
 	 *
 	 * Constraint:
-	 *     (arrow='->o' participant=STRING doubleDot=':' name=STRING)
+	 *     (source=STRING arrow='->o' doubleDot=':' name=STRING)
 	 */
 	protected void sequence_LostMessage(ISerializationContext context, LostMessage semanticObject) {
 		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_MESSAGE__SOURCE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_MESSAGE__SOURCE));
 			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW));
-			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__PARTICIPANT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__PARTICIPANT));
 			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__DOUBLE_DOT) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__DOUBLE_DOT));
 			if (transientValues.isValueTransient(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, TextualScenarioPackage.Literals.MESSAGE__NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getLostMessageAccess().getArrowOKeyword_0_0(), semanticObject.getArrow());
-		feeder.accept(grammarAccess.getLostMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0(), semanticObject.getParticipant());
+		feeder.accept(grammarAccess.getLostMessageAccess().getSourceSTRINGTerminalRuleCall_0_0(), semanticObject.getSource());
+		feeder.accept(grammarAccess.getLostMessageAccess().getArrowOKeyword_1_0(), semanticObject.getArrow());
 		feeder.accept(grammarAccess.getLostMessageAccess().getDoubleDotColonKeyword_2_0(), semanticObject.getDoubleDot());
 		feeder.accept(grammarAccess.getLostMessageAccess().getNameSTRINGTerminalRuleCall_3_0(), semanticObject.getName());
 		feeder.finish();

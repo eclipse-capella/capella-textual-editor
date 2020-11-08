@@ -725,20 +725,9 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
-  public EAttribute getLostFoundMessage_Participant()
-  {
-    return (EAttribute)lostFoundMessageEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EAttribute getLostFoundMessage_DoubleDot()
   {
-    return (EAttribute)lostFoundMessageEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)lostFoundMessageEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -758,9 +747,31 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
+  public EAttribute getLostMessage_Source()
+  {
+    return (EAttribute)lostMessageEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getFoundMessage()
   {
     return foundMessageEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getFoundMessage_Target()
+  {
+    return (EAttribute)foundMessageEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1146,12 +1157,13 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     lostFoundMessageEClass = createEClass(LOST_FOUND_MESSAGE);
     createEAttribute(lostFoundMessageEClass, LOST_FOUND_MESSAGE__ARROW);
-    createEAttribute(lostFoundMessageEClass, LOST_FOUND_MESSAGE__PARTICIPANT);
     createEAttribute(lostFoundMessageEClass, LOST_FOUND_MESSAGE__DOUBLE_DOT);
 
     lostMessageEClass = createEClass(LOST_MESSAGE);
+    createEAttribute(lostMessageEClass, LOST_MESSAGE__SOURCE);
 
     foundMessageEClass = createEClass(FOUND_MESSAGE);
+    createEAttribute(foundMessageEClass, FOUND_MESSAGE__TARGET);
 
     participantDeactivationEClass = createEClass(PARTICIPANT_DEACTIVATION);
     createEAttribute(participantDeactivationEClass, PARTICIPANT_DEACTIVATION__KEYWORD);
@@ -1295,12 +1307,13 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     initEClass(lostFoundMessageEClass, LostFoundMessage.class, "LostFoundMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getLostFoundMessage_Arrow(), ecorePackage.getEString(), "arrow", null, 0, 1, LostFoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getLostFoundMessage_Participant(), ecorePackage.getEString(), "participant", null, 0, 1, LostFoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getLostFoundMessage_DoubleDot(), ecorePackage.getEString(), "doubleDot", null, 0, 1, LostFoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(lostMessageEClass, LostMessage.class, "LostMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getLostMessage_Source(), ecorePackage.getEString(), "source", null, 0, 1, LostMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(foundMessageEClass, FoundMessage.class, "FoundMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getFoundMessage_Target(), ecorePackage.getEString(), "target", null, 0, 1, FoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(participantDeactivationEClass, ParticipantDeactivation.class, "ParticipantDeactivation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getParticipantDeactivation_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, ParticipantDeactivation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

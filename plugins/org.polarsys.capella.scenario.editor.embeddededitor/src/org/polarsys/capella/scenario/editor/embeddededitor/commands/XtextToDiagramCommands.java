@@ -92,6 +92,9 @@ import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorV
 import org.polarsys.capella.scenario.editor.helper.DslConstants;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage;
 
 public class XtextToDiagramCommands {
   public static void process(Scenario scenario, EmbeddedEditorView embeddedEditorViewPart) {
@@ -262,8 +265,10 @@ public class XtextToDiagramCommands {
     EList<SequenceMessage> messages = scenario.getOwnedMessages();
 
     for (SequenceMessage message : messages) {
-      if (message.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName)
-          || message.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName)) {
+      if ((message.getSendingEnd() != null && !message.getSendingEnd().getCoveredInstanceRoles().isEmpty()
+          && message.getSendingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName))
+          || (message.getReceivingEnd() != null && !message.getReceivingEnd().getCoveredInstanceRoles().isEmpty()
+              && message.getReceivingEnd().getCoveredInstanceRoles().get(0).getName().equals(participantName))) {
         messagesToBeDeleted.add(message);
       }
     }
@@ -533,8 +538,13 @@ public class XtextToDiagramCommands {
             capellaSequenceMessages.add(capellaSequenceMessage);
 
             // insert message ends in interaction fragments list
-            interactionFragments.add(capellaSequenceMessage.getSendingEnd());
-            interactionFragments.add(capellaSequenceMessage.getReceivingEnd());
+            if(capellaSequenceMessage.getSendingEnd() != null) {
+              interactionFragments.add(capellaSequenceMessage.getSendingEnd());
+            }
+            
+            if(capellaSequenceMessage.getReceivingEnd() != null) {
+              interactionFragments.add(capellaSequenceMessage.getReceivingEnd());
+            }
 
             if (!(capellaSequenceMessage.getKind().equals(MessageKind.CREATE)
                 || capellaSequenceMessage.getKind().equals(MessageKind.DELETE))) {
@@ -587,6 +597,16 @@ public class XtextToDiagramCommands {
               .getInstanceRole(((ArmTimerMessage) elementFromXtext).getParticipant());
           return timeline != null;
         }
+        if (elementFromXtext instanceof LostMessage) {
+          InstanceRole timeline = EmbeddedEditorInstanceHelper
+              .getInstanceRole(((LostMessage) elementFromXtext).getSource());
+          return timeline != null;
+        }
+        if (elementFromXtext instanceof FoundMessage) {
+          InstanceRole timeline = EmbeddedEditorInstanceHelper
+              .getInstanceRole(((FoundMessage) elementFromXtext).getTarget());
+          return timeline != null;
+        }
         return false;
       }
 
@@ -623,7 +643,11 @@ public class XtextToDiagramCommands {
         if (xtextSeqMessage instanceof SequenceMessageType) {
           source = EmbeddedEditorInstanceHelper.getInstanceRole(((SequenceMessageType) xtextSeqMessage).getSource());
           target = EmbeddedEditorInstanceHelper.getInstanceRole(((SequenceMessageType) xtextSeqMessage).getTarget());
-        } else {
+        } else if (xtextSeqMessage instanceof LostMessage) {
+          source = EmbeddedEditorInstanceHelper.getInstanceRole(((LostMessage) xtextSeqMessage).getSource());
+        } else if (xtextSeqMessage instanceof FoundMessage) {
+          target = EmbeddedEditorInstanceHelper.getInstanceRole(((FoundMessage) xtextSeqMessage).getTarget());
+        } else if (xtextSeqMessage instanceof ArmTimerMessage) {
           source = EmbeddedEditorInstanceHelper.getInstanceRole(((ArmTimerMessage) xtextSeqMessage).getParticipant());
           target = source;
         }
@@ -634,7 +658,7 @@ public class XtextToDiagramCommands {
           processedCapellaMessages.add(sequenceMessage);
           
           // if message has return branch, create corresponding Capella return message
-          if (hasReturn(xtextSeqMessage)) {
+          if (source != null && target != null && hasReturn(xtextSeqMessage)) {
             SequenceMessage opposingSequenceMessage = createCapellaSequenceMessage(scenario, target, source,
                 xtextSeqMessage, true);
             Execution execution = getExecutionForSequenceMessage(scenario, sequenceMessage);
@@ -1452,12 +1476,15 @@ public class XtextToDiagramCommands {
     scenario.getOwnedInteractionFragments().remove(executionEnd);
 
     // Remove events
-    Event eventSendOp = sendingEnd.getEvent();
-    Event eventReveivOp = receivingEnd.getEvent();
-    scenario.getOwnedEvents().remove(eventSendOp);
-    scenario.getOwnedEvents().remove(eventReveivOp);
+    if(sendingEnd != null) {
+      scenario.getOwnedEvents().remove(sendingEnd.getEvent());
+    }
+    if(receivingEnd != null) {
+      scenario.getOwnedEvents().remove(receivingEnd.getEvent());
+    }
 
-    if (sequenceMessage.getKind() != MessageKind.REPLY && !ScenarioExt.hasReply(sequenceMessage)) {
+    if (sendingEnd != null && receivingEnd != null &&
+        sequenceMessage.getKind() != MessageKind.REPLY && !ScenarioExt.hasReply(sequenceMessage)) {
       // Remove execution event for normal sequence message
       Event executionEvent = executionEnd instanceof ExecutionEnd
           ? (Event) ExecutionEndExt.getOperation((ExecutionEnd) executionEnd)
@@ -1566,7 +1593,8 @@ public class XtextToDiagramCommands {
     for (Element element : textMessages) {
       // SequenceMessage -> add it
       if (element instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType ||
-          element instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) {
+          element instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage || 
+          element instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage) {
         xtextSequenceMessages.add((Message) element);
       }
       // CombinedFragment -> go inside and find all sequence messages at all levels
@@ -1625,10 +1653,21 @@ public class XtextToDiagramCommands {
       target = armTimerMessage.getParticipant();
       xtextMessageName = armTimerMessage.getName();
       xtextMessageKind = getSequenceMessageKind(armTimerMessage, false);
+    } else if (xtextElement instanceof LostMessage) {
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage lostMessage = (LostMessage) xtextElement;
+      sendingEnd = seqMessage.getSendingEnd();
+      source = lostMessage.getSource();
+      xtextMessageName = lostMessage.getName();
+      xtextMessageKind = getSequenceMessageKind(lostMessage, false);
+    } else if (xtextElement instanceof FoundMessage) {
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage foundMessage = (FoundMessage) xtextElement;
+      receivingEnd = seqMessage.getReceivingEnd();
+      target = foundMessage.getTarget();
+      xtextMessageName = foundMessage.getName();
+      xtextMessageKind = getSequenceMessageKind(foundMessage, false);
     }
 
-    return sendingEnd == null ? false
-        : isSameMessage(source, target, sendingEnd, receivingEnd, xtextMessageName, capellaMessageName,
+    return isSameMessage(source, target, sendingEnd, receivingEnd, xtextMessageName, capellaMessageName,
             xtextMessageKind, capellaMessageKind);
   }
 
@@ -1655,14 +1694,23 @@ public class XtextToDiagramCommands {
    */
   private static boolean isSameMessage(String source, String target, MessageEnd sendingEnd, MessageEnd receivingEnd,
       String messageName, String capellaMessageName, MessageKind xtextMessageKind, MessageKind capellaMessageKind) {
-    if (!sendingEnd.getCoveredInstanceRoles().isEmpty()
+    // if lost message, receiving end is null
+    if(sendingEnd != null && receivingEnd == null) {
+      return (!sendingEnd.getCoveredInstanceRoles().isEmpty()
+          && source.equals(sendingEnd.getCoveredInstanceRoles().get(0).getName())
+          && messageName.equals(capellaMessageName) && xtextMessageKind.equals(capellaMessageKind));
+    }
+    // if found message, sending end is null
+    if(sendingEnd == null && receivingEnd != null) {
+      return (!receivingEnd.getCoveredInstanceRoles().isEmpty()
+        && target.equals(receivingEnd.getCoveredInstanceRoles().get(0).getName())
+        && messageName.equals(capellaMessageName) && xtextMessageKind.equals(capellaMessageKind));
+    }
+    return (sendingEnd!= null && !sendingEnd.getCoveredInstanceRoles().isEmpty()
         && source.equals(sendingEnd.getCoveredInstanceRoles().get(0).getName())
         && !receivingEnd.getCoveredInstanceRoles().isEmpty()
         && target.equals(receivingEnd.getCoveredInstanceRoles().get(0).getName())
-        && messageName.equals(capellaMessageName) && xtextMessageKind.equals(capellaMessageKind)) {
-      return true;
-    }
-    return false;
+        && messageName.equals(capellaMessageName) && xtextMessageKind.equals(capellaMessageKind));
   }
 
   /**
@@ -1727,17 +1775,25 @@ public class XtextToDiagramCommands {
     sequenceMessage.setName(seqMessage.getName());
     sequenceMessage.setKind(getSequenceMessageKind(seqMessage, isReplyMessage));
 
-    // sending end
-    MessageEnd sendingEnd = InteractionFactory.eINSTANCE.createMessageEnd();
-    sendingEnd.getCoveredInstanceRoles().add(source);
-    sequenceMessage.setSendingEnd(sendingEnd);
-    scenario.getOwnedInteractionFragments().add(sendingEnd);
+    // in case of found message, source is null
+    MessageEnd sendingEnd = null;
+    if (source != null) {
+      // sending end
+      sendingEnd = InteractionFactory.eINSTANCE.createMessageEnd();
+      sendingEnd.getCoveredInstanceRoles().add(source);
+      sequenceMessage.setSendingEnd(sendingEnd);
+      scenario.getOwnedInteractionFragments().add(sendingEnd);
+    }
 
-    // receiving end
-    MessageEnd receivingEnd = InteractionFactory.eINSTANCE.createMessageEnd();
-    receivingEnd.getCoveredInstanceRoles().add(target);
-    sequenceMessage.setReceivingEnd(receivingEnd);
-    scenario.getOwnedInteractionFragments().add(receivingEnd);
+    // in case of lost message, target is null
+    MessageEnd receivingEnd = null;
+    if (target != null) {
+      // receiving end
+      receivingEnd = InteractionFactory.eINSTANCE.createMessageEnd();
+      receivingEnd.getCoveredInstanceRoles().add(target);
+      sequenceMessage.setReceivingEnd(receivingEnd);
+      scenario.getOwnedInteractionFragments().add(receivingEnd);
+    }
 
     // execution end - CREATE and DELETE messages don't have an execution
     if (!isReplyMessage
@@ -1749,12 +1805,15 @@ public class XtextToDiagramCommands {
         // message
         scenario.getOwnedInteractionFragments().add(executionEnd);
       }
-      executionEnd.getCoveredInstanceRoles().add(receivingEnd.getCoveredInstanceRoles().get(0));
+      if(receivingEnd != null)
+        executionEnd.getCoveredInstanceRoles().add(receivingEnd.getCoveredInstanceRoles().get(0));
 
       // execution
       Execution execution = InteractionFactory.eINSTANCE.createExecution();
       execution.setFinish(executionEnd);
-      execution.setStart(receivingEnd);
+      if(receivingEnd != null) {
+        execution.setStart(receivingEnd);
+      }
       scenario.getOwnedTimeLapses().add(execution);
 
       // execution event
@@ -1766,20 +1825,28 @@ public class XtextToDiagramCommands {
     // EventSentOperation
     EventSentOperation eventSentOperation = InteractionFactory.eINSTANCE.createEventSentOperation();
     scenario.getOwnedEvents().add(eventSentOperation);
-    sendingEnd.setEvent(eventSentOperation);
+    if(sendingEnd != null) {
+      sendingEnd.setEvent(eventSentOperation);
+    }
 
     // EventReceiptOperation
     EventReceiptOperation eventRecvOperation = InteractionFactory.eINSTANCE.createEventReceiptOperation();
     scenario.getOwnedEvents().add(eventRecvOperation);
-    receivingEnd.setEvent(eventRecvOperation);
+    
+    if(receivingEnd != null) {
+      receivingEnd.setEvent(eventRecvOperation);
+    }
 
     // get operation by name from the list of available exchanges
-    List<AbstractEventOperation> exchanges = null;
+    List<AbstractEventOperation> exchanges;
+    String sourceName = source != null ? source.getName() : null;
+    String targetName = target != null ? target.getName() : null;
     if (isReplyMessage) {
-      exchanges = EmbeddedEditorInstanceHelper.getExchangeMessages(target.getName(), source.getName());
+      exchanges = EmbeddedEditorInstanceHelper.getExchangeMessages(targetName, sourceName);
     } else {
-      exchanges = EmbeddedEditorInstanceHelper.getExchangeMessages(source.getName(), target.getName());
+      exchanges = EmbeddedEditorInstanceHelper.getExchangeMessages(sourceName, targetName);
     }
+    //todo_gec
 
     if (EmbeddedEditorInstanceHelper.isInterfaceScenario()) {
       exchanges = exchanges.stream()
@@ -1821,6 +1888,9 @@ public class XtextToDiagramCommands {
     }
     if (seqMessage instanceof ArmTimerMessage) {
       return MessageKind.TIMER;
+    }
+    if(seqMessage instanceof LostFoundMessage) {
+      return MessageKind.ASYNCHRONOUS_CALL;
     }
     return MessageKind.UNSET;
   }

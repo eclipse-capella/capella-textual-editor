@@ -21,6 +21,12 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  * A representation of the model object '<em><b>Lost Message</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage#getSource <em>Source</em>}</li>
+ * </ul>
  *
  * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getLostMessage()
  * @model
@@ -28,4 +34,26 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  */
 public interface LostMessage extends LostFoundMessage
 {
+  /**
+   * Returns the value of the '<em><b>Source</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Source</em>' attribute.
+   * @see #setSource(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getLostMessage_Source()
+   * @model
+   * @generated
+   */
+  String getSource();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage#getSource <em>Source</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Source</em>' attribute.
+   * @see #getSource()
+   * @generated
+   */
+  void setSource(String value);
+
 } // LostMessage

@@ -2521,7 +2521,6 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             switch ( input.LA(1) ) {
             case RULE_STRING:
             case 40:
-            case 41:
             case 42:
             case 43:
                 {
@@ -2666,7 +2665,20 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             switch ( input.LA(1) ) {
             case RULE_STRING:
                 {
-                alt5=1;
+                int LA5_1 = input.LA(2);
+
+                if ( (LA5_1==41) ) {
+                    alt5=4;
+                }
+                else if ( (LA5_1==34||(LA5_1>=38 && LA5_1<=39)) ) {
+                    alt5=1;
+                }
+                else {
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 5, 1, input);
+
+                    throw nvae;
+                }
                 }
                 break;
             case 40:
@@ -2679,7 +2691,6 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 alt5=3;
                 }
                 break;
-            case 41:
             case 42:
                 {
                 alt5=4;
@@ -2914,7 +2925,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             int alt7=2;
             int LA7_0 = input.LA(1);
 
-            if ( (LA7_0==41) ) {
+            if ( (LA7_0==RULE_STRING) ) {
                 alt7=1;
             }
             else if ( (LA7_0==42) ) {
@@ -3653,7 +3664,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 int alt11=2;
                 int LA11_0 = input.LA(1);
 
-                if ( (LA11_0==RULE_STRING||(LA11_0>=11 && LA11_0<=21)||(LA11_0>=40 && LA11_0<=43)||(LA11_0>=46 && LA11_0<=47)) ) {
+                if ( (LA11_0==RULE_STRING||(LA11_0>=11 && LA11_0<=21)||LA11_0==40||(LA11_0>=42 && LA11_0<=43)||(LA11_0>=46 && LA11_0<=47)) ) {
                     alt11=1;
                 }
 
@@ -6826,7 +6837,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2135:1: ( rule__LostMessage__Group__0__Impl rule__LostMessage__Group__1 )
             // InternalTextualScenario.g:2136:2: rule__LostMessage__Group__0__Impl rule__LostMessage__Group__1
             {
-            pushFollow(FOLLOW_7);
+            pushFollow(FOLLOW_14);
             rule__LostMessage__Group__0__Impl();
 
             state._fsp--;
@@ -6855,31 +6866,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__LostMessage__Group__0__Impl"
-    // InternalTextualScenario.g:2143:1: rule__LostMessage__Group__0__Impl : ( ( rule__LostMessage__ArrowAssignment_0 ) ) ;
+    // InternalTextualScenario.g:2143:1: rule__LostMessage__Group__0__Impl : ( ( rule__LostMessage__SourceAssignment_0 ) ) ;
     public final void rule__LostMessage__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:2147:1: ( ( ( rule__LostMessage__ArrowAssignment_0 ) ) )
-            // InternalTextualScenario.g:2148:1: ( ( rule__LostMessage__ArrowAssignment_0 ) )
+            // InternalTextualScenario.g:2147:1: ( ( ( rule__LostMessage__SourceAssignment_0 ) ) )
+            // InternalTextualScenario.g:2148:1: ( ( rule__LostMessage__SourceAssignment_0 ) )
             {
-            // InternalTextualScenario.g:2148:1: ( ( rule__LostMessage__ArrowAssignment_0 ) )
-            // InternalTextualScenario.g:2149:2: ( rule__LostMessage__ArrowAssignment_0 )
+            // InternalTextualScenario.g:2148:1: ( ( rule__LostMessage__SourceAssignment_0 ) )
+            // InternalTextualScenario.g:2149:2: ( rule__LostMessage__SourceAssignment_0 )
             {
-             before(grammarAccess.getLostMessageAccess().getArrowAssignment_0()); 
-            // InternalTextualScenario.g:2150:2: ( rule__LostMessage__ArrowAssignment_0 )
-            // InternalTextualScenario.g:2150:3: rule__LostMessage__ArrowAssignment_0
+             before(grammarAccess.getLostMessageAccess().getSourceAssignment_0()); 
+            // InternalTextualScenario.g:2150:2: ( rule__LostMessage__SourceAssignment_0 )
+            // InternalTextualScenario.g:2150:3: rule__LostMessage__SourceAssignment_0
             {
             pushFollow(FOLLOW_2);
-            rule__LostMessage__ArrowAssignment_0();
+            rule__LostMessage__SourceAssignment_0();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getLostMessageAccess().getArrowAssignment_0()); 
+             after(grammarAccess.getLostMessageAccess().getSourceAssignment_0()); 
 
             }
 
@@ -6940,31 +6951,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__LostMessage__Group__1__Impl"
-    // InternalTextualScenario.g:2170:1: rule__LostMessage__Group__1__Impl : ( ( rule__LostMessage__ParticipantAssignment_1 ) ) ;
+    // InternalTextualScenario.g:2170:1: rule__LostMessage__Group__1__Impl : ( ( rule__LostMessage__ArrowAssignment_1 ) ) ;
     public final void rule__LostMessage__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:2174:1: ( ( ( rule__LostMessage__ParticipantAssignment_1 ) ) )
-            // InternalTextualScenario.g:2175:1: ( ( rule__LostMessage__ParticipantAssignment_1 ) )
+            // InternalTextualScenario.g:2174:1: ( ( ( rule__LostMessage__ArrowAssignment_1 ) ) )
+            // InternalTextualScenario.g:2175:1: ( ( rule__LostMessage__ArrowAssignment_1 ) )
             {
-            // InternalTextualScenario.g:2175:1: ( ( rule__LostMessage__ParticipantAssignment_1 ) )
-            // InternalTextualScenario.g:2176:2: ( rule__LostMessage__ParticipantAssignment_1 )
+            // InternalTextualScenario.g:2175:1: ( ( rule__LostMessage__ArrowAssignment_1 ) )
+            // InternalTextualScenario.g:2176:2: ( rule__LostMessage__ArrowAssignment_1 )
             {
-             before(grammarAccess.getLostMessageAccess().getParticipantAssignment_1()); 
-            // InternalTextualScenario.g:2177:2: ( rule__LostMessage__ParticipantAssignment_1 )
-            // InternalTextualScenario.g:2177:3: rule__LostMessage__ParticipantAssignment_1
+             before(grammarAccess.getLostMessageAccess().getArrowAssignment_1()); 
+            // InternalTextualScenario.g:2177:2: ( rule__LostMessage__ArrowAssignment_1 )
+            // InternalTextualScenario.g:2177:3: rule__LostMessage__ArrowAssignment_1
             {
             pushFollow(FOLLOW_2);
-            rule__LostMessage__ParticipantAssignment_1();
+            rule__LostMessage__ArrowAssignment_1();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getLostMessageAccess().getParticipantAssignment_1()); 
+             after(grammarAccess.getLostMessageAccess().getArrowAssignment_1()); 
 
             }
 
@@ -7275,31 +7286,31 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__FoundMessage__Group__1__Impl"
-    // InternalTextualScenario.g:2278:1: rule__FoundMessage__Group__1__Impl : ( ( rule__FoundMessage__ParticipantAssignment_1 ) ) ;
+    // InternalTextualScenario.g:2278:1: rule__FoundMessage__Group__1__Impl : ( ( rule__FoundMessage__TargetAssignment_1 ) ) ;
     public final void rule__FoundMessage__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:2282:1: ( ( ( rule__FoundMessage__ParticipantAssignment_1 ) ) )
-            // InternalTextualScenario.g:2283:1: ( ( rule__FoundMessage__ParticipantAssignment_1 ) )
+            // InternalTextualScenario.g:2282:1: ( ( ( rule__FoundMessage__TargetAssignment_1 ) ) )
+            // InternalTextualScenario.g:2283:1: ( ( rule__FoundMessage__TargetAssignment_1 ) )
             {
-            // InternalTextualScenario.g:2283:1: ( ( rule__FoundMessage__ParticipantAssignment_1 ) )
-            // InternalTextualScenario.g:2284:2: ( rule__FoundMessage__ParticipantAssignment_1 )
+            // InternalTextualScenario.g:2283:1: ( ( rule__FoundMessage__TargetAssignment_1 ) )
+            // InternalTextualScenario.g:2284:2: ( rule__FoundMessage__TargetAssignment_1 )
             {
-             before(grammarAccess.getFoundMessageAccess().getParticipantAssignment_1()); 
-            // InternalTextualScenario.g:2285:2: ( rule__FoundMessage__ParticipantAssignment_1 )
-            // InternalTextualScenario.g:2285:3: rule__FoundMessage__ParticipantAssignment_1
+             before(grammarAccess.getFoundMessageAccess().getTargetAssignment_1()); 
+            // InternalTextualScenario.g:2285:2: ( rule__FoundMessage__TargetAssignment_1 )
+            // InternalTextualScenario.g:2285:3: rule__FoundMessage__TargetAssignment_1
             {
             pushFollow(FOLLOW_2);
-            rule__FoundMessage__ParticipantAssignment_1();
+            rule__FoundMessage__TargetAssignment_1();
 
             state._fsp--;
 
 
             }
 
-             after(grammarAccess.getFoundMessageAccess().getParticipantAssignment_1()); 
+             after(grammarAccess.getFoundMessageAccess().getTargetAssignment_1()); 
 
             }
 
@@ -7661,7 +7672,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2405:1: ( rule__CombinedFragment__Group__0__Impl rule__CombinedFragment__Group__1 )
             // InternalTextualScenario.g:2406:2: rule__CombinedFragment__Group__0__Impl rule__CombinedFragment__Group__1
             {
-            pushFollow(FOLLOW_14);
+            pushFollow(FOLLOW_15);
             rule__CombinedFragment__Group__0__Impl();
 
             state._fsp--;
@@ -7746,7 +7757,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2432:1: ( rule__CombinedFragment__Group__1__Impl rule__CombinedFragment__Group__2 )
             // InternalTextualScenario.g:2433:2: rule__CombinedFragment__Group__1__Impl rule__CombinedFragment__Group__2
             {
-            pushFollow(FOLLOW_14);
+            pushFollow(FOLLOW_15);
             rule__CombinedFragment__Group__1__Impl();
 
             state._fsp--;
@@ -7975,7 +7986,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2502:3: ( rule__CombinedFragment__TimelinesAssignment_3 )
             // InternalTextualScenario.g:2502:4: rule__CombinedFragment__TimelinesAssignment_3
             {
-            pushFollow(FOLLOW_15);
+            pushFollow(FOLLOW_16);
             rule__CombinedFragment__TimelinesAssignment_3();
 
             state._fsp--;
@@ -8006,7 +8017,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             	case 1 :
             	    // InternalTextualScenario.g:2507:4: rule__CombinedFragment__TimelinesAssignment_3
             	    {
-            	    pushFollow(FOLLOW_15);
+            	    pushFollow(FOLLOW_16);
             	    rule__CombinedFragment__TimelinesAssignment_3();
 
             	    state._fsp--;
@@ -8055,7 +8066,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2520:1: ( rule__CombinedFragment__Group__4__Impl rule__CombinedFragment__Group__5 )
             // InternalTextualScenario.g:2521:2: rule__CombinedFragment__Group__4__Impl rule__CombinedFragment__Group__5
             {
-            pushFollow(FOLLOW_16);
+            pushFollow(FOLLOW_17);
             rule__CombinedFragment__Group__4__Impl();
 
             state._fsp--;
@@ -8201,7 +8212,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             	case 1 :
             	    // InternalTextualScenario.g:2561:3: rule__CombinedFragment__OperandsAssignment_5
             	    {
-            	    pushFollow(FOLLOW_17);
+            	    pushFollow(FOLLOW_18);
             	    rule__CombinedFragment__OperandsAssignment_5();
 
             	    state._fsp--;
@@ -8247,7 +8258,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2574:1: ( rule__Operand__Group__0__Impl rule__Operand__Group__1 )
             // InternalTextualScenario.g:2575:2: rule__Operand__Group__0__Impl rule__Operand__Group__1
             {
-            pushFollow(FOLLOW_16);
+            pushFollow(FOLLOW_17);
             rule__Operand__Group__0__Impl();
 
             state._fsp--;
@@ -8343,7 +8354,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2601:1: ( rule__Operand__Group__1__Impl rule__Operand__Group__2 )
             // InternalTextualScenario.g:2602:2: rule__Operand__Group__1__Impl rule__Operand__Group__2
             {
-            pushFollow(FOLLOW_16);
+            pushFollow(FOLLOW_17);
             rule__Operand__Group__1__Impl();
 
             state._fsp--;
@@ -8519,7 +8530,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2655:1: ( rule__Block__Group__0__Impl rule__Block__Group__1 )
             // InternalTextualScenario.g:2656:2: rule__Block__Group__0__Impl rule__Block__Group__1
             {
-            pushFollow(FOLLOW_18);
+            pushFollow(FOLLOW_19);
             rule__Block__Group__0__Impl();
 
             state._fsp--;
@@ -8604,7 +8615,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2682:1: ( rule__Block__Group__1__Impl rule__Block__Group__2 )
             // InternalTextualScenario.g:2683:2: rule__Block__Group__1__Impl rule__Block__Group__2
             {
-            pushFollow(FOLLOW_18);
+            pushFollow(FOLLOW_19);
             rule__Block__Group__1__Impl();
 
             state._fsp--;
@@ -8652,7 +8663,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 int alt20=2;
                 int LA20_0 = input.LA(1);
 
-                if ( (LA20_0==RULE_STRING||(LA20_0>=11 && LA20_0<=21)||(LA20_0>=40 && LA20_0<=43)||(LA20_0>=46 && LA20_0<=47)) ) {
+                if ( (LA20_0==RULE_STRING||(LA20_0>=11 && LA20_0<=21)||LA20_0==40||(LA20_0>=42 && LA20_0<=43)||(LA20_0>=46 && LA20_0<=47)) ) {
                     alt20=1;
                 }
 
@@ -8872,7 +8883,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2763:1: ( rule__StateFragment__Group__1__Impl rule__StateFragment__Group__2 )
             // InternalTextualScenario.g:2764:2: rule__StateFragment__Group__1__Impl rule__StateFragment__Group__2
             {
-            pushFollow(FOLLOW_19);
+            pushFollow(FOLLOW_20);
             rule__StateFragment__Group__1__Impl();
 
             state._fsp--;
@@ -9207,7 +9218,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2871:1: ( rule__Reference__Group__1__Impl rule__Reference__Group__2 )
             // InternalTextualScenario.g:2872:2: rule__Reference__Group__1__Impl rule__Reference__Group__2
             {
-            pushFollow(FOLLOW_20);
+            pushFollow(FOLLOW_21);
             rule__Reference__Group__1__Impl();
 
             state._fsp--;
@@ -9420,7 +9431,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:2940:3: ( rule__Reference__TimelinesAssignment_3 )
             // InternalTextualScenario.g:2940:4: rule__Reference__TimelinesAssignment_3
             {
-            pushFollow(FOLLOW_15);
+            pushFollow(FOLLOW_16);
             rule__Reference__TimelinesAssignment_3();
 
             state._fsp--;
@@ -9445,7 +9456,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
                 if ( (LA21_0==RULE_STRING) ) {
                     int LA21_2 = input.LA(2);
 
-                    if ( (LA21_2==EOF||LA21_2==RULE_STRING||(LA21_2>=11 && LA21_2<=21)||LA21_2==27||(LA21_2>=40 && LA21_2<=43)||(LA21_2>=46 && LA21_2<=47)) ) {
+                    if ( (LA21_2==EOF||LA21_2==RULE_STRING||(LA21_2>=11 && LA21_2<=21)||LA21_2==27||LA21_2==40||(LA21_2>=42 && LA21_2<=43)||(LA21_2>=46 && LA21_2<=47)) ) {
                         alt21=1;
                     }
 
@@ -9457,7 +9468,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             	case 1 :
             	    // InternalTextualScenario.g:2945:4: rule__Reference__TimelinesAssignment_3
             	    {
-            	    pushFollow(FOLLOW_15);
+            	    pushFollow(FOLLOW_16);
             	    rule__Reference__TimelinesAssignment_3();
 
             	    state._fsp--;
@@ -11144,67 +11155,22 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__ArmTimerMessage__NameAssignment_4"
 
 
-    // $ANTLR start "rule__LostMessage__ArrowAssignment_0"
-    // InternalTextualScenario.g:3635:1: rule__LostMessage__ArrowAssignment_0 : ( ( '->o' ) ) ;
-    public final void rule__LostMessage__ArrowAssignment_0() throws RecognitionException {
+    // $ANTLR start "rule__LostMessage__SourceAssignment_0"
+    // InternalTextualScenario.g:3635:1: rule__LostMessage__SourceAssignment_0 : ( RULE_STRING ) ;
+    public final void rule__LostMessage__SourceAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalTextualScenario.g:3639:1: ( ( ( '->o' ) ) )
-            // InternalTextualScenario.g:3640:2: ( ( '->o' ) )
+            // InternalTextualScenario.g:3639:1: ( ( RULE_STRING ) )
+            // InternalTextualScenario.g:3640:2: ( RULE_STRING )
             {
-            // InternalTextualScenario.g:3640:2: ( ( '->o' ) )
-            // InternalTextualScenario.g:3641:3: ( '->o' )
+            // InternalTextualScenario.g:3640:2: ( RULE_STRING )
+            // InternalTextualScenario.g:3641:3: RULE_STRING
             {
-             before(grammarAccess.getLostMessageAccess().getArrowOKeyword_0_0()); 
-            // InternalTextualScenario.g:3642:3: ( '->o' )
-            // InternalTextualScenario.g:3643:4: '->o'
-            {
-             before(grammarAccess.getLostMessageAccess().getArrowOKeyword_0_0()); 
-            match(input,41,FOLLOW_2); 
-             after(grammarAccess.getLostMessageAccess().getArrowOKeyword_0_0()); 
-
-            }
-
-             after(grammarAccess.getLostMessageAccess().getArrowOKeyword_0_0()); 
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__LostMessage__ArrowAssignment_0"
-
-
-    // $ANTLR start "rule__LostMessage__ParticipantAssignment_1"
-    // InternalTextualScenario.g:3654:1: rule__LostMessage__ParticipantAssignment_1 : ( RULE_STRING ) ;
-    public final void rule__LostMessage__ParticipantAssignment_1() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-        	
-        try {
-            // InternalTextualScenario.g:3658:1: ( ( RULE_STRING ) )
-            // InternalTextualScenario.g:3659:2: ( RULE_STRING )
-            {
-            // InternalTextualScenario.g:3659:2: ( RULE_STRING )
-            // InternalTextualScenario.g:3660:3: RULE_STRING
-            {
-             before(grammarAccess.getLostMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0()); 
+             before(grammarAccess.getLostMessageAccess().getSourceSTRINGTerminalRuleCall_0_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
-             after(grammarAccess.getLostMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0()); 
+             after(grammarAccess.getLostMessageAccess().getSourceSTRINGTerminalRuleCall_0_0()); 
 
             }
 
@@ -11223,7 +11189,52 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
         }
         return ;
     }
-    // $ANTLR end "rule__LostMessage__ParticipantAssignment_1"
+    // $ANTLR end "rule__LostMessage__SourceAssignment_0"
+
+
+    // $ANTLR start "rule__LostMessage__ArrowAssignment_1"
+    // InternalTextualScenario.g:3650:1: rule__LostMessage__ArrowAssignment_1 : ( ( '->o' ) ) ;
+    public final void rule__LostMessage__ArrowAssignment_1() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalTextualScenario.g:3654:1: ( ( ( '->o' ) ) )
+            // InternalTextualScenario.g:3655:2: ( ( '->o' ) )
+            {
+            // InternalTextualScenario.g:3655:2: ( ( '->o' ) )
+            // InternalTextualScenario.g:3656:3: ( '->o' )
+            {
+             before(grammarAccess.getLostMessageAccess().getArrowOKeyword_1_0()); 
+            // InternalTextualScenario.g:3657:3: ( '->o' )
+            // InternalTextualScenario.g:3658:4: '->o'
+            {
+             before(grammarAccess.getLostMessageAccess().getArrowOKeyword_1_0()); 
+            match(input,41,FOLLOW_2); 
+             after(grammarAccess.getLostMessageAccess().getArrowOKeyword_1_0()); 
+
+            }
+
+             after(grammarAccess.getLostMessageAccess().getArrowOKeyword_1_0()); 
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__LostMessage__ArrowAssignment_1"
 
 
     // $ANTLR start "rule__LostMessage__DoubleDotAssignment_2"
@@ -11353,9 +11364,9 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__FoundMessage__ArrowAssignment_0"
 
 
-    // $ANTLR start "rule__FoundMessage__ParticipantAssignment_1"
-    // InternalTextualScenario.g:3722:1: rule__FoundMessage__ParticipantAssignment_1 : ( RULE_STRING ) ;
-    public final void rule__FoundMessage__ParticipantAssignment_1() throws RecognitionException {
+    // $ANTLR start "rule__FoundMessage__TargetAssignment_1"
+    // InternalTextualScenario.g:3722:1: rule__FoundMessage__TargetAssignment_1 : ( RULE_STRING ) ;
+    public final void rule__FoundMessage__TargetAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -11366,9 +11377,9 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
             // InternalTextualScenario.g:3727:2: ( RULE_STRING )
             // InternalTextualScenario.g:3728:3: RULE_STRING
             {
-             before(grammarAccess.getFoundMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0()); 
+             before(grammarAccess.getFoundMessageAccess().getTargetSTRINGTerminalRuleCall_1_0()); 
             match(input,RULE_STRING,FOLLOW_2); 
-             after(grammarAccess.getFoundMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0()); 
+             after(grammarAccess.getFoundMessageAccess().getTargetSTRINGTerminalRuleCall_1_0()); 
 
             }
 
@@ -11387,7 +11398,7 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
         }
         return ;
     }
-    // $ANTLR end "rule__FoundMessage__ParticipantAssignment_1"
+    // $ANTLR end "rule__FoundMessage__TargetAssignment_1"
 
 
     // $ANTLR start "rule__FoundMessage__DoubleDotAssignment_2"
@@ -12393,9 +12404,9 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     public static final BitSet FOLLOW_1 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_2 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_3 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_4 = new BitSet(new long[]{0x0000CF03F93FF810L});
+    public static final BitSet FOLLOW_4 = new BitSet(new long[]{0x0000CD03F93FF810L});
     public static final BitSet FOLLOW_5 = new BitSet(new long[]{0x00000003F1000002L});
-    public static final BitSet FOLLOW_6 = new BitSet(new long[]{0x0000CF00003FF812L});
+    public static final BitSet FOLLOW_6 = new BitSet(new long[]{0x0000CD00003FF812L});
     public static final BitSet FOLLOW_7 = new BitSet(new long[]{0x0000000000000010L});
     public static final BitSet FOLLOW_8 = new BitSet(new long[]{0x0000000400000000L});
     public static final BitSet FOLLOW_9 = new BitSet(new long[]{0x0000003800000000L});
@@ -12403,12 +12414,13 @@ public class InternalTextualScenarioParser extends AbstractInternalContentAssist
     public static final BitSet FOLLOW_11 = new BitSet(new long[]{0x0000002000000000L});
     public static final BitSet FOLLOW_12 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_13 = new BitSet(new long[]{0x0000002800000000L});
-    public static final BitSet FOLLOW_14 = new BitSet(new long[]{0x0000100000000010L});
-    public static final BitSet FOLLOW_15 = new BitSet(new long[]{0x0000000000000012L});
-    public static final BitSet FOLLOW_16 = new BitSet(new long[]{0x0000200004000010L});
-    public static final BitSet FOLLOW_17 = new BitSet(new long[]{0x0000200004000012L});
-    public static final BitSet FOLLOW_18 = new BitSet(new long[]{0x0000CF00083FF810L});
-    public static final BitSet FOLLOW_19 = new BitSet(new long[]{0x0000000001C00000L});
-    public static final BitSet FOLLOW_20 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_14 = new BitSet(new long[]{0x0000020000000000L});
+    public static final BitSet FOLLOW_15 = new BitSet(new long[]{0x0000100000000010L});
+    public static final BitSet FOLLOW_16 = new BitSet(new long[]{0x0000000000000012L});
+    public static final BitSet FOLLOW_17 = new BitSet(new long[]{0x0000200004000010L});
+    public static final BitSet FOLLOW_18 = new BitSet(new long[]{0x0000200004000012L});
+    public static final BitSet FOLLOW_19 = new BitSet(new long[]{0x0000CD00083FF810L});
+    public static final BitSet FOLLOW_20 = new BitSet(new long[]{0x0000000001C00000L});
+    public static final BitSet FOLLOW_21 = new BitSet(new long[]{0x0000100000000000L});
 
 }

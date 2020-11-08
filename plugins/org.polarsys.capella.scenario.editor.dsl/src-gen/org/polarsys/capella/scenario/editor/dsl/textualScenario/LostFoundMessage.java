@@ -26,7 +26,6 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage#getArrow <em>Arrow</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage#getParticipant <em>Participant</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage#getDoubleDot <em>Double Dot</em>}</li>
  * </ul>
  *
@@ -57,28 +56,6 @@ public interface LostFoundMessage extends Message
    * @generated
    */
   void setArrow(String value);
-
-  /**
-   * Returns the value of the '<em><b>Participant</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Participant</em>' attribute.
-   * @see #setParticipant(String)
-   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getLostFoundMessage_Participant()
-   * @model
-   * @generated
-   */
-  String getParticipant();
-
-  /**
-   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage#getParticipant <em>Participant</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Participant</em>' attribute.
-   * @see #getParticipant()
-   * @generated
-   */
-  void setParticipant(String value);
 
   /**
    * Returns the value of the '<em><b>Double Dot</b></em>' attribute.

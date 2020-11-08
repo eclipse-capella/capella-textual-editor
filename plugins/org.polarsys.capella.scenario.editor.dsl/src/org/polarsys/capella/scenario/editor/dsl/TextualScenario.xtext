@@ -92,11 +92,11 @@ LostFoundMessage:
 ;
 
 LostMessage: 
-	arrow = '->o' participant=STRING doubleDot = ':' name=STRING
+	source=STRING arrow = '->o' doubleDot = ':' name=STRING
 ;
 
 FoundMessage:
-	arrow = 'o->' participant=STRING doubleDot = ':' name=STRING
+	arrow = 'o->' target=STRING doubleDot = ':' name=STRING
 ;
 
 ParticipantDeactivation:
