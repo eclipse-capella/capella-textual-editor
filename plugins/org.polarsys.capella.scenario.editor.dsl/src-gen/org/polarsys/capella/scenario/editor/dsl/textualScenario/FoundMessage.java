@@ -21,6 +21,12 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  * A representation of the model object '<em><b>Found Message</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getTarget <em>Target</em>}</li>
+ * </ul>
  *
  * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getFoundMessage()
  * @model
@@ -28,4 +34,26 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  */
 public interface FoundMessage extends LostFoundMessage
 {
+  /**
+   * Returns the value of the '<em><b>Target</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Target</em>' attribute.
+   * @see #setTarget(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getFoundMessage_Target()
+   * @model
+   * @generated
+   */
+  String getTarget();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getTarget <em>Target</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Target</em>' attribute.
+   * @see #getTarget()
+   * @generated
+   */
+  void setTarget(String value);
+
 } // FoundMessage

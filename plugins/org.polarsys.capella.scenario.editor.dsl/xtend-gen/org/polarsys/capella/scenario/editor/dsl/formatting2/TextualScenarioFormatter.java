@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -26,6 +14,7 @@ package org.polarsys.capella.scenario.editor.dsl.formatting2;
 
 import com.google.inject.Inject;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.formatting2.AbstractFormatter2;
@@ -134,10 +123,13 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
   }
   
   protected void _format(final Reference reference, @Extension final IFormattableDocument document) {
+    final List<ISemanticRegion> features = this.textRegionExtensions.regionFor(reference).features(TextualScenarioPackage.Literals.REFERENCE__TIMELINES);
+    int _size = features.size();
+    int _minus = (_size - 1);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
-    document.append(this.textRegionExtensions.regionFor(reference).feature(TextualScenarioPackage.Literals.REFERENCE__TIMELINES), _function);
+    document.append(features.get(_minus), _function);
   }
   
   public void format(final Object fragment, final IFormattableDocument document) {

@@ -33,7 +33,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.LostFoundMessageImpl#getArrow <em>Arrow</em>}</li>
- *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.LostFoundMessageImpl#getParticipant <em>Participant</em>}</li>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.LostFoundMessageImpl#getDoubleDot <em>Double Dot</em>}</li>
  * </ul>
  *
@@ -60,26 +59,6 @@ public class LostFoundMessageImpl extends MessageImpl implements LostFoundMessag
    * @ordered
    */
   protected String arrow = ARROW_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getParticipant() <em>Participant</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getParticipant()
-   * @generated
-   * @ordered
-   */
-  protected static final String PARTICIPANT_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getParticipant() <em>Participant</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getParticipant()
-   * @generated
-   * @ordered
-   */
-  protected String participant = PARTICIPANT_EDEFAULT;
 
   /**
    * The default value of the '{@link #getDoubleDot() <em>Double Dot</em>}' attribute.
@@ -153,31 +132,6 @@ public class LostFoundMessageImpl extends MessageImpl implements LostFoundMessag
    * @generated
    */
   @Override
-  public String getParticipant()
-  {
-    return participant;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setParticipant(String newParticipant)
-  {
-    String oldParticipant = participant;
-    participant = newParticipant;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, TextualScenarioPackage.LOST_FOUND_MESSAGE__PARTICIPANT, oldParticipant, participant));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public String getDoubleDot()
   {
     return doubleDot;
@@ -209,8 +163,6 @@ public class LostFoundMessageImpl extends MessageImpl implements LostFoundMessag
     {
       case TextualScenarioPackage.LOST_FOUND_MESSAGE__ARROW:
         return getArrow();
-      case TextualScenarioPackage.LOST_FOUND_MESSAGE__PARTICIPANT:
-        return getParticipant();
       case TextualScenarioPackage.LOST_FOUND_MESSAGE__DOUBLE_DOT:
         return getDoubleDot();
     }
@@ -229,9 +181,6 @@ public class LostFoundMessageImpl extends MessageImpl implements LostFoundMessag
     {
       case TextualScenarioPackage.LOST_FOUND_MESSAGE__ARROW:
         setArrow((String)newValue);
-        return;
-      case TextualScenarioPackage.LOST_FOUND_MESSAGE__PARTICIPANT:
-        setParticipant((String)newValue);
         return;
       case TextualScenarioPackage.LOST_FOUND_MESSAGE__DOUBLE_DOT:
         setDoubleDot((String)newValue);
@@ -253,9 +202,6 @@ public class LostFoundMessageImpl extends MessageImpl implements LostFoundMessag
       case TextualScenarioPackage.LOST_FOUND_MESSAGE__ARROW:
         setArrow(ARROW_EDEFAULT);
         return;
-      case TextualScenarioPackage.LOST_FOUND_MESSAGE__PARTICIPANT:
-        setParticipant(PARTICIPANT_EDEFAULT);
-        return;
       case TextualScenarioPackage.LOST_FOUND_MESSAGE__DOUBLE_DOT:
         setDoubleDot(DOUBLE_DOT_EDEFAULT);
         return;
@@ -275,8 +221,6 @@ public class LostFoundMessageImpl extends MessageImpl implements LostFoundMessag
     {
       case TextualScenarioPackage.LOST_FOUND_MESSAGE__ARROW:
         return ARROW_EDEFAULT == null ? arrow != null : !ARROW_EDEFAULT.equals(arrow);
-      case TextualScenarioPackage.LOST_FOUND_MESSAGE__PARTICIPANT:
-        return PARTICIPANT_EDEFAULT == null ? participant != null : !PARTICIPANT_EDEFAULT.equals(participant);
       case TextualScenarioPackage.LOST_FOUND_MESSAGE__DOUBLE_DOT:
         return DOUBLE_DOT_EDEFAULT == null ? doubleDot != null : !DOUBLE_DOT_EDEFAULT.equals(doubleDot);
     }
@@ -296,8 +240,6 @@ public class LostFoundMessageImpl extends MessageImpl implements LostFoundMessag
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (arrow: ");
     result.append(arrow);
-    result.append(", participant: ");
-    result.append(participant);
     result.append(", doubleDot: ");
     result.append(doubleDot);
     result.append(')');

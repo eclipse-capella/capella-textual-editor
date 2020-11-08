@@ -78,6 +78,7 @@ class TextualScenarioFormatter extends AbstractFormatter2 {
 	}
 	
 	def dispatch void format(Reference reference, extension IFormattableDocument document) {
-		reference.regionFor.feature(TextualScenarioPackage.Literals.REFERENCE__TIMELINES).append[newLine]
-}
+		val features = reference.regionFor.features(TextualScenarioPackage.Literals.REFERENCE__TIMELINES)   
+        features.get(features.size - 1).append[newLine]
+	}
 }

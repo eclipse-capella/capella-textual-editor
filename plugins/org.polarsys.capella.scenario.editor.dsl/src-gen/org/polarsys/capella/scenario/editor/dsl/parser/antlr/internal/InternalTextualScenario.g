@@ -1276,23 +1276,9 @@ ruleLostMessage returns [EObject current=null]
 	(
 		(
 			(
-				lv_arrow_0_0='->o'
+				lv_source_0_0=RULE_STRING
 				{
-					newLeafNode(lv_arrow_0_0, grammarAccess.getLostMessageAccess().getArrowOKeyword_0_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getLostMessageRule());
-					}
-					setWithLastConsumed($current, "arrow", lv_arrow_0_0, "->o");
-				}
-			)
-		)
-		(
-			(
-				lv_participant_1_0=RULE_STRING
-				{
-					newLeafNode(lv_participant_1_0, grammarAccess.getLostMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0());
+					newLeafNode(lv_source_0_0, grammarAccess.getLostMessageAccess().getSourceSTRINGTerminalRuleCall_0_0());
 				}
 				{
 					if ($current==null) {
@@ -1300,9 +1286,23 @@ ruleLostMessage returns [EObject current=null]
 					}
 					setWithLastConsumed(
 						$current,
-						"participant",
-						lv_participant_1_0,
+						"source",
+						lv_source_0_0,
 						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		(
+			(
+				lv_arrow_1_0='->o'
+				{
+					newLeafNode(lv_arrow_1_0, grammarAccess.getLostMessageAccess().getArrowOKeyword_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getLostMessageRule());
+					}
+					setWithLastConsumed($current, "arrow", lv_arrow_1_0, "->o");
 				}
 			)
 		)
@@ -1373,9 +1373,9 @@ ruleFoundMessage returns [EObject current=null]
 		)
 		(
 			(
-				lv_participant_1_0=RULE_STRING
+				lv_target_1_0=RULE_STRING
 				{
-					newLeafNode(lv_participant_1_0, grammarAccess.getFoundMessageAccess().getParticipantSTRINGTerminalRuleCall_1_0());
+					newLeafNode(lv_target_1_0, grammarAccess.getFoundMessageAccess().getTargetSTRINGTerminalRuleCall_1_0());
 				}
 				{
 					if ($current==null) {
@@ -1383,8 +1383,8 @@ ruleFoundMessage returns [EObject current=null]
 					}
 					setWithLastConsumed(
 						$current,
-						"participant",
-						lv_participant_1_0,
+						"target",
+						lv_target_1_0,
 						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)

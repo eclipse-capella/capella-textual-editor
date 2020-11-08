@@ -49,11 +49,14 @@
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//LostFoundMessage">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//LostFoundMessage/arrow"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//LostFoundMessage/participant"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//LostFoundMessage/doubleDot"/>
     </genClasses>
-    <genClasses ecoreClass="TextualScenario.ecore#//LostMessage"/>
-    <genClasses ecoreClass="TextualScenario.ecore#//FoundMessage"/>
+    <genClasses ecoreClass="TextualScenario.ecore#//LostMessage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//LostMessage/source"/>
+    </genClasses>
+    <genClasses ecoreClass="TextualScenario.ecore#//FoundMessage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//FoundMessage/target"/>
+    </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//ParticipantDeactivation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ParticipantDeactivation/keyword"/>
     </genClasses>

@@ -10,6 +10,5 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.polarsys.capella.test.diagram.common.ju,
  org.polarsys.capella.scenario.editor.embeddededitor,
  org.eclipse.xtext.ui,
- org.polarsys.capella.scenario.editor,
- org.polarsys.capella.scenario.editor.dsl
+ org.polarsys.capella.scenario.editor
 Bundle-Activator: org.eclipse.core.internal.content.Activator

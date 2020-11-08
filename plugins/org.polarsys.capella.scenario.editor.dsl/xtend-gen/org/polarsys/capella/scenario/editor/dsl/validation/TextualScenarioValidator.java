@@ -34,7 +34,9 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CreateMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
@@ -381,6 +383,38 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
+  @Check
+  public void checkLostMessage(final LostMessage message) {
+    boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
+    boolean _not = (!_isESScenario);
+    if (_not) {
+      this.error("Lost message can not be used in this diagram!", 
+        TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW);
+    }
+    boolean _contains = TextualScenarioHelper.participantsDefinedBeforeNames(message).contains(message.getSource());
+    boolean _not_1 = (!_contains);
+    if (_not_1) {
+      this.error("Timeline not defined in text editor!", 
+        TextualScenarioPackage.Literals.LOST_MESSAGE__SOURCE);
+    }
+  }
+  
+  @Check
+  public void checkFoundMessage(final FoundMessage message) {
+    boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
+    boolean _not = (!_isESScenario);
+    if (_not) {
+      this.error("Found message can not be used in this diagram!", 
+        TextualScenarioPackage.Literals.LOST_FOUND_MESSAGE__ARROW);
+    }
+    boolean _contains = TextualScenarioHelper.participantsDefinedBeforeNames(message).contains(message.getTarget());
+    boolean _not_1 = (!_contains);
+    if (_not_1) {
+      this.error("Timeline not defined in text editor!", 
+        TextualScenarioPackage.Literals.FOUND_MESSAGE__TARGET);
+    }
+  }
+  
   public void checkSameSourceAndTarget(final SequenceMessageType message) {
     boolean _equals = message.getSource().equals(message.getTarget());
     if (_equals) {
@@ -455,6 +489,44 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       if ((model instanceof Model)) {
         _xifexpression = this.checkElementAfterDelete(((Model) model), armTimer, armTimer.getParticipant(), 
           TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT, 0);
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+  
+  /**
+   * check if a participant involved in a lost message was used after a delete message was already defined
+   * on the previous lines on the same timeline
+   */
+  @Check
+  public boolean checkParticipantUsedAfterLostMessage(final LostMessage message) {
+    boolean _xblockexpression = false;
+    {
+      EObject model = TextualScenarioHelper.getModelContainer(message);
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkElementAfterDelete(((Model) model), message, message.getSource(), 
+          TextualScenarioPackage.Literals.LOST_MESSAGE__SOURCE, 0);
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+  
+  /**
+   * check if a participant involved in a lost message was used after a delete message was already defined
+   * on the previous lines on the same timeline
+   */
+  @Check
+  public boolean checkParticipantUsedAfterFoundMessage(final FoundMessage message) {
+    boolean _xblockexpression = false;
+    {
+      EObject model = TextualScenarioHelper.getModelContainer(message);
+      boolean _xifexpression = false;
+      if ((model instanceof Model)) {
+        _xifexpression = this.checkElementAfterDelete(((Model) model), message, message.getTarget(), 
+          TextualScenarioPackage.Literals.FOUND_MESSAGE__TARGET, 0);
       }
       _xblockexpression = _xifexpression;
     }
@@ -562,6 +634,18 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
             return false;
           }
         }
+        if ((element instanceof LostMessage)) {
+          boolean _equals_2 = ((LostMessage) element).getSource().equals(target);
+          if (_equals_2) {
+            return false;
+          }
+        }
+        if ((element instanceof FoundMessage)) {
+          boolean _equals_3 = ((FoundMessage) element).getTarget().equals(target);
+          if (_equals_3) {
+            return false;
+          }
+        }
         if ((element instanceof CombinedFragment)) {
           boolean _contains = ((CombinedFragment) element).getTimelines().contains(target);
           if (_contains) {
@@ -575,8 +659,8 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
           }
         }
         if ((element instanceof StateFragment)) {
-          boolean _equals_2 = ((StateFragment) element).getTimeline().equals(target);
-          if (_equals_2) {
+          boolean _equals_4 = ((StateFragment) element).getTimeline().equals(target);
+          if (_equals_4) {
             return false;
           }
         }
