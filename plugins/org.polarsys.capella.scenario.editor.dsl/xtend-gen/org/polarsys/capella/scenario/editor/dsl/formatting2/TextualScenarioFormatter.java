@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -26,6 +14,7 @@ package org.polarsys.capella.scenario.editor.dsl.formatting2;
 
 import com.google.inject.Inject;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.formatting2.AbstractFormatter2;
@@ -43,6 +32,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
 
@@ -132,6 +122,16 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     document.append(this.textRegionExtensions.regionFor(stateFragment).feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME), _function);
   }
   
+  protected void _format(final Reference reference, @Extension final IFormattableDocument document) {
+    final List<ISemanticRegion> features = this.textRegionExtensions.regionFor(reference).features(TextualScenarioPackage.Literals.REFERENCE__TIMELINES);
+    int _size = features.size();
+    int _minus = (_size - 1);
+    final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
+      it.newLine();
+    };
+    document.append(features.get(_minus), _function);
+  }
+  
   public void format(final Object fragment, final IFormattableDocument document) {
     if (fragment instanceof XtextResource) {
       _format((XtextResource)fragment, document);
@@ -141,6 +141,9 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       return;
     } else if (fragment instanceof Message) {
       _format((Message)fragment, document);
+      return;
+    } else if (fragment instanceof Reference) {
+      _format((Reference)fragment, document);
       return;
     } else if (fragment instanceof StateFragment) {
       _format((StateFragment)fragment, document);

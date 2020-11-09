@@ -158,12 +158,13 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cMessageParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cCombinedFragmentParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cStateFragmentParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cReferenceParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//Element:
-		//	Message | CombinedFragment | StateFragment;
+		//	Message | CombinedFragment | StateFragment | Reference;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//Message | CombinedFragment | StateFragment
+		//Message | CombinedFragment | StateFragment | Reference
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//Message
@@ -174,6 +175,9 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//StateFragment
 		public RuleCall getStateFragmentParserRuleCall_2() { return cStateFragmentParserRuleCall_2; }
+		
+		//Reference
+		public RuleCall getReferenceParserRuleCall_3() { return cReferenceParserRuleCall_3; }
 	}
 	public class ActorElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.Actor");
@@ -370,12 +374,13 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cSequenceMessageTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cArmTimerMessageParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cParticipantDeactivationParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cLostFoundMessageParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//Message:
-		//	SequenceMessageType | ArmTimerMessage | ParticipantDeactivation;
+		//	SequenceMessageType | ArmTimerMessage | ParticipantDeactivation | LostFoundMessage;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//SequenceMessageType | ArmTimerMessage | ParticipantDeactivation
+		//SequenceMessageType | ArmTimerMessage | ParticipantDeactivation | LostFoundMessage
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//SequenceMessageType
@@ -386,6 +391,9 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//ParticipantDeactivation
 		public RuleCall getParticipantDeactivationParserRuleCall_2() { return cParticipantDeactivationParserRuleCall_2; }
+		
+		//LostFoundMessage
+		public RuleCall getLostFoundMessageParserRuleCall_3() { return cLostFoundMessageParserRuleCall_3; }
 	}
 	public class SequenceMessageTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.SequenceMessageType");
@@ -630,6 +638,111 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getNameSTRINGTerminalRuleCall_4_0() { return cNameSTRINGTerminalRuleCall_4_0; }
 	}
+	public class LostFoundMessageElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.LostFoundMessage");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cLostMessageParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cFoundMessageParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//LostFoundMessage:
+		//	LostMessage | FoundMessage;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//LostMessage | FoundMessage
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//LostMessage
+		public RuleCall getLostMessageParserRuleCall_0() { return cLostMessageParserRuleCall_0; }
+		
+		//FoundMessage
+		public RuleCall getFoundMessageParserRuleCall_1() { return cFoundMessageParserRuleCall_1; }
+	}
+	public class LostMessageElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.LostMessage");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cSourceAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cSourceSTRINGTerminalRuleCall_0_0 = (RuleCall)cSourceAssignment_0.eContents().get(0);
+		private final Assignment cArrowAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cArrowOKeyword_1_0 = (Keyword)cArrowAssignment_1.eContents().get(0);
+		private final Assignment cDoubleDotAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cDoubleDotColonKeyword_2_0 = (Keyword)cDoubleDotAssignment_2.eContents().get(0);
+		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cNameSTRINGTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
+		
+		//LostMessage:
+		//	source=STRING arrow='->o' doubleDot=':' name=STRING;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//source=STRING arrow='->o' doubleDot=':' name=STRING
+		public Group getGroup() { return cGroup; }
+		
+		//source=STRING
+		public Assignment getSourceAssignment_0() { return cSourceAssignment_0; }
+		
+		//STRING
+		public RuleCall getSourceSTRINGTerminalRuleCall_0_0() { return cSourceSTRINGTerminalRuleCall_0_0; }
+		
+		//arrow='->o'
+		public Assignment getArrowAssignment_1() { return cArrowAssignment_1; }
+		
+		//'->o'
+		public Keyword getArrowOKeyword_1_0() { return cArrowOKeyword_1_0; }
+		
+		//doubleDot=':'
+		public Assignment getDoubleDotAssignment_2() { return cDoubleDotAssignment_2; }
+		
+		//':'
+		public Keyword getDoubleDotColonKeyword_2_0() { return cDoubleDotColonKeyword_2_0; }
+		
+		//name=STRING
+		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
+		
+		//STRING
+		public RuleCall getNameSTRINGTerminalRuleCall_3_0() { return cNameSTRINGTerminalRuleCall_3_0; }
+	}
+	public class FoundMessageElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.FoundMessage");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cArrowAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final Keyword cArrowOKeyword_0_0 = (Keyword)cArrowAssignment_0.eContents().get(0);
+		private final Assignment cTargetAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cTargetSTRINGTerminalRuleCall_1_0 = (RuleCall)cTargetAssignment_1.eContents().get(0);
+		private final Assignment cDoubleDotAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cDoubleDotColonKeyword_2_0 = (Keyword)cDoubleDotAssignment_2.eContents().get(0);
+		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cNameSTRINGTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
+		
+		//FoundMessage:
+		//	arrow='o->' target=STRING doubleDot=':' name=STRING;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//arrow='o->' target=STRING doubleDot=':' name=STRING
+		public Group getGroup() { return cGroup; }
+		
+		//arrow='o->'
+		public Assignment getArrowAssignment_0() { return cArrowAssignment_0; }
+		
+		//'o->'
+		public Keyword getArrowOKeyword_0_0() { return cArrowOKeyword_0_0; }
+		
+		//target=STRING
+		public Assignment getTargetAssignment_1() { return cTargetAssignment_1; }
+		
+		//STRING
+		public RuleCall getTargetSTRINGTerminalRuleCall_1_0() { return cTargetSTRINGTerminalRuleCall_1_0; }
+		
+		//doubleDot=':'
+		public Assignment getDoubleDotAssignment_2() { return cDoubleDotAssignment_2; }
+		
+		//':'
+		public Keyword getDoubleDotColonKeyword_2_0() { return cDoubleDotColonKeyword_2_0; }
+		
+		//name=STRING
+		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
+		
+		//STRING
+		public RuleCall getNameSTRINGTerminalRuleCall_3_0() { return cNameSTRINGTerminalRuleCall_3_0; }
+	}
 	public class ParticipantDeactivationElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.ParticipantDeactivation");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -686,11 +799,11 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//CombinedFragment:
 		//	keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
-		//	expression=STRING over='over' timelines+=STRING+ block=Block operands+=Operand*;
+		//	expression=STRING? over='over' timelines+=STRING+ block=Block operands+=Operand*;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
-		//expression=STRING over='over' timelines+=STRING+ block=Block operands+=Operand*
+		//expression=STRING? over='over' timelines+=STRING+ block=Block operands+=Operand*
 		public Group getGroup() { return cGroup; }
 		
 		//keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
@@ -732,7 +845,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//'unset'
 		public Keyword getKeywordUnsetKeyword_0_0_10() { return cKeywordUnsetKeyword_0_0_10; }
 		
-		//expression=STRING
+		//expression=STRING?
 		public Assignment getExpressionAssignment_1() { return cExpressionAssignment_1; }
 		
 		//STRING
@@ -773,10 +886,10 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBlockBlockParserRuleCall_2_0 = (RuleCall)cBlockAssignment_2.eContents().get(0);
 		
 		//Operand:
-		//	keyword='else'? expression=STRING block=Block;
+		//	keyword='else'? expression=STRING? block=Block;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//keyword='else'? expression=STRING block=Block
+		//keyword='else'? expression=STRING? block=Block
 		public Group getGroup() { return cGroup; }
 		
 		//keyword='else'?
@@ -785,7 +898,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//'else'
 		public Keyword getKeywordElseKeyword_0_0() { return cKeywordElseKeyword_0_0; }
 		
-		//expression=STRING
+		//expression=STRING?
 		public Assignment getExpressionAssignment_1() { return cExpressionAssignment_1; }
 		
 		//STRING
@@ -887,6 +1000,49 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getNameSTRINGTerminalRuleCall_3_0() { return cNameSTRINGTerminalRuleCall_3_0; }
 	}
+	public class ReferenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.polarsys.capella.scenario.editor.dsl.TextualScenario.Reference");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cKeywordAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final Keyword cKeywordRefKeyword_0_0 = (Keyword)cKeywordAssignment_0.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameSTRINGTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cOverAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cOverOverKeyword_2_0 = (Keyword)cOverAssignment_2.eContents().get(0);
+		private final Assignment cTimelinesAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cTimelinesSTRINGTerminalRuleCall_3_0 = (RuleCall)cTimelinesAssignment_3.eContents().get(0);
+		
+		//Reference:
+		//	keyword='ref' name=STRING over='over' timelines+=STRING+;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//keyword='ref' name=STRING over='over' timelines+=STRING+
+		public Group getGroup() { return cGroup; }
+		
+		//keyword='ref'
+		public Assignment getKeywordAssignment_0() { return cKeywordAssignment_0; }
+		
+		//'ref'
+		public Keyword getKeywordRefKeyword_0_0() { return cKeywordRefKeyword_0_0; }
+		
+		//name=STRING
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//STRING
+		public RuleCall getNameSTRINGTerminalRuleCall_1_0() { return cNameSTRINGTerminalRuleCall_1_0; }
+		
+		//over='over'
+		public Assignment getOverAssignment_2() { return cOverAssignment_2; }
+		
+		//'over'
+		public Keyword getOverOverKeyword_2_0() { return cOverOverKeyword_2_0; }
+		
+		//timelines+=STRING+
+		public Assignment getTimelinesAssignment_3() { return cTimelinesAssignment_3; }
+		
+		//STRING
+		public RuleCall getTimelinesSTRINGTerminalRuleCall_3_0() { return cTimelinesSTRINGTerminalRuleCall_3_0; }
+	}
 	
 	
 	private final ModelElements pModel;
@@ -907,11 +1063,15 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	private final CreateMessageElements pCreateMessage;
 	private final DeleteMessageElements pDeleteMessage;
 	private final ArmTimerMessageElements pArmTimerMessage;
+	private final LostFoundMessageElements pLostFoundMessage;
+	private final LostMessageElements pLostMessage;
+	private final FoundMessageElements pFoundMessage;
 	private final ParticipantDeactivationElements pParticipantDeactivation;
 	private final CombinedFragmentElements pCombinedFragment;
 	private final OperandElements pOperand;
 	private final BlockElements pBlock;
 	private final StateFragmentElements pStateFragment;
+	private final ReferenceElements pReference;
 	
 	private final Grammar grammar;
 	
@@ -940,11 +1100,15 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		this.pCreateMessage = new CreateMessageElements();
 		this.pDeleteMessage = new DeleteMessageElements();
 		this.pArmTimerMessage = new ArmTimerMessageElements();
+		this.pLostFoundMessage = new LostFoundMessageElements();
+		this.pLostMessage = new LostMessageElements();
+		this.pFoundMessage = new FoundMessageElements();
 		this.pParticipantDeactivation = new ParticipantDeactivationElements();
 		this.pCombinedFragment = new CombinedFragmentElements();
 		this.pOperand = new OperandElements();
 		this.pBlock = new BlockElements();
 		this.pStateFragment = new StateFragmentElements();
+		this.pReference = new ReferenceElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -1017,7 +1181,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Element:
-	//	Message | CombinedFragment | StateFragment;
+	//	Message | CombinedFragment | StateFragment | Reference;
 	public ElementElements getElementAccess() {
 		return pElement;
 	}
@@ -1097,7 +1261,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Message:
-	//	SequenceMessageType | ArmTimerMessage | ParticipantDeactivation;
+	//	SequenceMessageType | ArmTimerMessage | ParticipantDeactivation | LostFoundMessage;
 	public MessageElements getMessageAccess() {
 		return pMessage;
 	}
@@ -1156,6 +1320,36 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 		return getArmTimerMessageAccess().getRule();
 	}
 	
+	//LostFoundMessage:
+	//	LostMessage | FoundMessage;
+	public LostFoundMessageElements getLostFoundMessageAccess() {
+		return pLostFoundMessage;
+	}
+	
+	public ParserRule getLostFoundMessageRule() {
+		return getLostFoundMessageAccess().getRule();
+	}
+	
+	//LostMessage:
+	//	source=STRING arrow='->o' doubleDot=':' name=STRING;
+	public LostMessageElements getLostMessageAccess() {
+		return pLostMessage;
+	}
+	
+	public ParserRule getLostMessageRule() {
+		return getLostMessageAccess().getRule();
+	}
+	
+	//FoundMessage:
+	//	arrow='o->' target=STRING doubleDot=':' name=STRING;
+	public FoundMessageElements getFoundMessageAccess() {
+		return pFoundMessage;
+	}
+	
+	public ParserRule getFoundMessageRule() {
+		return getFoundMessageAccess().getRule();
+	}
+	
 	//ParticipantDeactivation:
 	//	keyword='deactivate' name=STRING;
 	public ParticipantDeactivationElements getParticipantDeactivationAccess() {
@@ -1168,7 +1362,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//CombinedFragment:
 	//	keyword=('alt' | 'loop' | 'par' | 'assert' | 'critical' | 'ignore' | 'neg' | 'opt' | 'seq' | 'strict' | 'unset')
-	//	expression=STRING over='over' timelines+=STRING+ block=Block operands+=Operand*;
+	//	expression=STRING? over='over' timelines+=STRING+ block=Block operands+=Operand*;
 	public CombinedFragmentElements getCombinedFragmentAccess() {
 		return pCombinedFragment;
 	}
@@ -1178,7 +1372,7 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Operand:
-	//	keyword='else'? expression=STRING block=Block;
+	//	keyword='else'? expression=STRING? block=Block;
 	public OperandElements getOperandAccess() {
 		return pOperand;
 	}
@@ -1205,6 +1399,16 @@ public class TextualScenarioGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getStateFragmentRule() {
 		return getStateFragmentAccess().getRule();
+	}
+	
+	//Reference:
+	//	keyword='ref' name=STRING over='over' timelines+=STRING+;
+	public ReferenceElements getReferenceAccess() {
+		return pReference;
+	}
+	
+	public ParserRule getReferenceRule() {
+		return getReferenceAccess().getRule();
 	}
 	
 	//terminal ID:

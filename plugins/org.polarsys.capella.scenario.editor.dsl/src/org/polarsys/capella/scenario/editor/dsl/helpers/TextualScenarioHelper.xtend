@@ -24,7 +24,6 @@ import org.polarsys.capella.core.data.fa.ComponentExchange
 import org.polarsys.capella.core.data.fa.FunctionalExchange
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType
@@ -104,12 +103,8 @@ class TextualScenarioHelper {
 		return null
 	}
 	
-	def static participantsDefinedBefore(EObject element, Model rootModel) {
-		if(element instanceof Model)
-			return (element as Model).participants
-		else {
-			return rootModel.participants
-		}	
+	def static participantsDefinedBefore(Model rootModel) {
+		return rootModel.participants
 	}
 	
 	def static participantsDefinedBeforeNames(EObject element) {
@@ -117,7 +112,7 @@ class TextualScenarioHelper {
 		var container = getModelContainer(element)
 		if (container instanceof Model) {
 			var model = container as Model
-			var participants = participantsDefinedBefore(element, model)
+			var participants = participantsDefinedBefore(model)
 			for (participant : participants) {
 				participantsNames.add(participant.name)
 			}

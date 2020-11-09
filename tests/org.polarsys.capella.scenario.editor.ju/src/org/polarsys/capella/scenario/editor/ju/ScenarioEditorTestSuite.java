@@ -19,8 +19,13 @@ import java.util.List;
 import org.polarsys.capella.scenario.editor.ju.testcases.ArmTimerMessagesFromXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.CreateDeleteMessagesFromXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.DeleteCombinedFragmentFromXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.DeleteOperandsXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.DeleteStateFragmentFromXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.DuplicatedCombinedFragmentsAndOperandsXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.DuplicatedMessagesFromXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.ExchangesAndInstanceRolesXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.ReloadDataFromDiagramToTextTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.RolesXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.SaveDataFromXtextToDiagramTestCase;
 import org.polarsys.capella.test.framework.api.BasicTestArtefact;
 import org.polarsys.capella.test.framework.api.BasicTestSuite;
@@ -53,6 +58,11 @@ public class ScenarioEditorTestSuite extends BasicTestSuite {
     tests.add(new CreateDeleteMessagesFromXtextToDiagramTestCase());
     tests.add(new DeleteCombinedFragmentFromXtextToDiagramTestCase());
     tests.add(new DeleteStateFragmentFromXtextToDiagramTestCase());
+    tests.add(new DuplicatedMessagesFromXtextToDiagramTestCase());
+    tests.add(new DuplicatedCombinedFragmentsAndOperandsXtextToDiagramTestCase());
+    tests.add(new DeleteOperandsXtextToDiagramTestCase());
+    tests.add(new RolesXtextToDiagramTestCase());
+    tests.add(new ExchangesAndInstanceRolesXtextToDiagramTestCase());
     return tests;
   }
 }

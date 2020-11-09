@@ -32,7 +32,7 @@ GenericFunction:
 ;
 
 Element:
-	Message | CombinedFragment | StateFragment
+	Message | CombinedFragment | StateFragment | Reference
 ;
 
 Actor:
@@ -64,7 +64,7 @@ Role:
 ;
 
 Message:
-    SequenceMessageType | ArmTimerMessage | ParticipantDeactivation
+    SequenceMessageType | ArmTimerMessage | ParticipantDeactivation | LostFoundMessage
 ;
 
 SequenceMessageType:
@@ -87,17 +87,29 @@ ArmTimerMessage:
 	arrow = "->>" participant=STRING (execution = 'withExecution')? doubleDot = ':' name=STRING
 ;
 
+LostFoundMessage:
+	LostMessage | FoundMessage
+;
+
+LostMessage: 
+	source=STRING arrow = '->o' doubleDot = ':' name=STRING
+;
+
+FoundMessage:
+	arrow = 'o->' target=STRING doubleDot = ':' name=STRING
+;
+
 ParticipantDeactivation:
     keyword = 'deactivate' name=STRING	
 ;
 
 CombinedFragment: 
 	keyword = ('alt'|'loop'|'par'|'assert'|'critical'|'ignore'|'neg'|'opt'|'seq'|'strict'|'unset')
-	expression=STRING over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
+	(expression=STRING)? over='over' (timelines+=STRING)+ block=Block (operands+=Operand)*
 ;
 
 Operand:
-	keyword='else'? expression=STRING block=Block
+	keyword='else'? (expression=STRING)? block=Block
 ;
 
 Block:
@@ -106,4 +118,8 @@ Block:
 
 StateFragment:
 	on='on' timeline=STRING keyword=('state' | 'mode' | 'function') name=STRING
+;
+
+Reference: 
+	keyword = 'ref' name=STRING over = 'over' (timelines+=STRING)+ 
 ;
