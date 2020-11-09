@@ -621,12 +621,30 @@ public class EmbeddedEditorInstanceHelper {
   }
 
   /*
-   * Get all possible scenario references
+   * Get all possible scenario references names
    */
   public static List<String> getReferencedScenariosName() {
+    return getReferencedScenarios().stream().map(x -> ((Scenario) x).getName()).collect(Collectors.toList());
+  }
+  
+  /*
+   * Get referenced scenario with the given name
+   */
+  public static Scenario getScenarioWithGivenName(String name) {
+    List<EObject> referencedScenarios = getReferencedScenarios().stream().filter(x -> ((Scenario) x).getName().equals(name)).collect(Collectors.toList());
+    if (!referencedScenarios.isEmpty()) {
+      return (Scenario) referencedScenarios.get(0);
+    }
+    return null;
+  }
+  
+  /*
+   * Get all possible scenario references
+   */
+  public static List<EObject> getReferencedScenarios() {
     ScenarioService scenarioService = new ScenarioService();
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     List<EObject> referenceScope = scenarioService.getReferenceScope(currentScenario);
-    return referenceScope.stream().map(x -> ((Scenario) x).getName()).collect(Collectors.toList());
+    return referenceScope;
   }
 }
