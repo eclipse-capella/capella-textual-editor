@@ -31,6 +31,7 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
+import org.polarsys.capella.core.data.fa.FunctionalExchange;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.model.helpers.CapellaElementExt;
 import org.polarsys.capella.scenario.editor.dsl.helpers.TextualScenarioHelper;
@@ -203,8 +204,19 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
         }
         String exchangeType = TextualScenarioHelper.getExchangeType(element);
         if (((scenarioExchangesType == null) || scenarioExchangesType.equals(exchangeType))) {
+          String message = (("\"" + elementName) + "\"");
+          if ((EmbeddedEditorInstanceHelper.isESScenario() && (element instanceof FunctionalExchange))) {
+            String _sourceFunctionNameOfExchange = EmbeddedEditorInstanceHelper.getSourceFunctionNameOfExchange(((FunctionalExchange) element));
+            String _plus = ((message + " : FE [ ") + _sourceFunctionNameOfExchange);
+            String _plus_1 = (_plus + 
+              " ,");
+            String _targetFunctionNameOfExchange = EmbeddedEditorInstanceHelper.getTargetFunctionNameOfExchange(((FunctionalExchange) element));
+            String _plus_2 = (_plus_1 + _targetFunctionNameOfExchange);
+            String _plus_3 = (_plus_2 + " ]");
+            message = _plus_3;
+          }
           acceptor.accept(
-            this.createCompletionProposal((("\"" + elementName) + "\""), (("\"" + elementName) + "\""), null, context));
+            this.createCompletionProposal((("\"" + elementName) + "\""), message, null, context));
         }
       }
     }

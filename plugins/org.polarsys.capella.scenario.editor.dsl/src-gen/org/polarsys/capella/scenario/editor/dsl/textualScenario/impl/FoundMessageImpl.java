@@ -33,6 +33,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioP
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.FoundMessageImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.FoundMessageImpl#getExecution <em>Execution</em>}</li>
  * </ul>
  *
  * @generated
@@ -58,6 +59,26 @@ public class FoundMessageImpl extends LostFoundMessageImpl implements FoundMessa
    * @ordered
    */
   protected String target = TARGET_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getExecution() <em>Execution</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getExecution()
+   * @generated
+   * @ordered
+   */
+  protected static final String EXECUTION_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getExecution() <em>Execution</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getExecution()
+   * @generated
+   * @ordered
+   */
+  protected String execution = EXECUTION_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -111,12 +132,39 @@ public class FoundMessageImpl extends LostFoundMessageImpl implements FoundMessa
    * @generated
    */
   @Override
+  public String getExecution()
+  {
+    return execution;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setExecution(String newExecution)
+  {
+    String oldExecution = execution;
+    execution = newExecution;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, TextualScenarioPackage.FOUND_MESSAGE__EXECUTION, oldExecution, execution));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
     switch (featureID)
     {
       case TextualScenarioPackage.FOUND_MESSAGE__TARGET:
         return getTarget();
+      case TextualScenarioPackage.FOUND_MESSAGE__EXECUTION:
+        return getExecution();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -133,6 +181,9 @@ public class FoundMessageImpl extends LostFoundMessageImpl implements FoundMessa
     {
       case TextualScenarioPackage.FOUND_MESSAGE__TARGET:
         setTarget((String)newValue);
+        return;
+      case TextualScenarioPackage.FOUND_MESSAGE__EXECUTION:
+        setExecution((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -151,6 +202,9 @@ public class FoundMessageImpl extends LostFoundMessageImpl implements FoundMessa
       case TextualScenarioPackage.FOUND_MESSAGE__TARGET:
         setTarget(TARGET_EDEFAULT);
         return;
+      case TextualScenarioPackage.FOUND_MESSAGE__EXECUTION:
+        setExecution(EXECUTION_EDEFAULT);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -167,6 +221,8 @@ public class FoundMessageImpl extends LostFoundMessageImpl implements FoundMessa
     {
       case TextualScenarioPackage.FOUND_MESSAGE__TARGET:
         return TARGET_EDEFAULT == null ? target != null : !TARGET_EDEFAULT.equals(target);
+      case TextualScenarioPackage.FOUND_MESSAGE__EXECUTION:
+        return EXECUTION_EDEFAULT == null ? execution != null : !EXECUTION_EDEFAULT.equals(execution);
     }
     return super.eIsSet(featureID);
   }
@@ -184,6 +240,8 @@ public class FoundMessageImpl extends LostFoundMessageImpl implements FoundMessa
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (target: ");
     result.append(target);
+    result.append(", execution: ");
+    result.append(execution);
     result.append(')');
     return result.toString();
   }

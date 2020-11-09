@@ -26,6 +26,7 @@ package org.polarsys.capella.scenario.editor.dsl.textualScenario;
  * </p>
  * <ul>
  *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getExecution <em>Execution</em>}</li>
  * </ul>
  *
  * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getFoundMessage()
@@ -55,5 +56,27 @@ public interface FoundMessage extends LostFoundMessage
    * @generated
    */
   void setTarget(String value);
+
+  /**
+   * Returns the value of the '<em><b>Execution</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Execution</em>' attribute.
+   * @see #setExecution(String)
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage#getFoundMessage_Execution()
+   * @model
+   * @generated
+   */
+  String getExecution();
+
+  /**
+   * Sets the value of the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getExecution <em>Execution</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Execution</em>' attribute.
+   * @see #getExecution()
+   * @generated
+   */
+  void setExecution(String value);
 
 } // FoundMessage

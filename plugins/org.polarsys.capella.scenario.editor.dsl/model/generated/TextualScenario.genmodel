@@ -56,6 +56,7 @@
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//FoundMessage">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//FoundMessage/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//FoundMessage/execution"/>
     </genClasses>
     <genClasses ecoreClass="TextualScenario.ecore#//ParticipantDeactivation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TextualScenario.ecore#//ParticipantDeactivation/keyword"/>

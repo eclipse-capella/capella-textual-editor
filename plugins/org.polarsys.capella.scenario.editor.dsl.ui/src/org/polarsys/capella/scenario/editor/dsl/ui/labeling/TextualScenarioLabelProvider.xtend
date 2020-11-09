@@ -33,7 +33,7 @@ class TextualScenarioLabelProvider extends DefaultEObjectLabelProvider {
 
 	// Labels and icons can be computed like this:
 	
-//	def text(Greeting ele) {
+//	def text(SequenceMessage ele) {
 //		'A greeting to ' + ele.name
 //	}
 //

@@ -780,6 +780,17 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
    * @generated
    */
   @Override
+  public EAttribute getFoundMessage_Execution()
+  {
+    return (EAttribute)foundMessageEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getParticipantDeactivation()
   {
     return participantDeactivationEClass;
@@ -1164,6 +1175,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     foundMessageEClass = createEClass(FOUND_MESSAGE);
     createEAttribute(foundMessageEClass, FOUND_MESSAGE__TARGET);
+    createEAttribute(foundMessageEClass, FOUND_MESSAGE__EXECUTION);
 
     participantDeactivationEClass = createEClass(PARTICIPANT_DEACTIVATION);
     createEAttribute(participantDeactivationEClass, PARTICIPANT_DEACTIVATION__KEYWORD);
@@ -1314,6 +1326,7 @@ public class TextualScenarioPackageImpl extends EPackageImpl implements TextualS
 
     initEClass(foundMessageEClass, FoundMessage.class, "FoundMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getFoundMessage_Target(), ecorePackage.getEString(), "target", null, 0, 1, FoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFoundMessage_Execution(), ecorePackage.getEString(), "execution", null, 0, 1, FoundMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(participantDeactivationEClass, ParticipantDeactivation.class, "ParticipantDeactivation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getParticipantDeactivation_Keyword(), ecorePackage.getEString(), "keyword", null, 0, 1, ParticipantDeactivation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

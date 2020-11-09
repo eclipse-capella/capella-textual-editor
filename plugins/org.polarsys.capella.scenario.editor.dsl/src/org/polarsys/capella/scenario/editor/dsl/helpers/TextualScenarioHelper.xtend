@@ -28,6 +28,9 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType
 import java.util.Set
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -46,8 +49,8 @@ class TextualScenarioHelper {
 			if(EmbeddedEditorInstanceHelper.isFEScenario())
 				return TYPE_FE
 			for (element : elements) {
-				if (element instanceof SequenceMessage) {
-					var message = element as SequenceMessage
+				if (element instanceof Message) {
+					var message = element as Message
 					return getMessageExchangeType(message)
 				}
 				if (element instanceof CombinedFragment) {
@@ -61,8 +64,11 @@ class TextualScenarioHelper {
 	/*
 	 * we return CE or FE or null in case we allow both or other type
 	 */
-	def static getMessageExchangeType(SequenceMessage message) {
-		var exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource, message.getTarget)
+	def static getMessageExchangeType(Message message) {
+		
+		var exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(getSourceOfMessage(message),
+			getTargetOfMessage(message)
+		)
 		var allowedTypes = newHashSet as Set<Object>
 		for(exchange : exchangesAvailable) {
 			if(message.name !== null && message.name.equals(CapellaElementExt.getName(exchange))) {
@@ -81,9 +87,10 @@ class TextualScenarioHelper {
 	/*
 	 * we return a list of available exchanges CE or FE
 	 */
-	def static Set getAllMessageExchangeType(SequenceMessage message) {
-		var exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource, message.getTarget)
+	def static Set getAllMessageExchangeType(Message message) {
 		var allowedTypes = newHashSet as Set<Object>
+		var exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(getSourceOfMessage(message),
+			getTargetOfMessage(message))
 		for(exchange : exchangesAvailable) {
 			if(message.name !== null && message.name.equals(CapellaElementExt.getName(exchange))) {
 				var type = getExchangeType(exchange)
@@ -101,6 +108,26 @@ class TextualScenarioHelper {
 		else if (exchangeElement instanceof FunctionalExchange)
 			return TYPE_FE
 		return null
+	}
+	
+	def private static String getSourceOfMessage(Message message) {
+		var source = null as String
+		if(message instanceof SequenceMessage) {
+			source = (message as SequenceMessage).source
+		} else if(message instanceof LostMessage) {
+			source = (message as LostMessage).source
+		}
+		return source
+	}
+	
+	def private static String getTargetOfMessage(Message message) {
+		var target = null as String
+		if(message instanceof SequenceMessage) {
+			target = (message as SequenceMessage).target
+		} else if(message instanceof FoundMessage) {
+			target = (message as FoundMessage).target
+		}
+		return target
 	}
 	
 	def static participantsDefinedBefore(Model rootModel) {
