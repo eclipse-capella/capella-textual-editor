@@ -1027,13 +1027,22 @@ public interface TextualScenarioPackage extends EPackage
   int FOUND_MESSAGE__TARGET = LOST_FOUND_MESSAGE_FEATURE_COUNT + 0;
 
   /**
+   * The feature id for the '<em><b>Execution</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOUND_MESSAGE__EXECUTION = LOST_FOUND_MESSAGE_FEATURE_COUNT + 1;
+
+  /**
    * The number of structural features of the '<em>Found Message</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FOUND_MESSAGE_FEATURE_COUNT = LOST_FOUND_MESSAGE_FEATURE_COUNT + 1;
+  int FOUND_MESSAGE_FEATURE_COUNT = LOST_FOUND_MESSAGE_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ParticipantDeactivationImpl <em>Participant Deactivation</em>}' class.
@@ -1790,6 +1799,17 @@ public interface TextualScenarioPackage extends EPackage
   EAttribute getFoundMessage_Target();
 
   /**
+   * Returns the meta object for the attribute '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getExecution <em>Execution</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Execution</em>'.
+   * @see org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage#getExecution()
+   * @see #getFoundMessage()
+   * @generated
+   */
+  EAttribute getFoundMessage_Execution();
+
+  /**
    * Returns the meta object for class '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation <em>Participant Deactivation</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2480,6 +2500,14 @@ public interface TextualScenarioPackage extends EPackage
      * @generated
      */
     EAttribute FOUND_MESSAGE__TARGET = eINSTANCE.getFoundMessage_Target();
+
+    /**
+     * The meta object literal for the '<em><b>Execution</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FOUND_MESSAGE__EXECUTION = eINSTANCE.getFoundMessage_Execution();
 
     /**
      * The meta object literal for the '{@link org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.ParticipantDeactivationImpl <em>Participant Deactivation</em>}' class.

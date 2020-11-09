@@ -118,8 +118,9 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getLostMessageAccess().getNameAssignment_3(), "rule__LostMessage__NameAssignment_3");
 			builder.put(grammarAccess.getFoundMessageAccess().getArrowAssignment_0(), "rule__FoundMessage__ArrowAssignment_0");
 			builder.put(grammarAccess.getFoundMessageAccess().getTargetAssignment_1(), "rule__FoundMessage__TargetAssignment_1");
-			builder.put(grammarAccess.getFoundMessageAccess().getDoubleDotAssignment_2(), "rule__FoundMessage__DoubleDotAssignment_2");
-			builder.put(grammarAccess.getFoundMessageAccess().getNameAssignment_3(), "rule__FoundMessage__NameAssignment_3");
+			builder.put(grammarAccess.getFoundMessageAccess().getExecutionAssignment_2(), "rule__FoundMessage__ExecutionAssignment_2");
+			builder.put(grammarAccess.getFoundMessageAccess().getDoubleDotAssignment_3(), "rule__FoundMessage__DoubleDotAssignment_3");
+			builder.put(grammarAccess.getFoundMessageAccess().getNameAssignment_4(), "rule__FoundMessage__NameAssignment_4");
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getKeywordAssignment_0(), "rule__ParticipantDeactivation__KeywordAssignment_0");
 			builder.put(grammarAccess.getParticipantDeactivationAccess().getNameAssignment_1(), "rule__ParticipantDeactivation__NameAssignment_1");
 			builder.put(grammarAccess.getCombinedFragmentAccess().getKeywordAssignment_0(), "rule__CombinedFragment__KeywordAssignment_0");

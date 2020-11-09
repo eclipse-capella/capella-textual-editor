@@ -56,6 +56,7 @@ import org.polarsys.capella.core.sirius.analysis.SequenceDiagramServices;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
@@ -680,7 +681,8 @@ public class DiagramToXtextCommands {
       Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.Message> messagesToDeactivate,
       EObject message) {
     if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage ||
-        message instanceof ArmTimerMessage) {
+        message instanceof ArmTimerMessage ||
+        message instanceof FoundMessage) {
       messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) message);
     }
   }
@@ -698,9 +700,14 @@ public class DiagramToXtextCommands {
       org.polarsys.capella.scenario.editor.dsl.textualScenario.Message currentSequenceMessage = messagesToDeactivate
           .pop();
       if (currentSequenceMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) currentSequenceMessage).setExecution(DslConstants.WITH_EXECUTION);
-      } else {
-        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) currentSequenceMessage).setExecution(DslConstants.WITH_EXECUTION);
+        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) currentSequenceMessage)
+            .setExecution(DslConstants.WITH_EXECUTION);
+      } else if (currentSequenceMessage instanceof FoundMessage) {
+        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage) currentSequenceMessage)
+            .setExecution(DslConstants.WITH_EXECUTION);
+      } else if (currentSequenceMessage instanceof ArmTimerMessage) {
+        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) currentSequenceMessage)
+            .setExecution(DslConstants.WITH_EXECUTION);
       }
     }
   }
