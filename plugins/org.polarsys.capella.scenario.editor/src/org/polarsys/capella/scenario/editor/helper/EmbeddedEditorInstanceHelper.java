@@ -42,6 +42,7 @@ import org.polarsys.capella.core.data.capellacore.CapellaElement;
 import org.polarsys.capella.core.data.cs.BlockArchitecture;
 import org.polarsys.capella.core.data.cs.Component;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
+import org.polarsys.capella.core.data.cs.Part;
 import org.polarsys.capella.core.data.ctx.SystemAnalysis;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
@@ -55,14 +56,16 @@ import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.ScenarioKind;
 import org.polarsys.capella.core.data.interaction.StateFragment;
 import org.polarsys.capella.core.data.la.LogicalArchitecture;
+import org.polarsys.capella.core.data.oa.OperationalActor;
+import org.polarsys.capella.core.data.oa.OperationalAnalysis;
 import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
+import org.polarsys.capella.core.model.helpers.OperationalAnalysisExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
 import org.polarsys.capella.core.sequencediag.ScenarioService;
 import org.polarsys.capella.core.sirius.analysis.FaServices;
 import org.polarsys.capella.core.sirius.analysis.InteractionServices;
-import org.polarsys.capella.core.sirius.analysis.OAServices;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 
 public class EmbeddedEditorInstanceHelper {
@@ -343,9 +346,17 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  private static Collection<? extends EObject> getAvailableComponents() {
-    Collection<? extends EObject> elements = (new InteractionServices())
-        .getESScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+  public static Collection<? extends EObject> getAvailableComponents() {
+	  Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+	  List<Part> elements = (new InteractionServices())
+        .getISScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+    
+	for (InstanceRole role : scenario.getOwnedInstanceRoles()) {
+		if (role.getRepresentedInstance() instanceof Part) {
+			elements.add((Part) role.getRepresentedInstance());
+		}
+	}
+    
     return elements;
   }
 
@@ -355,10 +366,15 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  private static Collection<? extends EObject> getAvailableActors() {
-    Collection<? extends EObject> elements = (new InteractionServices())
-        .getESScopeInsertActors(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
-    return elements;
+  public static Collection<? extends EObject> getAvailableActors() {
+	Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+    BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
+    if (analysis instanceof OperationalAnalysis) {
+    	return getOESScopeInsertEntitiesRoles(scenario).stream()
+    			.filter(x -> x instanceof Part && ((Part)x).getAbstractType() instanceof OperationalActor)
+    			.collect(Collectors.toList());
+    }
+    return (new InteractionServices()).getISScopeInsertActors(scenario);
   }
 
   /**
@@ -367,12 +383,19 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  private static Collection<? extends EObject> getAvailableRoles() {
-    Collection<? extends EObject> elements = OAServices.getService()
-        .getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram()).stream()
-        .filter(x -> x instanceof Role).collect(Collectors.toList());
-    ;
-    return elements;
+  public static Collection<? extends EObject> getAvailableRoles() {
+	    return getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram())
+	    		.stream().filter(x -> x instanceof Role).collect(Collectors.toList());
+  }
+	  
+  private static Collection<EObject> getOESScopeInsertEntitiesRoles(Scenario scenario) {
+	    Collection<EObject> roots = new ArrayList<EObject>();
+	    roots.addAll(new ScenarioService().getAllMultiInstanceRoleParts(scenario));
+	    BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
+	    if (analysis instanceof OperationalAnalysis) {
+	      roots.addAll(OperationalAnalysisExt.getAllRoles((OperationalAnalysis) analysis));
+	    }
+	    return roots;
   }
 
   /**
