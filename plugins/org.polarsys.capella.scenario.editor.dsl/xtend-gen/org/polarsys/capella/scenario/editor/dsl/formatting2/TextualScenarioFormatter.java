@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -26,14 +14,13 @@ package org.polarsys.capella.scenario.editor.dsl.formatting2;
 
 import com.google.inject.Inject;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.formatting2.AbstractFormatter2;
 import org.eclipse.xtext.formatting2.IFormattableDocument;
 import org.eclipse.xtext.formatting2.IHiddenRegionFormatter;
 import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion;
-import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegionsFinder;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -45,6 +32,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
 
@@ -55,10 +43,8 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
   private TextualScenarioGrammarAccess _textualScenarioGrammarAccess;
   
   protected void _format(final Model model, @Extension final IFormattableDocument document) {
-    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(model);
-    final ISemanticRegion begin = _regionFor.feature(TextualScenarioPackage.Literals.MODEL__BEGIN);
-    ISemanticRegionsFinder _regionFor_1 = this.textRegionExtensions.regionFor(model);
-    final ISemanticRegion end = _regionFor_1.feature(TextualScenarioPackage.Literals.MODEL__END);
+    final ISemanticRegion begin = this.textRegionExtensions.regionFor(model).feature(TextualScenarioPackage.Literals.MODEL__BEGIN);
+    final ISemanticRegion end = this.textRegionExtensions.regionFor(model).feature(TextualScenarioPackage.Literals.MODEL__END);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.noSpace();
     };
@@ -71,46 +57,37 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       it.indent();
     };
     document.<ISemanticRegion, ISemanticRegion>interior(begin, end, _function_2);
-    EList<Participant> _participants = model.getParticipants();
     final Consumer<Participant> _function_3 = (Participant element) -> {
       document.<Participant>format(element);
     };
-    _participants.forEach(_function_3);
-    EList<Element> _elements = model.getElements();
+    model.getParticipants().forEach(_function_3);
     final Consumer<Element> _function_4 = (Element element) -> {
       document.<Element>format(element);
     };
-    _elements.forEach(_function_4);
+    model.getElements().forEach(_function_4);
   }
   
   protected void _format(final Message message, @Extension final IFormattableDocument document) {
-    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(message);
-    ISemanticRegion _feature = _regionFor.feature(TextualScenarioPackage.Literals.MESSAGE__NAME);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
-    document.append(_feature, _function);
+    document.append(this.textRegionExtensions.regionFor(message).feature(TextualScenarioPackage.Literals.MESSAGE__NAME), _function);
   }
   
   protected void _format(final Participant participant, @Extension final IFormattableDocument document) {
-    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(participant);
-    final ISemanticRegion p = _regionFor.feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME);
-    ISemanticRegionsFinder _regionFor_1 = this.textRegionExtensions.regionFor(participant);
-    ISemanticRegion _feature = _regionFor_1.feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME);
+    final ISemanticRegion p = this.textRegionExtensions.regionFor(participant).feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
-    document.append(_feature, _function);
+    document.append(this.textRegionExtensions.regionFor(participant).feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME), _function);
   }
   
   protected void _format(final CombinedFragment fragment, @Extension final IFormattableDocument document) {
-    Block _block = fragment.getBlock();
-    this.format(_block, document);
-    EList<Operand> _operands = fragment.getOperands();
+    this.format(fragment.getBlock(), document);
     final Consumer<Operand> _function = (Operand element) -> {
       document.<Operand>format(element);
     };
-    _operands.forEach(_function);
+    fragment.getOperands().forEach(_function);
     final Procedure1<IHiddenRegionFormatter> _function_1 = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
@@ -118,15 +95,12 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
   }
   
   protected void _format(final Operand operand, @Extension final IFormattableDocument document) {
-    Block _block = operand.getBlock();
-    this.format(_block, document);
+    this.format(operand.getBlock(), document);
   }
   
   protected void _format(final Block block, @Extension final IFormattableDocument document) {
-    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(block);
-    final ISemanticRegion begin = _regionFor.feature(TextualScenarioPackage.Literals.BLOCK__BEGIN);
-    ISemanticRegionsFinder _regionFor_1 = this.textRegionExtensions.regionFor(block);
-    final ISemanticRegion end = _regionFor_1.feature(TextualScenarioPackage.Literals.BLOCK__END);
+    final ISemanticRegion begin = this.textRegionExtensions.regionFor(block).feature(TextualScenarioPackage.Literals.BLOCK__BEGIN);
+    final ISemanticRegion end = this.textRegionExtensions.regionFor(block).feature(TextualScenarioPackage.Literals.BLOCK__END);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
@@ -135,20 +109,27 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       it.indent();
     };
     document.<ISemanticRegion, ISemanticRegion>interior(begin, end, _function_1);
-    EList<Element> _blockElements = block.getBlockElements();
     final Consumer<Element> _function_2 = (Element element) -> {
       document.<Element>format(element);
     };
-    _blockElements.forEach(_function_2);
+    block.getBlockElements().forEach(_function_2);
   }
   
   protected void _format(final StateFragment stateFragment, @Extension final IFormattableDocument document) {
-    ISemanticRegionsFinder _regionFor = this.textRegionExtensions.regionFor(stateFragment);
-    ISemanticRegion _feature = _regionFor.feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
-    document.append(_feature, _function);
+    document.append(this.textRegionExtensions.regionFor(stateFragment).feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME), _function);
+  }
+  
+  protected void _format(final Reference reference, @Extension final IFormattableDocument document) {
+    final List<ISemanticRegion> features = this.textRegionExtensions.regionFor(reference).features(TextualScenarioPackage.Literals.REFERENCE__TIMELINES);
+    int _size = features.size();
+    int _minus = (_size - 1);
+    final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
+      it.newLine();
+    };
+    document.append(features.get(_minus), _function);
   }
   
   public void format(final Object fragment, final IFormattableDocument document) {
@@ -160,6 +141,9 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
       return;
     } else if (fragment instanceof Message) {
       _format((Message)fragment, document);
+      return;
+    } else if (fragment instanceof Reference) {
+      _format((Reference)fragment, document);
       return;
     } else if (fragment instanceof StateFragment) {
       _format((StateFragment)fragment, document);

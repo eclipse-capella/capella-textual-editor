@@ -19,9 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.business.api.dialect.DialectManager;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
@@ -31,6 +28,9 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.XtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
@@ -42,7 +42,6 @@ import org.polarsys.capella.core.data.capellacore.CapellaElement;
 import org.polarsys.capella.core.data.cs.BlockArchitecture;
 import org.polarsys.capella.core.data.cs.Component;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
-import org.polarsys.capella.core.data.cs.Part;
 import org.polarsys.capella.core.data.ctx.SystemAnalysis;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
@@ -53,58 +52,52 @@ import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.ScenarioKind;
 import org.polarsys.capella.core.data.interaction.StateFragment;
 import org.polarsys.capella.core.data.la.LogicalArchitecture;
-import org.polarsys.capella.core.data.oa.OperationalActor;
-import org.polarsys.capella.core.data.oa.OperationalAnalysis;
 import org.polarsys.capella.core.data.oa.Role;
 import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
-import org.polarsys.capella.core.model.helpers.OperationalAnalysisExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
 import org.polarsys.capella.core.sequencediag.ScenarioService;
-import org.polarsys.capella.core.sirius.analysis.CsServices;
 import org.polarsys.capella.core.sirius.analysis.FaServices;
 import org.polarsys.capella.core.sirius.analysis.InteractionServices;
+import org.polarsys.capella.core.sirius.analysis.OAServices;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 
 public class EmbeddedEditorInstanceHelper {
-  
-  public static final List<String> PARTICIPANT_KEYWORDS = Arrays.asList(DslConstants.ACTOR, DslConstants.ENTITY, DslConstants.ROLE,
-      DslConstants.ACTIVITY, DslConstants.COMPONENT, DslConstants.CONFIGURATION_ITEM, DslConstants.FUNCTION);
-  
+
+  public static final List<String> PARTICIPANT_KEYWORDS = Arrays.asList(DslConstants.ACTOR, DslConstants.ENTITY,
+      DslConstants.ROLE, DslConstants.ACTIVITY, DslConstants.COMPONENT, DslConstants.CONFIGURATION_ITEM,
+      DslConstants.FUNCTION);
+
   public static EList<InstanceRole> getAvailableInstanceRolesInDiagram() {
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return currentScenario.getOwnedInstanceRoles();
   }
-  
+
   public static List<InstanceRole> getAvailableInstanceRoles() {
     List<String> participantKeywords = EmbeddedEditorInstanceHelper.PARTICIPANT_KEYWORDS;
-    
+
     List<InstanceRole> instanceRoles = new ArrayList<InstanceRole>();
     for (String keyword : participantKeywords) {
       if (checkValidKeyword(keyword)) {
         List<InstanceRole> availableInstanceRoleForKeyword;
         if (keyword.equals(DslConstants.FUNCTION) || keyword.equals(DslConstants.ACTIVITY)) {
-          availableInstanceRoleForKeyword = getAvailableElements(keyword)
-              .stream()
-              .map(element -> ((AbstractFunction) element).getRepresentingInstanceRoles())
-              .flatMap(Collection::stream)
+          availableInstanceRoleForKeyword = getAvailableElements(keyword).stream()
+              .map(element -> ((AbstractFunction) element).getRepresentingInstanceRoles()).flatMap(Collection::stream)
               .distinct().collect(Collectors.toList());
         } else {
-         availableInstanceRoleForKeyword = getAvailableElements(keyword)
-              .stream()
-              .map(element -> ((AbstractInstance) element).getRepresentingInstanceRoles())
-              .flatMap(Collection::stream).distinct()
-              .collect(Collectors.toList());
+          availableInstanceRoleForKeyword = getAvailableElements(keyword).stream()
+              .map(element -> ((AbstractInstance) element).getRepresentingInstanceRoles()).flatMap(Collection::stream)
+              .distinct().collect(Collectors.toList());
         }
         instanceRoles.addAll(availableInstanceRoleForKeyword);
       }
     }
     return instanceRoles.stream().distinct().collect(Collectors.toList());
   }
-  
+
   private static List<EObject> getAvailableAbstractInstances() {
     List<String> participantKeywords = EmbeddedEditorInstanceHelper.PARTICIPANT_KEYWORDS;
-    
+
     List<EObject> instances = new ArrayList<>();
     for (String keyword : participantKeywords) {
       if (checkValidKeyword(keyword)) {
@@ -114,17 +107,16 @@ public class EmbeddedEditorInstanceHelper {
     return instances.stream().distinct().collect(Collectors.toList());
   }
 
-
   public static String getScenarioType() {
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return currentScenario.getKind().toString();
   }
-  
+
   public static boolean isInteractionScenario() {
     Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return scenario.getKind().equals(ScenarioKind.INTERACTION);
   }
-  
+
   public static boolean isInterfaceScenario() {
     Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return scenario.getKind().equals(ScenarioKind.INTERFACE);
@@ -134,19 +126,19 @@ public class EmbeddedEditorInstanceHelper {
     Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return ((scenario.getKind() == ScenarioKind.INTERACTION) || (scenario.getKind() == ScenarioKind.DATA_FLOW));
   }
-  
+
   public static boolean isCEScenario() {
     return ScenarioExt.isDataFlowBehaviouralScenario(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
   }
-  
+
   public static boolean isFEScenario() {
     return ScenarioExt.isDataFlowFunctionalScenario(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
   }
-  
+
   public static boolean isFSScenario() {
     return ScenarioExt.isFunctionalScenario(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
   }
-  
+
   public static EObject getScenarioLevel() {
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return BlockArchitectureExt.getRootBlockArchitecture(currentScenario);
@@ -175,7 +167,7 @@ public class EmbeddedEditorInstanceHelper {
 
     return messages;
   }
-  
+
   /**
    * get the names of the available exchanges
    * 
@@ -190,7 +182,7 @@ public class EmbeddedEditorInstanceHelper {
     List<AbstractEventOperation> exchanges = getAvailableExchanges(source, target);
     return exchanges;
   }
-  
+
   /**
    * returns the list of available exchanges possible to be inserted between source and target
    * 
@@ -204,26 +196,24 @@ public class EmbeddedEditorInstanceHelper {
   public static List<AbstractEventOperation> getAvailableExchanges(String source, String target) {
     InstanceRole sourceIr = getInstanceRoleFromScenario(source);
     InstanceRole targetIr = getInstanceRoleFromScenario(target);
-    if(sourceIr != null && targetIr != null) {
+    if (sourceIr != null && targetIr != null) {
       return getAllAvailableExchanges(sourceIr.getRepresentedInstance(), targetIr.getRepresentedInstance());
     }
-    
+
     List<AbstractEventOperation> availableExchanges = new ArrayList<AbstractEventOperation>();
     List<EObject> sourceCandidates = getAbstractInstanceCandidates(source);
     List<EObject> targetCandidates = getAbstractInstanceCandidates(target);
-    if(!sourceCandidates.isEmpty() && !targetCandidates.isEmpty()) {
-      for(EObject sourceInst : sourceCandidates) {
-        for(EObject targetInst : targetCandidates) {
-          if(sourceInst instanceof AbstractInstance && targetInst instanceof AbstractInstance)
-            availableExchanges.addAll(getAllAvailableExchanges((AbstractInstance)sourceInst, (AbstractInstance)targetInst));
-        }
+
+    for (EObject sourceObj : sourceCandidates) {
+      for (EObject targetObj : targetCandidates) {
+        AbstractInstance sourceInst = sourceObj instanceof AbstractInstance ? (AbstractInstance) sourceObj : null;
+        AbstractInstance targetInst = targetObj instanceof AbstractInstance ? (AbstractInstance) targetObj : null;
+        availableExchanges.addAll(getAllAvailableExchanges(sourceInst, targetInst));
       }
-      return availableExchanges;
     }
-    
-    return new ArrayList<>();
+    return availableExchanges;
   }
-  
+
   /**
    * returns the list of available exchanges possible to be inserted between source and target
    * 
@@ -235,50 +225,49 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   @SuppressWarnings("unchecked")
-  private static List<AbstractEventOperation> getAllAvailableExchanges(EObject sourceObj, EObject targetObj) {
+  private static List<AbstractEventOperation> getAllAvailableExchanges(AbstractInstance sourceInst,
+      AbstractInstance targetInst) {
     List<AbstractEventOperation> exchangesAvailable = new ArrayList<AbstractEventOperation>();
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
 
     switch (currentScenario.getKind()) {
     case FUNCTIONAL:
-      if (sourceObj instanceof AbstractFunction && targetObj instanceof AbstractFunction) {
+      if (sourceInst instanceof AbstractFunction && targetInst instanceof AbstractFunction) {
         exchangesAvailable.addAll(DataFlowHelper
-            .getAvailableFonctionalExchangesFromFunctions((AbstractFunction) sourceObj, (AbstractFunction) targetObj)
+            .getAvailableFonctionalExchangesFromFunctions((AbstractFunction) sourceInst, (AbstractFunction) targetInst)
             .stream().filter(x -> x instanceof AbstractEventOperation).collect(Collectors.toList()));
       }
       break;
     case INTERFACE:
-      if (sourceObj instanceof AbstractInstance && targetObj instanceof AbstractInstance) {
-        List<CapellaElement> exchanges = SelectInvokedOperationModelForSharedDataAndEvent
-            .getAvailableExchangeItems((AbstractInstance) sourceObj, (AbstractInstance) targetObj, false);
-        for (CapellaElement exchange : exchanges) {
-          if (exchange instanceof ExchangeItemAllocation) {
-            exchangesAvailable.add((AbstractEventOperation) exchange);
-          }
+      List<CapellaElement> exchanges = SelectInvokedOperationModelForSharedDataAndEvent
+          .getAvailableExchangeItems(sourceInst, targetInst, false);
+      for (CapellaElement exchange : exchanges) {
+        if (exchange instanceof ExchangeItemAllocation) {
+          exchangesAvailable.add((AbstractEventOperation) exchange);
         }
       }
       break;
     case DATA_FLOW:
     case INTERACTION:
       if (ScenarioExt.isFunctionalScenario(currentScenario)) {
-        if (sourceObj instanceof AbstractFunction && targetObj instanceof AbstractFunction) {
+        if (sourceInst instanceof AbstractFunction && targetInst instanceof AbstractFunction) {
           exchangesAvailable = DataFlowHelper
-              .getAvailableFonctionalExchangesFromFunctions((AbstractFunction) sourceObj, (AbstractFunction) targetObj)
+              .getAvailableFonctionalExchangesFromFunctions((AbstractFunction) sourceInst,
+                  (AbstractFunction) targetInst)
               .stream().filter(x -> x instanceof AbstractEventOperation).collect(Collectors.toList());
         }
       } else {
-        if (sourceObj instanceof AbstractInstance &&
-            targetObj instanceof AbstractInstance) {
-          AbstractInstance sourceInst = (AbstractInstance) sourceObj;
-          AbstractInstance targetInst = (AbstractInstance) targetObj;
-          if (sourceInst.getAbstractType() instanceof Component &&
-              targetInst.getAbstractType() instanceof Component) {
-            exchangesAvailable.addAll((List<AbstractEventOperation>) DataFlowHelper.getAvailableComponentExchanges(
-                (Component) sourceInst.getAbstractType(), (Component) targetInst.getAbstractType()));
-          }
-          exchangesAvailable.addAll(DataFlowHelper.getAvailableFonctionalExchanges(sourceInst, targetInst).stream()
-              .filter(x -> x instanceof AbstractEventOperation).collect(Collectors.toList()));
-        }
+        Component sourceComp = sourceInst != null && sourceInst.getAbstractType() instanceof Component
+            ? (Component) sourceInst.getAbstractType()
+            : null;
+        Component targetComp = targetInst != null && targetInst.getAbstractType() instanceof Component
+            ? (Component) targetInst.getAbstractType()
+            : null;
+        exchangesAvailable.addAll(
+            (List<AbstractEventOperation>) DataFlowHelper.getAvailableComponentExchanges(sourceComp, targetComp));
+        exchangesAvailable.addAll(DataFlowHelper.getAvailableFonctionalExchanges(sourceInst, targetInst).stream()
+            .filter(x -> x instanceof AbstractEventOperation).collect(Collectors.toList()));
+
       }
       break;
     default:
@@ -287,7 +276,7 @@ public class EmbeddedEditorInstanceHelper {
 
     return exchangesAvailable;
   }
-  
+
   /**
    * returns the list of available elements as names that could be inserted
    * 
@@ -313,9 +302,10 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  public static Collection<? extends EObject> getAvailableAbstractFunctions() {
-    return FaServices.getFaServices().getAllAbstractFunctions(
+  private static Collection<? extends EObject> getAvailableAbstractFunctions() {
+    Collection<? extends EObject> elements = FaServices.getFaServices().getAllAbstractFunctions(
         BlockArchitectureExt.getRootBlockArchitecture(EmbeddedEditorInstance.getAssociatedScenarioDiagram()));
+    return elements;
   }
 
   /**
@@ -324,17 +314,9 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  public static Collection<? extends EObject> getAvailableComponents() {
-	  Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-	  List<Part> elements = (new InteractionServices())
-        .getISScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
-    
-	for (InstanceRole role : scenario.getOwnedInstanceRoles()) {
-		if (role.getRepresentedInstance() instanceof Part) {
-			elements.add((Part) role.getRepresentedInstance());
-		}
-	}
-    
+  private static Collection<? extends EObject> getAvailableComponents() {
+    Collection<? extends EObject> elements = (new InteractionServices())
+        .getESScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
     return elements;
   }
 
@@ -344,15 +326,10 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  public static Collection<? extends EObject> getAvailableActors() {
-	Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-    BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
-    if (analysis instanceof OperationalAnalysis) {
-    	return getOESScopeInsertEntitiesRoles(scenario).stream()
-    			.filter(x -> x instanceof Part && ((Part)x).getAbstractType() instanceof OperationalActor)
-    			.collect(Collectors.toList());
-    }
-    return (new InteractionServices()).getISScopeInsertActors(scenario);
+  private static Collection<? extends EObject> getAvailableActors() {
+    Collection<? extends EObject> elements = (new InteractionServices())
+        .getESScopeInsertActors(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+    return elements;
   }
 
   /**
@@ -361,21 +338,14 @@ public class EmbeddedEditorInstanceHelper {
    * @return collection of elements
    *
    */
-  public static Collection<? extends EObject> getAvailableRoles() {
-	    return getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram())
-	    		.stream().filter(x -> x instanceof Role).collect(Collectors.toList());
+  private static Collection<? extends EObject> getAvailableRoles() {
+    Collection<? extends EObject> elements = OAServices.getService()
+        .getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram()).stream()
+        .filter(x -> x instanceof Role).collect(Collectors.toList());
+    ;
+    return elements;
   }
-	  
-  private static Collection<EObject> getOESScopeInsertEntitiesRoles(Scenario scenario) {
-	    Collection<EObject> roots = new ArrayList<EObject>();
-	    roots.addAll(new ScenarioService().getAllMultiInstanceRoleParts(scenario));
-	    BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
-	    if (analysis instanceof OperationalAnalysis) {
-	      roots.addAll(OperationalAnalysisExt.getAllRoles((OperationalAnalysis) analysis));
-	    }
-	    return roots;
-  }
-  
+
   /**
    * returns the list of available elements that could be inserted for the given keyword (which can be actor, component,
    * function, entity, role, activity, configuration_item)
@@ -419,7 +389,7 @@ public class EmbeddedEditorInstanceHelper {
     }
     return instanceRole;
   }
-  
+
   public static InstanceRole getInstanceRoleFromScenario(String source) {
     List<InstanceRole> instanceRoles = getAvailableInstanceRoles();
     InstanceRole instanceRole = null;
@@ -434,13 +404,14 @@ public class EmbeddedEditorInstanceHelper {
   }
 
   public static List<EObject> getAbstractInstanceCandidates(String name) {
-    List<EObject> instances = getAvailableAbstractInstances()
-        .stream()
+    List<EObject> instances = getAvailableAbstractInstances().stream()
         .filter(inst -> (inst instanceof AbstractNamedElement && ((AbstractNamedElement) inst).getName().equals(name)))
         .collect(Collectors.toList());
+    if (instances.isEmpty())
+      instances.add(null);
     return instances;
   }
-  
+
   /**
    * helper function that validates that a keyword typed in a text scenario is valid, based on scenario type and
    * architecture level
@@ -456,9 +427,9 @@ public class EmbeddedEditorInstanceHelper {
     if (currentScenario.getKind() == ScenarioKind.INTERACTION) {
       if (ScenarioExt.isFunctionalScenario(currentScenario)) {
         return keyword.equals(DslConstants.ACTIVITY);
-      } 
+      }
       return keyword.equals(DslConstants.ENTITY) || keyword.equals(DslConstants.ACTOR)
-            || keyword.equals(DslConstants.ROLE);
+          || keyword.equals(DslConstants.ROLE);
     }
     // IS and ES
     if (currentScenario.getKind() == ScenarioKind.INTERFACE || currentScenario.getKind() == ScenarioKind.DATA_FLOW) {
@@ -570,18 +541,18 @@ public class EmbeddedEditorInstanceHelper {
     return ScenarioExt.getAvailableFunctionsStateFragment(element.getRepresentedInstance()).stream()
         .collect(Collectors.toList());
   }
-  
+
   public static String getStateFragmentType(StateFragment capellaStateFragment) {
     if (capellaStateFragment.getRelatedAbstractFunction() != null) {
       return DslConstants.FUNCTION;
-    } 
+    }
     if (capellaStateFragment.getRelatedAbstractState() != null
         && capellaStateFragment.getRelatedAbstractState() instanceof Mode) {
       return DslConstants.MODE;
-    } 
+    }
     return DslConstants.STATE;
   }
-  
+
   public static String getStateFragmentName(StateFragment capellaStateFragment) {
     if (capellaStateFragment.getRelatedAbstractFunction() != null) {
       return capellaStateFragment.getRelatedAbstractFunction().getName();
@@ -641,11 +612,21 @@ public class EmbeddedEditorInstanceHelper {
     List<DDiagram> diagrams = getOpenedRepresentations();
     return diagrams.contains(EmbeddedEditorInstance.getDDiagram());
   }
-  
+
   public static void refreshAssociatedDiagram() {
     DDiagram diagram = EmbeddedEditorInstance.getDDiagram();
-    if(diagram != null) {
+    if (diagram != null) {
       DialectManager.INSTANCE.refresh(diagram, new NullProgressMonitor());
     }
+  }
+
+  /*
+   * Get all possible scenario references
+   */
+  public static List<String> getReferencedScenariosName() {
+    ScenarioService scenarioService = new ScenarioService();
+    Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+    List<EObject> referenceScope = scenarioService.getReferenceScope(currentScenario);
+    return referenceScope.stream().map(x -> ((Scenario) x).getName()).collect(Collectors.toList());
   }
 }

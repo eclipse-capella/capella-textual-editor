@@ -24,6 +24,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference
 
 class TextualScenarioFormatter extends AbstractFormatter2 {
 	
@@ -74,5 +75,10 @@ class TextualScenarioFormatter extends AbstractFormatter2 {
 	
 	def dispatch void format(StateFragment stateFragment, extension IFormattableDocument document) {
 		stateFragment.regionFor.feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME).append[newLine]
+	}
+	
+	def dispatch void format(Reference reference, extension IFormattableDocument document) {
+		val features = reference.regionFor.features(TextualScenarioPackage.Literals.REFERENCE__TIMELINES)   
+        features.get(features.size - 1).append[newLine]
 	}
 }
