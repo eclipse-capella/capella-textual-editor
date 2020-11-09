@@ -45,6 +45,9 @@ import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
 import org.polarsys.capella.core.data.ctx.SystemAnalysis;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
+import org.polarsys.capella.core.data.fa.FunctionInputPort;
+import org.polarsys.capella.core.data.fa.FunctionOutputPort;
+import org.polarsys.capella.core.data.fa.FunctionalExchange;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.data.information.AbstractInstance;
 import org.polarsys.capella.core.data.interaction.InstanceRole;
@@ -138,7 +141,33 @@ public class EmbeddedEditorInstanceHelper {
   public static boolean isFSScenario() {
     return ScenarioExt.isFunctionalScenario(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
   }
+  
+  public static AbstractFunction getSourceFunctionOfExchange(FunctionalExchange exchange) {
+    FunctionOutputPort source = exchange.getSourceFunctionOutputPort();
+    if(source != null && source.eContainer() instanceof AbstractFunction) {
+      return (AbstractFunction) source.eContainer();
+    }
+    return null;
+  }
 
+  public static String getSourceFunctionNameOfExchange(FunctionalExchange exchange) {
+    AbstractFunction function = getSourceFunctionOfExchange(exchange);
+    return function != null ? function.getName() : null;
+  }
+  
+  public static AbstractFunction getTargetFunctionOfExchange(FunctionalExchange exchange) {
+    FunctionInputPort target = exchange.getTargetFunctionInputPort();
+    if(target != null && target.eContainer() instanceof AbstractFunction) {
+      return (AbstractFunction) target.eContainer();
+    }
+    return null;
+  }
+
+  public static String getTargetFunctionNameOfExchange(FunctionalExchange exchange) {
+    AbstractFunction function = getTargetFunctionOfExchange(exchange);
+    return function != null ? function.getName() : null;
+  }
+  
   public static EObject getScenarioLevel() {
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return BlockArchitectureExt.getRootBlockArchitecture(currentScenario);

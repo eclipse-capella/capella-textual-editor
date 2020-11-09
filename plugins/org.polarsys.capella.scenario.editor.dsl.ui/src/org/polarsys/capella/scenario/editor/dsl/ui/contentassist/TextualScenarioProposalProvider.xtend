@@ -42,6 +42,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage
+import org.polarsys.capella.core.data.fa.FunctionalExchange
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -190,8 +191,15 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 			// if the type of exchange is allowed, propose it
 			var exchangeType = TextualScenarioHelper.getExchangeType(element)
 			if (scenarioExchangesType === null || scenarioExchangesType.equals(exchangeType)) {
+				var message = "\"" + elementName + "\""
+				if (EmbeddedEditorInstanceHelper.isESScenario() && element instanceof FunctionalExchange) {
+					message = message + " : FE [ " +
+					EmbeddedEditorInstanceHelper.getSourceFunctionNameOfExchange(element as FunctionalExchange) +
+					" ," +
+					EmbeddedEditorInstanceHelper.getTargetFunctionNameOfExchange(element as FunctionalExchange) + " ]"
+				}
 				acceptor.accept(
-					createCompletionProposal("\"" + elementName + "\"", "\"" + elementName + "\"", null, context))
+					createCompletionProposal("\"" + elementName + "\"", message, null, context))
 			}
 		}
 	}

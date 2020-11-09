@@ -96,7 +96,7 @@ LostMessage:
 ;
 
 FoundMessage:
-	arrow = 'o->' target=STRING doubleDot = ':' name=STRING
+	arrow = 'o->' target=STRING (execution = 'withExecution')? doubleDot = ':' name=STRING
 ;
 
 ParticipantDeactivation:

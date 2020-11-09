@@ -36,7 +36,9 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.DeleteMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Function;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
@@ -130,11 +132,20 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
+  @Check
+  public void checkSequenceMessagesExchangeType(final SequenceMessage sequenceMessage) {
+    this.checkMessagesExchangeType(sequenceMessage);
+  }
+  
+  @Check
+  public void checkSequenceMessagesExchangeType(final LostFoundMessage lostFoundMessage) {
+    this.checkMessagesExchangeType(lostFoundMessage);
+  }
+  
   /**
    * check that a CE (component exchange) and an FE (functional exchange) are not used in the same place
    */
-  @Check
-  public void checkMessagesExchangeType(final SequenceMessage message) {
+  public void checkMessagesExchangeType(final Message message) {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
     if (_isESScenario) {
       EObject model = TextualScenarioHelper.getModelContainer(message);
@@ -175,61 +186,6 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
-  /**
-   * Do not allow duplicated messages between name source, target
-   * ex: not allowed: "A1" -> "A2" : "MSG1", "A1" -> "A2" : "MSG1"
-   * ex: allowed: "A1" -> "A2" : "MSG1", "A2" -> "A3" : "MSG1"
-   */
-  @Check
-  public boolean checkDuplicatedSequenceMessageNames(final SequenceMessage message) {
-    boolean _xblockexpression = false;
-    {
-      EObject model = TextualScenarioHelper.getModelContainer(message);
-      boolean _xifexpression = false;
-      if ((model instanceof Model)) {
-        _xifexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
-      }
-      _xblockexpression = _xifexpression;
-    }
-    return _xblockexpression;
-  }
-  
-  @Check
-  public boolean checkDuplicatedArmTimerMessageNames(final ArmTimerMessage message) {
-    boolean _xblockexpression = false;
-    {
-      EObject model = TextualScenarioHelper.getModelContainer(message);
-      boolean _xifexpression = false;
-      if ((model instanceof Model)) {
-        _xifexpression = this.checkDuplicated(message, ((Model) model), CollectionLiterals.<String>newHashSet());
-      }
-      _xblockexpression = _xifexpression;
-    }
-    return _xblockexpression;
-  }
-  
-  public boolean checkDuplicated(final EObject elementToCheck, final EObject model, final HashSet<String> names) {
-    List<Element> elements = TextualScenarioHelper.getElements(model);
-    for (final Element element : elements) {
-      {
-        if ((((element instanceof SequenceMessageType) || (element instanceof ArmTimerMessage)) || 
-          (element instanceof CombinedFragment))) {
-          if (((!names.add(this.getElementMapKey(element))) && element.equals(elementToCheck))) {
-            return true;
-          }
-        }
-        if ((element instanceof CombinedFragment)) {
-          boolean _checkDuplicated = this.checkDuplicated(elementToCheck, element, names);
-          boolean _equals = (_checkDuplicated == true);
-          if (_equals) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-  
   @Check
   public void checkDeactivateMessagesModel(final Model model) {
     this.checkDeactivateMessages(model, CollectionLiterals.<String>newLinkedList(), model.getElements());
@@ -248,6 +204,9 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         }
         if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
           messageTargets.add(((ArmTimerMessage) obj).getParticipant());
+        }
+        if (((obj instanceof FoundMessage) && (((FoundMessage) obj).getExecution() != null))) {
+          messageTargets.add(((FoundMessage) obj).getTarget());
         }
         if ((obj instanceof CombinedFragment)) {
           CombinedFragment cf = ((CombinedFragment) obj);
@@ -423,20 +382,6 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       this.error(TextualScenarioValidator.SAME_SOURCE_AND_TARGET_ERROR, 
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
     }
-  }
-  
-  @Check
-  public boolean checkDuplicatedCombinedFragment(final CombinedFragment combinedFragment) {
-    boolean _xblockexpression = false;
-    {
-      EObject model = TextualScenarioHelper.getModelContainer(combinedFragment);
-      boolean _xifexpression = false;
-      if ((model instanceof Model)) {
-        _xifexpression = this.checkDuplicated(combinedFragment, model, CollectionLiterals.<String>newHashSet());
-      }
-      _xblockexpression = _xifexpression;
-    }
-    return _xblockexpression;
   }
   
   /**
@@ -759,6 +704,11 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         }
         if (((obj instanceof ArmTimerMessage) && (((ArmTimerMessage) obj).getExecution() != null))) {
           messageWithExecutionTargets.add(((ArmTimerMessage) obj).getParticipant());
+          messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
+          messageWithExecutionTargetsContainer.add(container);
+        }
+        if (((obj instanceof FoundMessage) && (((FoundMessage) obj).getExecution() != null))) {
+          messageWithExecutionTargets.add(((FoundMessage) obj).getTarget());
           messageWithExecutionTargetsIndex.add(Integer.valueOf(index));
           messageWithExecutionTargetsContainer.add(container);
         }

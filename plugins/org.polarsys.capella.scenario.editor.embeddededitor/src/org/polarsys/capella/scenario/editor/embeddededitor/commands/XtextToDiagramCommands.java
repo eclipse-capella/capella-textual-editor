@@ -1060,7 +1060,7 @@ public class XtextToDiagramCommands {
     combinedFragmentOperands.removeAll(processedOperands);
     for (InteractionOperand operand : combinedFragmentOperands) {
       // go trough each text operand and check that
-      if (textOperandBlock.getExpression().equals(HelperCommands.getExpressionText(operand))) {
+      if (isSameExpression(HelperCommands.getExpressionText(operand), textOperandBlock.getExpression())) {
         processedOperands.add(operand);
         return operand;
       }
@@ -1087,7 +1087,7 @@ public class XtextToDiagramCommands {
 
     for (InteractionOperand operand : combinedFragmentOperands) {
       // go trough each text operand and check that
-      if (textCombinedFragment.getExpression().equals(HelperCommands.getExpressionText(operand))) {
+      if (isSameExpression(HelperCommands.getExpressionText(operand), textCombinedFragment.getExpression())) {
         return operand;
       }
     }
@@ -1245,7 +1245,8 @@ public class XtextToDiagramCommands {
     InteractionOperand capellaOperand = capellaOperands.get(0);
     Operand xtextOperand;
     boolean operandsHaveSameExpressions = true;
-    if (!HelperCommands.getExpressionText(capellaOperand).equals(textCombinedFragment.getExpression())) {
+    
+    if (!isSameExpression(HelperCommands.getExpressionText(capellaOperand), textCombinedFragment.getExpression())) {
       operandsHaveSameExpressions = false;
     }
 
@@ -1254,7 +1255,8 @@ public class XtextToDiagramCommands {
     while (i < capellaOperands.size() && operandsHaveSameExpressions) {
       capellaOperand = capellaOperands.get(i);
       xtextOperand = textCombinedFragment.getOperands().get(i - 1);
-      if (!HelperCommands.getExpressionText(capellaOperand).equals(xtextOperand.getExpression())) {
+      
+      if (!isSameExpression(HelperCommands.getExpressionText(capellaOperand), xtextOperand.getExpression())) {
         operandsHaveSameExpressions = false;
       }
       i++;
@@ -2067,17 +2069,19 @@ public class XtextToDiagramCommands {
     operand.setName("operand");
     operand.getCoveredInstanceRoles().addAll(coveredInstanceRoles);
 
-    Constraint constraint = CapellacoreFactory.eINSTANCE.createConstraint();
-    OpaqueExpression expression = DatavalueFactory.eINSTANCE.createOpaqueExpression();
+    if (condition != null) {
+      Constraint constraint = CapellacoreFactory.eINSTANCE.createConstraint();
+      OpaqueExpression expression = DatavalueFactory.eINSTANCE.createOpaqueExpression();
 
-    constraint.setOwnedSpecification(expression);
-    operand.getOwnedConstraints().add(constraint);
-    CreationHelper.performContributionCommands(constraint, operand);
+      constraint.setOwnedSpecification(expression);
+      operand.getOwnedConstraints().add(constraint);
+      CreationHelper.performContributionCommands(constraint, operand);
 
-    expression.getLanguages().add(ConstraintExt.OPAQUE_EXPRESSION_LINKED_TEXT);
-    expression.getBodies().add(condition);
+      expression.getLanguages().add(ConstraintExt.OPAQUE_EXPRESSION_LINKED_TEXT);
+      expression.getBodies().add(condition);
 
-    operand.setGuard(constraint);
+      operand.setGuard(constraint);
+    }
     return operand;
   }
 
@@ -2220,8 +2224,6 @@ public class XtextToDiagramCommands {
     return null;
   }
   
-  
-  
    /**
    * Remove all references that are in the diagram, but not in the editor.
    * 
@@ -2241,7 +2243,6 @@ public class XtextToDiagramCommands {
       removeReferenceFromScenario(scenario, timeLapse);
     }
   }
-  
   
    /**
    * Return the list of Capella references to be deleted (the ones that don't have corresponding xtext elements)
@@ -2267,9 +2268,6 @@ public class XtextToDiagramCommands {
     }
     return referencesToBeDeleted;
   }
-  
-  
-  
    
   /**
    * Remove a reference from scenario. Remove the interaction fragments.
@@ -2288,8 +2286,6 @@ public class XtextToDiagramCommands {
     // Remove interaction fragments
     scenario.getOwnedInteractionFragments().removeAll(Arrays.asList(reference.getStart(), reference.getFinish()));
   }
-  
-  
   
   /**
    * Check if a Capella reference has a correspondent in xtext scenario
@@ -2442,5 +2438,20 @@ public class XtextToDiagramCommands {
       }
     }
     return null;
+  }
+  
+  /**
+   * Check if the two expressions match
+   * 
+   * @param operandExpression
+   * @param textExpression
+   * @return true if the two expressions are equals
+   */
+  public static boolean isSameExpression(String operandExpression, String textExpression) {
+    if(operandExpression == null && textExpression == null)
+      return true;
+    if(operandExpression != null && textExpression != null)
+      return operandExpression.equals(textExpression);
+    return false;
   }
 }

@@ -1391,23 +1391,37 @@ ruleFoundMessage returns [EObject current=null]
 		)
 		(
 			(
-				lv_doubleDot_2_0=':'
+				lv_execution_2_0='withExecution'
 				{
-					newLeafNode(lv_doubleDot_2_0, grammarAccess.getFoundMessageAccess().getDoubleDotColonKeyword_2_0());
+					newLeafNode(lv_execution_2_0, grammarAccess.getFoundMessageAccess().getExecutionWithExecutionKeyword_2_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getFoundMessageRule());
 					}
-					setWithLastConsumed($current, "doubleDot", lv_doubleDot_2_0, ":");
+					setWithLastConsumed($current, "execution", lv_execution_2_0, "withExecution");
+				}
+			)
+		)?
+		(
+			(
+				lv_doubleDot_3_0=':'
+				{
+					newLeafNode(lv_doubleDot_3_0, grammarAccess.getFoundMessageAccess().getDoubleDotColonKeyword_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getFoundMessageRule());
+					}
+					setWithLastConsumed($current, "doubleDot", lv_doubleDot_3_0, ":");
 				}
 			)
 		)
 		(
 			(
-				lv_name_3_0=RULE_STRING
+				lv_name_4_0=RULE_STRING
 				{
-					newLeafNode(lv_name_3_0, grammarAccess.getFoundMessageAccess().getNameSTRINGTerminalRuleCall_3_0());
+					newLeafNode(lv_name_4_0, grammarAccess.getFoundMessageAccess().getNameSTRINGTerminalRuleCall_4_0());
 				}
 				{
 					if ($current==null) {
@@ -1416,7 +1430,7 @@ ruleFoundMessage returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_3_0,
+						lv_name_4_0,
 						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)

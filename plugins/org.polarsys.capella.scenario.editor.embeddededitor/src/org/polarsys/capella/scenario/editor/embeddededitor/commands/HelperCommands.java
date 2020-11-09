@@ -32,9 +32,9 @@ public class HelperCommands {
     Constraint guard = operand.getGuard();
     if (guard != null) {
       OpaqueExpression expression = (OpaqueExpression) guard.getOwnedSpecification();
-      return expression.getBodies().isEmpty() ? "" : expression.getBodies().get(0);
+      return expression.getBodies().isEmpty() ? null : expression.getBodies().get(0);
     }
-    return "";
+    return null;
   }
   
   public static List<Issue> getValidationIsuesTextResource(XtextResource resource) {

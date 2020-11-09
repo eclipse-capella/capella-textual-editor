@@ -42,6 +42,8 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
 import org.eclipse.emf.ecore.EReference
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage
 
 /**
  * This class contains custom validation rules. 
@@ -105,11 +107,20 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 	
+	@Check
+	def checkSequenceMessagesExchangeType(SequenceMessage sequenceMessage) {
+		checkMessagesExchangeType(sequenceMessage)
+	}
+	
+	@Check
+	def checkSequenceMessagesExchangeType(LostFoundMessage lostFoundMessage) {
+		checkMessagesExchangeType(lostFoundMessage)
+	}
+	
 	/*
 	 * check that a CE (component exchange) and an FE (functional exchange) are not used in the same place
 	 */
-	@Check
-	def checkMessagesExchangeType(SequenceMessage message) {
+	def checkMessagesExchangeType(Message message) {
 		if (EmbeddedEditorInstanceHelper.isESScenario()) {
 			var model = TextualScenarioHelper.getModelContainer(message)
 			if (model instanceof Model) {
@@ -146,63 +157,6 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 
-	/*
-	 * Do not allow duplicated messages between name source, target
-	 * ex: not allowed: "A1" -> "A2" : "MSG1", "A1" -> "A2" : "MSG1"
-	 * ex: allowed: "A1" -> "A2" : "MSG1", "A2" -> "A3" : "MSG1"
-	 */
-	
-	@Check
-	def checkDuplicatedSequenceMessageNames(SequenceMessage message) {
-		var model = TextualScenarioHelper.getModelContainer(message)
-		if(model instanceof Model) 
-			checkDuplicated(message, model as Model, newHashSet)	
-	}
-	
-	@Check
-	def checkDuplicatedArmTimerMessageNames(ArmTimerMessage message) {
-		var model = TextualScenarioHelper.getModelContainer(message) 
-		if(model instanceof Model)
-			checkDuplicated(message, model as Model, newHashSet)	
-	}
-	
-	def boolean checkDuplicated(EObject elementToCheck, EObject model, HashSet<String> names) {
-		var elements = TextualScenarioHelper.getElements(model)
-		for (element : elements) {
-
-			if (element instanceof SequenceMessageType || element instanceof ArmTimerMessage ||
-				element instanceof CombinedFragment) {
-				if (!names.add(getElementMapKey(element)) && element.equals(elementToCheck)) {
-//					if (element instanceof SequenceMessageType) {
-//						var source = (element as SequenceMessageType).source
-//						var target = (element as SequenceMessageType).target
-//						error(
-//							'The same exchange is already used in text editor between \"' + source + "\" and \"" +
-//								target + "\"!", TextualScenarioPackage.Literals.MESSAGE__NAME)
-//					} else if (element instanceof ArmTimerMessage) {
-//						error('The same exchange is already used in text editor on timeline \"' +
-//							(element as ArmTimerMessage).participant + "\"!",
-//							TextualScenarioPackage.Literals.MESSAGE__NAME)
-//					} else 
-//					if (element instanceof CombinedFragment) {
-//						error(String.format(
-//							"The same " + element.keyword + " with expression \" " + element.expression +
-//								"\" and timelines " + element.timelines + " is already used in text editor!"
-//						), TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION)
-//					}
-					return true
-				}
-			}
-
-			if (element instanceof CombinedFragment) {
-				if (checkDuplicated(elementToCheck, element, names) == true) {
-					return true
-				}
-			}
-		}
-		return false
-	}
-	
 	@Check
 	def checkDeactivateMessagesModel(Model model) {
 		checkDeactivateMessages(model, newLinkedList, model.elements)
@@ -227,6 +181,11 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			if (obj instanceof ArmTimerMessage && (obj as ArmTimerMessage).execution !== null) {
 				// add the already encountered messages to the list
 				messageTargets.add((obj as ArmTimerMessage).participant)
+			}
+			
+			if (obj instanceof FoundMessage && (obj as FoundMessage).execution !== null) {
+				// add the already encountered messages to the list
+				messageTargets.add((obj as FoundMessage).target)
 			}
 			
 			if (obj instanceof CombinedFragment) {
@@ -408,13 +367,6 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			error(SAME_SOURCE_AND_TARGET_ERROR,
 							TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE)
 		}
-	}
-	
-	@Check
-	def checkDuplicatedCombinedFragment(CombinedFragment combinedFragment) {
-		var model = TextualScenarioHelper.getModelContainer(combinedFragment)
-		if(model instanceof Model)
-			checkDuplicated(combinedFragment, model, newHashSet)
 	}
 	
 	/*
@@ -707,6 +659,12 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 			
 			if (obj instanceof ArmTimerMessage && (obj as ArmTimerMessage).execution !== null) {
 				messageWithExecutionTargets.add((obj as ArmTimerMessage).participant)
+				messageWithExecutionTargetsIndex.add(index)
+				messageWithExecutionTargetsContainer.add(container)
+			}
+			
+			if (obj instanceof FoundMessage && (obj as FoundMessage).execution !== null) {
+				messageWithExecutionTargets.add((obj as FoundMessage).target)
 				messageWithExecutionTargetsIndex.add(index)
 				messageWithExecutionTargetsContainer.add(container)
 			}
