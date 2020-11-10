@@ -26,11 +26,11 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType
 import java.util.Set
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage
+import java.util.List
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -155,7 +155,7 @@ class TextualScenarioHelper {
 	/*
 	 * get all elements on the same level as modelContainer  
 	 */
-	def static getElements(EObject modelContainer) {
+	def static getContainerElements(EObject modelContainer) {
 		
 		if (modelContainer instanceof Model) {
 			return (modelContainer as Model).elements
@@ -174,6 +174,21 @@ class TextualScenarioHelper {
 			return (modelContainer as Block).blockElements
 		}
 		return newArrayList
+	}
+	
+	/*
+	 * get all elements from xtext
+	 */
+	def static List<Element> getAllElements(EObject modelContainer, List<Element> allElements) {
+		for (Element element : getContainerElements(modelContainer)) {
+			if (!(element instanceof CombinedFragment)) {
+				allElements.add(element)
+			} else {
+				allElements.add(element)
+				getAllElements(element, allElements)
+			}
+		}
+		return allElements;
 	}
 	
 	/*

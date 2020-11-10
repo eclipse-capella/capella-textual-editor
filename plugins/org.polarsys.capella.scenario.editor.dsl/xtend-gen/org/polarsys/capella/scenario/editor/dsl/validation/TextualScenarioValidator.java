@@ -543,7 +543,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   public boolean checkElementAfterDelete(final EObject model, final EObject checkedElement, final String target, final EAttribute checkedAttribute, final int index) {
-    List<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getContainerElements(model);
     for (final EObject element : elements) {
       {
         boolean _equals = element.equals(checkedElement);
@@ -586,7 +586,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   public boolean checkCreateMessageValid(final EObject model, final CreateMessage createMessage) {
     String target = createMessage.getTarget();
-    List<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getContainerElements(model);
     for (final EObject element : elements) {
       {
         if ((element instanceof SequenceMessageType)) {
