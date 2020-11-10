@@ -787,6 +787,9 @@ public class XtextToDiagramCommands {
     if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) {
       return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) elementFromXtext).getExecution() != null;
     }
+    if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage) {
+      return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage) elementFromXtext).getExecution() != null;
+    }
     return false;
   }
 
@@ -1822,10 +1825,10 @@ public class XtextToDiagramCommands {
       scenario.getOwnedInteractionFragments().add(receivingEnd);
     }
 
-    // execution end - CREATE and DELETE messages don't have an execution
+    // execution end - CREATE and DELETE messages don't have an execution, also LOST message
     if (!isReplyMessage
         && (seqMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage
-            || seqMessage instanceof ArmTimerMessage)) {
+            || seqMessage instanceof ArmTimerMessage || seqMessage instanceof FoundMessage)) {
       ExecutionEnd executionEnd = InteractionFactory.eINSTANCE.createExecutionEnd();
       if (!hasReturn(seqMessage)) {
         // do not add this execution end to the interaction fragments list, as we will add the sending end of the reply
@@ -1873,7 +1876,6 @@ public class XtextToDiagramCommands {
     } else {
       exchanges = EmbeddedEditorInstanceHelper.getExchangeMessages(sourceName, targetName);
     }
-    //todo_gec
 
     if (EmbeddedEditorInstanceHelper.isInterfaceScenario()) {
       exchanges = exchanges.stream()

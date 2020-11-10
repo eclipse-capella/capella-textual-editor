@@ -163,8 +163,8 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
         }
       } else if (target instanceof SequenceMessage) {
         SequenceMessage message = (SequenceMessage) target;
-        InstanceRole sourceIr = message.getSendingEnd().getCovered();
-        InstanceRole targetIr = message.getReceivingEnd().getCovered();
+        InstanceRole sourceIr = message.getSendingEnd() == null ? null : message.getSendingEnd().getCovered();
+        InstanceRole targetIr = message.getReceivingEnd() == null ? null : message.getReceivingEnd().getCovered();
         switch (message.getKind()) {
         case CREATE:
           newElements.add(sourceIr.getName() + " ->+ " + targetIr.getName() + " : " + message.getName());
@@ -176,7 +176,13 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
           newElements.add("->> " + targetIr.getName() + " : " + message.getName());
           break;
         default:
-          newElements.add(sourceIr.getName() + " -> " + targetIr.getName() + " : " + message.getName());
+          if (sourceIr == null) {
+            newElements.add("o-> " + targetIr.getName() + " : " + message.getName());
+          } else if (targetIr == null) {
+            newElements.add(sourceIr.getName() + " ->o : " + message.getName());
+          } else {
+            newElements.add(sourceIr.getName() + " -> " + targetIr.getName() + " : " + message.getName());
+          }
         }
         
       } else if (target instanceof StateFragment) {

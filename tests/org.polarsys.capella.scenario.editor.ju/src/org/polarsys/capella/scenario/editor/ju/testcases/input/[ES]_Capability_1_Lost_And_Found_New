@@ -1,0 +1,13 @@
+scenario {
+	component "System"
+	actor "SA 2"
+	actor "SA 3"
+	"SA 2" -> "SA 3" : "fe1"
+	o-> "SA 2" withExecution : "f2"
+	o-> "SA 3" : "fe1"
+	"SA 2" ->o : "fe1"
+	deactivate "SA 2"
+	loop over "SA 2" "SA 3" {
+	}
+	"SA 2" ->o : "fe1"
+}

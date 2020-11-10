@@ -24,6 +24,8 @@ import org.polarsys.capella.scenario.editor.ju.testcases.DeleteStateFragmentFrom
 import org.polarsys.capella.scenario.editor.ju.testcases.DuplicatedCombinedFragmentsAndOperandsXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.DuplicatedMessagesFromXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.ExchangesAndInstanceRolesXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.LostAndFoundXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.ReferencesXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.ReloadDataFromDiagramToTextTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.RolesXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.SaveDataFromXtextToDiagramTestCase;
@@ -63,6 +65,8 @@ public class ScenarioEditorTestSuite extends BasicTestSuite {
     tests.add(new DeleteOperandsXtextToDiagramTestCase());
     tests.add(new RolesXtextToDiagramTestCase());
     tests.add(new ExchangesAndInstanceRolesXtextToDiagramTestCase());
+    tests.add(new LostAndFoundXtextToDiagramTestCase());
+    tests.add(new ReferencesXtextToDiagramTestCase());
     return tests;
   }
 }

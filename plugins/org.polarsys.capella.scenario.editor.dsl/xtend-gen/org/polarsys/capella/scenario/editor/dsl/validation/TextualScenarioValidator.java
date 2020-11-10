@@ -110,6 +110,32 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
+  @Check
+  public void checkMessagesExist(final LostMessage message) {
+    boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), null).contains(
+      message.getName());
+    boolean _not = (!_contains);
+    if (_not) {
+      String _source = message.getSource();
+      String _plus = ("Exchange does not exist from \"" + _source);
+      String _plus_1 = (_plus + "\"!");
+      this.error(_plus_1, TextualScenarioPackage.Literals.MESSAGE__NAME);
+    }
+  }
+  
+  @Check
+  public void checkMessagesExist(final FoundMessage message) {
+    boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(null, message.getTarget()).contains(
+      message.getName());
+    boolean _not = (!_contains);
+    if (_not) {
+      String _target = message.getTarget();
+      String _plus = ("Exchange does not exist to \"" + _target);
+      String _plus_1 = (_plus + "\"!");
+      this.error(_plus_1, TextualScenarioPackage.Literals.MESSAGE__NAME);
+    }
+  }
+  
   /**
    * Check that the source and the target of the sequence messages type are defined in text, before using them in the message
    */
