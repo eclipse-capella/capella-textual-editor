@@ -53,6 +53,7 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 					put(grammarAccess.getElementAccess().getAlternatives(), "rule__Element__Alternatives");
 					put(grammarAccess.getMessageAccess().getAlternatives(), "rule__Message__Alternatives");
 					put(grammarAccess.getSequenceMessageTypeAccess().getAlternatives(), "rule__SequenceMessageType__Alternatives");
+					put(grammarAccess.getLostFoundMessageAccess().getAlternatives(), "rule__LostFoundMessage__Alternatives");
 					put(grammarAccess.getCombinedFragmentAccess().getKeywordAlternatives_0_0(), "rule__CombinedFragment__KeywordAlternatives_0_0");
 					put(grammarAccess.getStateFragmentAccess().getKeywordAlternatives_2_0(), "rule__StateFragment__KeywordAlternatives_2_0");
 					put(grammarAccess.getModelAccess().getGroup(), "rule__Model__Group__0");
@@ -67,11 +68,14 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 					put(grammarAccess.getCreateMessageAccess().getGroup(), "rule__CreateMessage__Group__0");
 					put(grammarAccess.getDeleteMessageAccess().getGroup(), "rule__DeleteMessage__Group__0");
 					put(grammarAccess.getArmTimerMessageAccess().getGroup(), "rule__ArmTimerMessage__Group__0");
+					put(grammarAccess.getLostMessageAccess().getGroup(), "rule__LostMessage__Group__0");
+					put(grammarAccess.getFoundMessageAccess().getGroup(), "rule__FoundMessage__Group__0");
 					put(grammarAccess.getParticipantDeactivationAccess().getGroup(), "rule__ParticipantDeactivation__Group__0");
 					put(grammarAccess.getCombinedFragmentAccess().getGroup(), "rule__CombinedFragment__Group__0");
 					put(grammarAccess.getOperandAccess().getGroup(), "rule__Operand__Group__0");
 					put(grammarAccess.getBlockAccess().getGroup(), "rule__Block__Group__0");
 					put(grammarAccess.getStateFragmentAccess().getGroup(), "rule__StateFragment__Group__0");
+					put(grammarAccess.getReferenceAccess().getGroup(), "rule__Reference__Group__0");
 					put(grammarAccess.getModelAccess().getBeginAssignment_1(), "rule__Model__BeginAssignment_1");
 					put(grammarAccess.getModelAccess().getParticipantsAssignment_2(), "rule__Model__ParticipantsAssignment_2");
 					put(grammarAccess.getModelAccess().getElementsAssignment_3(), "rule__Model__ElementsAssignment_3");
@@ -112,6 +116,15 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 					put(grammarAccess.getArmTimerMessageAccess().getExecutionAssignment_2(), "rule__ArmTimerMessage__ExecutionAssignment_2");
 					put(grammarAccess.getArmTimerMessageAccess().getDoubleDotAssignment_3(), "rule__ArmTimerMessage__DoubleDotAssignment_3");
 					put(grammarAccess.getArmTimerMessageAccess().getNameAssignment_4(), "rule__ArmTimerMessage__NameAssignment_4");
+					put(grammarAccess.getLostMessageAccess().getSourceAssignment_0(), "rule__LostMessage__SourceAssignment_0");
+					put(grammarAccess.getLostMessageAccess().getArrowAssignment_1(), "rule__LostMessage__ArrowAssignment_1");
+					put(grammarAccess.getLostMessageAccess().getDoubleDotAssignment_2(), "rule__LostMessage__DoubleDotAssignment_2");
+					put(grammarAccess.getLostMessageAccess().getNameAssignment_3(), "rule__LostMessage__NameAssignment_3");
+					put(grammarAccess.getFoundMessageAccess().getArrowAssignment_0(), "rule__FoundMessage__ArrowAssignment_0");
+					put(grammarAccess.getFoundMessageAccess().getTargetAssignment_1(), "rule__FoundMessage__TargetAssignment_1");
+					put(grammarAccess.getFoundMessageAccess().getExecutionAssignment_2(), "rule__FoundMessage__ExecutionAssignment_2");
+					put(grammarAccess.getFoundMessageAccess().getDoubleDotAssignment_3(), "rule__FoundMessage__DoubleDotAssignment_3");
+					put(grammarAccess.getFoundMessageAccess().getNameAssignment_4(), "rule__FoundMessage__NameAssignment_4");
 					put(grammarAccess.getParticipantDeactivationAccess().getKeywordAssignment_0(), "rule__ParticipantDeactivation__KeywordAssignment_0");
 					put(grammarAccess.getParticipantDeactivationAccess().getNameAssignment_1(), "rule__ParticipantDeactivation__NameAssignment_1");
 					put(grammarAccess.getCombinedFragmentAccess().getKeywordAssignment_0(), "rule__CombinedFragment__KeywordAssignment_0");
@@ -130,6 +143,10 @@ public class TextualScenarioParser extends AbstractContentAssistParser {
 					put(grammarAccess.getStateFragmentAccess().getTimelineAssignment_1(), "rule__StateFragment__TimelineAssignment_1");
 					put(grammarAccess.getStateFragmentAccess().getKeywordAssignment_2(), "rule__StateFragment__KeywordAssignment_2");
 					put(grammarAccess.getStateFragmentAccess().getNameAssignment_3(), "rule__StateFragment__NameAssignment_3");
+					put(grammarAccess.getReferenceAccess().getKeywordAssignment_0(), "rule__Reference__KeywordAssignment_0");
+					put(grammarAccess.getReferenceAccess().getNameAssignment_1(), "rule__Reference__NameAssignment_1");
+					put(grammarAccess.getReferenceAccess().getOverAssignment_2(), "rule__Reference__OverAssignment_2");
+					put(grammarAccess.getReferenceAccess().getTimelinesAssignment_3(), "rule__Reference__TimelinesAssignment_3");
 				}
 			};
 		}

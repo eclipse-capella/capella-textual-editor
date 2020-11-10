@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0
+ *  
+ *  SPDX-License-Identifier: EPL-2.0
+ *  
+ *  Contributors:
+ *     Thales - initial API and implementation
+ ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -27,6 +39,9 @@ import org.polarsys.capella.core.model.helpers.CapellaElementExt;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Message;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
@@ -59,8 +74,8 @@ public class TextualScenarioHelper {
       }
       for (final Element element : elements) {
         {
-          if ((element instanceof SequenceMessage)) {
-            SequenceMessage message = ((SequenceMessage) element);
+          if ((element instanceof Message)) {
+            Message message = ((Message) element);
             return TextualScenarioHelper.getMessageExchangeType(message);
           }
           if ((element instanceof CombinedFragment)) {
@@ -76,8 +91,9 @@ public class TextualScenarioHelper {
   /**
    * we return CE or FE or null in case we allow both or other type
    */
-  public static Object getMessageExchangeType(final SequenceMessage message) {
-    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
+  public static Object getMessageExchangeType(final Message message) {
+    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(TextualScenarioHelper.getSourceOfMessage(message), 
+      TextualScenarioHelper.getTargetOfMessage(message));
     HashSet<Object> _newHashSet = CollectionLiterals.<Object>newHashSet();
     Set<Object> allowedTypes = ((Set<Object>) _newHashSet);
     for (final AbstractEventOperation exchange : exchangesAvailable) {
@@ -100,10 +116,11 @@ public class TextualScenarioHelper {
   /**
    * we return a list of available exchanges CE or FE
    */
-  public static Set getAllMessageExchangeType(final SequenceMessage message) {
-    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
+  public static Set getAllMessageExchangeType(final Message message) {
     HashSet<Object> _newHashSet = CollectionLiterals.<Object>newHashSet();
     Set<Object> allowedTypes = ((Set<Object>) _newHashSet);
+    List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(TextualScenarioHelper.getSourceOfMessage(message), 
+      TextualScenarioHelper.getTargetOfMessage(message));
     for (final AbstractEventOperation exchange : exchangesAvailable) {
       if (((message.getName() != null) && message.getName().equals(CapellaElementExt.getName(exchange)))) {
         String type = TextualScenarioHelper.getExchangeType(exchange);
@@ -126,12 +143,32 @@ public class TextualScenarioHelper {
     return null;
   }
   
-  public static EList<Participant> participantsDefinedBefore(final EObject element, final Model rootModel) {
-    if ((element instanceof Model)) {
-      return ((Model) element).getParticipants();
+  private static String getSourceOfMessage(final Message message) {
+    String source = ((String) null);
+    if ((message instanceof SequenceMessage)) {
+      source = ((SequenceMessage) message).getSource();
     } else {
-      return rootModel.getParticipants();
+      if ((message instanceof LostMessage)) {
+        source = ((LostMessage) message).getSource();
+      }
     }
+    return source;
+  }
+  
+  private static String getTargetOfMessage(final Message message) {
+    String target = ((String) null);
+    if ((message instanceof SequenceMessage)) {
+      target = ((SequenceMessage) message).getTarget();
+    } else {
+      if ((message instanceof FoundMessage)) {
+        target = ((FoundMessage) message).getTarget();
+      }
+    }
+    return target;
+  }
+  
+  public static EList<Participant> participantsDefinedBefore(final Model rootModel) {
+    return rootModel.getParticipants();
   }
   
   public static ArrayList<String> participantsDefinedBeforeNames(final EObject element) {
@@ -139,7 +176,7 @@ public class TextualScenarioHelper {
     EObject container = TextualScenarioHelper.getModelContainer(element);
     if ((container instanceof Model)) {
       Model model = ((Model) container);
-      EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(element, model);
+      EList<Participant> participants = TextualScenarioHelper.participantsDefinedBefore(model);
       for (final Participant participant : participants) {
         participantsNames.add(participant.getName());
       }

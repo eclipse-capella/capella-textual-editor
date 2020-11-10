@@ -15,6 +15,7 @@ package org.polarsys.capella.scenario.editor.embeddededitor.commands;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -39,12 +40,14 @@ import org.polarsys.capella.core.data.interaction.InteractionFragment;
 import org.polarsys.capella.core.data.interaction.InteractionOperand;
 import org.polarsys.capella.core.data.interaction.InteractionOperatorKind;
 import org.polarsys.capella.core.data.interaction.InteractionState;
+import org.polarsys.capella.core.data.interaction.InteractionUse;
 import org.polarsys.capella.core.data.interaction.MessageEnd;
 import org.polarsys.capella.core.data.interaction.MessageKind;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.SequenceMessage;
 import org.polarsys.capella.core.data.interaction.TimeLapse;
 import org.polarsys.capella.core.data.interaction.StateFragment;
+import org.polarsys.capella.core.data.interaction.AbstractFragment;
 import org.polarsys.capella.core.data.interaction.CombinedFragment;
 import org.polarsys.capella.core.data.oa.Entity;
 import org.polarsys.capella.core.data.oa.OperationalActivity;
@@ -56,10 +59,14 @@ import org.polarsys.capella.core.sirius.analysis.SequenceDiagramServices;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostFoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioFactory;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.impl.TextualScenarioFactoryImpl;
 import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
@@ -328,12 +335,12 @@ public class DiagramToXtextCommands {
     // The list of fragments contains both ends of each sequence message (sender and receiver)
     // and only one end of each execution (the one where execution ends). This means that we should skip
     // the receiving end for each message, so that we don't duplicate the generated xtext message.
-    Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.Message> messagesToDeactivate = new ArrayDeque();
+    Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.Message> messagesToDeactivate = new ArrayDeque <>();
 
     // we need to save the combined fragments and blocks on a stack because this 
     // elements may contain other inner elements and we need to know when to close a combined fragment
-    Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment> combinedFragments = new ArrayDeque();
-    Deque<Block> blockOperands = new ArrayDeque();
+    Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment> combinedFragments = new ArrayDeque <>();
+    Deque<Block> blockOperands = new ArrayDeque <>();
 
     int i = 0;
     while (i < ends.length) {
@@ -348,7 +355,15 @@ public class DiagramToXtextCommands {
         generateDeactivatioOnMessages((ExecutionEnd) ends[i], messagesToDeactivate, blockOperands, elements, factory);
         i++;
       } else if (ends[i] instanceof FragmentEnd) {
-        i = processCombinedFragments(ends, i, combinedFragments, blockOperands, elements, scenario, factory);
+        AbstractFragment abstractFragment = ((FragmentEnd) ends[i]).getAbstractFragment();
+        if (abstractFragment instanceof CombinedFragment) {
+          i = processCombinedFragments(ends, i, combinedFragments, blockOperands, elements, scenario, factory);
+        } else if (abstractFragment instanceof InteractionUse) {
+          if (((FragmentEnd) ends[i]).getName().equals("start")) {
+            generateReference((InteractionUse) abstractFragment, factory, elements, blockOperands);
+          }
+          i++;
+        }
       } else if (ends[i] instanceof InteractionOperand) {
         generateOperandsOnCombinedFragment((InteractionOperand) ends[i], combinedFragments, blockOperands, factory);
         i++;
@@ -573,15 +588,22 @@ public class DiagramToXtextCommands {
           blockOperands.peek().getBlockElements().add((org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) message);
         }
 
-        // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
-        index = index + 2;
+        int step = 0;
+        if(message instanceof LostFoundMessage) {
+          index = index + 1;
+          step = 1;
+        } else {
+          // skip the next MessageEnd (the receiving end), as it will generate the same xtext message
+          index = index + 2;
+          step = 2;
+        }
 
         boolean isSimpleMessage = false;
         // check to see if this is a simple message (in this case, the next fragment will be its own execution end
         // or its own reply message)
         if (index < ends.length && ends[index] instanceof ExecutionEnd) {
           // check if end is its own execution end
-          SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[index - 2]).getMessage();
+          SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[index - step]).getMessage();
           SequenceMessage seqMessFromExecutionEnd = ExecutionEndExt.getMessage((ExecutionEnd) ends[index]);
 
           if (seqMessFromMessageEnd.equals(seqMessFromExecutionEnd)) {
@@ -593,7 +615,7 @@ public class DiagramToXtextCommands {
           }
         } else if (index < ends.length && ends[index] instanceof MessageEnd) {
           // check if end is its own reply message
-          SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[index - 2]).getMessage();
+          SequenceMessage seqMessFromMessageEnd = ((MessageEnd) ends[index - step]).getMessage();
           SequenceMessage seqMessFromNextMessageEnd = ((MessageEnd) ends[index]).getMessage();
           SequenceMessage replyMessage = seqMessFromNextMessageEnd != null
               && seqMessFromNextMessageEnd.getKind() == MessageKind.REPLY
@@ -657,7 +679,8 @@ public class DiagramToXtextCommands {
       Deque<org.polarsys.capella.scenario.editor.dsl.textualScenario.Message> messagesToDeactivate,
       EObject message) {
     if (message instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage ||
-        message instanceof ArmTimerMessage) {
+        message instanceof ArmTimerMessage ||
+        message instanceof FoundMessage) {
       messagesToDeactivate.push((org.polarsys.capella.scenario.editor.dsl.textualScenario.Message) message);
     }
   }
@@ -675,9 +698,14 @@ public class DiagramToXtextCommands {
       org.polarsys.capella.scenario.editor.dsl.textualScenario.Message currentSequenceMessage = messagesToDeactivate
           .pop();
       if (currentSequenceMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) {
-        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) currentSequenceMessage).setExecution(DslConstants.WITH_EXECUTION);
-      } else {
-        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) currentSequenceMessage).setExecution(DslConstants.WITH_EXECUTION);
+        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage) currentSequenceMessage)
+            .setExecution(DslConstants.WITH_EXECUTION);
+      } else if (currentSequenceMessage instanceof FoundMessage) {
+        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage) currentSequenceMessage)
+            .setExecution(DslConstants.WITH_EXECUTION);
+      } else if (currentSequenceMessage instanceof ArmTimerMessage) {
+        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) currentSequenceMessage)
+            .setExecution(DslConstants.WITH_EXECUTION);
       }
     }
   }
@@ -746,51 +774,72 @@ public class DiagramToXtextCommands {
    * @return - EObject the xtext message object created in this method
    */
   private static EObject createMessage(Object object, TextualScenarioFactory factory) {
-    EObject xtextSequenceMessage = null;
+    SequenceMessageType xtextSequenceMessage = null;
     MessageEnd end = (MessageEnd) object;
     SequenceMessage capellaSequenceMessage = end.getMessage();
 
     switch (capellaSequenceMessage.getKind()) {
-    case CREATE:
-      xtextSequenceMessage = factory.createCreateMessage();
-      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextSequenceMessage).setArrow("->+");
-      break;
-    case DELETE:
-      xtextSequenceMessage = factory.createDeleteMessage();
-      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextSequenceMessage).setArrow("->x");
-      break;
     case REPLY:
       break;
     case TIMER:
-      xtextSequenceMessage = factory.createArmTimerMessage();
-      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) xtextSequenceMessage).setArrow("->>");
-      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) xtextSequenceMessage)
-          .setName(capellaSequenceMessage.getName());
-      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) xtextSequenceMessage).setDoubleDot(":");
+      org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage xtextArmTimerMessage = factory.createArmTimerMessage();
+      xtextArmTimerMessage.setArrow("->>");
+      xtextArmTimerMessage.setName(capellaSequenceMessage.getName());
+      xtextArmTimerMessage.setDoubleDot(":");
       if (capellaSequenceMessage.getSendingEnd() != null
-          && !capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().isEmpty())
-        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) xtextSequenceMessage)
-            .setParticipant(capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
-      return xtextSequenceMessage;
+          && !capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().isEmpty()) {
+        xtextArmTimerMessage.setParticipant(capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
+      }
+      return xtextArmTimerMessage;
+    case CREATE:
+      xtextSequenceMessage = factory.createCreateMessage();
+      xtextSequenceMessage.setArrow("->+");
+      break;
+    case DELETE:
+      xtextSequenceMessage = factory.createDeleteMessage();
+      xtextSequenceMessage.setArrow("->x");
+      break;  
     case ASYNCHRONOUS_CALL:
     case SYNCHRONOUS_CALL:
     default:
-      xtextSequenceMessage = factory.createSequenceMessage();
-      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextSequenceMessage).setArrow("->");
+      // case lost message
+      if(capellaSequenceMessage.getSendingEnd() != null && capellaSequenceMessage.getReceivingEnd() == null) {
+        org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage xtextLostMessage = factory.createLostMessage();
+        xtextLostMessage.setArrow("->o");
+        xtextLostMessage.setDoubleDot(":");
+        xtextLostMessage.setName(capellaSequenceMessage.getName());
+        if (!capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().isEmpty()) {
+          xtextLostMessage.setSource(capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
+        }
+        return xtextLostMessage;
+      }
+      // case found message
+      else if(capellaSequenceMessage.getSendingEnd() == null && capellaSequenceMessage.getReceivingEnd() != null) {
+        org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage xtextFoundMessage = factory.createFoundMessage();
+        xtextFoundMessage.setArrow("o->");
+        xtextFoundMessage.setDoubleDot(":");
+        xtextFoundMessage.setName(capellaSequenceMessage.getName());
+        if (!capellaSequenceMessage.getReceivingEnd().getCoveredInstanceRoles().isEmpty()) {
+          xtextFoundMessage.setTarget(capellaSequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
+        }
+        return xtextFoundMessage;
+      } else {
+        xtextSequenceMessage = factory.createSequenceMessage();
+        xtextSequenceMessage.setArrow("->");
+      }
       break;
     }
     if (xtextSequenceMessage != null) {
-      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextSequenceMessage)
-          .setName(capellaSequenceMessage.getName());
+      xtextSequenceMessage.setName(capellaSequenceMessage.getName());
       if (capellaSequenceMessage.getSendingEnd() != null
-          && !capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().isEmpty())
-        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextSequenceMessage)
-            .setSource(capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
+          && !capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().isEmpty()) {
+        xtextSequenceMessage.setSource(capellaSequenceMessage.getSendingEnd().getCoveredInstanceRoles().get(0).getName());
+      }
       if (capellaSequenceMessage.getReceivingEnd() != null
-          && !capellaSequenceMessage.getReceivingEnd().getCoveredInstanceRoles().isEmpty())
-        ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextSequenceMessage)
-            .setTarget(capellaSequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
-      ((org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType) xtextSequenceMessage).setDoubleDot(":");
+          && !capellaSequenceMessage.getReceivingEnd().getCoveredInstanceRoles().isEmpty()) {
+        xtextSequenceMessage.setTarget(capellaSequenceMessage.getReceivingEnd().getCoveredInstanceRoles().get(0).getName());
+      }
+      xtextSequenceMessage.setDoubleDot(":");
     }
     return xtextSequenceMessage;
   }
@@ -926,5 +975,51 @@ public class DiagramToXtextCommands {
     xtextStateFragment.setTimeline(timelineName);
 
     return xtextStateFragment;
+  }
+  
+  /**
+   * process those ends in the ends array that are related to a reference
+   * 
+   * @param abstractFragment
+   *  - the InteractionState Capella object processed from the ends Interaction Fragments array
+   * @param blockOperands
+   *  - the stack of currently encountered and unclosed operands (contained in a combined fragment)
+   *  - we pass this stack when generating the xtext states because we may encounter a state object in an operand of a combined fragment
+   * @param elements
+   *  - the elements (messages, combined fragments, states) that are directly in the model object (not the ones encountered in a combined fragment)
+   * @param factory
+   *  - the Textual Scenario Factory that we use to create xtext objects and add them to the model 
+   */ 
+  private static void generateReference(InteractionUse abstractFragment, TextualScenarioFactory factory, EList<Element> elements, Deque<Block> blockOperands) {
+    EList<InstanceRole> coveredInstanceRoles = abstractFragment.getStart().getCoveredInstanceRoles();
+    List<String> timelines = coveredInstanceRoles.stream().map(x -> x.getName()).collect(Collectors.toList());
+    String name = abstractFragment.getReferencedScenario().getName();
+    
+    Reference xtextReference = createXtextReference(name, timelines, factory);
+    if (blockOperands.isEmpty()) {
+      elements.add(xtextReference);
+    } else {
+      blockOperands.peek().getBlockElements().add(xtextReference);
+    }
+  }
+  
+  /**
+   * Create a new Reference object and set the name, keyword, over and timelines
+   * 
+   * @param factory
+   *          - this is the factory to create StateFragment
+   * @param name
+   *          - the state fragment from diagram
+   * @param timelinesNames
+   *          - the names of the timelines
+   * @return - Reference the new created Reference
+   */
+  private static Reference createXtextReference(String name, List<String> timelinesNames, TextualScenarioFactory factory) {
+    Reference xtextReference = factory.createReference();
+    xtextReference.setKeyword("ref");
+    xtextReference.setOver("over");
+    xtextReference.getTimelines().addAll(timelinesNames);
+    xtextReference.setName(name);
+    return xtextReference;
   }
 }

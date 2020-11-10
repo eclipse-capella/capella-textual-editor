@@ -20,9 +20,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.common.util.EList;
@@ -30,6 +28,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.diagram.DDiagramElement;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.polarsys.capella.test.diagram.common.ju.context.DiagramContext;
 import org.polarsys.capella.test.diagram.common.ju.step.crud.OpenDiagramStep;
 import org.polarsys.capella.test.framework.api.BasicTestCase;
@@ -58,6 +59,20 @@ public abstract class TextualScenarioTestFramework extends BasicTestCase {
   protected void init() {
     session = getSession(modelName);
     context = new SessionContext(session);
+    
+    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+    
+    if (eeView == null) {
+      // Show it if not found.
+      try {
+        eeView = (EmbeddedEditorView) activePage.showView(EmbeddedEditorView.ID);
+        
+      } catch (PartInitException e) {
+        System.err.println("Cannot open Textual Editor View");
+      }
+      activePage.activate(eeView);
+    }
   }
 
   /**
@@ -133,7 +148,7 @@ public abstract class TextualScenarioTestFramework extends BasicTestCase {
     List<DDiagramElement> afterUpdateElements = new ArrayList<DDiagramElement>();
     afterUpdateElements.addAll(diagram.getDiagram().getDiagramElements());
     afterUpdateElements.removeAll(elementsBeforeUpdate);
-    Set<String> newElements = new HashSet<String>();
+    List<String> newElements = new ArrayList<String>();
     afterUpdateElements.forEach(x -> {
       EObject target = x.getTarget();
       if (target instanceof InstanceRole) {
@@ -172,7 +187,7 @@ public abstract class TextualScenarioTestFramework extends BasicTestCase {
             fragment.getRelatedAbstractState().getName() : fragment.getRelatedAbstractFunction().getName();
         String newElement = "on " + sourceIr.getName() + " " + keyword + " " + stateName;
         newElements.add(newElement);
-      }
+      } 
     });
 
     expectedElements.removeAll(newElements);
