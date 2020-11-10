@@ -2,22 +2,22 @@ scenario {
 	component "System"
 	actor "SA 2"
 	actor "SA 3"
-	alt "" over "SA 3" "SA 2" {
+	alt "" over "SA 2" "SA 3" {
 		"SA 2" -> "SA 3" : "m1"
 	} else "" {
 		"SA 2" -> "SA 3" : "m1"
 	}
-	alt "" over "SA 3" "SA 2" {
+	alt "" over "SA 2" "SA 3" {
 		"SA 2" -> "SA 3" : "m2"
 	} else "" {
 		"SA 2" -> "SA 3" : "m1"
 	}
-	par "" over "System" "SA 3" "SA 2" {
+	par over "System" "SA 3" "SA 2" {
 		"System" -> "SA 3" : "create1"
-	} "" {
+	} {
 		"System" -> "SA 2" : "delete2"
 	}
-	par "" over "System" "SA 3" "SA 2" {
+	par "" over "SA 2" "SA 3" "System" {
 		"SA 2" -> "SA 3" withReturn : "m3"
 	} "" {
 		"System" -> "SA 2" withReturn : "m4"

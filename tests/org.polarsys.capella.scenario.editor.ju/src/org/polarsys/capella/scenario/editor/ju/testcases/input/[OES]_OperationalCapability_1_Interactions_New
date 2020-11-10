@@ -1,0 +1,19 @@
+scenario {
+	entity "Entity 1"
+	entity "Entity 2"
+	actor "OperationalActor 3"
+	role "Role 4"
+	role "Role 3"
+	"Entity 1" -> "Entity 2" withExecution withReturn : "ir1"
+	"Entity 2" -> "OperationalActor 3" withExecution : "ir2"
+	"OperationalActor 3" ->+ "Role 4" : "create call"
+	deactivate "Entity 2"
+	->> "Role 4" withExecution : "Arm Timer"
+	loop over "Entity 1" "Entity 2" {
+		deactivate "Role 4"
+		"Entity 1" -> "Entity 2" : "ir1"
+	}
+	"Role 4" ->x "Role 3" : "delete call"
+	deactivate "OperationalActor 3"
+	ref "[OES] OperationalCapability 1 Roles" over "Entity 2"
+}

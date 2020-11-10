@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -107,7 +95,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   @Check
-  public void checkMessagesExist(final SequenceMessageType message) {
+  public void checkMessagesExist(final SequenceMessage message) {
     boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), message.getTarget()).contains(
       message.getName());
     boolean _not = (!_contains);
