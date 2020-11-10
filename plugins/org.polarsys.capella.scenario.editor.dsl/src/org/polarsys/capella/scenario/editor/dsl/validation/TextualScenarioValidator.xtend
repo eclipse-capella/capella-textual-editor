@@ -654,7 +654,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 					'Deactivation keyword expected for a withExecution message!',
 					container,
 					TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS,
-					messageWithExecutionTargets.get(i)
+					messageWithExecutionTargetsIndex.get(i)
 				)
 			}
 		}
