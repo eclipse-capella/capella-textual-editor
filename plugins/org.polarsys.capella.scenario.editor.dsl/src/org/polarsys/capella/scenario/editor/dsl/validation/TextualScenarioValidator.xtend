@@ -77,7 +77,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	}
 
 	@Check
-	def checkMessagesExist(SequenceMessageType message) {
+	def checkMessagesExist(SequenceMessage message) {
 		if (!EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource, message.getTarget).contains(
 				message.name)) {
 			error('Exchange does not exist between \"' + message.source + "\" and \"" + message.target +"\"!"

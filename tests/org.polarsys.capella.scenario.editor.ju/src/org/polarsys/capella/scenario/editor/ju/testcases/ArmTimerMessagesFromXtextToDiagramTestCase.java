@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ * 
+ * Contributors:
+ *    Thales - initial API and implementation
+ *******************************************************************************/
 package org.polarsys.capella.scenario.editor.ju.testcases;
 
 import java.util.ArrayList;
@@ -10,15 +22,14 @@ public class ArmTimerMessagesFromXtextToDiagramTestCase extends TextualScenarioT
 
   public static final String armTimerMessageDiagramName = "[IS] Capability 1 Arm Timer";
   public static final String armTimerMessageFileContentExpected = "[IS]_Capability_1_Arm_Timer";
-  
+
   @Override
   public void test() throws Exception {
     init();
-    List<String> elementsNew = new ArrayList<String>(Arrays.asList("->> SA 2 : Arm Timer",
-      "->> SA 3 : Arm Timer"));
-    
-    testUpdateDiagram(armTimerMessageDiagramName, armTimerMessageFileContentExpected, 
-        "[IS]_Capability_1_Arm_Timer_New", elementsNew);
+    List<String> elementsNew = new ArrayList<String>(Arrays.asList("->> SA 2 : Arm Timer", "->> SA 3 : Arm Timer"));
+
+    testUpdateDiagram(armTimerMessageDiagramName, armTimerMessageFileContentExpected, "[IS]_Capability_1_Arm_Timer_New",
+        elementsNew);
   }
 
 }

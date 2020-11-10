@@ -18,18 +18,18 @@ import java.util.List;
 
 import org.polarsys.capella.scenario.editor.ju.util.TextualScenarioTestFramework;
 
-public class ExchangesAndInstanceRolesXtextToDiagramTestCase extends TextualScenarioTestFramework {
+public class InteractionsXtextToDiagramTestCase extends TextualScenarioTestFramework {
 
-  public static final String exchangesInstanceRolesDiagramName = "[IS] Capability 1 Exchanges Instance Roles";
-  public static final String exchangesInstanceRolesFileContentExpected = "[IS]_Capability_1_Exchanges_Instance_Roles";
+  public static final String rolesDiagramName = "[OES] OperationalCapability 1 Interactions";
+  public static final String rolesFileContentExpected = "[OES]_OperationalCapability_1_Interactions";
 
   @Override
   public void test() throws Exception {
     init();
-    List<String> elementsNew = new ArrayList<String>(Arrays.asList("System Actor:SA 3", "SA 2 -> SA 3 : m1"));
+    List<String> elementsNew = new ArrayList<String>();
 
-    testUpdateDiagram(exchangesInstanceRolesDiagramName, exchangesInstanceRolesFileContentExpected,
-        "[IS]_Capability_1_Exchanges_Instance_Roles_New", elementsNew);
+    testUpdateDiagram(rolesDiagramName, rolesFileContentExpected, "[OES]_OperationalCapability_1_Interactions_New",
+        elementsNew);
   }
 
 }
