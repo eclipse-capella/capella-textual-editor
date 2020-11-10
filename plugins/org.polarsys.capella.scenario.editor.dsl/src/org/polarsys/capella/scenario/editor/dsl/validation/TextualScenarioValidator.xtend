@@ -86,6 +86,26 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 		}
 	}
 	
+	@Check
+	def checkMessagesExist(LostMessage message) {
+		if (!EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource, null).contains(
+				message.name)) {
+			error('Exchange does not exist from \"' + message.source + "\"!"
+				, TextualScenarioPackage.Literals.MESSAGE__NAME
+			)
+		}
+	}
+	
+	@Check
+	def checkMessagesExist(FoundMessage message) {
+		if (!EmbeddedEditorInstanceHelper.getExchangeNames(null, message.target).contains(
+				message.name)) {
+			error('Exchange does not exist to \"' + message.target + "\"!"
+				, TextualScenarioPackage.Literals.MESSAGE__NAME
+			)
+		}
+	}
+	
 		
 	/*
 	 * Check that the source and the target of the sequence messages type are defined in text, before using them in the message 

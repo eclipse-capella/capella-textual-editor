@@ -1,0 +1,7 @@
+scenario {
+	component "System"
+	actor "SA 2"
+	actor "SA 3"
+	"SA 2" -> "SA 3" : "cr2"
+	ref "[ES] Capability 1 Lost And Found" over "SA 2"
+}
