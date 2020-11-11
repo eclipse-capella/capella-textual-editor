@@ -1,0 +1,10 @@
+scenario {
+	component "System"
+	actor "SA 2"
+	actor "SA 3"
+	loop over "SA 2" {
+		on "SA 2" function "SystemFunction 1"
+	}
+	on "SA 2" function "SystemFunction 1"
+	on "SA 3" function "SystemFunction 2"
+}
