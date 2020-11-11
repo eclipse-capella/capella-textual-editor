@@ -43,6 +43,7 @@ import org.polarsys.capella.core.data.cs.BlockArchitecture;
 import org.polarsys.capella.core.data.cs.Component;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
 import org.polarsys.capella.core.data.cs.Part;
+import org.polarsys.capella.core.data.ctx.System;
 import org.polarsys.capella.core.data.ctx.SystemAnalysis;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
@@ -51,6 +52,7 @@ import org.polarsys.capella.core.data.fa.FunctionOutputPort;
 import org.polarsys.capella.core.data.fa.FunctionalExchange;
 import org.polarsys.capella.core.data.information.AbstractEventOperation;
 import org.polarsys.capella.core.data.information.AbstractInstance;
+import org.polarsys.capella.core.data.information.Partition;
 import org.polarsys.capella.core.data.interaction.InstanceRole;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.data.interaction.ScenarioKind;
@@ -144,10 +146,10 @@ public class EmbeddedEditorInstanceHelper {
   public static boolean isFSScenario() {
     return ScenarioExt.isFunctionalScenario(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
   }
-  
+
   public static AbstractFunction getSourceFunctionOfExchange(FunctionalExchange exchange) {
     FunctionOutputPort source = exchange.getSourceFunctionOutputPort();
-    if(source != null && source.eContainer() instanceof AbstractFunction) {
+    if (source != null && source.eContainer() instanceof AbstractFunction) {
       return (AbstractFunction) source.eContainer();
     }
     return null;
@@ -157,10 +159,10 @@ public class EmbeddedEditorInstanceHelper {
     AbstractFunction function = getSourceFunctionOfExchange(exchange);
     return function != null ? function.getName() : null;
   }
-  
+
   public static AbstractFunction getTargetFunctionOfExchange(FunctionalExchange exchange) {
     FunctionInputPort target = exchange.getTargetFunctionInputPort();
-    if(target != null && target.eContainer() instanceof AbstractFunction) {
+    if (target != null && target.eContainer() instanceof AbstractFunction) {
       return (AbstractFunction) target.eContainer();
     }
     return null;
@@ -170,7 +172,7 @@ public class EmbeddedEditorInstanceHelper {
     AbstractFunction function = getTargetFunctionOfExchange(exchange);
     return function != null ? function.getName() : null;
   }
-  
+
   public static EObject getScenarioLevel() {
     Scenario currentScenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     return BlockArchitectureExt.getRootBlockArchitecture(currentScenario);
@@ -347,16 +349,25 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableComponents() {
-	  Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-	  List<Part> elements = (new InteractionServices())
+    Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+    List<Part> elements = (new InteractionServices())
         .getISScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
-    
-	for (InstanceRole role : scenario.getOwnedInstanceRoles()) {
-		if (role.getRepresentedInstance() instanceof Part) {
-			elements.add((Part) role.getRepresentedInstance());
-		}
-	}
-    
+    BlockArchitecture architecture = BlockArchitectureExt.getRootBlockArchitecture(scenario);
+    if (architecture instanceof SystemAnalysis) {
+      System system = ((SystemAnalysis) architecture).getOwnedSystem();
+      for (Partition part : system.getRepresentingPartitions()) {
+        if (part instanceof Part) {
+          elements.add((Part) part);
+        }
+      }
+    }
+
+    for (InstanceRole role : scenario.getOwnedInstanceRoles()) {
+      if (role.getRepresentedInstance() instanceof Part) {
+        elements.add((Part) role.getRepresentedInstance());
+      }
+    }
+
     return elements;
   }
 
@@ -367,12 +378,12 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableActors() {
-	Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
+    Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
     if (analysis instanceof OperationalAnalysis) {
-    	return getOESScopeInsertEntitiesRoles(scenario).stream()
-    			.filter(x -> x instanceof Part && ((Part)x).getAbstractType() instanceof OperationalActor)
-    			.collect(Collectors.toList());
+      return getOESScopeInsertEntitiesRoles(scenario).stream()
+          .filter(x -> x instanceof Part && ((Part) x).getAbstractType() instanceof OperationalActor)
+          .collect(Collectors.toList());
     }
     return (new InteractionServices()).getISScopeInsertActors(scenario);
   }
@@ -384,18 +395,18 @@ public class EmbeddedEditorInstanceHelper {
    *
    */
   public static Collection<? extends EObject> getAvailableRoles() {
-	    return getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram())
-	    		.stream().filter(x -> x instanceof Role).collect(Collectors.toList());
+    return getOESScopeInsertEntitiesRoles(EmbeddedEditorInstance.getAssociatedScenarioDiagram()).stream()
+        .filter(x -> x instanceof Role).collect(Collectors.toList());
   }
-	  
+
   private static Collection<EObject> getOESScopeInsertEntitiesRoles(Scenario scenario) {
-	    Collection<EObject> roots = new ArrayList<EObject>();
-	    roots.addAll(new ScenarioService().getAllMultiInstanceRoleParts(scenario));
-	    BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
-	    if (analysis instanceof OperationalAnalysis) {
-	      roots.addAll(OperationalAnalysisExt.getAllRoles((OperationalAnalysis) analysis));
-	    }
-	    return roots;
+    Collection<EObject> roots = new ArrayList<EObject>();
+    roots.addAll(new ScenarioService().getAllMultiInstanceRoleParts(scenario));
+    BlockArchitecture analysis = BlockArchitectureExt.getRootBlockArchitecture(scenario);
+    if (analysis instanceof OperationalAnalysis) {
+      roots.addAll(OperationalAnalysisExt.getAllRoles((OperationalAnalysis) analysis));
+    }
+    return roots;
   }
 
   /**
@@ -678,18 +689,19 @@ public class EmbeddedEditorInstanceHelper {
   public static List<String> getReferencedScenariosName() {
     return getReferencedScenarios().stream().map(x -> ((Scenario) x).getName()).collect(Collectors.toList());
   }
-  
+
   /*
    * Get referenced scenario with the given name
    */
   public static Scenario getScenarioWithGivenName(String name) {
-    List<EObject> referencedScenarios = getReferencedScenarios().stream().filter(x -> ((Scenario) x).getName().equals(name)).collect(Collectors.toList());
+    List<EObject> referencedScenarios = getReferencedScenarios().stream()
+        .filter(x -> ((Scenario) x).getName().equals(name)).collect(Collectors.toList());
     if (!referencedScenarios.isEmpty()) {
       return (Scenario) referencedScenarios.get(0);
     }
     return null;
   }
-  
+
   /*
    * Get all possible scenario references
    */
