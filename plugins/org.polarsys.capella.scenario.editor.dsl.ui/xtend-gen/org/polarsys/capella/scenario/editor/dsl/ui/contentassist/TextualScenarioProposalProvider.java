@@ -15,7 +15,6 @@ package org.polarsys.capella.scenario.editor.dsl.ui.contentassist;
 import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -138,21 +137,6 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   }
   
   /**
-   * propose a list with the timelines (for adding states, modes or allocated functions)
-   */
-  public void getExistingTimelines(final String keyword, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    Collection<? extends EObject> _availableElements = EmbeddedEditorInstanceHelper.getAvailableElements(keyword);
-    for (final EObject el : _availableElements) {
-      {
-        String elementName = CapellaElementExt.getName(el);
-        ICompletionProposal _createCompletionProposal = this.createCompletionProposal((("\"" + elementName) + "\""), elementName, null, context);
-        ConfigurableCompletionProposal proposal = ((ConfigurableCompletionProposal) _createCompletionProposal);
-        acceptor.accept(proposal);
-      }
-    }
-  }
-  
-  /**
    * check if a participant is already used in the text
    */
   public boolean participantAlreadyInserted(final Model model, final String name, final String keyword) {
@@ -203,7 +187,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
         }
         String exchangeType = TextualScenarioHelper.getExchangeType(element);
         if (((scenarioExchangesType == null) || scenarioExchangesType.equals(exchangeType))) {
-          String message = (("\"" + elementName) + "\"");
+          String message = elementName;
           if ((EmbeddedEditorInstanceHelper.isESScenario() && (element instanceof FunctionalExchange))) {
             String _sourceFunctionNameOfExchange = EmbeddedEditorInstanceHelper.getSourceFunctionNameOfExchange(((FunctionalExchange) element));
             String _plus = ((message + " : FE [ ") + _sourceFunctionNameOfExchange);
@@ -496,12 +480,14 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   
   @Override
   public void completeStateFragment_Timeline(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    List<String> keywords = Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList(DslConstants.ACTOR, DslConstants.ACTIVITY, DslConstants.FUNCTION, DslConstants.ROLE, DslConstants.ENTITY, DslConstants.ROLE, DslConstants.COMPONENT, DslConstants.CONFIGURATION_ITEM));
-    for (final String keyword : keywords) {
-      boolean _checkValidKeyword = EmbeddedEditorInstanceHelper.checkValidKeyword(keyword);
-      if (_checkValidKeyword) {
-        this.getExistingTimelines(keyword, context, acceptor);
-      }
+    EObject _rootModel = context.getRootModel();
+    EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(((Model) _rootModel));
+    for (final EObject el : _participantsDefinedBefore) {
+      String _name = ((Participant) el).getName();
+      String _plus = ("\"" + _name);
+      String _plus_1 = (_plus + "\"");
+      acceptor.accept(
+        this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
     }
   }
   
@@ -524,7 +510,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       ((StateFragment) model).getKeyword(), ((StateFragment) model).getTimeline());
     for (final String stateFragment : _availableStateFragments) {
       acceptor.accept(
-        this.createCompletionProposal((("\"" + stateFragment) + "\""), (("\"" + stateFragment) + "\""), null, context));
+        this.createCompletionProposal((("\"" + stateFragment) + "\""), stateFragment, null, context));
     }
   }
   
@@ -602,7 +588,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
         }
         if ((elementName != null)) {
           acceptor.accept(
-            this.createCompletionProposal((("\"" + elementName) + "\""), (("\"" + elementName) + "\""), null, context));
+            this.createCompletionProposal((("\"" + elementName) + "\""), elementName, null, context));
         }
       }
     }
