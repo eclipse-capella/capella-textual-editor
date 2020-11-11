@@ -43,6 +43,9 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage
 import org.polarsys.capella.core.data.fa.FunctionalExchange
+import java.util.List
+import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element
+import java.util.ArrayList
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -258,7 +261,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 	override completeParticipantDeactivation_Name(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 			var modelContainer = TextualScenarioHelper.getModelContainer(model as ParticipantDeactivation)
 			var timelinesToPropose = new HashMap
-			createTimelinesHashMapToProposeForDeactivation(model as ParticipantDeactivation, modelContainer as Model, timelinesToPropose)
+			createTimelinesHashMapToProposeForDeactivation(model as ParticipantDeactivation, TextualScenarioHelper.getAllElements(modelContainer, new ArrayList<Element>), timelinesToPropose)
 			
 			for (String timelineToPropose : timelinesToPropose.keySet) {
 				if (timelinesToPropose.get(timelineToPropose) >= 1) {
@@ -269,21 +272,14 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 			}	
 	}
 	
-	def createTimelinesHashMapToProposeForDeactivation(ParticipantDeactivation participantDeactivation, EObject modelContainer, HashMap<String, Integer> timelinesToPropose)   {		
-		var elements = TextualScenarioHelper.getElements(modelContainer)
+	def createTimelinesHashMapToProposeForDeactivation(ParticipantDeactivation participantDeactivation,
+		List<Element> elements, HashMap<String, Integer> timelinesToPropose) {
 		for (var i = 0; i < elements.size; i++) {
 			if (elements.get(i).equals(participantDeactivation)) {
 				for (var j = 0; j <= i; j++) {
 					updateHashMap(timelinesToPropose, elements.get(j), participantDeactivation)
 				}
 				return timelinesToPropose
-			}
-			if (elements.get(i) instanceof CombinedFragment) {							
-				createTimelinesHashMapToProposeForDeactivation(participantDeactivation, elements.get(i) as CombinedFragment, timelinesToPropose)
-			}
-			
-			if (elements.get(i) instanceof Operand) {
-				createTimelinesHashMapToProposeForDeactivation(participantDeactivation, elements.get(i) as Operand, timelinesToPropose)
 			}
 		}
 		return timelinesToPropose
@@ -296,12 +292,21 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 			if (element instanceof ArmTimerMessage) {
 				updateHashMapWithArmTimerMessage(timelinesToPropose, element as ArmTimerMessage)
 			}
+			
+			if (element instanceof FoundMessage) {
+				updateHashMapWithFoundMessage(timelinesToPropose, element as FoundMessage) 
+			}
 
 			if (element instanceof ParticipantDeactivation) {
 				updateHashMapWithParticipantDeactivation(timelinesToPropose, element as ParticipantDeactivation)		
 			}	
 	}
 	
+	/*
+	 * Update HashMap with the target of Sequence Message
+	 * If the hashMap already contains the target (as key), increment with 1 the actual value
+	 * If the hashMap doesn't contain the target, add the target as key and set its value to 1
+	 */
 	def updateHashMapWithSequenceMessage(HashMap<String, Integer> timelinesToPropose, SequenceMessage sequenceMessage) {
 		if (sequenceMessage.execution !== null) {
 			if (timelinesToPropose.containsKey(sequenceMessage.target)) {
@@ -313,6 +318,11 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 		}
 	}
 	
+	/*
+	 * Update HashMap with the participant of ArmTimer Message
+	 * If the hashMap already contains the participant (as key), increment with 1 the actual value
+	 * If the hashMap doesn't contain the participant, add the participant as key and set its value to 1
+	 */
 	def updateHashMapWithArmTimerMessage(HashMap<String, Integer> timelinesToPropose, ArmTimerMessage armTimer) {
 		if (armTimer.execution !== null) {
 			if (timelinesToPropose.containsKey(armTimer.participant)) {
@@ -324,6 +334,26 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 		}
 	}
 	
+	/*
+	 * Update HashMap with the target of Found Message
+	 * If the hashMap already contains the target (as key), increment with 1 the actual value
+	 * If the hashMap doesn't contain the target, add the target as key and set its value to 1
+	 */
+	def updateHashMapWithFoundMessage(HashMap<String, Integer> timelinesToPropose, FoundMessage foundMessage) {
+		if (foundMessage.execution !== null) {
+			if (timelinesToPropose.containsKey(foundMessage.target)) {
+				var value = timelinesToPropose.get(foundMessage.target)
+				value = (value as Integer) + 1
+			} else {
+				timelinesToPropose.put(foundMessage.target, 1)
+			}
+		}
+	}
+	
+	/*
+	 * Update HashMap with the deactivation 
+	 * Decrement with 1 the actual value of the deactivation name (timeline)
+	 */
 	def updateHashMapWithParticipantDeactivation(HashMap<String, Integer> timelinesToPropose, ParticipantDeactivation participantDeactivation) {
 		if (timelinesToPropose.containsKey(participantDeactivation.name)) {
 			var value = timelinesToPropose.get(participantDeactivation.name)
@@ -440,12 +470,15 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 		}
 	}
 	
-	override completeReference_Timelines(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	override completeReference_Timelines(EObject model, Assignment assignment, ContentAssistContext context,
+		ICompletionProposalAcceptor acceptor) {
 		for (EObject el : TextualScenarioHelper.participantsDefinedBefore(context.rootModel as Model)) {
-			if (!(model as Reference).timelines.contains((el as Participant).name)) {
-				acceptor.accept(
-					createCompletionProposal("\"" + (el as Participant).name + "\"", (el as Participant).name, null,
-						context))
+			if (model instanceof Reference) {
+				if (!(model as Reference).timelines.contains((el as Participant).name)) {
+					acceptor.accept(
+						createCompletionProposal("\"" + (el as Participant).name + "\"", (el as Participant).name, null,
+							context))
+				}
 			}
 		}
 	}

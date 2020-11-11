@@ -43,7 +43,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Element;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Participant;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
@@ -287,7 +286,8 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   public void completeParticipantDeactivation_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject modelContainer = TextualScenarioHelper.getModelContainer(((ParticipantDeactivation) model));
     HashMap<String, Integer> timelinesToPropose = new HashMap<String, Integer>();
-    this.createTimelinesHashMapToProposeForDeactivation(((ParticipantDeactivation) model), ((Model) modelContainer), timelinesToPropose);
+    ArrayList<Element> _arrayList = new ArrayList<Element>();
+    this.createTimelinesHashMapToProposeForDeactivation(((ParticipantDeactivation) model), TextualScenarioHelper.getAllElements(modelContainer, _arrayList), timelinesToPropose);
     Set<String> _keySet = timelinesToPropose.keySet();
     for (final String timelineToPropose : _keySet) {
       Integer _get = timelinesToPropose.get(timelineToPropose);
@@ -299,27 +299,14 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
   }
   
-  public HashMap<String, Integer> createTimelinesHashMapToProposeForDeactivation(final ParticipantDeactivation participantDeactivation, final EObject modelContainer, final HashMap<String, Integer> timelinesToPropose) {
-    List<Element> elements = TextualScenarioHelper.getElements(modelContainer);
+  public HashMap<String, Integer> createTimelinesHashMapToProposeForDeactivation(final ParticipantDeactivation participantDeactivation, final List<Element> elements, final HashMap<String, Integer> timelinesToPropose) {
     for (int i = 0; (i < elements.size()); i++) {
-      {
-        boolean _equals = elements.get(i).equals(participantDeactivation);
-        if (_equals) {
-          for (int j = 0; (j <= i); j++) {
-            this.updateHashMap(timelinesToPropose, elements.get(j), participantDeactivation);
-          }
-          return timelinesToPropose;
+      boolean _equals = elements.get(i).equals(participantDeactivation);
+      if (_equals) {
+        for (int j = 0; (j <= i); j++) {
+          this.updateHashMap(timelinesToPropose, elements.get(j), participantDeactivation);
         }
-        Element _get = elements.get(i);
-        if ((_get instanceof CombinedFragment)) {
-          Element _get_1 = elements.get(i);
-          this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((CombinedFragment) _get_1), timelinesToPropose);
-        }
-        Element _get_2 = elements.get(i);
-        if ((_get_2 instanceof Operand)) {
-          Element _get_3 = elements.get(i);
-          this.createTimelinesHashMapToProposeForDeactivation(participantDeactivation, ((Operand) _get_3), timelinesToPropose);
-        }
+        return timelinesToPropose;
       }
     }
     return timelinesToPropose;
@@ -334,6 +321,9 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       if ((element instanceof ArmTimerMessage)) {
         this.updateHashMapWithArmTimerMessage(timelinesToPropose, ((ArmTimerMessage) element));
       }
+      if ((element instanceof FoundMessage)) {
+        this.updateHashMapWithFoundMessage(timelinesToPropose, ((FoundMessage) element));
+      }
       Integer _xifexpression = null;
       if ((element instanceof ParticipantDeactivation)) {
         _xifexpression = this.updateHashMapWithParticipantDeactivation(timelinesToPropose, ((ParticipantDeactivation) element));
@@ -343,6 +333,11 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     return _xblockexpression;
   }
   
+  /**
+   * Update HashMap with the target of Sequence Message
+   * If the hashMap already contains the target (as key), increment with 1 the actual value
+   * If the hashMap doesn't contain the target, add the target as key and set its value to 1
+   */
   public Integer updateHashMapWithSequenceMessage(final HashMap<String, Integer> timelinesToPropose, final SequenceMessage sequenceMessage) {
     Integer _xifexpression = null;
     String _execution = sequenceMessage.getExecution();
@@ -365,6 +360,11 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     return _xifexpression;
   }
   
+  /**
+   * Update HashMap with the participant of ArmTimer Message
+   * If the hashMap already contains the participant (as key), increment with 1 the actual value
+   * If the hashMap doesn't contain the participant, add the participant as key and set its value to 1
+   */
   public Integer updateHashMapWithArmTimerMessage(final HashMap<String, Integer> timelinesToPropose, final ArmTimerMessage armTimer) {
     Integer _xifexpression = null;
     String _execution = armTimer.getExecution();
@@ -387,6 +387,37 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     return _xifexpression;
   }
   
+  /**
+   * Update HashMap with the target of Found Message
+   * If the hashMap already contains the target (as key), increment with 1 the actual value
+   * If the hashMap doesn't contain the target, add the target as key and set its value to 1
+   */
+  public Integer updateHashMapWithFoundMessage(final HashMap<String, Integer> timelinesToPropose, final FoundMessage foundMessage) {
+    Integer _xifexpression = null;
+    String _execution = foundMessage.getExecution();
+    boolean _tripleNotEquals = (_execution != null);
+    if (_tripleNotEquals) {
+      Integer _xifexpression_1 = null;
+      boolean _containsKey = timelinesToPropose.containsKey(foundMessage.getTarget());
+      if (_containsKey) {
+        Integer _xblockexpression = null;
+        {
+          Integer value = timelinesToPropose.get(foundMessage.getTarget());
+          _xblockexpression = value = Integer.valueOf(((((Integer) value)).intValue() + 1));
+        }
+        _xifexpression_1 = _xblockexpression;
+      } else {
+        _xifexpression_1 = timelinesToPropose.put(foundMessage.getTarget(), Integer.valueOf(1));
+      }
+      _xifexpression = _xifexpression_1;
+    }
+    return _xifexpression;
+  }
+  
+  /**
+   * Update HashMap with the deactivation
+   * Decrement with 1 the actual value of the deactivation name (timeline)
+   */
   public Integer updateHashMapWithParticipantDeactivation(final HashMap<String, Integer> timelinesToPropose, final ParticipantDeactivation participantDeactivation) {
     Integer _xifexpression = null;
     boolean _containsKey = timelinesToPropose.containsKey(participantDeactivation.getName());
@@ -527,14 +558,16 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     EObject _rootModel = context.getRootModel();
     EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(((Model) _rootModel));
     for (final EObject el : _participantsDefinedBefore) {
-      boolean _contains = ((Reference) model).getTimelines().contains(((Participant) el).getName());
-      boolean _not = (!_contains);
-      if (_not) {
-        String _name = ((Participant) el).getName();
-        String _plus = ("\"" + _name);
-        String _plus_1 = (_plus + "\"");
-        acceptor.accept(
-          this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+      if ((model instanceof Reference)) {
+        boolean _contains = ((Reference) model).getTimelines().contains(((Participant) el).getName());
+        boolean _not = (!_contains);
+        if (_not) {
+          String _name = ((Participant) el).getName();
+          String _plus = ("\"" + _name);
+          String _plus_1 = (_plus + "\"");
+          acceptor.accept(
+            this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
+        }
       }
     }
   }
