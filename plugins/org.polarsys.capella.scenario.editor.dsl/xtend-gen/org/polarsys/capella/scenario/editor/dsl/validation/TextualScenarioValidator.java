@@ -95,7 +95,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   @Check
-  public void checkMessagesExist(final SequenceMessage message) {
+  public void checkMessagesExist(final SequenceMessageType message) {
     boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), message.getTarget()).contains(
       message.getName());
     boolean _not = (!_contains);
@@ -107,6 +107,32 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       String _plus_2 = (_plus_1 + _target);
       String _plus_3 = (_plus_2 + "\"!");
       this.error(_plus_3, TextualScenarioPackage.Literals.MESSAGE__NAME);
+    }
+  }
+  
+  @Check
+  public void checkMessagesExist(final LostMessage message) {
+    boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), null).contains(
+      message.getName());
+    boolean _not = (!_contains);
+    if (_not) {
+      String _source = message.getSource();
+      String _plus = ("Exchange does not exist from \"" + _source);
+      String _plus_1 = (_plus + "\"!");
+      this.error(_plus_1, TextualScenarioPackage.Literals.MESSAGE__NAME);
+    }
+  }
+  
+  @Check
+  public void checkMessagesExist(final FoundMessage message) {
+    boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(null, message.getTarget()).contains(
+      message.getName());
+    boolean _not = (!_contains);
+    if (_not) {
+      String _target = message.getTarget();
+      String _plus = ("Exchange does not exist to \"" + _target);
+      String _plus_1 = (_plus + "\"!");
+      this.error(_plus_1, TextualScenarioPackage.Literals.MESSAGE__NAME);
     }
   }
   
@@ -517,7 +543,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   }
   
   public boolean checkElementAfterDelete(final EObject model, final EObject checkedElement, final String target, final EAttribute checkedAttribute, final int index) {
-    List<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getContainerElements(model);
     for (final EObject element : elements) {
       {
         boolean _equals = element.equals(checkedElement);
@@ -560,7 +586,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   
   public boolean checkCreateMessageValid(final EObject model, final CreateMessage createMessage) {
     String target = createMessage.getTarget();
-    List<Element> elements = TextualScenarioHelper.getElements(model);
+    List<Element> elements = TextualScenarioHelper.getContainerElements(model);
     for (final EObject element : elements) {
       {
         if ((element instanceof SequenceMessageType)) {
@@ -686,7 +712,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
             this.error(
               "Deactivation keyword expected for a withExecution message!", container, 
               TextualScenarioPackage.Literals.BLOCK__BLOCK_ELEMENTS, 
-              messageWithExecutionTargets.get(i));
+              (messageWithExecutionTargetsIndex.get(i)).intValue());
           }
         }
       }

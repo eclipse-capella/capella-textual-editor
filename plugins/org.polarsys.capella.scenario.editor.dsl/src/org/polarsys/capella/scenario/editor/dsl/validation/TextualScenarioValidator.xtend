@@ -460,7 +460,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 
 	def boolean checkElementAfterDelete(EObject model, EObject checkedElement, String target,
 		EAttribute checkedAttribute, int index) {
-		var elements = TextualScenarioHelper.getElements(model)
+		var elements = TextualScenarioHelper.getContainerElements(model)
 
 		for (EObject element : elements) {
 			if (element.equals(checkedElement)) {
@@ -504,7 +504,7 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 	
 	def boolean checkCreateMessageValid(EObject model, CreateMessage createMessage) {
 		var target = createMessage.target
-		var elements = TextualScenarioHelper.getElements(model)
+		var elements = TextualScenarioHelper.getContainerElements(model)
 		
 		for (EObject element : elements) {
 			if (element instanceof SequenceMessageType) {

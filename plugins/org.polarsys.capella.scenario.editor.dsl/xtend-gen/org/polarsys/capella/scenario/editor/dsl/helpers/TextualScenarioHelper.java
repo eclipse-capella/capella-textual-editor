@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
- *  
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License 2.0 which is available at
- *  http://www.eclipse.org/legal/epl-2.0
- *  
- *  SPDX-License-Identifier: EPL-2.0
- *  
- *  Contributors:
- *     Thales - initial API and implementation
- ******************************************************************************/
 /**
  * Copyright (c) 2020 THALES GLOBAL SERVICES.
  * 
@@ -192,7 +180,7 @@ public class TextualScenarioHelper {
   /**
    * get all elements on the same level as modelContainer
    */
-  public static List<Element> getElements(final EObject modelContainer) {
+  public static List<Element> getContainerElements(final EObject modelContainer) {
     if ((modelContainer instanceof Model)) {
       return ((Model) modelContainer).getElements();
     }
@@ -208,7 +196,23 @@ public class TextualScenarioHelper {
     if ((modelContainer instanceof Block)) {
       return ((Block) modelContainer).getBlockElements();
     }
-    return null;
+    return CollectionLiterals.<Element>newArrayList();
+  }
+  
+  /**
+   * get all elements from xtext
+   */
+  public static List<Element> getAllElements(final EObject modelContainer, final List<Element> allElements) {
+    List<Element> _containerElements = TextualScenarioHelper.getContainerElements(modelContainer);
+    for (final Element element : _containerElements) {
+      if ((!(element instanceof CombinedFragment))) {
+        allElements.add(element);
+      } else {
+        allElements.add(element);
+        TextualScenarioHelper.getAllElements(element, allElements);
+      }
+    }
+    return allElements;
   }
   
   /**
