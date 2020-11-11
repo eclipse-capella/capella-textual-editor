@@ -29,6 +29,7 @@ import org.polarsys.capella.scenario.editor.ju.testcases.ReferencesXtextToDiagra
 import org.polarsys.capella.scenario.editor.ju.testcases.ReloadDataFromDiagramToTextTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.RolesXtextToDiagramTestCase;
 import org.polarsys.capella.scenario.editor.ju.testcases.SaveDataFromXtextToDiagramTestCase;
+import org.polarsys.capella.scenario.editor.ju.testcases.StateFragmentsXtextToDiagramTestCase;
 import org.polarsys.capella.test.framework.api.BasicTestArtefact;
 import org.polarsys.capella.test.framework.api.BasicTestSuite;
 
@@ -67,6 +68,7 @@ public class ScenarioEditorTestSuite extends BasicTestSuite {
     tests.add(new ExchangesAndInstanceRolesXtextToDiagramTestCase());
     tests.add(new LostAndFoundXtextToDiagramTestCase());
     tests.add(new ReferencesXtextToDiagramTestCase());
+    tests.add(new StateFragmentsXtextToDiagramTestCase());
     return tests;
   }
 }
