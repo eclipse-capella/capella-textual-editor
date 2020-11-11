@@ -130,19 +130,6 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 	}
 
 	/*
-	 * propose a list with the timelines (for adding states, modes or allocated functions)
-	 */
-	def getExistingTimelines(String keyword, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		for (el : EmbeddedEditorInstanceHelper.getAvailableElements(keyword)) {
-			var elementName = CapellaElementExt.getName(el)
-
-			var proposal = createCompletionProposal("\"" + elementName + "\"", elementName, null,
-				context) as ConfigurableCompletionProposal
-			acceptor.accept(proposal);
-		}
-	}
-
-	/*
 	 * check if a participant is already used in the text
 	 */
 	def participantAlreadyInserted(Model model, String name, String keyword) {
@@ -194,7 +181,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 			// if the type of exchange is allowed, propose it
 			var exchangeType = TextualScenarioHelper.getExchangeType(element)
 			if (scenarioExchangesType === null || scenarioExchangesType.equals(exchangeType)) {
-				var message = "\"" + elementName + "\""
+				var message = elementName
 				if (EmbeddedEditorInstanceHelper.isESScenario() && element instanceof FunctionalExchange) {
 					message = message + " : FE [ " +
 					EmbeddedEditorInstanceHelper.getSourceFunctionNameOfExchange(element as FunctionalExchange) +
@@ -419,12 +406,10 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 	
 	override completeStateFragment_Timeline(EObject model, Assignment assignment, ContentAssistContext context,
 		ICompletionProposalAcceptor acceptor) {
-		var keywords = #[DslConstants.ACTOR, DslConstants.ACTIVITY, DslConstants.FUNCTION, DslConstants.ROLE,
-			DslConstants.ENTITY, DslConstants.ROLE, DslConstants.COMPONENT, DslConstants.CONFIGURATION_ITEM]
-		for (String keyword : keywords) {
-			if (EmbeddedEditorInstanceHelper.checkValidKeyword(keyword)) {
-				getExistingTimelines(keyword, context, acceptor)
-			}
+		for (EObject el : TextualScenarioHelper.participantsDefinedBefore(context.rootModel as Model)) {
+			acceptor.accept(
+				createCompletionProposal("\"" + (el as Participant).name + "\"", (el as Participant).name, null,
+					context))
 		}
 	}
 
@@ -447,7 +432,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 		for (String stateFragment : EmbeddedEditorInstanceHelper.getAvailableStateFragments(
 			(model as StateFragment).keyword, (model as StateFragment).timeline)) {
 			acceptor.accept(
-				createCompletionProposal("\"" + stateFragment + "\"", "\"" + stateFragment + "\"", null, context))
+				createCompletionProposal("\"" + stateFragment + "\"", stateFragment, null, context))
 		}
 
 	}
@@ -509,7 +494,7 @@ class TextualScenarioProposalProvider extends AbstractTextualScenarioProposalPro
 			}
 			if (elementName !== null) {
 				acceptor.accept(
-					createCompletionProposal("\"" + elementName + "\"", "\"" + elementName + "\"", null, context))
+					createCompletionProposal("\"" + elementName + "\"", elementName, null, context))
 			}
 		}
 	}
