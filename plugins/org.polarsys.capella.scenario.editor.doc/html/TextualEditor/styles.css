@@ -1,0 +1,145 @@
+/*******************************************************************************
+ * Copyright (c) 2006, 2020 THALES GLOBAL SERVICES.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ * 
+ * Contributors:
+ *    Thales - initial API and implementation
+ *******************************************************************************/
+BODY {
+	FONT-WEIGHT: normal;
+	FONT-SIZE: 11px;
+	COLOR: #000000;
+	LINE-HEIGHT: 16px;
+	FONT-FAMILY: Verdana, arial, sans-serif
+}
+
+H1 {
+	PADDING-RIGHT: 2px;
+	PADDING-LEFT: 2px;
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 24px;
+	PADDING-BOTTOM: 2px;
+	MARGIN: 36px 0px 4px;
+	COLOR: #336699;
+	LINE-HEIGHT: normal;
+	PADDING-TOP: 2px;
+	BORDER-BOTTOM: #336699 1px solid;
+}
+
+
+H2 {
+	PADDING-RIGHT: 2px;
+	PADDING-LEFT: 2px;
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 18px;
+	PADDING-BOTTOM: 2px;
+	MARGIN: 27px 0px 4px;
+	COLOR: #5DBFD4;
+	LINE-HEIGHT: normal;
+	PADDING-TOP: 2px;
+}
+
+
+H3 {
+	PADDING-RIGHT: 2px;
+	PADDING-LEFT: 2px;
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 14px;
+	PADDING-BOTTOM: 2px;
+	MARGIN: 21px 0px 4px;
+	COLOR: #5491A0;
+	LINE-HEIGHT: normal;
+	PADDING-TOP: 2px;
+}
+
+
+table {
+	border: 2px solid #5491A0;
+	background-color: #EBF4FA;
+	border-spacing : 0;
+	border-collapse : collapse;
+}
+
+table td {
+	border: 1px solid #5491A0;
+	padding: 6px;
+}
+
+table th {
+	border: 1px solid #5491A0;
+	background-color: #C3E3F7;
+	padding: 6px;
+}
+
+table.VALIDATION-RULE  {
+	display:block;
+}
+table.VALIDATION-RULE tbody  {
+	display:block;
+}
+
+
+.removed-item {
+	color: #CD556A;
+}
+.added-item {
+	color: #57A557;
+}
+
+
+
+.label-error {
+	background-color: #CD556A;
+	color: white;
+}
+
+
+.labels {
+  display: inline-block;
+  text-align:left;
+	width:70px;
+}
+
+.label {
+	TEXT-TRANSFORM: uppercase;
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 8px;
+	
+	padding:2px;
+	margin-right:2px;
+}
+
+.label-error {
+	background-color: #CD556A;
+	color: white;
+}
+
+
+.label-info {
+	background-color: #3984AD;
+	color: white;
+}
+
+.label-warning {
+	background-color: #FF9400;
+	color: white;
+}
+
+.label-success {
+	background-color: #57A557;
+	color: white;
+}
+
+
+
+.VALIDATION-RULE TD {
+	PADDING: 6px;
+}
+
+.VALIDATION-RULE TR TH {
+	WIDTH: 30px;
