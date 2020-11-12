@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.XtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
+import org.polarsys.capella.common.data.activity.ActivityNode;
 import org.polarsys.capella.common.data.modellingcore.AbstractNamedElement;
 import org.polarsys.capella.core.data.capellacommon.AbstractState;
 import org.polarsys.capella.core.data.capellacommon.Mode;
@@ -143,6 +144,9 @@ public class EmbeddedEditorInstanceHelper {
   }
   
   public static AbstractFunction getSourceFunctionOfExchange(FunctionalExchange exchange) {
+    if(exchange.getSource() instanceof AbstractFunction) {
+      return (AbstractFunction) exchange.getSource();
+    }
     FunctionOutputPort source = exchange.getSourceFunctionOutputPort();
     if(source != null && source.eContainer() instanceof AbstractFunction) {
       return (AbstractFunction) source.eContainer();
@@ -156,7 +160,10 @@ public class EmbeddedEditorInstanceHelper {
   }
   
   public static AbstractFunction getTargetFunctionOfExchange(FunctionalExchange exchange) {
-    FunctionInputPort target = exchange.getTargetFunctionInputPort();
+    if(exchange.getTarget() instanceof AbstractFunction) {
+      return (AbstractFunction) exchange.getTarget();
+    }
+    ActivityNode target = exchange.getTarget();
     if(target != null && target.eContainer() instanceof AbstractFunction) {
       return (AbstractFunction) target.eContainer();
     }

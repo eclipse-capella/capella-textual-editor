@@ -31,7 +31,6 @@ import org.polarsys.capella.scenario.editor.helper.DslConstants
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage
-import java.util.HashSet
 import org.eclipse.emf.ecore.EAttribute
 import java.util.List
 import java.util.Set
@@ -102,27 +101,6 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				message.name)) {
 			error('Exchange does not exist to \"' + message.target + "\"!"
 				, TextualScenarioPackage.Literals.MESSAGE__NAME
-			)
-		}
-	}
-	
-		
-	/*
-	 * Check that the source and the target of the sequence messages type are defined in text, before using them in the message 
-	 */
-	@Check
-	def checkParticipantsInvolvedExist(SequenceMessageType message) {
-		var participantsDefined = TextualScenarioHelper.participantsDefinedBeforeNames(message);
-		if (!participantsDefined.contains(message.source)) {
-			error(
-				'Source participant not defined in text editor!',
-				TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE
-			)
-		}
-		if (!participantsDefined.contains(message.target)) {
-			error(
-				'Target participant not defined in text editor!',
-				TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET
 			)
 		}
 	}
@@ -717,32 +695,6 @@ class TextualScenarioValidator extends AbstractTextualScenarioValidator {
 				}
 			}
 			index++
-		}
-	}
-	
-	/*
-	 * Expression shall not be empty
-	 */
-	//	@Check
-	def checkCombinedFragmentEmptyExpression(CombinedFragment combinedFragment) {
-		if (combinedFragment.expression === null || combinedFragment.expression.isEmpty) {
-			error(
-				'Expression can not be empty!',
-				TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION
-			)
-		}
-	}
-
-	/*
-	 * Expression shall not be empty
-	 */
-//	@Check
-	def checkOperandEmptyExpression(Operand operand) {
-		if (operand.expression === null || operand.expression.isEmpty) {
-			error(
-				'Expression can not be empty!',
-				TextualScenarioPackage.Literals.OPERAND__EXPRESSION
-			)
 		}
 	}
 

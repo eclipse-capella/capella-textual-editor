@@ -136,28 +136,6 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
   }
   
-  /**
-   * Check that the source and the target of the sequence messages type are defined in text, before using them in the message
-   */
-  @Check
-  public void checkParticipantsInvolvedExist(final SequenceMessageType message) {
-    ArrayList<String> participantsDefined = TextualScenarioHelper.participantsDefinedBeforeNames(message);
-    boolean _contains = participantsDefined.contains(message.getSource());
-    boolean _not = (!_contains);
-    if (_not) {
-      this.error(
-        "Source participant not defined in text editor!", 
-        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
-    }
-    boolean _contains_1 = participantsDefined.contains(message.getTarget());
-    boolean _not_1 = (!_contains_1);
-    if (_not_1) {
-      this.error(
-        "Target participant not defined in text editor!", 
-        TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
-    }
-  }
-  
   @Check
   public void checkSequenceMessagesExchangeType(final SequenceMessage sequenceMessage) {
     this.checkMessagesExchangeType(sequenceMessage);
@@ -759,28 +737,6 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         }
         index++;
       }
-    }
-  }
-  
-  /**
-   * Expression shall not be empty
-   */
-  public void checkCombinedFragmentEmptyExpression(final CombinedFragment combinedFragment) {
-    if (((combinedFragment.getExpression() == null) || combinedFragment.getExpression().isEmpty())) {
-      this.error(
-        "Expression can not be empty!", 
-        TextualScenarioPackage.Literals.COMBINED_FRAGMENT__EXPRESSION);
-    }
-  }
-  
-  /**
-   * Expression shall not be empty
-   */
-  public void checkOperandEmptyExpression(final Operand operand) {
-    if (((operand.getExpression() == null) || operand.getExpression().isEmpty())) {
-      this.error(
-        "Expression can not be empty!", 
-        TextualScenarioPackage.Literals.OPERAND__EXPRESSION);
     }
   }
   
