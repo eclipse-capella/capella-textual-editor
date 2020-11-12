@@ -163,7 +163,7 @@ public class EmbeddedEditorInstanceHelper {
     if(exchange.getTarget() instanceof AbstractFunction) {
       return (AbstractFunction) exchange.getTarget();
     }
-    ActivityNode target = exchange.getTarget();
+    FunctionInputPort target = exchange.getTargetFunctionInputPort();
     if(target != null && target.eContainer() instanceof AbstractFunction) {
       return (AbstractFunction) target.eContainer();
     }
