@@ -14,7 +14,9 @@
 			<br/>
 			The embedded Textual Editor can also be opened from the View menu bar:
 
-			<img border="0" src="Images/View_TextualEditor.png"/>
+			<br/>
+
+			<img height="350" width="650" border="0" src="Images/View_TextualEditor.png"/>
 		</p>
 		<h2 id="Syntax_for_the_Textual_Editor">Syntax for the Textual Editor</h2>
 		<p>The syntax supported in the textual editor for IS, FS, ES Capella Scenarios is presented in the following paragraphs.</p>
@@ -237,7 +239,7 @@
 		</p>
 		<h4 id="Examples_2">Examples</h4>
 		<p>
-			<img border="0" src="Images/ES_FS_Logical_Messages.png"/>
+			<img height="750" width="1050" border="0" src="Images/ES_FS_Logical_Messages.png"/>
 
 			<br/>
 		</p>
@@ -262,34 +264,14 @@
 				<td>
 					<b>alt</b> "condition A" 
 					<b>over</b> "timeline1", "timeline2",… {
-					<dl>
-						<dd>
-							<dl>
-								<dd>[something]</dd>
-							</dl>
-						</dd>
-					</dl>
-					<p>} 
-						<b>else</b> "condition B" {
-					</p>
-					<dl>
-						<dd>
-							<dl>
-								<dd>[something_else]</dd>
-							</dl>
-						</dd>
-					</dl>
-					<p>} 
-						<b>else</b> "condition C" {
-					</p>
-					<dl>
-						<dd>
-							<dl>
-								<dd>[something_else]</dd>
-							</dl>
-						</dd>
-					</dl>
-					<p>}</p>
+					<br/> &nbsp;&nbsp;[something]
+					<br/>} 
+					<b>else</b> "condition B" {
+					<br/>&nbsp;&nbsp;[something_else]
+					<br/>} 
+					<b>else</b> "condition C" {
+					<br/>&nbsp;&nbsp;[something_else]
+					<br/>}
 				</td>
 				<td>It will insert an ALT type of combined fragment over the given timelines.</td>
 			</tr>
@@ -300,30 +282,12 @@
 				<td>
 					<b>par</b> "condition A" 
 					<b>over</b> "timeline1", "timeline2",… {
-					<dl>
-						<dd>
-							<dl>
-								<dd>[something]</dd>
-							</dl>
-						</dd>
-					</dl>
-					<p>} "condition B" {</p>
-					<dl>
-						<dd>
-							<dl>
-								<dd>[something_else]</dd>
-							</dl>
-						</dd>
-					</dl>
-					<p>} "condition C" {</p>
-					<dl>
-						<dd>
-							<dl>
-								<dd>[something_else]</dd>
-							</dl>
-						</dd>
-					</dl>
-					<p>}</p>
+					<br/> &nbsp;&nbsp;[something]
+					<br/>} "condition B" {
+					<br/>&nbsp;&nbsp;[something_else]
+					<br/>} "condition C" {
+					<br/>&nbsp;&nbsp;[something_else]
+					<br/>}
 				</td>
 				<td>It will insert a PAR type of combined fragment over the given timelines.</td>
 			</tr>
@@ -568,6 +532,16 @@
 			<b>Ctrl+Space</b> to see suggestions of the allowed keywords in the editor or proposals of the elements that can be used.
 		</p>
 		<h3 id="Limitations">Limitations</h3>
-		<p>Multiple lifelines of the same instance role is not enabled.</p>
+		<p>The Textual Editor addon has the following limitations:</p>
+		<ul>
+			<li>Multiple lifelines of the same instance role is not enabled.</li>
+			<li>The following tools are not supported:
+				<ul>
+					<li>Duration</li>
+					<li>Shared Data</li>
+					<li>Exchange Context</li>
+				</ul>
+			</li>
+		</ul>
 	</body>
 </html>

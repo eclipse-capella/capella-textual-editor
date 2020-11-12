@@ -21,7 +21,8 @@ When creating a new scenario diagram (OES, OAS, IS, FS, ES), the editor is displ
 If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.
 <br>
 The embedded Textual Editor can also be opened from the View menu bar:
-[[Image:Images/View_TextualEditor.png]]
+<br>
+[[Image:Images/View_TextualEditor.png|650x350px]]
 
 ==Syntax for the Textual Editor==
 
@@ -122,7 +123,7 @@ In Capella, we always activate an execution immediately after each sequence mess
 
 ==== Examples ====
 
-[[Image:Images/ES_FS_Logical_Messages.png]]
+[[Image:Images/ES_FS_Logical_Messages.png|1050x750px]]
 <br>
 
 ===Combined Fragments===
@@ -135,23 +136,11 @@ The user can define a combined fragment in text using the syntax below:
 | ''' Description '''
 |- 
 | ''' ALT ''' 	
-| '''alt''' "condition A" '''over''' "timeline1", "timeline2",… {
-::[something]
-} '''else''' "condition B" {
-::[something_else]
-} '''else''' "condition C" {
-::[something_else]
-}
+| '''alt''' "condition A" '''over''' "timeline1", "timeline2",… {<br> &nbsp;&nbsp;[something]<br>} '''else''' "condition B" {<br>&nbsp;&nbsp;[something_else]<br>} '''else''' "condition C" {<br>&nbsp;&nbsp;[something_else]<br>}
 | It will insert an ALT type of combined fragment over the given timelines.
 |- 
 | ''' PAR ''' 	
-| '''par''' "condition A" '''over''' "timeline1", "timeline2",… {
-::[something]
-} "condition B" {
-::[something_else]
-} "condition C" {
-::[something_else]
-}
+| '''par''' "condition A" '''over''' "timeline1", "timeline2",… {<br> &nbsp;&nbsp;[something]<br>} "condition B" {<br>&nbsp;&nbsp;[something_else]<br>} "condition C" {<br>&nbsp;&nbsp;[something_else]<br>}
 | It will insert a PAR type of combined fragment over the given timelines.
 |- 
 | ''' OTHER ''' 	
@@ -312,5 +301,9 @@ Textual validations are added in the editor, to prevent the user from doing inva
 The user can use '''Ctrl+Space''' to see suggestions of the allowed keywords in the editor or proposals of the elements that can be used.
 
 ===Limitations===
-
-Multiple lifelines of the same instance role is not enabled.
+The Textual Editor addon has the following limitations:
+* Multiple lifelines of the same instance role is not enabled.
+* The following tools are not supported:
+** Duration
+** Shared Data
+** Exchange Context
