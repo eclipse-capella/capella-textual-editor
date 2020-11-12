@@ -1828,7 +1828,7 @@ public class XtextToDiagramCommands {
     // execution end - CREATE and DELETE messages don't have an execution
     if (!isReplyMessage
         && (seqMessage instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage
-            || seqMessage instanceof ArmTimerMessage)) {
+            || seqMessage instanceof ArmTimerMessage || seqMessage instanceof FoundMessage)) {
       ExecutionEnd executionEnd = InteractionFactory.eINSTANCE.createExecutionEnd();
       if (!hasReturn(seqMessage)) {
         // do not add this execution end to the interaction fragments list, as we will add the sending end of the reply
