@@ -148,8 +148,11 @@ public class EmbeddedEditorInstanceHelper {
   }
 
   public static AbstractFunction getSourceFunctionOfExchange(FunctionalExchange exchange) {
+    if(exchange.getSource() instanceof AbstractFunction) {
+      return (AbstractFunction) exchange.getSource();
+    }
     FunctionOutputPort source = exchange.getSourceFunctionOutputPort();
-    if (source != null && source.eContainer() instanceof AbstractFunction) {
+    if(source != null && source.eContainer() instanceof AbstractFunction) {
       return (AbstractFunction) source.eContainer();
     }
     return null;
@@ -161,6 +164,9 @@ public class EmbeddedEditorInstanceHelper {
   }
 
   public static AbstractFunction getTargetFunctionOfExchange(FunctionalExchange exchange) {
+    if(exchange.getTarget() instanceof AbstractFunction) {
+      return (AbstractFunction) exchange.getTarget();
+    }
     FunctionInputPort target = exchange.getTargetFunctionInputPort();
     if (target != null && target.eContainer() instanceof AbstractFunction) {
       return (AbstractFunction) target.eContainer();
