@@ -787,6 +787,9 @@ public class XtextToDiagramCommands {
     if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) {
       return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.ArmTimerMessage) elementFromXtext).getExecution() != null;
     }
+    if (elementFromXtext instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage) {
+        return ((org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage) elementFromXtext).getExecution() != null;
+    }
     return false;
   }
 

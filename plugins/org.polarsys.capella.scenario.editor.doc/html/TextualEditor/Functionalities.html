@@ -7,8 +7,433 @@
 	<body>
 		<h1 id="Functionalities">Functionalities</h1>
 		<p>Once the Textual Scenario Add-On is installed, you will be able to edit scenarios in textual mode.</p>
-		<h2 id="Textual_Scenario_View">Textual Scenario View</h2>
-		<p>When creating a new scenario diagram (OES, OAS, IS, FS, ES), the scenario editor is displayed as a separate view. The user shall be able to edit a scenario in the embedded Textual Scenario Editor. If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.</p>
+		<h2 id="Textual_Editor_View">Textual Editor View</h2>
+		<p>When creating a new scenario diagram (OES, OAS, IS, FS, ES), the editor is displayed as a separate view. The user shall be able to edit a scenario in the embedded Textual Editor.
+			If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.
+
+			<br/>
+			The embedded Textual Editor can also be opened from the View menu bar:
+
+			<img border="0" src="Images/View_TextualEditor.png"/>
+		</p>
+		<h2 id="Syntax_for_the_Textual_Editor">Syntax for the Textual Editor</h2>
+		<p>The syntax supported in the textual editor for IS, FS, ES Capella Scenarios is presented in the following paragraphs.</p>
+		<h3 id="Participants">Participants</h3>
+		<p>Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architectural level, instance roles can be inserted by specifying the keyword (actor, component, configuration_item, entity, role, function, activity) and the name of the instance role. If the represented part for the inserted instance role does not exist, an error is displayed.</p>
+		<table border="1">
+			<tr>
+				<td>
+					<b> Keyword </b> 	
+				</td>
+				<td>
+					<b> Details </b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> actor </b> 	
+				</td>
+				<td>It will create an instance role representing an actor; this keyword is available for the IS, ES diagrams at Operational, System, Logical an Physical Level.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> component </b>
+				</td>
+				<td>It will create an instance role representing a component; this keyword is available for the IS, ES diagrams at System, Logical and Physical Level.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> configuration_item </b>
+				</td>
+				<td>It will create an instance role representing a configuration item. This keyword is available for the IS diagrams at EPBS Level.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> entity </b>
+				</td>
+				<td>It will create an instance role representing an entity. This keyword is available for the OES diagrams at Operational Level.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> role </b>
+				</td>
+				<td>It will create an instance role representing a role. This keyword is available for the OES diagrams at Operational Level.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> function </b>
+				</td>
+				<td>It will create an instance role representing a function. This keyword is available for the FS diagrams.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> activity </b>
+				</td>
+				<td>It will create an instance role representing an activity. This keyword is available for the OAS diagrams.</td>
+			</tr>
+		</table>
+		<h4 id="Examples">Examples</h4>
+		<p>
+			<img border="0" src="Images/Keywords_Participants_Examples.png"/>
+		</p>
+		<h3 id="Messages">Messages</h3>
+		<p>The user can insert messages between defined participants assuming the fact that the exchange already exists between the selected source and the target participant. The following elements and keywords can be used in the textual editor:</p>
+		<table border="1">
+			<tr>
+				<td style="width:140px;">
+					<b> Element </b> 	
+				</td>
+				<td style="width:220px;">
+					<b> Syntax </b> 
+				</td>
+				<td>
+					<b> Details </b>
+				</td>
+				<td style="width:170px;">
+					<b> Examples </b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> sequence message </b> 
+				</td>
+				<td>"source" 
+					<b>-&gt;</b> "target" : "exchange"
+				</td>
+				<td>Insert a sequence messages between the source and the target instance roles already defined in the text editor. A 
+					<b>sequence message</b> can be declared with 
+					<b>withExecution</b> and 
+					<b>withReturn</b> keywords.
+				</td>
+				<td>"SA 2" 
+					<b>-&gt;</b> "SA 3" : "msg1"
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> lost message </b> 
+				</td>
+				<td>"source" 
+					<b>-&gt;o</b> : "exchange"
+				</td>
+				<td>Insert a lost sequence messages starting on the given source.</td>
+				<td>"SA 2" 
+					<b>-&gt;o</b> : "msgLost"
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> found message </b> 
+				</td>
+				<td>
+					<b>o-&gt;</b> "target" : "exchange"
+				</td>
+				<td>Insert a found sequence messages having the given target. This type of message can be use with the 
+					<b>withExecution</b> keyword.
+				</td>
+				<td>
+					<b>o-&gt;</b> "SA 3" : "msgFound"
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> arm timer </b> 
+				</td>
+				<td>
+					<b>-&gt;&gt;</b> "timeline" : "message"
+				</td>
+				<td>Add an arm timer on the given timeline. This type of message can be use with the 
+					<b>withExecution</b> keyword.
+				</td>
+				<td>
+					<b>-&gt;&gt;</b> "SA 3" : "Arm Timer"
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> create message </b> 
+				</td>
+				<td>"source" 
+					<b>-&gt;+</b> "target" : "exchange"
+				</td>
+				<td>Insert a create messages between the source and the target instance roles already defined in the text editor.</td>
+				<td>"SA 2" 
+					<b>-&gt;+</b> "SA 3" : "cmsg"
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> delete message </b> 
+				</td>
+				<td>"source" 
+					<b>-&gt;x</b> "target" : "exchange"
+				</td>
+				<td>Insert a delete messages between the source and the target instance roles already defined in the text editor.</td>
+				<td>"SA 2" 
+					<b>-&gt;x</b> "SA 3" : "dmsg"
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> activate execution </b> 
+				</td>
+				<td>
+					<b> withExecution </b>
+				</td>
+				<td>The 
+					<b>withExecution</b> keyword is used to mark that the execution of a message is not immediately ended. The execution will end where the 
+					<b>deactivation</b> message is found. The 
+					<b>withExecution</b> keyword can be used in the same time with the 
+					<b>withReturn</b> keyword.
+				</td>
+				<td>"SA 2" 
+					<b>-&gt;</b> "SA 3" 
+					<b>withExecution</b>: "msg1"
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> deactivate execution </b> 
+				</td>
+				<td>
+					<b> deactivate </b> "target"
+				</td>
+				<td>The 
+					<b>deactivate</b> keyword is used to mark where a message execution is ending. The 
+					<b>deactivate</b> keyword mandatory if we have a sequence message whose execution is not immediately ended. We must also add the 
+					<b>withExecution</b> keyword on the sequence message if the message requires deactivation.
+				</td>
+				<td>"SA 2" 
+					<b>-&gt;</b> "SA 3" 
+					<b>withExecution</b> : "msg1" 
+					<br/> 
+					<b>deactivate</b> "SA 3"
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> return branch </b> 
+				</td>
+				<td>
+					<b> withReturn </b>
+				</td>
+				<td>The 
+					<b>withReturn</b> keyword is used to mark that a message has a return. The 
+					<b>withReturn</b> keyword can be used in the same time with the 
+					<b>withExecution</b> keyword.
+				</td>
+				<td>"SA 2" 
+					<b>-&gt;</b> "SA 3" 
+					<b>withReturn</b> : "msg1"
+				</td>
+			</tr>
+		</table>
+		<h4 id="Note">Note</h4>
+		<p>In Capella, we always activate an execution immediately after each sequence message. In case of a simple message, whose execution ends immediately, the 
+			<b>withExecution</b> and 
+			<b>deactivation</b> keywords are not required. However if we type the 
+			<b>withExecution</b> keyword, we must specify the 
+			<b>deactivation</b> point, otherwise a validation error is displayed in the text editor.
+		</p>
+		<h4 id="Examples_2">Examples</h4>
+		<p>
+			<img border="0" src="Images/ES_FS_Logical_Messages.png"/>
+
+			<br/>
+		</p>
+		<h3 id="Combined_Fragments">Combined Fragments</h3>
+		<p>The user can define a combined fragment in text using the syntax below:</p>
+		<table border="1">
+			<tr>
+				<td>
+					<b> Element </b> 	
+				</td>
+				<td>
+					<b> Syntax </b>
+				</td>
+				<td>
+					<b> Description </b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> ALT </b> 	
+				</td>
+				<td>
+					<b>alt</b> "condition A" 
+					<b>over</b> "timeline1", "timeline2",… {
+					<dl>
+						<dd>
+							<dl>
+								<dd>[something]</dd>
+							</dl>
+						</dd>
+					</dl>
+					<p>} 
+						<b>else</b> "condition B" {
+					</p>
+					<dl>
+						<dd>
+							<dl>
+								<dd>[something_else]</dd>
+							</dl>
+						</dd>
+					</dl>
+					<p>} 
+						<b>else</b> "condition C" {
+					</p>
+					<dl>
+						<dd>
+							<dl>
+								<dd>[something_else]</dd>
+							</dl>
+						</dd>
+					</dl>
+					<p>}</p>
+				</td>
+				<td>It will insert an ALT type of combined fragment over the given timelines.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> PAR </b> 	
+				</td>
+				<td>
+					<b>par</b> "condition A" 
+					<b>over</b> "timeline1", "timeline2",… {
+					<dl>
+						<dd>
+							<dl>
+								<dd>[something]</dd>
+							</dl>
+						</dd>
+					</dl>
+					<p>} "condition B" {</p>
+					<dl>
+						<dd>
+							<dl>
+								<dd>[something_else]</dd>
+							</dl>
+						</dd>
+					</dl>
+					<p>} "condition C" {</p>
+					<dl>
+						<dd>
+							<dl>
+								<dd>[something_else]</dd>
+							</dl>
+						</dd>
+					</dl>
+					<p>}</p>
+				</td>
+				<td>It will insert a PAR type of combined fragment over the given timelines.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> OTHER </b> 	
+				</td>
+				<td>
+					<b>LOOP, ASSERT, CONSIDER, CRITICAL, IGNORE, NEG, OPT, SEQ, STRICT, UNSET</b>'
+				</td>
+				<td>It will insert the given type of combined fragment over the given timelines.</td>
+			</tr>
+		</table>
+		<h4 id="Note_2">Note</h4>
+		<ul>
+			<li>For the other combined fragments: 
+				<b>LOOP, ASSERT, CONSIDER, CRITICAL, IGNORE, NEG, OPT, SEQ, STRICT, UNSET</b> the syntax is similar to 
+				<b>PAR</b>
+			</li>
+			<li>The condition is optional.</li>
+		</ul>
+		<h4 id="Example">Example</h4>
+		<p>
+			<img border="0" src="Images/ES_Combined_Fragments.png"/>
+
+			<br/>
+		</p>
+		<h3 id="State._Modes._Allocated_Functions">State. Modes. Allocated Functions</h3>
+		<p>The use can insert states, modes and allocated functions in the textual editor using the syntax below:</p>
+		<table border="1">
+			<tr>
+				<td>
+					<b> Element </b> 	
+				</td>
+				<td>
+					<b> Syntax </b>
+				</td>
+				<td>
+					<b> Description </b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> state </b> 	
+				</td>
+				<td>
+					<b>on</b> "Timeline" 
+					<b>state</b> "State_name" 
+				</td>
+				<td>It will insert a state on a given timeline.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> mode </b> 	
+				</td>
+				<td>
+					<b>on</b> "Timeline" 
+					<b>mode</b> "Mode_name" 
+				</td>
+				<td>It will insert a mode on a given timeline.</td>
+			</tr>
+			<tr>
+				<td>
+					<b> function </b> 	
+				</td>
+				<td>
+					<b>on</b> "Timeline" 
+					<b>mode</b> "Function_name" 
+				</td>
+				<td>It will insert an allocated function on a given timeline.</td>
+			</tr>
+		</table>
+		<h4 id="Example_2">Example</h4>
+		<p>
+			<img border="0" src="Images/ES_FS_States_Modes_AllocFunctions.png"/>
+
+			<br/>
+		</p>
+		<h3 id="References">References</h3>
+		<p>The following syntax can be used in order to define references in the textual editor:</p>
+		<table border="1">
+			<tr>
+				<td>
+					<b> Element </b> 	
+				</td>
+				<td>
+					<b> Syntax </b>
+				</td>
+				<td>
+					<b> Description </b>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b> reference </b> 	
+				</td>
+				<td>
+					<b>ref</b> "ref_scenario" 
+					<b>over</b> "timeline1", "timeline2" 
+				</td>
+				<td>It will insert a reference to a scenario over the given timelines.</td>
+			</tr>
+		</table>
+		<h4 id="Example_3">Example</h4>
+		<p>
+			<img border="0" src="Images/ES_References.png"/>
+
+			<br/>
+		</p>
+		<h2 id="Features_and_limitations_of_the_Textual_Editor">Features and limitations of the Textual Editor</h2>
 		<h3 id="Consistency_of_the_data">Consistency of the data</h3>
 		<p>In order to maintain consistency between diagram and text, two buttons are available:</p>
 		<ul>
@@ -20,243 +445,129 @@
 			</li>
 		</ul>
 		<p>
-			<img width="760" align="middle" border="0" src="Images/IS_System_SyncButtons.png"/>
+			<img border="0" src="Images/IS_System_SyncButtons.png"/>
 		</p>
-		<h2 id="Syntax_for_the_Textual_Scenario_Editor">Syntax for the Textual Scenario Editor</h2>
-		<p>The syntax supported in the textual editor for IS, FS, ES Capella Scenarios is presented in the following paragraphs.</p>
-		<h3 id="Participants">Participants</h3>
-		<p>Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architecture level on which our diagram is located, we can insert instance roles specifying a keyword (actor, component, function etc) and the name of the instance role (currently the parts associated need to already exist).</p>
-		<h4 id="Keywords">Keywords</h4>
-		<ul>
-			<li>
-				<b> actor </b>: it will create an instance role representing an actor; this keyword is available for IS, ES diagrams at Operational, System, Logical and Physical Level.
-			</li>
-			<li>
-				<b> component </b>: it will create an instance role representing a component; this keyword is available for IS, ES diagrams at System, Logical and Physical Level.
-			</li>
-			<li>
-				<b> configuration_item </b>: it will create an instance role representing a configuration item; this keyword is available for IS diagrams at EPBS Level.
-			</li>
-			<li>
-				<b> entity </b>: it will create an instance role representing an entity; this keyword is available for OES diagrams at Operational Level.
-			</li>
-			<li>
-				<b> role </b>: it will create an instance role representing a role; this keyword is available for OES diagrams at Operational Level.
-			</li>
-			<li>
-				<b> function </b>: it will create an instance role representing a function; this keyword is available for FS diagrams.
-			</li>
-			<li>
-				<b> activity </b>: it will create an instance role representing an activity; this keyword is available for OAS diagrams.
-			</li>
-		</ul>
-		<h4 id="Examples">Examples</h4>
-		<p>
-			<img align="middle" border="0" src="Images/Keywords_Participants_Examples.png"/>
+		<h3 id="Validation_of_the_data">Validation of the data</h3>
+		<p>Textual validations are added in the editor, to prevent the user from doing invalid operations.</p>
+		<table border="1">
+			<tr>
+				<td>
+					<b> Validation </b> 	
+				</td>
+				<td>
+					<b> Description </b>
+				</td>
+			</tr>
+			<tr>
+				<td>'Represented part does not exist!'	</td>
+				<td>Checks that a represented part exists for the instance role used in the text editor.</td>
+			</tr>
+			<tr>
+				<td>'Function does not exist!'	</td>
+				<td>Checks that the function exists.</td>
+			</tr>
+			<tr>
+				<td>'&lt;keyword&gt; can not be used in this diagram!'</td>
+				<td>Check that the participant keyword can be used in the type of scenario diagram. &lt;keyword&gt; can be any participant: actor, component, entity, function, activiy, role, configuration_item. Ex: actor cannot be used in the FS diagrams.</td>
+			</tr>
+			<tr>
+				<td>'Duplicated participant!'</td>
+				<td>Checks that only a timeline of the same instance role is used.</td>
+			</tr>
+			<tr>
+				<td>'Timeline not defined in text editor!'</td>
+				<td>Checks that the given timeline involved in message, state fragments, combined fragments is defined in the text editor as participant.</td>
+			</tr>
+			<tr>
+				<td>'Exchange does not exist between &lt;source&gt; and &lt;target&gt;!'</td>
+				<td>Checks that an exchange exists between the given source and target in a sequence message.</td>
+			</tr>
+			<tr>
+				<td>'Exchange does not exist from &lt;source&gt;!'</td>
+				<td>Checks that an exchange exists starting on the given source in a lost message.</td>
+			</tr>
+			<tr>
+				<td>'Exchange does not exist to &lt;target&gt;!'</td>
+				<td>Checks that an exchange exists to the given target in a lost found.</td>
+			</tr>
+			<tr>
+				<td>'Exchange type can not be used, expected &lt;type&gt;'</td>
+				<td>Checks that a type of exchange (Component Exchange or Functional Exchange) is used in a ES diagram. &lt;type&gt; can be CE or FE, if one of them is used, then the user can only add a type of exchange.</td>
+			</tr>
+			<tr>
+				<td>'Deactivation keyword expected for a withExecution message!'</td>
+				<td>Checks that a withExecution message is closed by a deacitvation on the given target timeline.</td>
+			</tr>
+			<tr>
+				<td>'Deactivation keyword not expected!'</td>
+				<td>Checks that the activation keyword is put after a withExecution message and that the deactivated target is the one specified in the withExecution message.</td>
+			</tr>
+			<tr>
+				<td>'Create or delete message can not be used in this diagram!'</td>
+				<td>Checks that a create or a delete message are used only in the allowed diagrams.</td>
+			</tr>
+			<tr>
+				<td>'Arm Timer can not be used in this diagram!'</td>
+				<td>Checks that an arm timer message is used only in the allowed diagrams.</td>
+			</tr>
+			<tr>
+				<td>'Lost message can not be used in this diagram!'</td>
+				<td>Checks that a lost message is used only in the allowed diagrams.</td>
+			</tr>
+			<tr>
+				<td>'Found message can not be used in this diagram!'</td>
+				<td>Checks that a found message is used only in the allowed diagrams.</td>
+			</tr>
+			<tr>
+				<td>'Invalid element! Source and target must be different!'</td>
+				<td>Checks that the source and target involved in a sequence message are different.</td>
+			</tr>
+			<tr>
+				<td>'Element &lt;timeline&gt; can not be used at this point! A delete message was already defined on this timeline.'</td>
+				<td>Checks that a delete message on the given timeline was not encountered before using it in the current point. Cannot use the timeline after a delete occured on the timeline.</td>
+			</tr>
+			<tr>
+				<td>'Target &lt;target&gt; can not be used in a create message at this point! Other operations were already defined on this timeline.'</td>
+				<td>Checks that a create message is the first event occuring on a timeline.</td>
+			</tr>
+			<tr>
+				<td>'This &lt;state_fragment&gt; does not exist or is not available for &lt;timeline&gt;'</td>
+				<td>Checks that a state, mode, allocated function, can be used on the given timeline.</td>
+			</tr>
+			<tr>
+				<td>'Expected else keyword!'</td>
+				<td>Checks that the 'else' keyword is present for the 'alt' combined fragment.</td>
+			</tr>
+			<tr>
+				<td>'Unexpected keyword!'</td>
+				<td>Shows an error if the keyword is not expected before expression of an operand in a combined fragment. Ex: 'else' keyword not expected for other that 'alt'.</td>
+			</tr>
+			<tr>
+				<td>'Timelines covered by this &lt;combined_fragment_type&gt; must be a subset of the parent covered timelines'</td>
+				<td>Checks that the covered timelines in an inner combined fragment is a subset of the covered timelines in the parent combined fragment.					</td>
+			</tr>
+			<tr>
+				<td>'Timeline not covered by this &lt;combined_fragment_type&gt;!'</td>
+				<td>Checks that the timelines involved in a message that belongs to a combine fragment are covered by the combined fragment.</td>
+			</tr>
+			<tr>
+				<td>'Duplicated timeline!'</td>
+				<td>Checks that a timeline is not duplicated when using it over a reference.</td>
+			</tr>
+			<tr>
+				<td>'Referenced scenario does not exist!'</td>
+				<td>Checks that a referenced scenario exists.</td>
+			</tr>
+			<tr>
+				<td>'Timelines covered by this reference must be a subset of the parent covered timelines'</td>
+				<td>Checks that the timelines in a reference are a subset of the parent container covered timelines.											</td>
+			</tr>
+		</table>
+		<h3 id="Autocompletion">Autocompletion</h3>
+		<p>The user can use 
+			<b>Ctrl+Space</b> to see suggestions of the allowed keywords in the editor or proposals of the elements that can be used.
 		</p>
-		<h3 id="Messages">Messages</h3>
-		<p>The user can insert messages between participants assuming the fact that the exchange already exists between the selected source and target participant.</p>
-		<ul>
-			<li>
-				<b> sequence messages </b>: it will add a sequence messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
-				<ul>
-					<li>
-						<b> source_ir" -&gt; "target_ir" : "msg" </b>
-					</li>
-					<li>example:
-						<dl>
-							<dd>"A 1" -&gt; "A 2" : "exec" </dd>
-						</dl>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<b> activate execution </b>: in Capella, we always activate an execution after each sequence message 
-				<b>' -&gt; </b>'; each sequence message implies an activation 
-			</li>
-			<li>
-				<b> deactivate execution </b>: the 
-				<b>' deactivate </b>' keyword is used to deactivate a message; if we have a simple sequence message which ends immediately, the deactivation keyword is not required; if we have a sequence messages that ends later, we shall add the 
-				<b>' withExecution </b>' keyword and it is mandatory to deactivate the message when needed.
-				<ul>
-					<li>example:
-						<dl>
-							<dd>"A 1" -&gt; "A 2" 
-								<b> withExecution </b> : "exec"
-							</dd>
-							<dd>"A 2" -&gt; "A 3"</dd>
-							<dd>
-								<b>deactivate</b> "A 2"
-							</dd>
-						</dl>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<b> return branch </b>: to mark that a message has a return, the 
-				<b>withReturn</b> keyword can be used; if the message does not return immediately and other events occur on its execution, then the 
-				<b>withExecution</b> keyword can be used in the same time with the 
-				<b>withReturn</b> keyword to mark that the current message is a complex message and has a return.
-			</li>
-			<li>
-				<b> create messages </b>: it will add a create message between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
-				<ul>
-					<li>
-						<b> "source_ir" -&gt;+ "target_ir" : "msg" </b>
-					</li>
-					<li>example:
-						<dl>
-							<dd>"A 1" -&gt;+ "A 2" : "msg" </dd>
-						</dl>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<b> delete messages </b>: it will add a delete messages between the source and the target instance roles which shall already exist, otherwise a validation error is displayed.
-				<ul>
-					<li>
-						<b> "source_ir" -&gt;x "target_ir" : "msg" </b>
-					</li>
-					<li>example:
-						<dl>
-							<dd>"A 1" -&gt;x "A 2" : "msg" </dd>
-						</dl>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<b> arm timer </b>: it will add an arm timer on the given timeline.
-				<ul>
-					<li>
-						<b> -&gt;&gt; "timeline" : "msg" </b>
-					</li>
-					<li>example:
-						<dl>
-							<dd>-&gt;&gt; "A 1" : "arm_timer" </dd>
-						</dl>
-					</li>
-				</ul>
-			</li>
-		</ul>
-		<h4 id="Examples_2">Examples</h4>
-		<p>
-			<img align="middle" border="0" src="Images/IS_System_SeqMessages.png"/>
-
-			<br/>
-
-			<br/>
-
-			<img align="middle" border="0" src="Images/IS_System_SeqMessages_FE.png"/>
-
-			<br/>
-
-			<br/>
-
-			<img align="middle" border="0" src="Images/OAS_OA_SeqMessages_Interaction.png"/>
-
-			<br/>
-
-			<img align="middle" border="0" src="Images/FS_WithReturn_WithExecution.png"/>
-		</p>
-		<h3 id="Combined_Fragments">Combined Fragments</h3>
-		<p>The user can define a combined fragment from the text using the syntax below:</p>
-		<ul>
-			<li>for 
-				<b>ALT</b>:
-				<dl>
-					<dd>
-						<dl>
-							<dd>
-								<b>alt</b> “condition A” 
-								<b>over</b> timeline1, timeline2,… {
-								<dl>
-									<dd>[something]</dd>
-								</dl>
-							</dd>
-							<dd>} 
-								<b>else</b> “condition B” {
-								<dl>
-									<dd>[something_else]</dd>
-								</dl>
-							</dd>
-							<dd>} 
-								<b>else</b> “condition C” {
-								<dl>
-									<dd>[something_else]</dd>
-								</dl>
-							</dd>
-							<dd>}</dd>
-						</dl>
-					</dd>
-				</dl>
-			</li>
-			<li>for the other combined fragments: 
-				<b>PAR, LOOP, ASSERT, CONSIDER, CRITICAL, IGNORE, NEG, OPT, SEQ, STRICT, UNSET</b>':
-				<dl>
-					<dd>
-						<dl>
-							<dd>
-								<b>par</b> “condition A” 
-								<b>over</b> timeline1, timeline2,… {
-								<dl>
-									<dd>[something]</dd>
-								</dl>
-							</dd>
-							<dd>} “condition B” {
-								<dl>
-									<dd>[something_else]</dd>
-								</dl>
-							</dd>
-							<dd>} “condition C” {
-								<dl>
-									<dd>[something_else]</dd>
-								</dl>
-							</dd>
-							<dd>}</dd>
-						</dl>
-					</dd>
-				</dl>
-			</li>
-		</ul>
-		<h4 id="Examples_3">Examples</h4>
-		<p>
-			<img align="middle" border="0" src="Images/ES_Combined_Fragments.png"/>
-
-			<br/>
-		</p>
-		<h3 id="State._Modes._Allocated_Functions">State. Modes. Allocated Functions</h3>
-		<p>The following syntax can be used in order to define state, modes and allocated functions in the textual mode:</p>
-		<ul>
-			<li>state
-				<ul>
-					<li>
-						<b>on</b> “Timeline” 
-						<b>state</b> “State_name” 
-					</li>
-				</ul>
-			</li>
-			<li>mode
-				<ul>
-					<li>
-						<b>on</b> “Timeline” 
-						<b>mode</b> “Mode_name” 
-					</li>
-				</ul>
-			</li>
-			<li>allocated functions
-				<ul>
-					<li>
-						<b>on</b> “Timeline” 
-						<b>function</b> “Function_name” 
-					</li>
-				</ul>
-			</li>
-		</ul>
-		<h4 id="Examples_4">Examples</h4>
-		<p>
-			<img align="middle" border="0" src="Images/ES_FS_States_Modes_AllocFunctions.png"/>
-
-			<br/>
-		</p>
+		<h3 id="Limitations">Limitations</h3>
+		<p>Multiple lifelines of the same instance role is not enabled.</p>
 	</body>
 </html>

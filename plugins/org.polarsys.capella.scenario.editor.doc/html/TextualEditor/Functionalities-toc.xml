@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="html/TextualEditor/Functionalities.html" label="Functionalities">
 	<topic href="html/TextualEditor/Functionalities.html" label="Scenario">
-	    <topic href="html/TextualEditor/Functionalities.html#Textual_Scenario_View" label="Textual Scenario View"></topic>
-     <topic href="html/TextualEditor/Functionalities.html#Syntax_for_the_Textual_Scenario_Editor" label="Syntax for the Textual Scenario Editor">
+     <topic href="html/TextualEditor/Functionalities.html#Syntax_for_the_Textual_Editor" label="Syntax for the Textual Editor">
         <topic href="html/TextualEditor/Functionalities.html#Participants" label="Participants">
         </topic>
         <topic href="html/TextualEditor/Functionalities.html#Messages" label="Messages">
@@ -11,7 +10,16 @@
         </topic>
         <topic href="html/TextualEditor/Functionalities.html#State._Modes._Allocated_Functions" label="State, Modes, Allocated Functions">
         </topic>
+        <topic href="html/TextualEditor/Functionalities.html#References" label="References">
+        </topic>
      </topic>
+	    <topic href="html/TextualEditor/Functionalities.html#Features_and_limitations_of_the_Textual_Editor" label="Features and limitations of the Textual Editor">
+        <topic href="html/TextualEditor/Functionalities.html#Consistency_of_the_data" label="Consistency of the data">
+        </topic>
+        <topic href="html/TextualEditor/Functionalities.html#Validation_of_the_data" label="Validation of the data">
+        </topic>
+        <topic href="html/TextualEditor/Functionalities.html#Autocompletion" label="Autocompletion">
+        </topic></topic>
 		
 	</topic>
 </toc>
