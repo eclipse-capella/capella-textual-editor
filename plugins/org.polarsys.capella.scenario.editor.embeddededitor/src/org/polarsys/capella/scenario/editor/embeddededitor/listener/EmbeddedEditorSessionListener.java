@@ -17,8 +17,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManagerListener;
 import org.eclipse.sirius.diagram.DDiagram;
+import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
 import org.eclipse.sirius.diagram.sequence.description.SequenceDiagramDescription;
-import org.eclipse.sirius.viewpoint.DRepresentation;
+import org.eclipse.sirius.diagram.ui.tools.api.editor.DDiagramEditor;
 import org.eclipse.sirius.viewpoint.DRepresentationDescriptor;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.ui.ISelectionListener;
@@ -28,10 +29,9 @@ import org.eclipse.ui.PlatformUI;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
-import org.polarsys.capella.scenario.editor.embeddededitor.commands.DiagramToXtextCommands;
+import org.polarsys.capella.scenario.editor.embeddededitor.commands.HelperCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
-import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 /*
  * Listener to session change events, to control when the embedded editor is displayed and linked to a diagram
@@ -73,34 +73,40 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
 
   protected static ISelectionListener createSelectionListener() {
     return (part, selection) -> {
-
       if (part instanceof IWorkbenchPart) {
-        Object newInput = handleSelection(part, selection);
-
-        /*
-         * when a new diagram of type scenario is opened, we use the class EmbeddedEditorInstance to save the current
-         * scenario and we update the content of the embedded xtext editor
-         */
-        if (newInput instanceof DRepresentationDescriptor) {
-          if (((DRepresentationDescriptor) newInput).getDescription() instanceof SequenceDiagramDescription) {
+        DDiagram diagram = null;
+        if (part instanceof DDiagramEditor) {
+          // set the diagram
+          DDiagramEditor dEditor = (DDiagramEditor) part;
+          if(dEditor.getRepresentation() instanceof DDiagram) {
+            diagram = (DDiagram) dEditor.getRepresentation();
+          }
+        } else {
+          Object newInput = handleSelection(part, selection);
+          if (newInput instanceof DRepresentationDescriptor
+              && ((DRepresentationDescriptor) newInput).getDescription() instanceof SequenceDiagramDescription) {
 
             DRepresentationDescriptor descriptor = (DRepresentationDescriptor) newInput;
-            if (descriptor.getTarget() instanceof Scenario) {
+            if(descriptor.getRepresentation() instanceof DDiagram) {
+              diagram = (DDiagram) descriptor.getRepresentation();
+            }
+          }
+        }
 
-              DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
-              DRepresentation representation = descriptor.getRepresentation();
-              Scenario sc = (Scenario) descriptor.getTarget();
-              if (currentDiagram == null || !currentDiagram.equals(representation)) {
-                EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-                if (eeView != null && representation instanceof DDiagram) {
-                  // set the diagram
-                  EmbeddedEditorInstance.setDDiagram((DDiagram) representation);
-
-                  // refresh the text editor
-                  DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
-                  eeView.refreshTitleBar(sc.getName());
-                }
-              }
+        /*
+         * when we switch to another scenario diagram, we use the class EmbeddedEditorInstance to save the current
+         * diagram and we update the content of the embedded xtext editor
+         */
+        if (diagram instanceof SequenceDDiagram && ((SequenceDDiagram) diagram).getTarget() instanceof Scenario) {
+          DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
+          if (currentDiagram == null || !currentDiagram.equals(diagram)) {
+            // update the current selected diagram
+            EmbeddedEditorInstance.setDDiagram(diagram);
+            
+            EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+            if (eeView != null) {
+              // refresh the text editor if the textual embedded editor is opened
+              HelperCommands.refreshTextEditor(eeView);
             }
           }
         }
