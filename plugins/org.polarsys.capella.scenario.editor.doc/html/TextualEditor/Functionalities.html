@@ -540,7 +540,6 @@
 		<h3 id="Limitations">Limitations</h3>
 		<p>The Textual Editor addon has the following limitations:</p>
 		<ul>
-			<li>Multiple lifelines of the same instance role is not enabled.</li>
 			<li>The following tools are not supported:
 				<ul>
 					<li>Duration</li>
@@ -548,6 +547,17 @@
 					<li>Exchange Context</li>
 				</ul>
 			</li>
+			<li>Multiple lifelines of the same instance role are not enabled.</li>
+			<li>Apart instance roles, duplicated elements are allowed, however when deleting an element from the textual editor, the matching algorithm will find the last unmatched element in diagram and delete that one as in the image below: </li>
 		</ul>
+		<p>
+			<img border="0" src="Images/ES_DuplicatedMessages.png"/>
+		</p>
+		<ul>
+			<li>When the combined fragments are translated to text, the executions that happen on parallel timelines will be displayed inside of the combined fragment in text, to preserve the order of the elements on a timeline when saving data back to the diagram, as in the image below:</li>
+		</ul>
+		<p>
+			<img height="700" width="1050" border="0" src="Images/ES_Combined_Fragments_Limitations.png"/>
+		</p>
 	</body>
 </html>
