@@ -4,19 +4,16 @@
 
    <extension
          point="org.eclipse.ui.views">
-      <category
-            name="Editor"
-            id="org.eclipse.xtext.example.domainmodel.embeddededitor">
-      </category>
       <view
+      		category="org.polarsys.capella.views.category"
             id="org.eclipse.xtext.example.domainmodel.embeddededitor.views.EmbeddedEditorView"
             name="Textual Editor"
             icon="icons/capella_edit_16.gif"
             class="org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView"
-            category="org.eclipse.xtext.example.domainmodel.embeddededitor"
             inject="true">
       </view>
    </extension>
+   <!--
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
@@ -30,13 +27,7 @@
          </view>
       </perspectiveExtension>
    </extension>
-   <extension
-         point="org.eclipse.help.contexts">
-      <contexts
-            file="contexts.xml">
-      </contexts>
-   </extension>
-   
+   -->
    <extension
          point="org.eclipse.sirius.sessionManagerListener">
       <listener
