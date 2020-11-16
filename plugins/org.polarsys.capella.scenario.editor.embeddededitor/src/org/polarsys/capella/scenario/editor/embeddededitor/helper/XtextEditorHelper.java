@@ -23,7 +23,7 @@ public class XtextEditorHelper {
     IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
     IViewPart view = activePage.findView(EmbeddedEditorView.ID);
     if(view instanceof EmbeddedEditorView)
-      return (EmbeddedEditorView) activePage.findView(EmbeddedEditorView.ID);
+      return (EmbeddedEditorView) view;
     return null;
   }
 }

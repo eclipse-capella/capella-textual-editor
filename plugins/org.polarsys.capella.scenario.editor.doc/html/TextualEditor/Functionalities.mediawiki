@@ -13,16 +13,19 @@
 
 =Functionalities=
 
-Once the Textual Scenario Add-On is installed, you will be able to edit scenarios in textual mode.
+Once the Textual Editor Add-On is installed, the user will be able to edit scenarios in textual mode.
 
 ==Textual Editor View==
 
-When creating a new scenario diagram (OES, OAS, IS, FS, ES), the editor is displayed as a separate view. The user shall be able to edit a scenario in the embedded Textual Editor.
-If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.
+The embedded Textual Editor can be opened from the View menu bar, as in the image below:
 <br>
-The embedded Textual Editor can also be opened from the View menu bar:
 <br>
 [[Image:Images/View_TextualEditor.png|650x350px]]
+<br>
+<br>
+After the embedded Textual Editor is activated from the View menu bar, when opening a new scenario diagram (OES, OAS, IS, FS, ES), the editor view will display the textual content of the associated Capella scenario and the user shall be able to edit a scenario.
+If the user has multiple Capella scenario diagrams opened, when switching tabs to another scenario diagram, the text editor will be updated with the content from the new diagram and the editor will be linked to the new diagram.
+<br>
 
 ==Syntax for the Textual Editor==
 
@@ -302,8 +305,14 @@ The user can use '''Ctrl+Space''' to see suggestions of the allowed keywords in 
 
 ===Limitations===
 The Textual Editor addon has the following limitations:
-* Multiple lifelines of the same instance role is not enabled.
 * The following tools are not supported:
 ** Duration
 ** Shared Data
 ** Exchange Context
+* Multiple lifelines of the same instance role are not enabled.
+* Other than instance roles, duplicated elements are allowed, however when deleting an element from the textual editor, the matching algorithm will find the last unmatched element in diagram and delete that one as in the image below: 
+
+[[Image:Images/ES_DuplicatedMessages.png]]
+* When the combined fragments are translated to text, the executions that happen on parallel timelines will be displayed inside of the combined fragment in text, to preserve the order of the elements on a timeline when saving data back to the diagram, as in the image below:
+
+[[Image:Images/ES_Combined_Fragments_Limitations.png|1050x700px]]

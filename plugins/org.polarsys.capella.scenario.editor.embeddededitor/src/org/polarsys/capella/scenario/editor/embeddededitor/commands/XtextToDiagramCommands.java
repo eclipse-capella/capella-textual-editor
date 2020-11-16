@@ -397,11 +397,37 @@ public class XtextToDiagramCommands {
 
         // Replace sequence message list and interaction fragments list in the real scenario
         // with the newly computed lists
-        scenario.getOwnedInteractionFragments().clear();
-        scenario.getOwnedInteractionFragments().addAll(interactionFragments);
+        createListFromNewList(scenario.getOwnedInteractionFragments(), interactionFragments);
+        createListFromNewList(scenario.getOwnedMessages(), capellaSequenceMessages);
+      }
 
-        scenario.getOwnedMessages().clear();
-        scenario.getOwnedMessages().addAll(capellaSequenceMessages);
+      /*
+       * The newList is the list of elements that shall be found in the diagram, this list is obtained from the textual
+       * editor. The oldList is the list with the current elements in the scenario. We need to obtain in the
+       * originalList the elements from the newList. We keep untouched the elements that should be in the same place,
+       * move them in the right position or remove them.
+       */
+      private void createListFromNewList(EList originalList, List<? extends EObject> newList) {
+        // first remove from the original list the elements that are not in the new list
+        originalList.removeIf(elem -> !newList.contains(elem));
+
+        for (int newIndex = 0; newIndex < newList.size(); newIndex++) {
+          EObject newElement = newList.get(newIndex);
+          int oldIndex = originalList.indexOf(newElement);
+          if (oldIndex < 0) {
+            // we must insert the new element in the old list, because it is not there
+            if (originalList.size() > newIndex) {
+              originalList.add(newIndex, newElement);
+            } else {
+              originalList.add(newElement);
+            }
+          } else if (oldIndex != newIndex) {
+            // in this case we need to move the element to a new position
+            if (originalList.size() > newIndex) {
+              originalList.move(newIndex, oldIndex);
+            }
+          }
+        }
       }
 
       /**

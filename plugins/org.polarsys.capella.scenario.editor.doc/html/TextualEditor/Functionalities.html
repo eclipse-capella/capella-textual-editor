@@ -6,17 +6,23 @@
 	</head>
 	<body>
 		<h1 id="Functionalities">Functionalities</h1>
-		<p>Once the Textual Scenario Add-On is installed, you will be able to edit scenarios in textual mode.</p>
+		<p>Once the Textual Editor Add-On is installed, the user will be able to edit scenarios in textual mode.</p>
 		<h2 id="Textual_Editor_View">Textual Editor View</h2>
-		<p>When creating a new scenario diagram (OES, OAS, IS, FS, ES), the editor is displayed as a separate view. The user shall be able to edit a scenario in the embedded Textual Editor.
-			If the user has multiple Capella Scenario Diagrams opened, when switching tabs to another Scenario Diagram, the text editor will update with the content from the new diagram and the editor will be linked to the new diagram.
+		<p>The embedded Textual Editor can be opened from the View menu bar, as in the image below:
 
 			<br/>
-			The embedded Textual Editor can also be opened from the View menu bar:
 
 			<br/>
 
 			<img height="350" width="650" border="0" src="Images/View_TextualEditor.png"/>
+
+			<br/>
+
+			<br/>
+			After the embedded Textual Editor is activated from the View menu bar, when opening a new scenario diagram (OES, OAS, IS, FS, ES), the editor view will display the textual content of the associated Capella scenario and the user shall be able to edit a scenario.
+			If the user has multiple Capella scenario diagrams opened, when switching tabs to another scenario diagram, the text editor will be updated with the content from the new diagram and the editor will be linked to the new diagram.
+
+			<br/>
 		</p>
 		<h2 id="Syntax_for_the_Textual_Editor">Syntax for the Textual Editor</h2>
 		<p>The syntax supported in the textual editor for IS, FS, ES Capella Scenarios is presented in the following paragraphs.</p>
@@ -534,7 +540,6 @@
 		<h3 id="Limitations">Limitations</h3>
 		<p>The Textual Editor addon has the following limitations:</p>
 		<ul>
-			<li>Multiple lifelines of the same instance role is not enabled.</li>
 			<li>The following tools are not supported:
 				<ul>
 					<li>Duration</li>
@@ -542,6 +547,17 @@
 					<li>Exchange Context</li>
 				</ul>
 			</li>
+			<li>Multiple lifelines of the same instance role are not enabled.</li>
+			<li>Other than instance roles, duplicated elements are allowed, however when deleting an element from the textual editor, the matching algorithm will find the last unmatched element in diagram and delete that one as in the image below: </li>
 		</ul>
+		<p>
+			<img border="0" src="Images/ES_DuplicatedMessages.png"/>
+		</p>
+		<ul>
+			<li>When the combined fragments are translated to text, the executions that happen on parallel timelines will be displayed inside of the combined fragment in text, to preserve the order of the elements on a timeline when saving data back to the diagram, as in the image below:</li>
+		</ul>
+		<p>
+			<img height="700" width="1050" border="0" src="Images/ES_Combined_Fragments_Limitations.png"/>
+		</p>
 	</body>
 </html>
