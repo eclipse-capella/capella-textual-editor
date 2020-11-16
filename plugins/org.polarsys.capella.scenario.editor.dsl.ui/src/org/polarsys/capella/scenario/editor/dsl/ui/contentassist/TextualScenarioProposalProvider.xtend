@@ -38,7 +38,6 @@ import org.polarsys.capella.core.data.cs.ExchangeItemAllocation
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment
 import java.util.HashMap
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.ParticipantDeactivation
-import org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage
