@@ -635,7 +635,7 @@ public class EmbeddedEditorInstanceHelper {
       if (editor != null && editor instanceof DDiagramEditor) {
         DDiagramEditor dEditor = (DDiagramEditor) editor;
         DRepresentation representation = dEditor.getRepresentation();
-        if (representation instanceof DDiagram) {
+        if (representation instanceof SequenceDDiagram) {
           return (DDiagram) representation;
         }
       }
@@ -649,9 +649,7 @@ public class EmbeddedEditorInstanceHelper {
    */
   public static void setOpenedRepresentation() {
     DDiagram diagram = getSelectedRepresentation();
-    if (diagram instanceof SequenceDDiagram) {
-      EmbeddedEditorInstance.setDDiagram(diagram);
-    }
+    EmbeddedEditorInstance.setDDiagram(diagram);
   }
 
   /*
