@@ -102,10 +102,8 @@ public class EmbeddedEditorView extends ViewPart {
     editor.createPartialEditor();
     EmbeddedEditorInstance.setEmbeddedEditor(editor);
 
-    if (EmbeddedEditorInstance.getDDiagram() == null) {
-      // set the diagram
-      EmbeddedEditorInstanceHelper.setOpenedRepresentation();
-    }
+    // set the diagram
+    EmbeddedEditorInstanceHelper.setOpenedRepresentation();
     if (EmbeddedEditorInstance.getDDiagram() != null) {
       // do a refresh of diagram and of the title bar
       HelperCommands.refreshTextEditor(this);
