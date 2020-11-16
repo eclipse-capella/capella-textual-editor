@@ -55,22 +55,7 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
     }
     return selectionListener;
   }
-
-  public static Object handleSelection(IWorkbenchPart part, ISelection selection) {
-    Object result = null;
-    
-    if (selection != null && !selection.isEmpty() &&
-        (!(part instanceof EmbeddedEditorView)) &&
-        (selection instanceof IStructuredSelection)) {
-      
-        IStructuredSelection selectionStructure = (IStructuredSelection) selection;
-        Object firstElement = selectionStructure.getFirstElement();
-        result = CapellaAdapterHelper.resolveDescriptorOrBusinessObject(firstElement);
-    }
-    
-    return result;
-  }
-
+  
   protected static ISelectionListener createSelectionListener() {
     return (part, selection) -> {
       if (part instanceof IWorkbenchPart) {
@@ -80,16 +65,6 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
           DDiagramEditor dEditor = (DDiagramEditor) part;
           if(dEditor.getRepresentation() instanceof DDiagram) {
             diagram = (DDiagram) dEditor.getRepresentation();
-          }
-        } else {
-          Object newInput = handleSelection(part, selection);
-          if (newInput instanceof DRepresentationDescriptor
-              && ((DRepresentationDescriptor) newInput).getDescription() instanceof SequenceDiagramDescription) {
-
-            DRepresentationDescriptor descriptor = (DRepresentationDescriptor) newInput;
-            if(descriptor.getRepresentation() instanceof DDiagram) {
-              diagram = (DDiagram) descriptor.getRepresentation();
-            }
           }
         }
 
