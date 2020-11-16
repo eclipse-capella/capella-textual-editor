@@ -35,11 +35,11 @@ public class SaveAction extends Action {
     EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
     Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
 
-    if (EmbeddedEditorInstanceHelper.isOpenedRepresentation()) {
+    if (EmbeddedEditorInstanceHelper.isSelectedRepresentation()) {
       XtextToDiagramCommands.process(scenarioDiagram, eeView);
     } else {
       HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_SAVE,
-          HelperCommands.DIALOG_MESSAGE_ERROR_SAVE + " The associated diagram is not opened!");
+          HelperCommands.DIALOG_MESSAGE_ERROR_SAVE + " The associated diagram is not selected!");
     }
   }
 }

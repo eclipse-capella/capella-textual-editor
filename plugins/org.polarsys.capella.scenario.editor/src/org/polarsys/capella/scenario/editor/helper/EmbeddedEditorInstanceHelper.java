@@ -607,6 +607,7 @@ public class EmbeddedEditorInstanceHelper {
     if (activePage == null) {
       return null;
     }
+
     for (IEditorReference ref : activePage.getEditorReferences()) {
       IEditorPart editor = ref.getEditor(false);
       if (editor != null && editor instanceof DDiagramEditor) {
@@ -621,13 +622,25 @@ public class EmbeddedEditorInstanceHelper {
   }
 
   /*
-   * get the first opened sequence diagram
+   * get the selected opened sequence diagram
    */
-  public static DDiagram getFirstOpenedRepresentation() {
-    List<DDiagram> diagrams = getOpenedRepresentations();
-    if (!diagrams.isEmpty()) {
-      return diagrams.get(0);
+  public static DDiagram getSelectedRepresentation() {
+    IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    if (activePage == null) {
+      return null;
     }
+    IEditorReference activeEditor = (IEditorReference) activePage.getReference(activePage.getActiveEditor());
+    if (activeEditor != null) {
+      IEditorPart editor = activeEditor.getEditor(false);
+      if (editor != null && editor instanceof DDiagramEditor) {
+        DDiagramEditor dEditor = (DDiagramEditor) editor;
+        DRepresentation representation = dEditor.getRepresentation();
+        if (representation instanceof DDiagram) {
+          return (DDiagram) representation;
+        }
+      }
+    }
+    
     return null;
   }
 
@@ -635,7 +648,7 @@ public class EmbeddedEditorInstanceHelper {
    * In case we have a sequence diagram, set the initial diagram to this opened one
    */
   public static void setOpenedRepresentation() {
-    DDiagram diagram = getFirstOpenedRepresentation();
+    DDiagram diagram = getSelectedRepresentation();
     if (diagram instanceof SequenceDDiagram) {
       EmbeddedEditorInstance.setDDiagram(diagram);
     }
@@ -647,6 +660,17 @@ public class EmbeddedEditorInstanceHelper {
   public static boolean isOpenedRepresentation() {
     List<DDiagram> diagrams = getOpenedRepresentations();
     return diagrams.contains(EmbeddedEditorInstance.getDDiagram());
+  }
+  
+  /*
+   * check if the associated diagram of the text editor is selected
+   */
+  public static boolean isSelectedRepresentation() {
+    DDiagram diagram = getSelectedRepresentation();
+    if(diagram instanceof SequenceDDiagram) {
+      return diagram.equals(EmbeddedEditorInstance.getDDiagram());
+    }
+    return false;
   }
 
   public static void refreshAssociatedDiagram() {
