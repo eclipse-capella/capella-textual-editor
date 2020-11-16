@@ -748,7 +748,8 @@ public class XtextToDiagramCommands {
    *          Domain Model - xtext       
    */
   private static void cleanUp(Scenario scenario, List<Element> elements) {
-    List<Element> allXtextElements = getAllXtextElements(elements, new ArrayList<>());
+    List<Element> allXtextElements = new ArrayList<>();
+    getAllXtextElements(elements, allXtextElements);
     cleanUpMessages(scenario, allXtextElements);
     cleanUpStateFragments(scenario, allXtextElements);
     cleanUpCombinedFragments(scenario, allXtextElements);
@@ -1084,12 +1085,10 @@ public class XtextToDiagramCommands {
   private static InteractionOperand getCapellaInteractionOperand(Scenario scenario,
       org.polarsys.capella.scenario.editor.dsl.textualScenario.Operand textOperandBlock,
       CombinedFragment capellaCombinedFragment, List<InteractionOperand> processedOperands) {
-    List<InteractionOperand> combinedFragmentOperands = AbstractFragmentExt.getOwnedOperands(capellaCombinedFragment,
-        scenario);
-    combinedFragmentOperands.removeAll(processedOperands);
+    EList<InteractionOperand> combinedFragmentOperands = capellaCombinedFragment.getReferencedOperands();
     for (InteractionOperand operand : combinedFragmentOperands) {
       // go trough each text operand and check that
-      if (isSameExpression(HelperCommands.getExpressionText(operand), textOperandBlock.getExpression())) {
+      if (!processedOperands.contains(operand) && isSameExpression(HelperCommands.getExpressionText(operand), textOperandBlock.getExpression())) {
         processedOperands.add(operand);
         return operand;
       }
@@ -1111,9 +1110,8 @@ public class XtextToDiagramCommands {
   private static InteractionOperand getFirstCapellaInteractionOperand(Scenario scenario,
       org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment textCombinedFragment,
       CombinedFragment capellaCombinedFragment) {
-    List<InteractionOperand> combinedFragmentOperands = AbstractFragmentExt.getOwnedOperands(capellaCombinedFragment,
-        scenario);
-
+    EList<InteractionOperand> combinedFragmentOperands = capellaCombinedFragment.getReferencedOperands();
+    
     for (InteractionOperand operand : combinedFragmentOperands) {
       // go trough each text operand and check that
       if (isSameExpression(HelperCommands.getExpressionText(operand), textCombinedFragment.getExpression())) {
@@ -1652,23 +1650,20 @@ public class XtextToDiagramCommands {
     return xtextSequenceMessages;
   }
   
-  private static List<Element> getAllXtextElements(List<Element> elements, List<Element> allXtextElements) {
+  private static void getAllXtextElements(List<Element> elements, List<Element> allXtextElements) {
     for (Element element : elements) {
       if (element instanceof org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) {
         org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment combinedFragmentElement =
             (org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment) element;
         allXtextElements.add(combinedFragmentElement);
-        allXtextElements
-            .addAll(getAllXtextElements(combinedFragmentElement.getBlock().getBlockElements(), allXtextElements));
+        getAllXtextElements(combinedFragmentElement.getBlock().getBlockElements(), allXtextElements);
         for (EObject operand : combinedFragmentElement.getOperands()) {
-          allXtextElements
-              .addAll(getAllXtextElements(((Operand) operand).getBlock().getBlockElements(), allXtextElements));
+          getAllXtextElements(((Operand) operand).getBlock().getBlockElements(), allXtextElements);
         }
       } else {
         allXtextElements.add(element);
       }
     }
-    return allXtextElements;
   }
 
   /**
