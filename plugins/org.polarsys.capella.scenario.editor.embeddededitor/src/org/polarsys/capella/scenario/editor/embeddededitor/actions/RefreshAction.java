@@ -38,11 +38,11 @@ public class RefreshAction extends Action {
     EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
     Scenario scenarioDiagram = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
 
-    if (EmbeddedEditorInstanceHelper.isOpenedRepresentation()) {
+    if (EmbeddedEditorInstanceHelper.isSelectedRepresentation()) {
       DiagramToXtextCommands.process(scenarioDiagram, eeView);
     } else {
       HelperCommands.showDialogTextualEditor(HelperCommands.DIALOG_TITLE_UNABLE_TO_REFRESH,
-          HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH + " The associated diagram is not opened!");
+          HelperCommands.DIALOG_MESSAGE_ERROR_REFRESH + " The associated diagram is not selected!");
     }
   }
 }
