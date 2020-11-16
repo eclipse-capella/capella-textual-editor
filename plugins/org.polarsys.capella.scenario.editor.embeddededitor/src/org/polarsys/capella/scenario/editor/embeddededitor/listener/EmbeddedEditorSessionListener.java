@@ -28,7 +28,7 @@ import org.eclipse.ui.PlatformUI;
 import org.polarsys.capella.core.data.interaction.Scenario;
 import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
-import org.polarsys.capella.scenario.editor.embeddededitor.commands.DiagramToXtextCommands;
+import org.polarsys.capella.scenario.editor.embeddededitor.commands.HelperCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
 import org.polarsys.capella.scenario.editor.embeddededitor.views.EmbeddedEditorView;
 
@@ -54,48 +54,34 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
     return selectionListener;
   }
 
-  public static Object handleSelection(IWorkbenchPart part, ISelection selection) {
-    Object result = null;
-
-    if (selection != null && !selection.isEmpty() && (!(part instanceof EmbeddedEditorView))) {
-
-      if (selection instanceof IStructuredSelection) {
-        IStructuredSelection selectionStructure = (IStructuredSelection) selection;
-        Object firstElement = selectionStructure.getFirstElement();
-        result = CapellaAdapterHelper.resolveSemanticObject(firstElement);
-      }
-
-    }
-    return result;
-  }
-
   protected static ISelectionListener createSelectionListener() {
     return (part, selection) -> {
 
       if (part instanceof IWorkbenchPart) {
-        Object newInput = handleSelection(part, selection);
-
+        DDiagram diagram = null;
+        // first case is when we navigate between the opened diagrams
+        if (part instanceof DDiagramEditor) {
+          // set the diagram
+          DDiagramEditor dEditor = (DDiagramEditor) part;
+          if (dEditor.getRepresentation() instanceof DDiagram) {
+            diagram = (DDiagram) dEditor.getRepresentation();
+          }
+        }
+        
         /*
-         * when a new diagram of type scenario is opened, we use the class EmbeddedEditorInstance to save the current
-         * scenario and we update the content of the embedded xtext editor
+         * when we switch to another scenario diagram, we use the class EmbeddedEditorInstance to save the current
+         * diagram and we update the content of the embedded xtext editor
          */
-        if (newInput instanceof SequenceDDiagram) {
+        if (diagram instanceof SequenceDDiagram && ((SequenceDDiagram) diagram).getTarget() instanceof Scenario) {
+          DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
+          if (currentDiagram == null || !currentDiagram.equals(diagram)) {
+            // update the current selected diagram
+            EmbeddedEditorInstance.setDDiagram(diagram);
 
-          SequenceDDiagram diagram = (SequenceDDiagram) newInput;
-          if (diagram.getTarget() instanceof Scenario) {
-
-            DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
-            Scenario sc = (Scenario) diagram.getTarget();
-            if (currentDiagram == null || !newInput.equals(currentDiagram)) {
-              EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-              if (eeView != null) {
-                // set the diagram
-                EmbeddedEditorInstance.setDDiagram(diagram);
-
-                // refresh the text editor
-                DiagramToXtextCommands.process(sc, eeView); // update the embedded editor text view
-                eeView.refreshTitleBar(sc.getName());
-              }
+            EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+            if (eeView != null) {
+              // refresh the text editor if the textual embedded editor is opened
+              HelperCommands.refreshTextEditor(eeView);
             }
           }
         }
