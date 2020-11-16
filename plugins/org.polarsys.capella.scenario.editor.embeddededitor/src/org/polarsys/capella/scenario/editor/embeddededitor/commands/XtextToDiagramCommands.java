@@ -1712,11 +1712,13 @@ public class XtextToDiagramCommands {
     } else if (xtextElement instanceof LostMessage) {
       org.polarsys.capella.scenario.editor.dsl.textualScenario.LostMessage lostMessage = (LostMessage) xtextElement;
       sendingEnd = seqMessage.getSendingEnd();
+      receivingEnd = seqMessage.getReceivingEnd();
       source = lostMessage.getSource();
       xtextMessageName = lostMessage.getName();
       xtextMessageKind = getSequenceMessageKind(lostMessage, false);
     } else if (xtextElement instanceof FoundMessage) {
       org.polarsys.capella.scenario.editor.dsl.textualScenario.FoundMessage foundMessage = (FoundMessage) xtextElement;
+      sendingEnd = seqMessage.getSendingEnd();
       receivingEnd = seqMessage.getReceivingEnd();
       target = foundMessage.getTarget();
       xtextMessageName = foundMessage.getName();
@@ -1750,14 +1752,20 @@ public class XtextToDiagramCommands {
    */
   private static boolean isSameMessage(String source, String target, MessageEnd sendingEnd, MessageEnd receivingEnd,
       String messageName, String capellaMessageName, MessageKind xtextMessageKind, MessageKind capellaMessageKind) {
+    
+    if (sendingEnd == null && source != null || sendingEnd != null && source == null 
+        || receivingEnd == null && target != null || receivingEnd != null && target == null) {
+      return false;
+    }
+    
     // if lost message, receiving end is null
-    if(sendingEnd != null && receivingEnd == null) {
+    if(sendingEnd != null && receivingEnd == null && target == null) {
       return (!sendingEnd.getCoveredInstanceRoles().isEmpty()
           && source.equals(sendingEnd.getCoveredInstanceRoles().get(0).getName())
           && messageName.equals(capellaMessageName) && xtextMessageKind.equals(capellaMessageKind));
     }
     // if found message, sending end is null
-    if(sendingEnd == null && receivingEnd != null) {
+    if(sendingEnd == null && receivingEnd != null && source == null) {
       return (!receivingEnd.getCoveredInstanceRoles().isEmpty()
         && target.equals(receivingEnd.getCoveredInstanceRoles().get(0).getName())
         && messageName.equals(capellaMessageName) && xtextMessageKind.equals(capellaMessageKind));
