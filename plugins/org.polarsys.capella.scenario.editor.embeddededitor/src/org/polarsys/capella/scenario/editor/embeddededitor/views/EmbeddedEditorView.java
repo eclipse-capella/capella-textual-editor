@@ -16,6 +16,8 @@ import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.sirius.business.api.session.SessionManager;
+import org.eclipse.sirius.business.api.session.SessionManagerListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -44,6 +46,7 @@ import com.google.inject.Injector;
  */
 public class EmbeddedEditorView extends ViewPart {
   private TabbedPropertyTitle scenarioTitle;
+  private SessionManagerListener sessionListener;
 
   /**
    * The ID of the view as specified by the extension.
@@ -102,6 +105,8 @@ public class EmbeddedEditorView extends ViewPart {
     editor.createPartialEditor();
     EmbeddedEditorInstance.setEmbeddedEditor(editor);
 
+    addSessionListener();
+
     // set the diagram
     EmbeddedEditorInstanceHelper.setOpenedRepresentation();
     if (EmbeddedEditorInstance.getDDiagram() != null) {
@@ -111,6 +116,16 @@ public class EmbeddedEditorView extends ViewPart {
     if (this.getViewSite().getPage() != null) {
       this.getViewSite().getPage().addSelectionListener(EmbeddedEditorSessionListener.getSelectionListener());
     }
+  }
+
+  private void addSessionListener() {
+    sessionListener = new EmbeddedEditorSessionListener();
+    SessionManager.INSTANCE.addSessionsListener(sessionListener);
+  }
+
+  private void removeSessionListener() {
+    SessionManager.INSTANCE.removeSessionsListener(sessionListener);
+    sessionListener = null;
   }
 
   public TextualScenarioProvider getProvider() {
@@ -138,6 +153,7 @@ public class EmbeddedEditorView extends ViewPart {
 
   @Override
   public void dispose() {
+    removeSessionListener();
     if (this.getViewSite().getPage() != null) {
       this.getViewSite().getPage().removeSelectionListener(EmbeddedEditorSessionListener.getSelectionListener());
     }

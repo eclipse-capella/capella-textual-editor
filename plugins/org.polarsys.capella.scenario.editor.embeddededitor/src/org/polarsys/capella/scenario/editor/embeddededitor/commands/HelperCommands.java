@@ -119,6 +119,9 @@ public class HelperCommands {
         DiagramToXtextCommands.process(scenario, eeView); // update the embedded editor text view
         eeView.refreshTitleBar(scenario.getName()); 
       }
+    } else {
+    	eeView.refreshTitleBar("Textual Editor"); 
+    	EmbeddedEditorInstanceHelper.cleanUpModel();
     }
   }
 }

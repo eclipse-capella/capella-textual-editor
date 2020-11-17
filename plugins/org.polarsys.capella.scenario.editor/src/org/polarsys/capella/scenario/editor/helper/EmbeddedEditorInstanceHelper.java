@@ -589,6 +589,10 @@ public class EmbeddedEditorInstanceHelper {
     });
   }
 
+  public static void cleanUpModel() {
+    updateModel("");
+  }
+  
   public static String getModelContent() {
     XtextDocument document = EmbeddedEditorInstance.getEmbeddedEditor().getDocument();
     return document.get();
