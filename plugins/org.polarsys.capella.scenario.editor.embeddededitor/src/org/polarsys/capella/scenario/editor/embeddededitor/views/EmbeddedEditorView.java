@@ -34,6 +34,7 @@ import org.polarsys.capella.scenario.editor.dsl.ui.internal.DslActivator;
 import org.polarsys.capella.scenario.editor.dsl.provider.TextualScenarioProvider;
 import org.polarsys.capella.scenario.editor.embeddededitor.actions.XtextEditorActionFactory;
 import org.polarsys.capella.scenario.editor.embeddededitor.commands.HelperCommands;
+import org.polarsys.capella.scenario.editor.embeddededitor.listener.EmbeddedEditorSessionListener;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 import com.google.inject.Injector;
@@ -91,13 +92,12 @@ public class EmbeddedEditorView extends ViewPart {
     parent.setLayout(layout);
 
     DslActivator activator = DslActivator.getInstance();
-    Injector injector = activator
-        .getInjector(DslActivator.ORG_POLARSYS_CAPELLA_SCENARIO_EDITOR_DSL_TEXTUALSCENARIO);
+    Injector injector = activator.getInjector(DslActivator.ORG_POLARSYS_CAPELLA_SCENARIO_EDITOR_DSL_TEXTUALSCENARIO);
 
     EditorsPlugin.getDefault().getPreferenceStore().setValue(SpellingService.PREFERENCE_SPELLING_ENABLED, false);
     provider = injector.getInstance(TextualScenarioProvider.class);
     EmbeddedEditorFactory factory = injector.getInstance(EmbeddedEditorFactory.class);
-    
+
     EmbeddedEditor editor = factory.newEditor(provider).withParent(parent);
     editor.createPartialEditor();
     EmbeddedEditorInstance.setEmbeddedEditor(editor);
@@ -107,6 +107,9 @@ public class EmbeddedEditorView extends ViewPart {
     if (EmbeddedEditorInstance.getDDiagram() != null) {
       // do a refresh of diagram and of the title bar
       HelperCommands.refreshTextEditor(this);
+    }
+    if (this.getViewSite().getPage() != null) {
+      this.getViewSite().getPage().addSelectionListener(EmbeddedEditorSessionListener.getSelectionListener());
     }
   }
 
@@ -131,5 +134,13 @@ public class EmbeddedEditorView extends ViewPart {
 
   @Override
   public void setFocus() {
+  }
+
+  @Override
+  public void dispose() {
+    if (this.getViewSite().getPage() != null) {
+      this.getViewSite().getPage().removeSelectionListener(EmbeddedEditorSessionListener.getSelectionListener());
+    }
+    super.dispose();
   }
 }

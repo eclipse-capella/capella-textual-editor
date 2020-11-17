@@ -29,12 +29,14 @@
       </perspectiveExtension>
    </extension>
    -->
+   <!--
    <extension
          point="org.eclipse.sirius.sessionManagerListener">
       <listener
             class="org.polarsys.capella.scenario.editor.embeddededitor.listener.EmbeddedEditorSessionListener">
       </listener>
    </extension>
+   -->
 	
 	<extension
          point="org.eclipse.ui.bindings">
