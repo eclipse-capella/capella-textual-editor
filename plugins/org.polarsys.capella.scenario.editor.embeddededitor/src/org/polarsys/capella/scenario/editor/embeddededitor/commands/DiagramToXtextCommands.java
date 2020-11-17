@@ -92,8 +92,6 @@ public class DiagramToXtextCommands {
         TextualScenarioFactory factory = new TextualScenarioFactoryImpl();
         Model domainModel = HelperCommands.getModel(embeddedEditorViewPart);
         if (domainModel != null) {
-          HelperCommands.clearModel(domainModel);
-
           // Generate Participants
           generateParticipants(domainModel, scenario, factory);
 

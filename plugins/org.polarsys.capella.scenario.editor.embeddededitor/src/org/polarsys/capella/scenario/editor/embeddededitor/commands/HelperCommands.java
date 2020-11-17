@@ -62,7 +62,7 @@ public class HelperCommands {
   }
   
   /**
-   * get the xtext model
+   * get the xtext model object (clear the model if content already exist in it)
    * 
    * @param embeddedEditorViewPart
    *          - this is the embedded editor xtext object
@@ -71,11 +71,8 @@ public class HelperCommands {
   public static Model getModel(EmbeddedEditorView embeddedEditorViewPart) {
     TextualScenarioProvider p = embeddedEditorViewPart.getProvider();
     XtextResource resource = p.getResource();
-    EList<EObject> content = resource.getContents();
     Model domainModel = null;
-    if (!content.isEmpty() && content.get(0) instanceof Model) {
-      domainModel = (Model) resource.getContents().get(0);
-    } else {
+    if (resource != null) {
       EmbeddedEditorInstanceHelper.updateModel("scenario {}");
       EList<EObject> content1 = resource.getContents();
       if (!content1.isEmpty() && content1.get(0) instanceof Model) {
@@ -119,6 +116,9 @@ public class HelperCommands {
         DiagramToXtextCommands.process(scenario, eeView); // update the embedded editor text view
         eeView.refreshTitleBar(scenario.getName()); 
       }
+    } else {
+    	eeView.refreshTitleBar("Textual Editor"); 
+    	EmbeddedEditorInstanceHelper.cleanUpModel();
     }
   }
 }

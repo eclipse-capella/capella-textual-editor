@@ -12,21 +12,16 @@
  *******************************************************************************/
 package org.polarsys.capella.scenario.editor.embeddededitor.listener;
 
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.sirius.business.api.session.Session;
+import org.eclipse.sirius.business.api.session.SessionManager;
 import org.eclipse.sirius.business.api.session.SessionManagerListener;
 import org.eclipse.sirius.diagram.DDiagram;
 import org.eclipse.sirius.diagram.sequence.SequenceDDiagram;
 import org.eclipse.sirius.diagram.ui.tools.api.editor.DDiagramEditor;
-import org.eclipse.sirius.viewpoint.DRepresentation;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
 import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PlatformUI;
 import org.polarsys.capella.core.data.interaction.Scenario;
-import org.polarsys.capella.core.model.handler.helpers.CapellaAdapterHelper;
 import org.polarsys.capella.scenario.editor.EmbeddedEditorInstance;
 import org.polarsys.capella.scenario.editor.embeddededitor.commands.HelperCommands;
 import org.polarsys.capella.scenario.editor.embeddededitor.helper.XtextEditorHelper;
@@ -40,11 +35,6 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
 
   @Override
   public void notify(Session session, int notification) {
-    if (PlatformUI.getWorkbench() != null && PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-      IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-      if (activePage != null)
-        activePage.addSelectionListener(getSelectionListener());
-    }
   }
 
   public static ISelectionListener getSelectionListener() {
@@ -67,7 +57,7 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
             diagram = (DDiagram) dEditor.getRepresentation();
           }
         }
-        
+
         /*
          * when we switch to another scenario diagram, we use the class EmbeddedEditorInstance to save the current
          * diagram and we update the content of the embedded xtext editor
@@ -76,17 +66,22 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
           DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
           if (currentDiagram == null || !currentDiagram.equals(diagram)) {
             // update the current selected diagram
-            EmbeddedEditorInstance.setDDiagram(diagram);
-
-            EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
-            if (eeView != null) {
-              // refresh the text editor if the textual embedded editor is opened
-              HelperCommands.refreshTextEditor(eeView);
-            }
+            updateLinkedTextualEditor(diagram);
           }
         }
       }
     };
+  }
+
+  private static void updateLinkedTextualEditor(DDiagram diagram) {
+    // update the diagram
+    EmbeddedEditorInstance.setDDiagram(diagram);
+
+    EmbeddedEditorView eeView = XtextEditorHelper.getActiveEmbeddedEditorView();
+    if (eeView != null) {
+      // refresh the text editor if the textual embedded editor is opened
+      HelperCommands.refreshTextEditor(eeView);
+    }
   }
 
   @Override
@@ -95,6 +90,13 @@ public class EmbeddedEditorSessionListener implements SessionManagerListener {
 
   @Override
   public void notifyRemoveSession(Session removedSession) {
+    DDiagram currentDiagram = EmbeddedEditorInstance.getDDiagram();
+    if (currentDiagram != null) {
+      Session sessionForDiagram = SessionManager.INSTANCE.getSession(currentDiagram);
+      if (sessionForDiagram == null || removedSession.equals(sessionForDiagram)) {
+        updateLinkedTextualEditor(null);
+      }
+    }
   }
 
   @Override
