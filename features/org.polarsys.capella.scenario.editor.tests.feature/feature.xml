@@ -27,6 +27,10 @@
       %license
    </license>
 
+   <requires>
+      <import feature="org.eclipse.xtext.sdk"/>
+   </requires>
+
    <plugin
          id="org.polarsys.capella.scenario.editor.ju"
          download-size="0"

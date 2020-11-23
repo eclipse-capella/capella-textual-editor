@@ -10,7 +10,8 @@ pipeline {
   
 	environment {
 		BUILD_KEY = (github.isPullRequest() ? CHANGE_TARGET : BRANCH_NAME).replaceFirst(/^v/, '')
-		CAPELLA_PRODUCT_PATH = "${WORKSPACE}/capella/capella"
+		CAPELLA_PRODUCT_PATH = "${WORKSPACE}/capella/eclipse/eclipse"
+		CAPELLA_BRANCH = '1.4.x'
   	}
   
   	stages {
@@ -64,7 +65,7 @@ pipeline {
       		
         	steps {
         		script {
-	        		def capellaURL = capella.getDownloadURL("${BUILD_KEY}", 'linux', '')
+	        		def capellaURL = capella.getDownloadURL("${CAPELLA_BRANCH}", 'linux', '')
 	        		
 	        		sh "curl -k -o capella.zip ${capellaURL}"
 					sh "unzip -q capella.zip"
@@ -85,9 +86,11 @@ pipeline {
 	        		sh "chmod 755 ${CAPELLA_PRODUCT_PATH}"
 	        		
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", 'http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository', 'org.jsoup')	        		
-	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", capella.getTestUpdateSiteURL("${BUILD_KEY}"), 'org.polarsys.capella.test.feature.feature.group')
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", capella.getTestUpdateSiteURL("${CAPELLA_BRANCH}"), 'org.polarsys.capella.test.feature.feature.group')
 	        		
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.feature.feature.group')
+	        		
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "http://download.eclipse.org/releases/2019-06/", 'org.eclipse.xtext.sdk.feature.group')
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.tests.feature.feature.group')
 	       		}         
 	     	}

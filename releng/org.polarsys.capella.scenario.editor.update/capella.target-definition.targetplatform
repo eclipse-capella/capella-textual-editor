@@ -32,5 +32,6 @@ location "https://download.eclipse.org/modeling/emf/cdo/drops/R20180613-0111/" {
 }
 
 location "http://download.eclipse.org/releases/2019-06/" {
+    org.eclipse.xtext.redist.feature.group
     org.eclipse.xtext.sdk.feature.group
 }
