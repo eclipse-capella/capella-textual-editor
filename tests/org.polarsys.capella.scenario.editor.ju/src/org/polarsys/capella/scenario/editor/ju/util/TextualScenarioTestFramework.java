@@ -285,7 +285,7 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
   protected void checkValidContent(String diagramName, String expectedContent) {
     String textEditorContent = EmbeddedEditorInstanceHelper.getModelContent();
     assertTrue(NLS.bind(invalidContentErrMsg, new String[] { diagramName, expectedContent, textEditorContent }),
-        expectedContent.equals(textEditorContent));
+        expectedContent.replaceAll("\r\n", "\n").equals(textEditorContent));
   }
   
   /**
