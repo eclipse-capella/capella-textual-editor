@@ -3,6 +3,9 @@
    <feature id="org.polarsys.capella.scenario.editor.feature" version="0.9.0.qualifier">
       <category name="org.polarsys.capella.scenario.editor"/>
    </feature>
+   <feature id="org.polarsys.capella.scenario.editor.tests.feature">
+      <category name="org.polarsys.capella.scenario.editor.tests"/>
+   </feature>
    <category-def name="org.polarsys.capella.scenario.editor" label="TextualEditor"/>
-   
+   <category-def name="org.polarsys.capella.scenario.editor.tests" label="Tests"/>
 </site>
