@@ -360,28 +360,27 @@ public class EmbeddedEditorInstanceHelper {
     Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
     List<Part> elements = new ArrayList<>();
     BlockArchitecture architecture = BlockArchitectureExt.getRootBlockArchitecture(scenario);
+    
+    List<Part> elementsInDiagram = EmbeddedEditorInstance.getDDiagram().getOwnedDiagramElements().stream()
+        .filter(x -> x.getTarget() instanceof InstanceRole
+            && ((InstanceRole) x.getTarget()).getRepresentedInstance() instanceof Part)
+        .map(x -> (Part) ((InstanceRole) x.getTarget()).getRepresentedInstance()).collect(Collectors.toList());
+    
     if (isESScenario()) {
-      // the second parameter, filter is empty, because we want to put in
-      // the elements list also the
-      // elements already present in diagram
       if (architecture instanceof OperationalAnalysis) {
-        elements.addAll(new InteractionAspectService().getAllComponents(scenario, new ArrayList<>()));
+        elements.addAll(new InteractionAspectService().getAllComponents(scenario, elementsInDiagram));
       } else {
-        elements
-            .addAll(new InteractionAspectService().getAllAvailablePartsIncludingSystem(scenario, new ArrayList<>()));
+        elements.addAll(new InteractionAspectService().getAllAvailablePartsIncludingSystem(scenario, elementsInDiagram));
       }
     } else {
       elements = (new InteractionServices())
           .getISScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
-      // add also the elements in the diagram (they can be present in
-      // diagram but not in text,
-      // and they shall be available to be used in text)
-      for (InstanceRole role : scenario.getOwnedInstanceRoles()) {
-        if (role.getRepresentedInstance() instanceof Part) {
-          elements.add((Part) role.getRepresentedInstance());
-        }
-      }
     }
+
+    // add also the elements in the diagram (they can be present in
+    // diagram but not in text,
+    // and they shall be available to be used in text)
+    elements.addAll(elementsInDiagram);
 
     // add the System Component for SA level
     if (architecture instanceof SystemAnalysis) {
