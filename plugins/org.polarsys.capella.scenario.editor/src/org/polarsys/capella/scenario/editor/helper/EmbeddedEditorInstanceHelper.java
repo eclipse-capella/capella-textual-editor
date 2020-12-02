@@ -39,6 +39,7 @@ import org.polarsys.capella.core.data.capellacommon.AbstractState;
 import org.polarsys.capella.core.data.capellacommon.Mode;
 import org.polarsys.capella.core.data.capellacommon.State;
 import org.polarsys.capella.core.data.capellacore.CapellaElement;
+import org.polarsys.capella.core.data.cs.AbstractActor;
 import org.polarsys.capella.core.data.cs.BlockArchitecture;
 import org.polarsys.capella.core.data.cs.Component;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
@@ -65,6 +66,7 @@ import org.polarsys.capella.core.data.pa.PhysicalArchitecture;
 import org.polarsys.capella.core.model.helpers.BlockArchitectureExt;
 import org.polarsys.capella.core.model.helpers.OperationalAnalysisExt;
 import org.polarsys.capella.core.model.helpers.ScenarioExt;
+import org.polarsys.capella.core.sequencediag.InteractionAspectService;
 import org.polarsys.capella.core.sequencediag.ScenarioService;
 import org.polarsys.capella.core.sirius.analysis.FaServices;
 import org.polarsys.capella.core.sirius.analysis.InteractionServices;
@@ -356,9 +358,32 @@ public class EmbeddedEditorInstanceHelper {
    */
   public static Collection<? extends EObject> getAvailableComponents() {
     Scenario scenario = EmbeddedEditorInstance.getAssociatedScenarioDiagram();
-    List<Part> elements = (new InteractionServices())
-        .getISScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+    List<Part> elements = new ArrayList<>();
     BlockArchitecture architecture = BlockArchitectureExt.getRootBlockArchitecture(scenario);
+    if (isESScenario()) {
+      // the second parameter, filter is empty, because we want to put in
+      // the elements list also the
+      // elements already present in diagram
+      if (architecture instanceof OperationalAnalysis) {
+        elements.addAll(new InteractionAspectService().getAllComponents(scenario, new ArrayList<>()));
+      } else {
+        elements
+            .addAll(new InteractionAspectService().getAllAvailablePartsIncludingSystem(scenario, new ArrayList<>()));
+      }
+    } else {
+      elements = (new InteractionServices())
+          .getISScopeInsertComponents(EmbeddedEditorInstance.getAssociatedScenarioDiagram());
+      // add also the elements in the diagram (they can be present in
+      // diagram but not in text,
+      // and they shall be available to be used in text)
+      for (InstanceRole role : scenario.getOwnedInstanceRoles()) {
+        if (role.getRepresentedInstance() instanceof Part) {
+          elements.add((Part) role.getRepresentedInstance());
+        }
+      }
+    }
+
+    // add the System Component for SA level
     if (architecture instanceof SystemAnalysis) {
       System system = ((SystemAnalysis) architecture).getOwnedSystem();
       for (Partition part : system.getRepresentingPartitions()) {
@@ -368,13 +393,9 @@ public class EmbeddedEditorInstanceHelper {
       }
     }
 
-    for (InstanceRole role : scenario.getOwnedInstanceRoles()) {
-      if (role.getRepresentedInstance() instanceof Part) {
-        elements.add((Part) role.getRepresentedInstance());
-      }
-    }
-
-    return elements;
+    return elements.stream()
+        .filter(x -> !(x.getAbstractType() instanceof OperationalActor || x.getAbstractType() instanceof AbstractActor))
+        .collect(Collectors.toList());
   }
 
   /**
