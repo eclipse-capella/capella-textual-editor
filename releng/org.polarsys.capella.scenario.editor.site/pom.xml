@@ -15,12 +15,12 @@
 
 	<artifactId>org.polarsys.capella.scenario.editor.site</artifactId>
 	<packaging>eclipse-repository</packaging>
-	<version>0.9.0-SNAPSHOT</version>
+	<version>0.10.0-SNAPSHOT</version>
 
 	<parent>
 		<groupId>org.polarsys</groupId>
 		<artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.10.0-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
 
@@ -29,7 +29,7 @@
 			<plugin>
 				<groupId>org.eclipse.tycho.extras</groupId>
 				<artifactId>tycho-eclipserun-plugin</artifactId>
-				<version>${tycho.version}</version>
+				<version>${tycho-version}</version>
 				<executions>
 					<execution>
 						<id>create-dropins</id>

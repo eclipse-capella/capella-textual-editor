@@ -21,17 +21,16 @@
   <name>Capella Textual Editor Addon</name>
   <groupId>org.polarsys</groupId>
   <artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
-  <version>0.9.0-SNAPSHOT</version>
+  <version>0.10.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
-
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tycho.version>1.4.0</tycho.version>
-		<tycho.extras.version>1.4.0</tycho.extras.version>
-		<antrun-version>1.7</antrun-version>
-		<rcptt-version>2.1.0</rcptt-version>
-		<rcptt-runner-version>2.1.0</rcptt-runner-version>
+	    <tycho-version>2.0.0</tycho-version>
+	    <tycho-extras-version>2.0.0</tycho-extras-version>
+		<antrun-version>3.0.0</antrun-version>
+		<rcptt-version>2.5.1</rcptt-version>
+		<rcptt-runner-version>2.5.1</rcptt-runner-version>
 
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/capella-textual-editor.git</tycho.scmUrl>
 
@@ -74,7 +73,7 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-packaging-plugin</artifactId>
-				<version>${tycho.version}</version>
+				<version>${tycho-version}</version>
 				<configuration>
 					<strictBinIncludes>false</strictBinIncludes>
 					<sourceReferences>
@@ -85,26 +84,26 @@
 					<dependency>
 						<groupId>org.eclipse.tycho.extras</groupId>
 						<artifactId>tycho-sourceref-jgit</artifactId>
-						<version>${tycho.extras.version}</version>
+						<version>${tycho-extras-version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho.version}</version>
+				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho.version}</version>
+				<version>${tycho-version}</version>
 				<configuration>
 					<target>
 						<artifact>
 							<groupId>org.polarsys</groupId>
 							<artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
-							<version>0.9.0-SNAPSHOT</version>
+							<version>0.10.0-SNAPSHOT</version>
 							<classifier>releng/org.polarsys.capella.scenario.editor.update/capella.target-definition</classifier>
 						</artifact>
 					</target>
@@ -130,7 +129,7 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-source-plugin</artifactId>
-				<version>${tycho.version}</version>
+				<version>${tycho-version}</version>
 				<executions>
 					<execution>
 						<id>plugin-source</id>
@@ -146,7 +145,7 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-p2-plugin</artifactId>
-				<version>${tycho.version}</version>
+				<version>${tycho-version}</version>
 				<executions>
 					<!-- These two should allow us not to get "duplicate artifact" warnings 
 						during the build. -->
@@ -173,7 +172,7 @@
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-compiler-plugin</artifactId>
-					<version>${tycho.version}</version>
+					<version>${tycho-version}</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
 						<compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
@@ -186,7 +185,7 @@
 				<plugin>
 					<groupId>org.eclipse.tycho.extras</groupId>
 					<artifactId>tycho-eclipserun-plugin</artifactId>
-					<version>${tycho.extras.version}</version>
+					<version>${tycho-extras-version}</version>
 					<configuration>
 						<repositories>
 							<repository>
@@ -283,7 +282,7 @@
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-p2-repository-plugin</artifactId>
-					<version>${tycho.version}</version>
+					<version>${tycho-version}</version>
 					<executions>
 						<execution>
 							<phase>package</phase>
@@ -301,4 +300,86 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+  <profiles>
+  	<profile>
+		<id>sign</id>
+		<activation>
+			<property>
+					<name>BUILD_SIGN</name>
+					<value>true</value>
+			</property>
+		</activation>
+		<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-pack200a-plugin</artifactId>
+						<version>${tycho-extras-version}</version>
+						<executions>
+							<execution>
+								<id>pack200-normalize</id>
+								<phase>package</phase>
+								<goals>
+									<goal>normalize</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.cbi.maven.plugins</groupId>
+						<artifactId>eclipse-jarsigner-plugin</artifactId>
+						<version>1.1.5</version>
+						<executions>
+							<execution>
+								<id>sign</id>
+								<phase>package</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-pack200b-plugin</artifactId>
+						<version>${tycho-extras-version}</version>
+						<executions>
+							<execution>
+								<id>pack200-pack</id>
+								<phase>package</phase>
+								<goals>
+									<goal>pack</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>cbi</id>
+					<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+  </profiles>
+  <pluginRepositories>
+	<pluginRepository>
+		<id>cbi</id>
+		<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
+		<releases>
+				<enabled>true</enabled>
+		</releases>
+		<snapshots>
+			<enabled>false</enabled>
+		</snapshots>
+	</pluginRepository>
+  </pluginRepositories>
 </project>

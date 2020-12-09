@@ -12,7 +12,7 @@
 <feature
       id="org.polarsys.capella.scenario.editor.feature"
       label="%featureName"
-      version="0.9.0.qualifier"
+      version="0.10.0.qualifier"
       provider-name="%providerName">
 
    <description url="http://www.example.com/description">
@@ -75,6 +75,13 @@
 
    <plugin
          id="com.google.inject"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="io.github.classgraph"
          download-size="0"
          install-size="0"
          version="0.0.0"

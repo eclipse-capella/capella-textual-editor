@@ -3,7 +3,7 @@ Automatic-Module-Name: org.polarsys.capella.scenario.editor.dsl.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 0.9.0.qualifier
+Bundle-Version: 0.10.0.qualifier
 Bundle-SymbolicName: org.polarsys.capella.scenario.editor.dsl.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.polarsys.capella.scenario.editor.dsl,

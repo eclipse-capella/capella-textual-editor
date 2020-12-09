@@ -12,26 +12,19 @@
  *******************************************************************************/
 target "CapellaScenariosTextEditor"
 
-include "https://raw.githubusercontent.com/eclipse/capella/v1.4.x/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
+include "https://raw.githubusercontent.com/eclipse/capella/master/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
 
 with source, requirements
 
-location capella-core-1.4.x "https://download.eclipse.org/capella/core/updates/nightly/1.4.x/org.polarsys.capella.rcp.site" {
-
-	org.polarsys.capella.rcp.feature.feature.group
-	org.polarsys.capella.cdo.mock.feature.feature.group
+location capella-core-master "https://download.eclipse.org/capella/core/updates/nightly/master/org.polarsys.capella.rcp.site" {
+	org.polarsys.capella.rcp.feature.group
 }
 
-location capella-tests-1.4.x "https://download.eclipse.org/capella/core/updates/nightly/1.4.x/org.polarsys.capella.test.site" {
-
+location capella-tests-master "https://download.eclipse.org/capella/core/updates/nightly/master/org.polarsys.capella.test.site" {
 	org.polarsys.capella.test.feature.feature.group
 }
 
-location "https://download.eclipse.org/modeling/emf/cdo/drops/R20180613-0111/" {
-    org.eclipse.emf.cdo.sdk.feature.group
-}
-
-location "http://download.eclipse.org/releases/2019-06/" {
+location "http://download.eclipse.org/releases/2020-06/" {
     org.eclipse.xtext.redist.feature.group
     org.eclipse.xtext.sdk.feature.group
 }
