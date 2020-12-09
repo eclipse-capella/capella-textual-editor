@@ -111,15 +111,24 @@ pipeline {
 		        			['org.polarsys.capella.scenario.editor.ju.ScenarioEditorTestSuite'])		        			 
 	        		}
 	        		
-	        		junit '*.xml'
+	        		tester.publishTests()
 				}
 			}
 		}
+		
+		stage('Sonar') {
+			steps {
+				script {
+					sonar.runSonar("eclipse_capella-textual-editor", "eclipse/capella-textual-editor", 'sonarcloud-token-textual-editor')
+				}
+			}
+		}
+		
 	}
   
 	post {
     	always {
-       		archiveArtifacts artifacts: '**/*.log, *.log, *.xml, **/*.layout'
+       		archiveArtifacts artifacts: '**/*.log, *.log, *.xml, **/*.layout, *.exec'
     	}
     	
     	success  {
