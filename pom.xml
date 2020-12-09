@@ -316,7 +316,7 @@
 					<plugin>
 						<groupId>org.eclipse.tycho.extras</groupId>
 						<artifactId>tycho-pack200a-plugin</artifactId>
-						<version>${tycho-extras-version}</version>
+						<version>${tycho.extras.version}</version>
 						<executions>
 							<execution>
 								<id>pack200-normalize</id>
@@ -344,7 +344,7 @@
 					<plugin>
 						<groupId>org.eclipse.tycho.extras</groupId>
 						<artifactId>tycho-pack200b-plugin</artifactId>
-						<version>${tycho-extras-version}</version>
+						<version>${tycho.extras.version}</version>
 						<executions>
 							<execution>
 								<id>pack200-pack</id>
