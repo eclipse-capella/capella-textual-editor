@@ -34,7 +34,7 @@ pipeline {
     	stage('Build and Package') {
               steps {
                   script {
-                      def customParams = github.isPullRequest() ? '-DSKIP_SONAR=true' : '-Psign'
+                      def customParams = github.isPullRequest() ? '' : '-Psign'
              
                       sh "mvn -Djacoco.skip=true -DjavaDocPhase=none ${customParams} clean package -f pom.xml"
                    }        
@@ -57,12 +57,6 @@ pipeline {
 	    }
 	    
 	    stage('Download Capella') {
-    		when {
-        		expression { 
-        			github.isPullRequest() 
-        		}
-      		}
-      		
         	steps {
         		script {
 	        		def capellaURL = capella.getDownloadURL("${CAPELLA_BRANCH}", 'linux', '')
@@ -75,12 +69,6 @@ pipeline {
 	    }
 
     	stage('Install test features') {
-    		when {
-        		expression { 
-        			github.isPullRequest() 
-        		}
-      		}
-      		
         	steps {
         		script {
 	        		sh "chmod 755 ${CAPELLA_PRODUCT_PATH}"
@@ -95,12 +83,6 @@ pipeline {
 	    }
 	    
     	stage('Run tests') {
-    		when {
-        		expression { 
-        			github.isPullRequest() 
-        		}
-      		}
-    	
         	steps {
         		script {
         			wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
