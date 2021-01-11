@@ -233,25 +233,28 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
    */
   protected String readFile(String fileName) {
     String fileAsString = "";
+    
     try {
       URL resolvedUrl = FileLocator.toFileURL(getClass().getResource("input/" + fileName));
-      InputStream is = new FileInputStream(resolvedUrl.getPath());
-      BufferedReader buffer = new BufferedReader(new InputStreamReader(is));
 
-      String line = buffer.readLine();
-      StringBuilder sb = new StringBuilder();
+      try (InputStream is = new FileInputStream(resolvedUrl.getPath());
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(is))) {
 
-      while (line != null) {
-        sb.append(line).append("\r\n");
-        line = buffer.readLine();
+        String line = buffer.readLine();
+        StringBuilder sb = new StringBuilder();
+
+        while (line != null) {
+          sb.append(line).append("\r\n");
+          line = buffer.readLine();
+        }
+        sb.setLength(sb.length() - 2);
+        fileAsString = sb.toString();
       }
-      sb.setLength(sb.length() - 2);
-      fileAsString = sb.toString();
-      buffer.close();
+      
     } catch (IOException e) {
       e.printStackTrace();
     }
-
+    
     return fileAsString;
   }
 
