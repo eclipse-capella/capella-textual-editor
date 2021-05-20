@@ -22,7 +22,7 @@ Textual Scenario Editor is an addon that allows to edit Capella Scenarios in tex
 * Textual edition managing error detection (e.i invalid Capella model: e.g. non existing target role of specified lifeline)
 * Synchronization between textual edition and scenario display
 
-[[Image:Images/IS_System_TextualScenario.png|center|760px]]
+[[Image:../Images/IS_System_TextualScenario.png|center|760px]]
 
 
 

@@ -10,13 +10,24 @@
   Contributors:
        Thales - initial API and implementation
 -->
-<toc label="Textual Editor">
-    <topic href="html/TextualEditor/Introduction.html" label="Introduction"></topic>
+<toc label="Textual Editor Viewpoint Guide">
+   <topic label="Release Notes">
+      <topic href="html/Release Notes/Whatsnew.html" label="What&apos;s New">
+      </topic>
+      <topic href="html/Release Notes/KnownIssues.html" label="Known Issues">
+      </topic>
+      <topic href="html/Release Notes/Limitations.html" label="Limitations">
+      </topic>
+   </topic>
 
-    <topic href="html/TextualEditor/Installation and Uninstall.html" label="Installation and Uninstall">
+    <topic href="html/Installation and Uninstall.html" label="Installation and Uninstallation">
     </topic>
+   <topic label="User Manual">
+      <topic href="html/User Manual/Introduction.html" label="Introduction">
+      </topic>
+      <link toc="html/User Manual/Functionalities-toc.xml"/>
+   </topic>
 
-    <link toc="html/TextualEditor/Functionalities-toc.xml"/>
     
     
     
