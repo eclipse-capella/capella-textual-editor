@@ -15,7 +15,7 @@
 
 Once the Textual Editor Add-On is installed, the user will be able to edit scenarios in textual mode.
 
-==Textual Editor View==
+==Textual Editor for Scenarios==
 
 The embedded Textual Editor can be opened from the View menu bar, as in the image below:
 <br>
@@ -27,7 +27,7 @@ After the embedded Textual Editor is activated from the View menu bar, when open
 If the user has multiple Capella scenario diagrams opened, when switching tabs to another scenario diagram, the text editor will be updated with the content from the new diagram and the editor will be linked to the new diagram.
 <br>
 
-==Syntax for the Textual Editor==
+==Syntax==
 
 The syntax supported in the textual editor for IS, FS, ES Capella Scenarios is presented in the following paragraphs.
 
@@ -204,7 +204,7 @@ The following syntax can be used in order to define references in the textual ed
 [[Image:../Images/ES_References.png]]
 <br>
 
-== Features and limitations of the Textual Editor ==
+== Features ==
 
 ===Consistency of the data===
 In order to maintain consistency between diagram and text, two buttons are available:
