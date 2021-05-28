@@ -21,7 +21,7 @@
             primary="true">
       </toc>
        <toc
-            file="html/TextualEditor/Functionalities-toc.xml"
+            file="html/User Manual/Functionalities-toc.xml"
             primary="false">
       </toc>
    </extension>

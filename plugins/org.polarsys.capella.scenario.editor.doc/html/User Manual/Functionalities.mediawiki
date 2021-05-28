@@ -15,19 +15,19 @@
 
 Once the Textual Editor Add-On is installed, the user will be able to edit scenarios in textual mode.
 
-==Textual Editor View==
+==Textual Editor for Scenarios==
 
 The embedded Textual Editor can be opened from the View menu bar, as in the image below:
 <br>
 <br>
-[[Image:Images/View_TextualEditor.png|650x350px]]
+[[Image:../Images/View_TextualEditor.png|650x350px]]
 <br>
 <br>
 After the embedded Textual Editor is activated from the View menu bar, when opening a new scenario diagram (OES, OAS, IS, FS, ES), the editor view will display the textual content of the associated Capella scenario and the user shall be able to edit a scenario.
 If the user has multiple Capella scenario diagrams opened, when switching tabs to another scenario diagram, the text editor will be updated with the content from the new diagram and the editor will be linked to the new diagram.
 <br>
 
-==Syntax for the Textual Editor==
+==Syntax==
 
 The syntax supported in the textual editor for IS, FS, ES Capella Scenarios is presented in the following paragraphs.
 
@@ -63,7 +63,7 @@ Depending on the type of scenario (OES, OAS, IS, FS, ES) and the architectural l
 
 ====Examples====
 
-[[Image:Images/Keywords_Participants_Examples.png]]
+[[Image:../Images/Keywords_Participants_Examples.png]]
 
 ===Messages===
 The user can insert messages between defined participants assuming the fact that the exchange already exists between the selected source and the target participant. The following elements and keywords can be used in the textual editor:
@@ -126,7 +126,7 @@ In Capella, we always activate an execution immediately after each sequence mess
 
 ==== Examples ====
 
-[[Image:Images/ES_FS_Logical_Messages.png|1050x750px]]
+[[Image:../Images/ES_FS_Logical_Messages.png|1050x750px]]
 <br>
 
 ===Combined Fragments===
@@ -157,7 +157,7 @@ The user can define a combined fragment in text using the syntax below:
 
 ==== Example ====
 
-[[Image:Images/ES_Combined_Fragments.png]]
+[[Image:../Images/ES_Combined_Fragments.png]]
 <br>
 
 ===State. Modes. Allocated Functions===
@@ -183,7 +183,7 @@ The use can insert states, modes and allocated functions in the textual editor u
 
 ==== Example ====
 
-[[Image:Images/ES_FS_States_Modes_AllocFunctions.png]]
+[[Image:../Images/ES_FS_States_Modes_AllocFunctions.png]]
 <br>
 
 ===References===
@@ -201,16 +201,16 @@ The following syntax can be used in order to define references in the textual ed
 
 ==== Example ====
 
-[[Image:Images/ES_References.png]]
+[[Image:../Images/ES_References.png]]
 <br>
 
-== Features and limitations of the Textual Editor ==
+== Features ==
 
 ===Consistency of the data===
 In order to maintain consistency between diagram and text, two buttons are available:
 * ''' refresh button ''': on pressing the refresh button, the text editor is updated with the data from the diagram
 * ''' save button ''': on pressing the save button, the diagram is updated with the content described by the textual scenario associated to the current diagram
-[[Image:Images/IS_System_SyncButtons.png]]
+[[Image:../Images/IS_System_SyncButtons.png]]
 
 ===Validation of the data===
 Textual validations are added in the editor, to prevent the user from doing invalid operations.
@@ -302,17 +302,3 @@ Textual validations are added in the editor, to prevent the user from doing inva
 ===Autocompletion===
 
 The user can use '''Ctrl+Space''' to see suggestions of the allowed keywords in the editor or proposals of the elements that can be used.
-
-===Limitations===
-The Textual Editor addon has the following limitations:
-* The following tools are not supported:
-** Duration
-** Shared Data
-** Exchange Context
-* Multiple lifelines of the same instance role are not enabled.
-* Other than instance roles, duplicated elements are allowed, however when deleting an element from the textual editor, the matching algorithm will find the last unmatched element in diagram and delete that one as in the image below: 
-
-[[Image:Images/ES_DuplicatedMessages.png]]
-* When the combined fragments are translated to text, the executions that happen on parallel timelines will be displayed inside of the combined fragment in text, to preserve the order of the elements on a timeline when saving data back to the diagram, as in the image below:
-
-[[Image:Images/ES_Combined_Fragments_Limitations.png|1050x700px]]
