@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="html/User Manual/Functionalities.html" label="Functionalities">
 	<topic href="html/User Manual/Functionalities.html" label="Textual Editor for Scenarios">
-     <topic href="html/User Manual/Functionalities.html#Syntax_for_the_Textual_Editor" label="Syntax">
+     <topic href="html/User Manual/Functionalities.html#Syntax" label="Syntax">
         <topic href="html/User Manual/Functionalities.html#Participants" label="Participants">
         </topic>
         <topic href="html/User Manual/Functionalities.html#Messages" label="Messages">
@@ -13,7 +13,7 @@
         <topic href="html/User Manual/Functionalities.html#References" label="References">
         </topic>
      </topic>
-	    <topic href="html/User Manual/Functionalities.html#Features_and_limitations_of_the_Textual_Editor" label="Features">
+	    <topic href="html/User Manual/Functionalities.html#Features" label="Features">
         <topic href="html/User Manual/Functionalities.html#Consistency_of_the_data" label="Consistency of the data">
         </topic>
         <topic href="html/User Manual/Functionalities.html#Validation_of_the_data" label="Validation of the data">
