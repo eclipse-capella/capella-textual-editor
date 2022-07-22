@@ -28,16 +28,13 @@
 
   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	    <tycho-version>2.0.0</tycho-version>
-	    <tycho-extras-version>2.0.0</tycho-extras-version>
+	    <tycho-version>2.2.0</tycho-version>
+	    <tycho-extras-version>2.2.0</tycho-extras-version>
 		<antrun-version>3.0.0</antrun-version>
-		<rcptt-version>2.5.1</rcptt-version>
-		<rcptt-runner-version>2.5.1</rcptt-runner-version>
+		<rcptt-version>2.5.3</rcptt-version>
+		<rcptt-runner-version>2.5.3</rcptt-runner-version>
 
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/capella-textual-editor.git</tycho.scmUrl>
-
-		<!-- for packaging -->
-		<eclipse-repo.url>http://download.eclipse.org/releases/neon</eclipse-repo.url>
 
 		<!-- for junit -->
 		<capella-product-id>org.polarsys.capella.rcp.product</capella-product-id>
@@ -47,8 +44,8 @@
 
 
 		<!-- for packaging -->
-		<platform-name>neon</platform-name>
-		<eclipse-repo.url>http://download.eclipse.org/releases/${platform-name}</eclipse-repo.url>
+		<platform-name>2021-06</platform-name>
+		<eclipse-repo.url>https://download.eclipse.org/releases/${platform-name}</eclipse-repo.url>
 		<packagedAddonName>TextualEditor</packagedAddonName>
 
 	</properties>
@@ -178,8 +175,6 @@
 					<configuration>
 						<encoding>UTF-8</encoding>
 						<compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
-							<source>1.8</source>
-               				<target>1.8</target>
 					</configuration>
 				</plugin>
 
@@ -214,7 +209,7 @@
 								<type>eclipse-plugin</type>
 							</dependency>
 						</dependencies>
-						<executionEnvironment>JavaSE-1.8</executionEnvironment>
+						<executionEnvironment>JavaSE-11</executionEnvironment>
 					</configuration>
 					<executions>
 						<execution>
@@ -225,7 +220,6 @@
 							</goals>
 							<configuration>
 								<appArgLine>-application org.eclipse.equinox.p2.repository.repo2runnable -source file:${project.build.directory}/repository -destination ${project.build.directory}/${packagedAddonName}/eclipse</appArgLine>
-								<executionEnvironment>JavaSE-1.8</executionEnvironment>
 							</configuration>
 						</execution>
 					</executions>
@@ -258,15 +252,14 @@
 									<delete includeemptydirs="true">
 										<fileset
 											dir="${project.build.directory}/${packagedAddonName}/eclipse/features"
-											includes="**/org.polarsys.capella.scenario.editor.site.tests*/**" />													  
+											includes="**/org.polarsys.capella.scenario.editor.tests*/**" />													  
 									</delete>
 									
-									
 									<!-- delete test plugin (not included in dropins) -->
-									<delete>
+									<delete includeemptydirs="true">
 										<fileset
 											dir="${project.build.directory}/${packagedAddonName}/eclipse/plugins"
-											includes="org.polarsys.capella.scenario.editor.site.tests.ju*" />
+											includes="**/org.polarsys.capella.scenario.editor.ju*/**" />													  
 									</delete>
 									
 									<zip
