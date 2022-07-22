@@ -139,11 +139,11 @@ The user can define a combined fragment in text using the syntax below:
 | ''' Description '''
 |- 
 | ''' ALT ''' 	
-| '''alt''' "condition A" '''over''' "timeline1", "timeline2",… {<br> &nbsp;&nbsp;[something]<br>} '''else''' "condition B" {<br>&nbsp;&nbsp;[something_else]<br>} '''else''' "condition C" {<br>&nbsp;&nbsp;[something_else]<br>}
+| '''alt''' "condition A" '''over''' "timeline1" "timeline2"… {<br> &nbsp;&nbsp;[something]<br>} '''else''' "condition B" {<br>&nbsp;&nbsp;[something_else]<br>} '''else''' "condition C" {<br>&nbsp;&nbsp;[something_else]<br>}
 | It will insert an ALT type of combined fragment over the given timelines.
 |- 
 | ''' PAR ''' 	
-| '''par''' "condition A" '''over''' "timeline1", "timeline2",… {<br> &nbsp;&nbsp;[something]<br>} "condition B" {<br>&nbsp;&nbsp;[something_else]<br>} "condition C" {<br>&nbsp;&nbsp;[something_else]<br>}
+| '''par''' "condition A" '''over''' "timeline1" "timeline2"… {<br> &nbsp;&nbsp;[something]<br>} "condition B" {<br>&nbsp;&nbsp;[something_else]<br>} "condition C" {<br>&nbsp;&nbsp;[something_else]<br>}
 | It will insert a PAR type of combined fragment over the given timelines.
 |- 
 | ''' OTHER ''' 	
@@ -195,7 +195,7 @@ The following syntax can be used in order to define references in the textual ed
 | ''' Description '''
 |- 
 | ''' reference ''' 	
-| '''ref''' "ref_scenario" '''over''' "timeline1", "timeline2" 
+| '''ref''' "ref_scenario" '''over''' "timeline1" "timeline2" 
 | It will insert a reference to a scenario over the given timelines.
 |}
 
