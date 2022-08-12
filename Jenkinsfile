@@ -76,7 +76,7 @@ pipeline {
 	        			        		
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", capella.getTestUpdateSiteURL("${CAPELLA_BRANCH}"), 'org.polarsys.capella.test.feature.feature.group')
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.feature.feature.group')
-	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "http://download.eclipse.org/releases/2020-06/", 'org.eclipse.xtext.sdk.feature.group')
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "http://download.eclipse.org/releases/2021-06/", 'org.eclipse.xtext.sdk.feature.group')
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.tests.feature.feature.group')
 	       		}         
 	     	}
