@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/sequence/description/2.0.0" xmlns:description_2="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:filter="http://www.eclipse.org/sirius/diagram/description/filter/1.1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:org.polarsys.capella.core.data.capellacommon="http://www.polarsys.org/capella/core/common/6.0.0" xmlns:org.polarsys.capella.core.data.cs="http://www.polarsys.org/capella/core/cs/6.0.0" xmlns:org.polarsys.capella.core.data.ctx="http://www.polarsys.org/capella/core/ctx/6.0.0" xmlns:org.polarsys.capella.core.data.fa="http://www.polarsys.org/capella/core/fa/6.0.0" xmlns:org.polarsys.capella.core.data.interaction="http://www.polarsys.org/capella/core/interaction/6.0.0" xmlns:org.polarsys.capella.core.data.la="http://www.polarsys.org/capella/core/la/6.0.0" xmlns:org.polarsys.capella.core.data.oa="http://www.polarsys.org/capella/core/oa/6.0.0" xmlns:sequence="http://www.eclipse.org/sirius/diagram/sequence/2.0.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/sequence/description/2.0.0 http://www.eclipse.org/sirius/diagram/sequence/2.0.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/filter/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/filter http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style">
-  <viewpoint:DAnalysis uid="_Ty1rEPzdEeqpz7UppfXcPA" selectedViews="_TzTlIPzdEeqpz7UppfXcPA _Tz6pIPzdEeqpz7UppfXcPA _T50c0PzdEeqpz7UppfXcPA _T6PTkPzdEeqpz7UppfXcPA _T6ZEkPzdEeqpz7UppfXcPA _T8hLgPzdEeqpz7UppfXcPA _T9FzQPzdEeqpz7UppfXcPA" version="15.0.0.202201261500">
+  <viewpoint:DAnalysis uid="_Ty1rEPzdEeqpz7UppfXcPA" selectedViews="_TzTlIPzdEeqpz7UppfXcPA _Tz6pIPzdEeqpz7UppfXcPA _T50c0PzdEeqpz7UppfXcPA _T6PTkPzdEeqpz7UppfXcPA _T6ZEkPzdEeqpz7UppfXcPA _T8hLgPzdEeqpz7UppfXcPA _T9FzQPzdEeqpz7UppfXcPA" version="15.1.0.202211301600">
     <semanticResources>TextualEditor.afm</semanticResources>
     <semanticResources>TextualEditor.capella</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_TzTlIPzdEeqpz7UppfXcPA">
@@ -17,71 +17,71 @@
     </ownedViews>
     <ownedViews xmi:type="viewpoint:DView" uid="_T6ZEkPzdEeqpz7UppfXcPA">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_WqspBPzdEeqpz7UppfXcPA" name="[IS] CapabilityRealization 1 (Simple)" repPath="#_WqXR0PzdEeqpz7UppfXcPA" changeId="5b8a6341-27b5-4bc3-8ecd-673dc5dfc010">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_WqspBPzdEeqpz7UppfXcPA" name="[IS] CapabilityRealization 1 (Simple)" repPath="#_WqXR0PzdEeqpz7UppfXcPA" changeId="1708504301057">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#0478f169-fd4f-4c3a-a3b0-7e251d35aea9"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_ZA-IwP0dEeqH0uXPG2BjiA" name="[IS] CapabilityRealization 1 (Complex)" repPath="#_ZAx7gP0dEeqH0uXPG2BjiA" changeId="2dab7bd0-7783-4d27-b07b-6c150b21726c">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_ZA-IwP0dEeqH0uXPG2BjiA" name="[IS] CapabilityRealization 1 (Complex)" repPath="#_ZAx7gP0dEeqH0uXPG2BjiA" changeId="1708504301057">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#dab802ff-3908-4c1a-86d9-c05dfa5185c6"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_zc-mBghsEeux4qCL-hP6Ng" name="[FS] Capability 1 (Simple)" repPath="#_zc67oAhsEeux4qCL-hP6Ng" changeId="1c8ecc29-ac72-47d8-8854-fd704c6605dc">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_zc-mBghsEeux4qCL-hP6Ng" name="[FS] Capability 1 (Simple)" repPath="#_zc67oAhsEeux4qCL-hP6Ng" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Functional%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#bce36f01-0cda-4fdd-926d-9bdb89907876"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_Ho1l7ghuEeux4qCL-hP6Ng" name="[ES] Capability 1 (Simple)" repPath="#_Hosb8AhuEeux4qCL-hP6Ng" changeId="31cd21cd-c3ab-4b04-b668-223063ada18d">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_Ho1l7ghuEeux4qCL-hP6Ng" name="[ES] Capability 1 (Simple)" repPath="#_Hosb8AhuEeux4qCL-hP6Ng" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Exchanges%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#ea7c8cfe-d3fc-4509-9ea6-280a3e9c20ce"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_8VvQ-AxSEeuO5KC7jOTCgw" name="[FS] Capability 1 Combined Fragments" repPath="#_8VvQ8AxSEeuO5KC7jOTCgw" changeId="2c924836-1a33-4c85-bc57-ae8154ae1b79">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_8VvQ-AxSEeuO5KC7jOTCgw" name="[FS] Capability 1 Combined Fragments" repPath="#_8VvQ8AxSEeuO5KC7jOTCgw" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Functional%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#9cb254bf-c588-4fce-95dd-22c9c9af1e50"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_1ORa0AxZEeuCDf8Gd6LZJw" name="[ES] Capability 1 Combined Fragments" repPath="#_1N8qsAxZEeuCDf8Gd6LZJw" changeId="f664c535-cf87-4a19-bcfd-20bda4713d8d">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_1ORa0AxZEeuCDf8Gd6LZJw" name="[ES] Capability 1 Combined Fragments" repPath="#_1N8qsAxZEeuCDf8Gd6LZJw" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Exchanges%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#1c185aa3-0990-4b12-8b7f-8ca985433e2e"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_WmrKFg1DEeuwfpGG10x94A" name="[IS] Capability 1 Create Delete" repPath="#_WmiAIA1DEeuwfpGG10x94A" changeId="4bb305d4-3319-49f7-90a1-700e0bcae02a">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_WmrKFg1DEeuwfpGG10x94A" name="[IS] Capability 1 Create Delete" repPath="#_WmiAIA1DEeuwfpGG10x94A" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#ea309ede-98ec-4e9c-bf65-16b6ba5446fa"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="__q4dQA7CEeu9QIu4PPTWEg" name="[IS] Capability 1 Arm Timer" repPath="#__qro8A7CEeu9QIu4PPTWEg" changeId="1ec27ca3-b4d4-49ce-a6c0-7fbe7f707b0a">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="__q4dQA7CEeu9QIu4PPTWEg" name="[IS] Capability 1 Arm Timer" repPath="#__qro8A7CEeu9QIu4PPTWEg" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#deec21b5-fbe1-45ed-8f57-cfde1321aae9"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_ppXCpBOrEeuIYL9iPBYsBQ" name="[IS] CapabilityRealization 1 (Simple) 2" repPath="#_ppIZIBOrEeuIYL9iPBYsBQ" changeId="cf791805-464a-4b0d-af10-7fc529087ba8">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_ppXCpBOrEeuIYL9iPBYsBQ" name="[IS] CapabilityRealization 1 (Simple) 2" repPath="#_ppIZIBOrEeuIYL9iPBYsBQ" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#19287717-a5c8-4569-add1-b264f13fbb08"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_44F9lB3mEeuQ6eDUQwENbA" name="[IS] Capability 1 Duplicated Messages" repPath="#_432F8B3mEeuQ6eDUQwENbA" changeId="618f5ddf-6341-445c-89ea-1eb91948897d">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_44F9lB3mEeuQ6eDUQwENbA" name="[IS] Capability 1 Duplicated Messages" repPath="#_432F8B3mEeuQ6eDUQwENbA" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#82532268-8405-441b-b805-2655d3a83e0e"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_W06YsB9-EeuZjrfj-korhA" name="[IS] Capability 1 Duplicated CF and Operands" repPath="#_Wzaj4B9-EeuZjrfj-korhA" changeId="a602a992-3ab7-413f-b555-955d60d93cf6">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_W06YsB9-EeuZjrfj-korhA" name="[IS] Capability 1 Duplicated CF and Operands" repPath="#_Wzaj4B9-EeuZjrfj-korhA" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#5442b3c5-2eab-4844-b32e-2060eed1a9c4"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_Q2dbDSAzEeuunePL_P9S0Q" name="[IS] Capability 1 Delete Operands" repPath="#_Q2TqACAzEeuunePL_P9S0Q" changeId="2edbec9a-d1de-42c1-95af-c32c875bb00b">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_Q2dbDSAzEeuunePL_P9S0Q" name="[IS] Capability 1 Delete Operands" repPath="#_Q2TqACAzEeuunePL_P9S0Q" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#347cd70f-3bf3-4583-b6a0-ebe173785d01"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_SP1RoCBHEeupRIptQ4wTTA" name="[IS] Capability 1 Exchanges Instance Roles" repPath="#_SPeFQCBHEeupRIptQ4wTTA" changeId="80cd87bf-fb55-4d03-b60e-e7bcb36e6808">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_SP1RoCBHEeupRIptQ4wTTA" name="[IS] Capability 1 Exchanges Instance Roles" repPath="#_SPeFQCBHEeupRIptQ4wTTA" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Interfaces%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#4ec665ed-d87a-44ac-9e18-d2f69c40b0ac"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_W0tHkCNTEeudVr0FzPoH-w" name="[ES] Capability 1 Lost And Found" repPath="#_W0OmcCNTEeudVr0FzPoH-w" changeId="636615b3-37e4-45e2-924c-3fe1d369dab3">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_W0tHkCNTEeudVr0FzPoH-w" name="[ES] Capability 1 Lost And Found" repPath="#_W0OmcCNTEeudVr0FzPoH-w" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Exchanges%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#83bf4de3-1a9e-4b24-98d8-1c0551b09ed3"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_i0_dECNoEeuyCYVSAOc1Og" name="[ES] Capability 1 References" repPath="#_i0qs8CNoEeuyCYVSAOc1Og" changeId="c56736b7-cc57-4a44-9e12-0d2e3c427810">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_i0_dECNoEeuyCYVSAOc1Og" name="[ES] Capability 1 References" repPath="#_i0qs8CNoEeuyCYVSAOc1Og" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Exchanges%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#39489a16-0f95-4643-ac94-ace74b3b2e94"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_YGFiwCQKEeuUQbtUxnz3PA" name="[ES] Capability 1 State Fragments" repPath="#_YFqsACQKEeuUQbtUxnz3PA" changeId="edd63615-241e-4a95-92fa-29e63ddce33c">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_YGFiwCQKEeuUQbtUxnz3PA" name="[ES] Capability 1 State Fragments" repPath="#_YFqsACQKEeuUQbtUxnz3PA" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Component%20Exchanges%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#960de297-a822-49f4-86e7-5309aaf72ebd"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_Nhko5iQPEeuUQbtUxnz3PA" name="[FS] Capability 1 State Fragments" repPath="#_Nhg-gCQPEeuUQbtUxnz3PA" changeId="37de6773-c58f-4070-8ffc-0c617f0f0018">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_Nhko5iQPEeuUQbtUxnz3PA" name="[FS] Capability 1 State Fragments" repPath="#_Nhg-gCQPEeuUQbtUxnz3PA" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/common.odesign#//@ownedViewpoints[name='Common']/@ownedRepresentations[name='Functional%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#7575b7e4-adb7-48e4-8172-74e3c5672087"/>
       </ownedRepresentationDescriptors>
@@ -91,7 +91,7 @@
     </ownedViews>
     <ownedViews xmi:type="viewpoint:DView" uid="_T9FzQPzdEeqpz7UppfXcPA">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/oa.odesign#//@ownedViewpoints[name='Operational%20Analysis']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_ThkL1CAyEeuunePL_P9S0Q" name="[OES] OperationalCapability 1 Roles" repPath="#_Tgqz8CAyEeuunePL_P9S0Q" changeId="798764ce-2513-4b11-b486-cadabfba8c26">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_ThkL1CAyEeuunePL_P9S0Q" name="[OES] OperationalCapability 1 Roles" repPath="#_Tgqz8CAyEeuunePL_P9S0Q" changeId="1708504301058">
         <description xmi:type="description_1:SequenceDiagramDescription" href="platform:/plugin/org.polarsys.capella.core.sirius.analysis/description/oa.odesign#//@ownedViewpoints[name='Operational%20Analysis']/@ownedRepresentations[name='Operational%20Interaction%20Scenario']"/>
         <target xmi:type="org.polarsys.capella.core.data.interaction:Scenario" href="TextualEditor.capella#2f23cd29-6d6f-42a1-b51c-5f2623142cb3"/>
       </ownedRepresentationDescriptors>
