@@ -11,4 +11,4 @@ Require-Bundle: org.polarsys.capella.test.diagram.common.ju,
  org.polarsys.capella.scenario.editor.embeddededitor,
  org.eclipse.xtext.ui,
  org.polarsys.capella.scenario.editor
-Bundle-Activator: org.eclipse.core.internal.content.Activator
+Bundle-Activator: org.polarsys.capella.scenario.editor.ju.activator.Activator
