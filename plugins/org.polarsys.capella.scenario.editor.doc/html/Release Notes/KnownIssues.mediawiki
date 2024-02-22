@@ -12,6 +12,9 @@
 -->
 = Known issues =
 
+The addon may not work properly with another JVM than the one provided by Capella.
+
+
 Retrieve all known issues by following this link:
 
 * [https://github.com/eclipse/capella-textual-editor/issues Textual Editor issues]
