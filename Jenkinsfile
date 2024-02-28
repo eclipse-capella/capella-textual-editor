@@ -99,7 +99,7 @@ pipeline {
 		stage('Sonar') {
 			steps {
 				script {
-					sonar.runSonar("eclipse_capella-textual-editor", "eclipse/capella-textual-editor", 'sonarcloud-token-textual-editor')
+					sonar.runSonar("eclipse-capella_capella-textual-editor", "eclipse/capella-textual-editor", 'sonarcloud-token-textual-editor')
 				}
 			}
 		}
