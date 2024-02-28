@@ -97,9 +97,12 @@ pipeline {
 		}
 		
 		stage('Sonar') {
+			tools {
+				jdk 'openjdk-jdk17-latest'
+			}
 			steps {
 				script {
-					sonar.runSonar("eclipse-capella_capella-textual-editor", "eclipse/capella-textual-editor", 'sonarcloud-token-textual-editor')
+					sonar.runSonar("eclipse-capella_capella-textual-editor", "eclipse-capella/capella-textual-editor", 'sonarcloud-token-textual-editor')
 				}
 			}
 		}

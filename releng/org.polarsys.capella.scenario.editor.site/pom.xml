@@ -26,6 +26,10 @@
 		<relativePath>../../</relativePath>
 	</parent>
 
+    <properties>
+      <!-- Skip feature modules in Sonar analysis -->
+      <sonar.skip>true</sonar.skip>
+    </properties>
 	<build>
 		<plugins>
 			<plugin>
