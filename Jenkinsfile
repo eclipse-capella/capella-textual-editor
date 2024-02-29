@@ -5,7 +5,7 @@ pipeline {
   
 	tools {
 		maven 'apache-maven-latest'
-		jdk 'openjdk-jdk14-latest'
+		jdk 'openjdk-jdk11-latest'
 	}
   
 	environment {
@@ -97,9 +97,12 @@ pipeline {
 		}
 		
 		stage('Sonar') {
+			tools {
+				jdk 'openjdk-jdk17-latest'
+			}
 			steps {
 				script {
-					sonar.runSonar("eclipse_capella-textual-editor", "eclipse/capella-textual-editor", 'sonarcloud-token-textual-editor')
+					sonar.runSonar("eclipse-capella_capella-textual-editor", "eclipse-capella/capella-textual-editor", 'sonarcloud-token-textual-editor')
 				}
 			}
 		}

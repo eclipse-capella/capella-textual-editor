@@ -39,6 +39,7 @@
 		<tycho-extras-version>0.26.0</tycho-extras-version>
 		<targetPlatform.name>capella.target-definition.targetplatform</targetPlatform.name>
 		<converterApplication.name>fr.obeo.releng.targetplatform.targetPlatform.converter</converterApplication.name>
+		<sonar.skip>true</sonar.skip>
 	</properties>
 
 	<build>
