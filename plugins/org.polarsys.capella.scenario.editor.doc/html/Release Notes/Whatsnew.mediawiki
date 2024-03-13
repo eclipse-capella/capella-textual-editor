@@ -14,4 +14,4 @@
 
 Release notes describing enhancements and fixes done per release are available online on each dedicated release pages.
 
-* [https://github.com/eclipse/capella-textual-editor/releases Textual Editor releases]
+* [https://github.com/eclipse-capella/capella-textual-editor/releases Textual Editor releases]

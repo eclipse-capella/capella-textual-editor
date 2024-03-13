@@ -12,7 +12,7 @@
  *******************************************************************************/
 target "CapellaScenariosTextEditor"
 
-include "https://raw.githubusercontent.com/eclipse/capella/v6.x/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
+include "https://raw.githubusercontent.com/eclipse-capella/capella/v6.x/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
 
 with source, requirements
 
