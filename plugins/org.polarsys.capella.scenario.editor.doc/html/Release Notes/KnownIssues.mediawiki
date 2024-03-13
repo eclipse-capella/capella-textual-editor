@@ -17,4 +17,4 @@ The addon may not work properly with another JVM than the one provided by Capell
 
 Retrieve all known issues by following this link:
 
-* [https://github.com/eclipse/capella-textual-editor/issues Textual Editor issues]
+* [https://github.com/eclipse-capella/capella-textual-editor/issues Textual Editor issues]
