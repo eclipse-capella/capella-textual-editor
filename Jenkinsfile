@@ -5,13 +5,13 @@ pipeline {
   
 	tools {
 		maven 'apache-maven-latest'
-		jdk 'openjdk-jdk11-latest'
+		jdk 'openjdk-jdk17-latest'
 	}
   
 	environment {
 		BUILD_KEY = (github.isPullRequest() ? CHANGE_TARGET : BRANCH_NAME).replaceFirst(/^v/, '')
 		CAPELLA_PRODUCT_PATH = "${WORKSPACE}/capella/capella"
-		CAPELLA_BRANCH = '6.x'
+		CAPELLA_BRANCH = 'master'
   	}
   
   	stages {
@@ -76,7 +76,7 @@ pipeline {
 	        			        		
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", capella.getTestUpdateSiteURL("${CAPELLA_BRANCH}"), 'org.polarsys.capella.test.feature.feature.group')
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.feature.feature.group')
-	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "http://download.eclipse.org/releases/2021-06/", 'org.eclipse.xtext.sdk.feature.group')
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "https://download.eclipse.org/releases/2023-03/", 'org.eclipse.xtext.sdk.feature.group')
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.tests.feature.feature.group')
 	       		}         
 	     	}

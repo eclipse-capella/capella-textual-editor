@@ -12,19 +12,29 @@
  *******************************************************************************/
 target "CapellaScenariosTextEditor"
 
-include "https://raw.githubusercontent.com/eclipse-capella/capella/v6.x/releng/plugins/org.polarsys.capella.targets/full/capella.target-definition.targetplatform"
+include "https://download.eclipse.org/capella/core/updates/releases/7.0.0/targets/capella.target-definition.targetplatform"
 
 with source, requirements
 
-location capella-core-master "https://download.eclipse.org/capella/core/updates/releases/6.1.0/org.polarsys.capella.rcp.site" {
-	org.polarsys.capella.rcp.feature.group
+location capella-core-master "https://download.eclipse.org/capella/core/updates/releases/7.0.0/org.polarsys.capella.rcp.site" {
+    org.polarsys.capella.rcp.feature.group
 }
 
-location capella-tests-master "https://download.eclipse.org/capella/core/updates/releases/6.1.0/org.polarsys.capella.test.site" {
-	org.polarsys.capella.test.feature.feature.group
+location capella-tests-master "https://download.eclipse.org/capella/core/updates/releases/7.0.0/org.polarsys.capella.test.site" {
+    org.polarsys.capella.test.feature.feature.group
 }
 
-location "http://download.eclipse.org/releases/2021-06/" {
+location "https://download.eclipse.org/releases/2023-03/202303151000/" {
+    // com.google.guava com.google.inject and org.aopalliance are dependencies from xtext.redist.
+    // but xtext-2023-03 requires exact guava 30.1.0.v20221112-0806 which is older than the one on capella 7.0.
+    // So version has been embedded in the addon and version hardcoded in the org.polarsys.capella.scenario.editor.feature/feature.xml
+    // when upgrading to new version, set 0.0.0 in feature.xml to see if it still required to embed another version than the one already embedded in capella.
+    // if already embedded, can be removed from feature.xml. Same for com.google.inject and org.aopalliance. If no longer required, can be removed from feature.
+    
+    // com.google.guava //already included with lazy version in capella.target-definition.targetplatform so we can't force a version here.
+    com.google.inject
+    org.aopalliance
     org.eclipse.xtext.redist.feature.group
     org.eclipse.xtext.sdk.feature.group
 }
+
