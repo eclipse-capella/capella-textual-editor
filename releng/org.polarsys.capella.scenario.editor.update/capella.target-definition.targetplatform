@@ -24,7 +24,7 @@ location capella-tests-master "https://download.eclipse.org/capella/core/updates
     org.polarsys.capella.test.feature.feature.group
 }
 
-location "https://download.eclipse.org/releases/2023-03/202303151000/" {
+location "jar:https://www.eclipse.org/downloads/download.php?file=/modeling/tmf/xtext/downloads/drops/2.32.0/tmf-xtext-Update-2.32.0.zip!/" {
     // com.google.guava com.google.inject and org.aopalliance are dependencies from xtext.redist.
     // but xtext-2023-03 requires exact guava 30.1.0.v20221112-0806 which is older than the one on capella 7.0.
     // So version has been embedded in the addon and version hardcoded in the org.polarsys.capella.scenario.editor.feature/feature.xml
@@ -34,7 +34,11 @@ location "https://download.eclipse.org/releases/2023-03/202303151000/" {
     // com.google.guava //already included with lazy version in capella.target-definition.targetplatform so we can't force a version here.
     com.google.inject
     org.aopalliance
-    org.eclipse.xtext.redist.feature.group
-    org.eclipse.xtext.sdk.feature.group
+    org.eclipse.xtext.redist.feature.group [2.32.0,2.33.0)
+    org.eclipse.xtext.sdk.feature.group [2.32.0,2.33.0)
+    org.eclipse.xtext.xbase.lib.feature.group [2.32.0,2.33.0)
 }
 
+location "https://download.eclipse.org/modeling/emft/mwe/updates/releases/2.15.0/" {
+	org.eclipse.emf.mwe2.language.sdk.feature.group
+}

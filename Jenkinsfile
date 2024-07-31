@@ -27,7 +27,9 @@ pipeline {
 		        	
 		        	sh 'env'
 		        	sh 'mvn clean verify -f releng/org.polarsys.capella.scenario.editor.update/pom.xml'
-	       		}         
+		        	sh 'find . -name *.target'
+		        	sh 'cat releng/org.polarsys.capella.scenario.editor.update/capella.target-definition.target'
+	       		}
 	     	}
 	    }
 	    
@@ -76,7 +78,7 @@ pipeline {
 	        			        		
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", capella.getTestUpdateSiteURL("${CAPELLA_BRANCH}"), 'org.polarsys.capella.test.feature.feature.group')
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.feature.feature.group')
-	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "https://download.eclipse.org/releases/2023-03/", 'org.eclipse.xtext.sdk.feature.group')
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "https://download.eclipse.org/releases/2023-09/", 'org.eclipse.xtext.sdk.feature.group')
 	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.tests.feature.feature.group')
 	       		}         
 	     	}
