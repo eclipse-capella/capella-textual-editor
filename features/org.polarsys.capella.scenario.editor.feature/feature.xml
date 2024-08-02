@@ -97,6 +97,13 @@
          unpack="false"/>
 
    <plugin
+         id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="31.1.0.jre"
+         unpack="false"/>
+
+   <plugin
          id="org.aopalliance"
          download-size="0"
          install-size="0"
