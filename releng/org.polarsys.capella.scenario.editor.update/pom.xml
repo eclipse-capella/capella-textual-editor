@@ -35,36 +35,37 @@
 	</licenses>
 
 	<properties>
-		<tycho-version>0.26.0</tycho-version>
-		<tycho-extras-version>0.26.0</tycho-extras-version>
+		<tycho-version>4.0.9</tycho-version>
+		<tycho-extras-version>4.0.9</tycho-extras-version>
+		<targetPlatform.repository>https://download.eclipse.org/cbi/updates/tpd/nightly/latest</targetPlatform.repository>
 		<targetPlatform.name>capella.target-definition.targetplatform</targetPlatform.name>
-		<converterApplication.name>fr.obeo.releng.targetplatform.targetPlatform.converter</converterApplication.name>
+		<converterApplication.name>org.eclipse.cbi.targetplatform.tpd.converter</converterApplication.name>
 		<sonar.skip>true</sonar.skip>
 	</properties>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.eclipse.tycho.extras</groupId>
-				<artifactId>tycho-eclipserun-plugin</artifactId>
-				<version>${tycho-extras-version}</version>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-eclipse-plugin</artifactId>
+				<version>${tycho-version}</version>
 				<configuration>
 					<repositories>
 						<repository>
 							<id>targetplatform-tp</id>
 							<layout>p2</layout>
-							<url>http://download.eclipse.org/releases/oxygen/201709271000</url>
+							<url>https://download.eclipse.org/releases/2022-12</url>
 						</repository>
 						<repository>
 							<id>targetplatform</id>
 							<layout>p2</layout>
-							<url>http://pdulth.github.io/fr.obeo.releng.targetplatform/p2/latest</url>
+							<url>${targetPlatform.repository}</url>
 						</repository>
 					</repositories>
 					<!-- Set dependencies to launch the application -->
 					<dependencies>
 						<dependency>
-							<artifactId>fr.obeo.releng.targetplatform-feature</artifactId>
+							<artifactId>org.eclipse.cbi.targetplatform.feature</artifactId>
 							<type>eclipse-feature</type>
 						</dependency>
 						<dependency>
@@ -72,16 +73,19 @@
 							<type>eclipse-feature</type>
 						</dependency>
 					</dependencies>
+					<executionEnvironment>JavaSE-11</executionEnvironment>
 				</configuration>
 				<executions>
 					<execution>
 						<id>generate.target</id>
 						<phase>validate</phase>
 						<configuration>
-							<executionEnvironment>JavaSE-1.8</executionEnvironment>
-							<applicationsArgs>
-								<args>-application ${converterApplication.name} ${targetPlatform.name}</args>
-							</applicationsArgs>
+							<applicationArgs>
+								<arg>-application</arg>
+								<arg>${converterApplication.name}</arg>
+								<arg>${targetPlatform.name}</arg>
+							</applicationArgs>
+							<executionEnvironment>JavaSE-11</executionEnvironment>
 						</configuration>
 						<goals>
 							<goal>eclipse-run</goal>
