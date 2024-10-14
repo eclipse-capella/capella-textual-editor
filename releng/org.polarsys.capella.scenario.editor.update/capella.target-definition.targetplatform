@@ -24,7 +24,7 @@ location capella-tests-master "https://download.eclipse.org/capella/core/updates
 	org.polarsys.capella.test.feature.feature.group
 }
 
-location "http://download.eclipse.org/releases/2021-06/" {
+location eclipse-2021-06 "http://download.eclipse.org/releases/2021-06/202106161001/" {
     org.eclipse.xtext.redist.feature.group
     org.eclipse.xtext.sdk.feature.group
 }
