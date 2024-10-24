@@ -11,6 +11,8 @@ pipeline {
 	environment {
 		BUILD_KEY = (github.isPullRequest() ? CHANGE_TARGET : BRANCH_NAME).replaceFirst(/^v/, '')
 		CAPELLA_PRODUCT_PATH = "${WORKSPACE}/capella/capella"
+		CAPELLA_CONFIGURATION_PATH = "${WORKSPACE}/capella/configuration"
+		VM_ARGS = "-Dlogback.configurationFile=${CAPELLA_CONFIGURATION_PATH}/logback.xml"
 		CAPELLA_BRANCH = 'master'
   	}
   
@@ -74,10 +76,10 @@ pipeline {
 	        		sh "chmod 755 ${CAPELLA_PRODUCT_PATH}"
 	        		sh "chmod 755 ${WORKSPACE}/capella/jre/bin/java"
 	        			        		
-	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", capella.getTestUpdateSiteURL("${CAPELLA_BRANCH}"), 'org.polarsys.capella.test.feature.feature.group')
-	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.feature.feature.group')
-	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "https://download.eclipse.org/releases/2023-03/", 'org.eclipse.xtext.sdk.feature.group')
-	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.tests.feature.feature.group')
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", capella.getTestUpdateSiteURL("${CAPELLA_BRANCH}"), 'org.polarsys.capella.test.feature.feature.group', "${VM_ARGS}")
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.feature.feature.group', "${VM_ARGS}")
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "https://download.eclipse.org/releases/2023-03/", 'org.eclipse.xtext.sdk.feature.group', "${VM_ARGS}")
+	        		eclipse.installFeature("${CAPELLA_PRODUCT_PATH}", "file:/${WORKSPACE}/releng/org.polarsys.capella.scenario.editor.site/target/repository/".replace("\\", "/"), 'org.polarsys.capella.scenario.editor.tests.feature.feature.group', "${VM_ARGS}")
 	       		}         
 	     	}
 	    }
