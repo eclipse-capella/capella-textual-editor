@@ -105,7 +105,7 @@ pipeline {
 			}
 			steps {
 				script {
-					sonar.runSonar("eclipse-capella_capella-textual-editor", "eclipse-capella/capella-textual-editor", 'sonarcloud-token-textual-editor')
+					sonar.runSonar("eclipse-capella_capella-textual-editor", "eclipse-capella/capella-textual-editor", 'sonarcloud-token-capella-textual-editor')
 				}
 			}
 		}
