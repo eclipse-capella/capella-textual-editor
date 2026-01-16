@@ -13,7 +13,7 @@ pipeline {
 		CAPELLA_PRODUCT_PATH = "${WORKSPACE}/capella/capella"
 		CAPELLA_CONFIGURATION_PATH = "${WORKSPACE}/capella/configuration"
 		VM_ARGS = "-Dlogback.configurationFile=${CAPELLA_CONFIGURATION_PATH}/logback.xml"
-		CAPELLA_BRANCH = 'master'
+		CAPELLA_BRANCH = '7.0.0'
   	}
   
   	stages {
