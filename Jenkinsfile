@@ -2,7 +2,11 @@ pipeline {
 	agent {
 		label 'migration'
 	}
-  
+
+	options {
+            buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '1'))
+        }
+	
 	tools {
 		maven 'apache-maven-latest'
 		jdk 'openjdk-jdk17-latest'
