@@ -24,7 +24,6 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.polarsys.capella.scenario.editor.dsl.tests.TextualScenarioInjectorProvider;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 
 @ExtendWith(InjectionExtension.class)
@@ -33,7 +32,7 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Model;
 public class TextualScenarioParsingTest {
   @Inject
   private ParseHelper<Model> parseHelper;
-  
+
   @Test
   public void loadModel() {
     try {

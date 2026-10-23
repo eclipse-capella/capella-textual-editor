@@ -43,9 +43,9 @@ import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 @SuppressWarnings("all")
 public class TextualScenarioHelper {
   private static final String TYPE_FE = "FE";
-  
+
   private static final String TYPE_CE = "CE";
-  
+
   /**
    * calculate the type of exchanges allowed to be declared in the text
    */
@@ -75,7 +75,7 @@ public class TextualScenarioHelper {
     }
     return null;
   }
-  
+
   /**
    * we return CE or FE or null in case we allow both or other type
    */
@@ -100,7 +100,7 @@ public class TextualScenarioHelper {
     }
     return null;
   }
-  
+
   /**
    * we return a list of available exchanges CE or FE
    */
@@ -119,7 +119,7 @@ public class TextualScenarioHelper {
     }
     return allowedTypes;
   }
-  
+
   public static String getExchangeType(final EObject exchangeElement) {
     if ((exchangeElement instanceof ComponentExchange)) {
       return TextualScenarioHelper.TYPE_CE;
@@ -130,7 +130,7 @@ public class TextualScenarioHelper {
     }
     return null;
   }
-  
+
   private static String getSourceOfMessage(final Message message) {
     String source = ((String) null);
     if ((message instanceof SequenceMessage)) {
@@ -142,7 +142,7 @@ public class TextualScenarioHelper {
     }
     return source;
   }
-  
+
   private static String getTargetOfMessage(final Message message) {
     String target = ((String) null);
     if ((message instanceof SequenceMessage)) {
@@ -154,11 +154,11 @@ public class TextualScenarioHelper {
     }
     return target;
   }
-  
+
   public static EList<Participant> participantsDefinedBefore(final Model rootModel) {
     return rootModel.getParticipants();
   }
-  
+
   public static ArrayList<String> participantsDefinedBeforeNames(final EObject element) {
     ArrayList<String> participantsNames = CollectionLiterals.<String>newArrayList();
     EObject container = TextualScenarioHelper.getModelContainer(element);
@@ -171,12 +171,12 @@ public class TextualScenarioHelper {
     }
     return participantsNames;
   }
-  
+
   public static boolean isParticipantKeyword(final String keywordValue) {
     List<String> participantsKeywords = EmbeddedEditorInstanceHelper.PARTICIPANT_KEYWORDS;
     return participantsKeywords.contains(keywordValue);
   }
-  
+
   /**
    * get all elements on the same level as modelContainer
    */
@@ -198,7 +198,7 @@ public class TextualScenarioHelper {
     }
     return CollectionLiterals.<Element>newArrayList();
   }
-  
+
   /**
    * get all elements from xtext
    */
@@ -214,7 +214,7 @@ public class TextualScenarioHelper {
     }
     return allElements;
   }
-  
+
   /**
    * get the root model that contains the object given as para
    */
@@ -227,7 +227,7 @@ public class TextualScenarioHelper {
     }
     return null;
   }
-  
+
   /**
    * get the logic container of an element
    * (the container can be the model or a combined fragment)

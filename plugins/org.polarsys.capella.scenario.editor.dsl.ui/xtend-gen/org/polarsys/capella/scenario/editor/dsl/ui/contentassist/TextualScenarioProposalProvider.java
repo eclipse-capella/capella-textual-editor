@@ -26,8 +26,8 @@ import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.eclipse.xtext.xbase.lib.ArrayExtensions;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.polarsys.capella.core.data.cs.ExchangeItemAllocation;
 import org.polarsys.capella.core.data.epbs.EPBSArchitecture;
 import org.polarsys.capella.core.data.fa.FunctionalExchange;
@@ -48,7 +48,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.Reference;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
-import org.polarsys.capella.scenario.editor.dsl.ui.contentassist.AbstractTextualScenarioProposalProvider;
 import org.polarsys.capella.scenario.editor.helper.DslConstants;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
@@ -72,49 +71,49 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     } else {
       final String[] messageKeywords = { "->", "->x", "->+", "->>", "->o", "o->" };
-      boolean _contains = ((List<String>)Conversions.doWrapArray(messageKeywords)).contains(keyword.getValue());
+      boolean _contains = ArrayExtensions.contains(messageKeywords, keyword.getValue());
       boolean _not = (!_contains);
       if (_not) {
         super.completeKeyword(keyword, contentAssistContext, acceptor);
       }
     }
   }
-  
+
   @Override
   public void completeActor_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.getExistingParticipants("actor", context, acceptor);
   }
-  
+
   @Override
   public void completeComponent_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.getExistingParticipants("component", context, acceptor);
   }
-  
+
   @Override
   public void completeConfigurationItem_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.getExistingParticipants("configuration_item", context, acceptor);
   }
-  
+
   @Override
   public void completeFunction_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.getExistingParticipants("function", context, acceptor);
   }
-  
+
   @Override
   public void completeActivity_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.getExistingParticipants("activity", context, acceptor);
   }
-  
+
   @Override
   public void completeEntity_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.getExistingParticipants("entity", context, acceptor);
   }
-  
+
   @Override
   public void completeRole_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.getExistingParticipants("role", context, acceptor);
   }
-  
+
   /**
    * propose a list with the participants (parts that can be created
    * if we have duplicated names in the list we can chose based on the id
@@ -135,7 +134,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     }
   }
-  
+
   /**
    * check if a participant is already used in the text
    */
@@ -148,28 +147,28 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
     return false;
   }
-  
+
   @Override
   public void completeSequenceMessage_Source(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.proposeParticipants(context, acceptor);
   }
-  
+
   @Override
   public void completeSequenceMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     acceptor.accept(this.createCompletionProposal("->", "-> : Sequence Message", null, context));
   }
-  
+
   @Override
   public void completeSequenceMessage_Target(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.proposeParticipants(context, acceptor);
   }
-  
+
   @Override
   public void completeSequenceMessage_Name(final EObject messageObj, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     SequenceMessage message = ((SequenceMessage) messageObj);
     this.createMessageProposal(message.getSource(), message.getTarget(), context, acceptor);
   }
-  
+
   public void createMessageProposal(final String source, final String target, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject _rootModel = context.getRootModel();
     Object scenarioExchangesType = TextualScenarioHelper.getScenarioAllowedExchangesType(((Model) _rootModel).getElements());
@@ -204,7 +203,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     }
   }
-  
+
   @Override
   public void completeCreateMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     if (((!EmbeddedEditorInstanceHelper.isFSScenario()) && (!EmbeddedEditorInstanceHelper.isESScenario()))) {
@@ -214,7 +213,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       acceptor.accept(this.createCompletionProposal("->+", "->+ : Create Message", null, context));
     }
   }
-  
+
   @Override
   public void completeCreateMessage_Target(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     String source = ((CreateMessage) model).getSource();
@@ -232,12 +231,12 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     }
   }
-  
+
   @Override
   public void completeCreateMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.completeCreateDeleteMessageName(model, context, acceptor);
   }
-  
+
   @Override
   public void completeDeleteMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     if (((!EmbeddedEditorInstanceHelper.isFSScenario()) && (!EmbeddedEditorInstanceHelper.isESScenario()))) {
@@ -247,7 +246,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       acceptor.accept(this.createCompletionProposal("->x", "->x : Delete Message", null, context));
     }
   }
-  
+
   @Override
   public void completeDeleteMessage_Target(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     String source = ((DeleteMessage) model).getSource();
@@ -265,7 +264,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     }
   }
-  
+
   @Override
   public void completeParticipantDeactivation_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject modelContainer = TextualScenarioHelper.getModelContainer(((ParticipantDeactivation) model));
@@ -282,7 +281,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     }
   }
-  
+
   public HashMap<String, Integer> createTimelinesHashMapToProposeForDeactivation(final ParticipantDeactivation participantDeactivation, final List<Element> elements, final HashMap<String, Integer> timelinesToPropose) {
     for (int i = 0; (i < elements.size()); i++) {
       boolean _equals = elements.get(i).equals(participantDeactivation);
@@ -295,7 +294,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
     return timelinesToPropose;
   }
-  
+
   public Integer updateHashMap(final HashMap<String, Integer> timelinesToPropose, final EObject element, final ParticipantDeactivation participantDeactivation) {
     Integer _xblockexpression = null;
     {
@@ -316,7 +315,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
     return _xblockexpression;
   }
-  
+
   /**
    * Update HashMap with the target of Sequence Message
    * If the hashMap already contains the target (as key), increment with 1 the actual value
@@ -343,7 +342,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
     return _xifexpression;
   }
-  
+
   /**
    * Update HashMap with the participant of ArmTimer Message
    * If the hashMap already contains the participant (as key), increment with 1 the actual value
@@ -370,7 +369,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
     return _xifexpression;
   }
-  
+
   /**
    * Update HashMap with the target of Found Message
    * If the hashMap already contains the target (as key), increment with 1 the actual value
@@ -397,7 +396,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
     return _xifexpression;
   }
-  
+
   /**
    * Update HashMap with the deactivation
    * Decrement with 1 the actual value of the deactivation name (timeline)
@@ -415,12 +414,12 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
     return _xifexpression;
   }
-  
+
   @Override
   public void completeDeleteMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.completeCreateDeleteMessageName(model, context, acceptor);
   }
-  
+
   @Override
   public void completeArmTimerMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     boolean _isFSScenario = EmbeddedEditorInstanceHelper.isFSScenario();
@@ -429,17 +428,17 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       acceptor.accept(this.createCompletionProposal("->>", "->> : Arm Timer", null, context));
     }
   }
-  
+
   @Override
   public void completeArmTimerMessage_Participant(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.proposeParticipants(context, acceptor);
   }
-  
+
   @Override
   public void completeArmTimerMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     acceptor.accept(this.createCompletionProposal("\"Arm Timer\"", "\"Arm Timer\"", null, context));
   }
-  
+
   @Override
   public void completeLostMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
@@ -447,24 +446,24 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       acceptor.accept(this.createCompletionProposal("->o", "->o : Lost Message", null, context));
     }
   }
-  
+
   @Override
   public void completeLostMessage_Source(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.proposeParticipants(context, acceptor);
   }
-  
+
   @Override
   public void completeLostMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     LostMessage message = ((LostMessage) model);
     this.createMessageProposal(message.getSource(), null, context, acceptor);
   }
-  
+
   @Override
   public void completeFoundMessage_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     FoundMessage message = ((FoundMessage) model);
     this.createMessageProposal(null, message.getTarget(), context, acceptor);
   }
-  
+
   @Override
   public void completeFoundMessage_Arrow(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
@@ -472,12 +471,12 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       acceptor.accept(this.createCompletionProposal("o->", "o-> : Found Message", null, context));
     }
   }
-  
+
   @Override
   public void completeFoundMessage_Target(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     this.proposeParticipants(context, acceptor);
   }
-  
+
   @Override
   public void completeStateFragment_Timeline(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject _rootModel = context.getRootModel();
@@ -490,7 +489,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
         this.createCompletionProposal(_plus_1, ((Participant) el).getName(), null, context));
     }
   }
-  
+
   @Override
   public void completeStateFragment_Keyword(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     ArrayList<String> keywords = CollectionLiterals.<String>newArrayList(DslConstants.STATE, DslConstants.MODE);
@@ -503,7 +502,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       acceptor.accept(this.createCompletionProposal(keyword, keyword, null, context));
     }
   }
-  
+
   @Override
   public void completeStateFragment_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     List<String> _availableStateFragments = EmbeddedEditorInstanceHelper.getAvailableStateFragments(
@@ -513,7 +512,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
         this.createCompletionProposal((("\"" + stateFragment) + "\""), stateFragment, null, context));
     }
   }
-  
+
   @Override
   public void completeCombinedFragment_Timelines(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject _rootModel = context.getRootModel();
@@ -530,7 +529,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     }
   }
-  
+
   @Override
   public void completeReference_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     List<String> referencedScenarios = EmbeddedEditorInstanceHelper.getReferencedScenariosName();
@@ -538,7 +537,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       acceptor.accept(this.createCompletionProposal((("\"" + referencedScenario) + "\""), referencedScenario, null, context));
     }
   }
-  
+
   @Override
   public void completeReference_Timelines(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject _rootModel = context.getRootModel();
@@ -557,7 +556,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     }
   }
-  
+
   /**
    * check if a message is already used in the text
    */
@@ -573,7 +572,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     }
     return false;
   }
-  
+
   public void completeCreateDeleteMessageName(final EObject model, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     SequenceMessageType message = ((SequenceMessageType) model);
     List<AbstractEventOperation> exchangesAvailable = EmbeddedEditorInstanceHelper.getExchangeMessages(message.getSource(), message.getTarget());
@@ -593,7 +592,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
       }
     }
   }
-  
+
   public void proposeParticipants(final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     EObject _rootModel = context.getRootModel();
     EList<Participant> _participantsDefinedBefore = TextualScenarioHelper.participantsDefinedBefore(((Model) _rootModel));
