@@ -48,7 +48,6 @@ import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessage;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.SequenceMessageType;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.StateFragment;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.TextualScenarioPackage;
-import org.polarsys.capella.scenario.editor.dsl.validation.AbstractTextualScenarioValidator;
 import org.polarsys.capella.scenario.editor.helper.DslConstants;
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
@@ -60,13 +59,13 @@ import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 @SuppressWarnings("all")
 public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
   public static final String INVALID_NAME = "invalidName";
-  
+
   public static final String DUPLICATED_NAME = "duplicatedName";
-  
+
   public static final String DUPLICATED_MESSAGES_NAME = "duplicatedMessageName";
-  
+
   public static final String SAME_SOURCE_AND_TARGET_ERROR = "Invalid element! Source and target must be different!";
-  
+
   @Check
   public void checkPartExists(final Participant participant) {
     boolean _contains = EmbeddedEditorInstanceHelper.getAvailablePartNames(participant.getKeyword()).contains(participant.getName());
@@ -80,7 +79,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   @Check
   public void checkParticipantKeywordIsValid(final Participant participant) {
     boolean _checkValidKeyword = EmbeddedEditorInstanceHelper.checkValidKeyword(participant.getKeyword());
@@ -93,7 +92,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         TextualScenarioPackage.Literals.PARTICIPANT__KEYWORD);
     }
   }
-  
+
   @Check
   public void checkMessagesExist(final SequenceMessageType message) {
     boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), message.getTarget()).contains(
@@ -109,7 +108,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       this.error(_plus_3, TextualScenarioPackage.Literals.MESSAGE__NAME);
     }
   }
-  
+
   @Check
   public void checkMessagesExist(final LostMessage message) {
     boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(message.getSource(), null).contains(
@@ -122,7 +121,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       this.error(_plus_1, TextualScenarioPackage.Literals.MESSAGE__NAME);
     }
   }
-  
+
   @Check
   public void checkMessagesExist(final FoundMessage message) {
     boolean _contains = EmbeddedEditorInstanceHelper.getExchangeNames(null, message.getTarget()).contains(
@@ -135,17 +134,17 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       this.error(_plus_1, TextualScenarioPackage.Literals.MESSAGE__NAME);
     }
   }
-  
+
   @Check
   public void checkSequenceMessagesExchangeType(final SequenceMessage sequenceMessage) {
     this.checkMessagesExchangeType(sequenceMessage);
   }
-  
+
   @Check
   public void checkSequenceMessagesExchangeType(final LostFoundMessage lostFoundMessage) {
     this.checkMessagesExchangeType(lostFoundMessage);
   }
-  
+
   /**
    * check that a CE (component exchange) and an FE (functional exchange) are not used in the same place
    */
@@ -164,7 +163,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   /**
    * Do not allow duplicated names, we have a combination of unique keyword + name
    * ex: not allowed: actor "A1", actor "A1"
@@ -189,12 +188,12 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   @Check
   public void checkDeactivateMessagesModel(final Model model) {
     this.checkDeactivateMessages(model, CollectionLiterals.<String>newLinkedList(), model.getElements());
   }
-  
+
   /**
    * Checks on deactivation keyword
    * If we encounter a deactivation on a target, check that we have a corresponding sequence message that can be deactivated
@@ -234,7 +233,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   public String showErrorDeactivateMessages(final ParticipantDeactivation deactivation, final EObject container, final LinkedList<String> messageTargets, final EReference refFeature, final int index) {
     String _xblockexpression = null;
     {
@@ -250,7 +249,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return _xblockexpression;
   }
-  
+
   /**
    * check that the messages we define are valid
    * if the message is inside a combined fragment, the messages must be between the defined timelines of the combined fragment
@@ -271,7 +270,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       return;
     }
   }
-  
+
   @Check
   public void checkContainedTimelinesMessages(final SequenceMessageType message) {
     EObject container = TextualScenarioHelper.getDirectContainer(message);
@@ -282,7 +281,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   public EObject getUpperContainerCombinedFragmentTimelines(final SequenceMessageType message, final CombinedFragment container) {
     if ((container.getTimelines().contains(message.getSource()) || container.getTimelines().contains(message.getTarget()))) {
       return container;
@@ -294,7 +293,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return null;
   }
-  
+
   public void checkTimelinesMessages(final SequenceMessageType message, final CombinedFragment container) {
     String _keyword = container.getKeyword();
     String _plus = ("Timeline not covered by this " + _keyword);
@@ -317,20 +316,20 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
     }
   }
-  
+
   @Check
   public void checkDeleteMessage(final DeleteMessage deleteMessage) {
     this.checkCreateOrDeleteCouldBeUsed();
     this.checkSameSourceAndTarget(deleteMessage);
   }
-  
+
   public void checkCreateOrDeleteCouldBeUsed() {
     if ((EmbeddedEditorInstanceHelper.isFSScenario() || (EmbeddedEditorInstanceHelper.isESScenario() && (!EmbeddedEditorInstanceHelper.isInteractionScenario())))) {
       this.error("Create or delete message can not be used in this diagram!", 
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__ARROW);
     }
   }
-  
+
   @Check
   public void checkArmTimer(final ArmTimerMessage armTimer) {
     boolean _isFSScenario = EmbeddedEditorInstanceHelper.isFSScenario();
@@ -345,7 +344,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         TextualScenarioPackage.Literals.ARM_TIMER_MESSAGE__PARTICIPANT);
     }
   }
-  
+
   @Check
   public void checkLostMessage(final LostMessage message) {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
@@ -361,7 +360,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         TextualScenarioPackage.Literals.LOST_MESSAGE__SOURCE);
     }
   }
-  
+
   @Check
   public void checkFoundMessage(final FoundMessage message) {
     boolean _isESScenario = EmbeddedEditorInstanceHelper.isESScenario();
@@ -377,7 +376,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         TextualScenarioPackage.Literals.FOUND_MESSAGE__TARGET);
     }
   }
-  
+
   public void checkSameSourceAndTarget(final SequenceMessageType message) {
     boolean _equals = message.getSource().equals(message.getTarget());
     if (_equals) {
@@ -387,7 +386,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__SOURCE);
     }
   }
-  
+
   /**
    * check if a timeline involved in a combined fragment was used after a delete message was already defined
    * on the previous lines on the same timeline
@@ -405,7 +404,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   /**
    * check if the timeline involved in a state fragment was used after a delete message was already defined
    * on the previous lines on the same timeline
@@ -424,7 +423,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return _xblockexpression;
   }
-  
+
   /**
    * check if a participant involved in arm timer was used after a delete message was already defined
    * on the previous lines on the same timeline
@@ -443,7 +442,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return _xblockexpression;
   }
-  
+
   /**
    * check if a participant involved in a lost message was used after a delete message was already defined
    * on the previous lines on the same timeline
@@ -462,7 +461,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return _xblockexpression;
   }
-  
+
   /**
    * check if a participant involved in a lost message was used after a delete message was already defined
    * on the previous lines on the same timeline
@@ -481,7 +480,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return _xblockexpression;
   }
-  
+
   /**
    * check if a sequence message source element was used after a delete message was already defined
    * on the previous lines on the same timeline
@@ -500,7 +499,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return _xblockexpression;
   }
-  
+
   /**
    * check if a sequence message target element was used after a delete message was already defined
    * on the previous lines on the same timeline
@@ -519,7 +518,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return _xblockexpression;
   }
-  
+
   public boolean checkElementAfterDelete(final EObject model, final EObject checkedElement, final String target, final EAttribute checkedAttribute, final int index) {
     List<Element> elements = TextualScenarioHelper.getContainerElements(model);
     for (final EObject element : elements) {
@@ -548,7 +547,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return false;
   }
-  
+
   /**
    * check if create message could be used
    */
@@ -561,7 +560,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       this.errorCreateMessage(createMessage.getTarget());
     }
   }
-  
+
   public boolean checkCreateMessageValid(final EObject model, final CreateMessage createMessage) {
     String target = createMessage.getTarget();
     List<Element> elements = TextualScenarioHelper.getContainerElements(model);
@@ -623,12 +622,12 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return true;
   }
-  
+
   public void errorCreateMessage(final String target) {
     this.error(String.format((("Target \"" + target) + "\" can not be used in a create message at this point! Other operations were already defined on this timeline.")), 
       TextualScenarioPackage.Literals.SEQUENCE_MESSAGE_TYPE__TARGET);
   }
-  
+
   /**
    * Validate a State Fragment
    */
@@ -662,7 +661,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
         String.format(_plus_3), TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME);
     }
   }
-  
+
   /**
    * Check that each withExecution message is closed by deactivation (on the proper target)
    */
@@ -675,7 +674,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       model.getElements());
     this.showErrorWithExecutionHasDeactivate(messageWithExecutionTargets, messageWithExecutionTargetsIndex, messageWithExecutionTargetsContainer);
   }
-  
+
   public void showErrorWithExecutionHasDeactivate(final LinkedList<String> messageWithExecutionTargets, final LinkedList<Integer> messageWithExecutionTargetsIndex, final LinkedList<EObject> messageWithExecutionTargetsContainer) {
     for (int i = 0; (i < messageWithExecutionTargets.size()); i++) {
       {
@@ -696,7 +695,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   public void checkWithExecutionHasDeactivate(final EObject container, final LinkedList<String> messageWithExecutionTargets, final LinkedList<Integer> messageWithExecutionTargetsIndex, final LinkedList<EObject> messageWithExecutionTargetsContainer, final List<Element> elements) {
     int index = 0;
     for (final Element obj : elements) {
@@ -739,7 +738,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   /**
    * Else keyword shall be put on a combined fragment that is ALT
    */
@@ -760,7 +759,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   /**
    * No keyword shall be put on a combined fragment that is not ALT
    */
@@ -779,7 +778,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   /**
    * Check that the combine fragments is allocated on valid timelines
    */
@@ -800,7 +799,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   /**
    * Check that a inner combine fragment has timelines over a subset in the parent combined fragment
    */
@@ -822,7 +821,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   @Check
   public void checkReference(final Reference reference) {
     HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
@@ -883,7 +882,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
       }
     }
   }
-  
+
   public EObject getContainerCombinedFragmentTimelines(final List<String> timelines, final CombinedFragment container) {
     if ((this.innerCombinedFragment(timelines, container) && 
       (!this.isASubset(timelines, ((CombinedFragment) container).getTimelines())))) {
@@ -896,7 +895,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return null;
   }
-  
+
   /**
    * check if the smallList is a subset in the containerList
    */
@@ -910,7 +909,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return true;
   }
-  
+
   /**
    * check if the smallList is a sublist in the containerList
    */
@@ -927,7 +926,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return false;
   }
-  
+
   /**
    * we consider that it is a inner combined fragment if it has some same timelines as the parent
    * added this due to the limitation that a paralel combined fragment in diagram, is represented inside the text
@@ -941,14 +940,14 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     }
     return false;
   }
-  
+
   public String getParticipantsMapKey(final Participant p) {
     String _name = p.getName();
     String _plus = (_name + ":");
     String _keyword = p.getKeyword();
     return (_plus + _keyword);
   }
-  
+
   public String getElementMapKey(final EObject element) {
     if ((element instanceof CombinedFragment)) {
       String _keyword = ((CombinedFragment)element).getKeyword();

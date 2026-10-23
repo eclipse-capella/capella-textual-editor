@@ -41,7 +41,7 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
   @Inject
   @Extension
   private TextualScenarioGrammarAccess _textualScenarioGrammarAccess;
-  
+
   protected void _format(final Model model, @Extension final IFormattableDocument document) {
     final ISemanticRegion begin = this.textRegionExtensions.regionFor(model).feature(TextualScenarioPackage.Literals.MODEL__BEGIN);
     final ISemanticRegion end = this.textRegionExtensions.regionFor(model).feature(TextualScenarioPackage.Literals.MODEL__END);
@@ -66,14 +66,14 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     };
     model.getElements().forEach(_function_4);
   }
-  
+
   protected void _format(final Message message, @Extension final IFormattableDocument document) {
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
     document.append(this.textRegionExtensions.regionFor(message).feature(TextualScenarioPackage.Literals.MESSAGE__NAME), _function);
   }
-  
+
   protected void _format(final Participant participant, @Extension final IFormattableDocument document) {
     final ISemanticRegion p = this.textRegionExtensions.regionFor(participant).feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME);
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
@@ -81,7 +81,7 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     };
     document.append(this.textRegionExtensions.regionFor(participant).feature(TextualScenarioPackage.Literals.PARTICIPANT__NAME), _function);
   }
-  
+
   protected void _format(final CombinedFragment fragment, @Extension final IFormattableDocument document) {
     this.format(fragment.getBlock(), document);
     final Consumer<Operand> _function = (Operand element) -> {
@@ -93,11 +93,11 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     };
     document.<CombinedFragment>append(fragment, _function_1);
   }
-  
+
   protected void _format(final Operand operand, @Extension final IFormattableDocument document) {
     this.format(operand.getBlock(), document);
   }
-  
+
   protected void _format(final Block block, @Extension final IFormattableDocument document) {
     final ISemanticRegion begin = this.textRegionExtensions.regionFor(block).feature(TextualScenarioPackage.Literals.BLOCK__BEGIN);
     final ISemanticRegion end = this.textRegionExtensions.regionFor(block).feature(TextualScenarioPackage.Literals.BLOCK__END);
@@ -114,14 +114,14 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     };
     block.getBlockElements().forEach(_function_2);
   }
-  
+
   protected void _format(final StateFragment stateFragment, @Extension final IFormattableDocument document) {
     final Procedure1<IHiddenRegionFormatter> _function = (IHiddenRegionFormatter it) -> {
       it.newLine();
     };
     document.append(this.textRegionExtensions.regionFor(stateFragment).feature(TextualScenarioPackage.Literals.STATE_FRAGMENT__NAME), _function);
   }
-  
+
   protected void _format(final Reference reference, @Extension final IFormattableDocument document) {
     final List<ISemanticRegion> features = this.textRegionExtensions.regionFor(reference).features(TextualScenarioPackage.Literals.REFERENCE__TIMELINES);
     int _size = features.size();
@@ -131,7 +131,7 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     };
     document.append(features.get(_minus), _function);
   }
-  
+
   public void format(final Object fragment, final IFormattableDocument document) {
     if (fragment instanceof XtextResource) {
       _format((XtextResource)fragment, document);
