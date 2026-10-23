@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ * Copyright (c) 2020, 2026 THALES GLOBAL SERVICES.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -288,7 +288,7 @@ public abstract class TextualScenarioTestFramework extends NonDirtyTestCase {
   protected void checkValidContent(String diagramName, String expectedContent) {
     String textEditorContent = EmbeddedEditorInstanceHelper.getModelContent();
     assertTrue(NLS.bind(invalidContentErrMsg, new String[] { diagramName, expectedContent, textEditorContent }),
-        expectedContent.replaceAll("\r\n", "\n").equals(textEditorContent));
+        expectedContent.replaceAll("\r\n", "\n").equals(textEditorContent.replaceAll("\r\n", "\n")));
   }
   
   /**
