@@ -12,11 +12,11 @@
  */
 package org.polarsys.capella.scenario.editor.dsl.ui.contentassist;
 
-import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -141,7 +141,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
   public boolean participantAlreadyInserted(final Model model, final String name, final String keyword) {
     EList<Participant> _participants = model.getParticipants();
     for (final Participant participant : _participants) {
-      if ((Objects.equal(participant.getKeyword(), keyword) && Objects.equal(participant.getName(), name))) {
+      if ((Objects.equals(participant.getKeyword(), keyword) && Objects.equals(participant.getName(), name))) {
         return true;
       }
     }
@@ -565,7 +565,7 @@ public class TextualScenarioProposalProvider extends AbstractTextualScenarioProp
     for (final Element element : _elements) {
       if ((element instanceof SequenceMessage)) {
         SequenceMessage message = ((SequenceMessage) element);
-        if (((Objects.equal(message.getName(), name) && Objects.equal(message.getSource(), source)) && Objects.equal(message.getTarget(), target))) {
+        if (((Objects.equals(message.getName(), name) && Objects.equals(message.getSource(), source)) && Objects.equals(message.getTarget(), target))) {
           return true;
         }
       }

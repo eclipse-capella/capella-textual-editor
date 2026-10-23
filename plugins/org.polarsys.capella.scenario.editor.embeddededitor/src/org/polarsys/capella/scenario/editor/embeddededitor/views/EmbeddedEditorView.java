@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 THALES GLOBAL SERVICES.
+ * Copyright (c) 2020, 2026 THALES GLOBAL SERVICES.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -11,8 +11,6 @@
  *    Thales - initial API and implementation
  *******************************************************************************/
 package org.polarsys.capella.scenario.editor.embeddededitor.views;
-
-import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -40,6 +38,8 @@ import org.polarsys.capella.scenario.editor.embeddededitor.listener.EmbeddedEdit
 import org.polarsys.capella.scenario.editor.helper.EmbeddedEditorInstanceHelper;
 
 import com.google.inject.Injector;
+
+import jakarta.inject.Inject;
 
 /*
  * EmbeddedEditorView will embed the xtext editor of the scenario
