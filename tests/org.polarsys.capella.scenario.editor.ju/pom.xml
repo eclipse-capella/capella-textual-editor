@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2020 THALES GLOBAL SERVICES.
+  Copyright (c) 2020, 2026 THALES GLOBAL SERVICES.
   
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License 2.0 which is available at
@@ -22,7 +22,7 @@
 		<version>0.12.0-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
-	
+
 	<groupId>org.polarsys</groupId>
 	<artifactId>org.polarsys.capella.scenario.editor.ju</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
@@ -32,7 +32,7 @@
 		<!-- Skip feature modules in Sonar analysis -->
 		<sonar.skip>true</sonar.skip>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -44,9 +44,11 @@
 					<application>${capella-application-id}</application>
 					<useUIHarness>true</useUIHarness>
 					<useUIThread>true</useUIThread>
-					<testClass>org.polarsys.capella.scenario.editor.ju.ScenarioEditorTestSuite</testClass>
+					<testClass>
+						org.polarsys.capella.scenario.editor.ju.ScenarioEditorTestSuite</testClass>
 					<dependencies>
-						<!-- see https://bugs.eclipse.org/bugs/show_bug.cgi?id=462862 -->
+						<!-- see
+						https://bugs.eclipse.org/bugs/show_bug.cgi?id=462862 -->
 						<dependency>
 							<type>eclipse-plugin</type>
 							<artifactId>org.eclipse.equinox.event</artifactId>

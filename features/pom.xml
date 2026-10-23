@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2020 THALES GLOBAL SERVICES.
+  Copyright (c) 2020, 2026 THALES GLOBAL SERVICES.
   
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License 2.0 which is available at
@@ -13,7 +13,8 @@
 -->
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.polarsys</groupId>
@@ -28,10 +29,10 @@
 		<relativePath>../</relativePath>
 	</parent>
 
-    <properties>
-      <sonar.skip>true</sonar.skip>
-    </properties>
-    
+	<properties>
+		<sonar.skip>true</sonar.skip>
+	</properties>
+
 	<modules>
 		<module>org.polarsys.capella.scenario.editor.feature</module>
 		<module>org.polarsys.capella.scenario.editor.tests.feature</module>
