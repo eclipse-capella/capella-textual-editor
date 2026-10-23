@@ -24,6 +24,7 @@ import org.eclipse.xtext.formatting2.regionaccess.ISemanticRegion;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.lib.XbaseGenerated;
 import org.polarsys.capella.scenario.editor.dsl.services.TextualScenarioGrammarAccess;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.Block;
 import org.polarsys.capella.scenario.editor.dsl.textualScenario.CombinedFragment;
@@ -132,6 +133,7 @@ public class TextualScenarioFormatter extends AbstractFormatter2 {
     document.append(features.get(_minus), _function);
   }
 
+  @XbaseGenerated
   public void format(final Object fragment, final IFormattableDocument document) {
     if (fragment instanceof XtextResource) {
       _format((XtextResource)fragment, document);

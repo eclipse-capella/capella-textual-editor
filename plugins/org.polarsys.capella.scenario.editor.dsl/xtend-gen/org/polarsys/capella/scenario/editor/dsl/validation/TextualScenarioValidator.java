@@ -12,12 +12,12 @@
  */
 package org.polarsys.capella.scenario.editor.dsl.validation;
 
-import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
@@ -748,9 +748,9 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     if ((_eContainer instanceof CombinedFragment)) {
       EObject _eContainer_1 = operand.eContainer();
       CombinedFragment combinedFragment = ((CombinedFragment) _eContainer_1);
-      if ((Objects.equal(combinedFragment.getKeyword(), "alt") && (!combinedFragment.getOperands().isEmpty()))) {
+      if ((Objects.equals(combinedFragment.getKeyword(), "alt") && (!combinedFragment.getOperands().isEmpty()))) {
         String _keyword = operand.getKeyword();
-        boolean _notEquals = (!Objects.equal(_keyword, "else"));
+        boolean _notEquals = (!Objects.equals(_keyword, "else"));
         if (_notEquals) {
           this.error(
             "Expected \'else\' keyword!", 
@@ -769,7 +769,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     if ((_eContainer instanceof CombinedFragment)) {
       EObject _eContainer_1 = operand.eContainer();
       CombinedFragment combinedFragment = ((CombinedFragment) _eContainer_1);
-      if (((!Objects.equal(combinedFragment.getKeyword(), "alt")) && (!combinedFragment.getOperands().isEmpty()))) {
+      if (((!Objects.equals(combinedFragment.getKeyword(), "alt")) && (!combinedFragment.getOperands().isEmpty()))) {
         if (((operand.getKeyword() != null) || (!operand.getKeyword().isEmpty()))) {
           this.error(
             "Unexpected keyword!", 
@@ -830,7 +830,7 @@ public class TextualScenarioValidator extends AbstractTextualScenarioValidator {
     for (final String timeline : _timelines) {
       {
         Integer _get = hashMap.get(timeline);
-        boolean _equals = Objects.equal(_get, null);
+        boolean _equals = Objects.equals(_get, null);
         if (_equals) {
           hashMap.put(timeline, Integer.valueOf(1));
         } else {
