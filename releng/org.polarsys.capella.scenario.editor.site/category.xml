@@ -6,6 +6,6 @@
    <feature id="org.polarsys.capella.scenario.editor.tests.feature">
       <category name="org.polarsys.capella.scenario.editor.tests"/>
    </feature>
-   <category-def name="org.polarsys.capella.scenario.editor" label="TextualEditor"/>
-   <category-def name="org.polarsys.capella.scenario.editor.tests" label="Tests"/>
+   <category-def name="org.polarsys.capella.scenario.editor" label="Capella Textual Scenario Editor"/>
+   <category-def name="org.polarsys.capella.scenario.editor.tests" label="Capella Textual Scenario Editor Tests"/>
 </site>
