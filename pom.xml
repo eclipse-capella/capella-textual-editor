@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2020 THALES GLOBAL SERVICES.
+  Copyright (c) 2020, 2026 THALES GLOBAL SERVICES.
   
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License 2.0 which is available at
@@ -12,33 +12,35 @@
        Thales - initial API and implementation
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <name>Capella Textual Editor Addon</name>
-  <groupId>org.polarsys</groupId>
-  <artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
-  <version>0.12.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
 
-  <properties>
+	<name>Capella Textual Editor Addon</name>
+	<groupId>org.polarsys</groupId>
+	<artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
+	<version>0.12.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	    <tycho-version>4.0.9</tycho-version>
-	    <tycho-extras-version>4.0.9</tycho-extras-version>
+		<tycho-version>4.0.9</tycho-version>
+		<tycho-extras-version>4.0.9</tycho-extras-version>
 		<antrun-version>3.0.0</antrun-version>
 		<rcptt-version>2.5.3</rcptt-version>
 		<rcptt-runner-version>2.5.3</rcptt-runner-version>
 
-		<tycho.scmUrl>scm:git:https://github.com/eclipse-capella/capella-textual-editor.git</tycho.scmUrl>
+		<tycho.scmUrl>
+			scm:git:https://github.com/eclipse-capella/capella-textual-editor.git</tycho.scmUrl>
 
 		<!-- for junit -->
 		<capella-product-id>org.polarsys.capella.rcp.product</capella-product-id>
-		<capella-application-id>org.polarsys.capella.core.platform.sirius.ui.perspective.id</capella-application-id>
+		<capella-application-id>
+			org.polarsys.capella.core.platform.sirius.ui.perspective.id</capella-application-id>
 		<tycho.testArgLine>-Xms256m -Xmx1024m</tycho.testArgLine>
 		<tests.ignoreFailures>true</tests.ignoreFailures>
 
@@ -102,9 +104,11 @@
 					<target>
 						<artifact>
 							<groupId>org.polarsys</groupId>
-							<artifactId>org.polarsys.capella.scenario.editor.parent</artifactId>
+							<artifactId>
+								org.polarsys.capella.scenario.editor.parent</artifactId>
 							<version>0.12.0-SNAPSHOT</version>
-							<classifier>releng/org.polarsys.capella.scenario.editor.update/capella.target-definition</classifier>
+							<classifier>
+								releng/org.polarsys.capella.scenario.editor.update/capella.target-definition</classifier>
 						</artifact>
 					</target>
 					<environments>
@@ -137,17 +141,20 @@
 				<artifactId>tycho-p2-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<executions>
-					<!-- These two should allow us not to get "duplicate artifact" warnings 
+					<!-- These two should allow us not to get "duplicate
+					artifact" warnings 
 						during the build. -->
 					<execution>
-						<!-- Don't attach (default) metadata before the source-feature execution. -->
+						<!-- Don't attach (default) metadata before the
+						source-feature execution. -->
 						<id>default-p2-metadata-default</id>
 						<configuration>
 							<attachP2Metadata>false</attachP2Metadata>
 						</configuration>
 					</execution>
 					<execution>
-						<!-- Do attach metadata after the source-feature execution. -->
+						<!-- Do attach metadata after the source-feature
+						execution. -->
 						<id>attach-p2-metadata</id>
 						<goals>
 							<goal>p2-metadata</goal>
@@ -184,7 +191,8 @@
 						</repositories>
 						<dependencies>
 							<dependency>
-								<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
+								<artifactId>
+									org.eclipse.equinox.p2.repository.tools</artifactId>
 								<type>eclipse-plugin</type>
 							</dependency>
 							<dependency>
@@ -192,7 +200,8 @@
 								<type>eclipse-feature</type>
 							</dependency>
 							<dependency>
-								<artifactId>org.eclipse.equinox.p2.extras.feature</artifactId>
+								<artifactId>
+									org.eclipse.equinox.p2.extras.feature</artifactId>
 								<type>eclipse-feature</type>
 							</dependency>
 							<dependency>
@@ -212,11 +221,14 @@
 							<configuration>
 								<applicationArgs>
 									<arg>-application</arg>
-									<arg>org.eclipse.equinox.p2.repository.repo2runnable</arg>
+									<arg>
+										org.eclipse.equinox.p2.repository.repo2runnable</arg>
 									<arg>-source</arg>
-									<arg>file:${project.build.directory}/repository</arg>
+									<arg>
+										file:${project.build.directory}/repository</arg>
 									<arg>-destination</arg>
-									<arg>${project.build.directory}/${packagedAddonName}/eclipse</arg>
+									<arg>
+										${project.build.directory}/${packagedAddonName}/eclipse</arg>
 								</applicationArgs>
 							</configuration>
 						</execution>
@@ -245,25 +257,29 @@
 											dir="${project.build.directory}/${packagedAddonName}/eclipse/features"
 											includes="**/META-INF/**" />
 									</delete>
-																		
-									<!-- delete test feature (not included in dropins) -->
+
+									<!-- delete test feature (not included in
+									dropins) -->
 									<delete includeemptydirs="true">
 										<fileset
 											dir="${project.build.directory}/${packagedAddonName}/eclipse/features"
-											includes="**/org.polarsys.capella.scenario.editor.tests*/**" />													  
+											includes="**/org.polarsys.capella.scenario.editor.tests*/**" />
 									</delete>
-									
-									<!-- delete test plugin (not included in dropins) -->
+
+									<!-- delete test plugin (not included in
+									dropins) -->
 									<delete includeemptydirs="true">
 										<fileset
 											dir="${project.build.directory}/${packagedAddonName}/eclipse/plugins"
-											includes="**/org.polarsys.capella.scenario.editor.ju*/**" />													  
+											includes="**/org.polarsys.capella.scenario.editor.ju*/**" />
 									</delete>
-									
+
 									<zip
 										destfile="${project.build.directory}/${packagedAddonName}-dropins-${unqualifiedVersion}.${buildQualifier}.zip">
-										<fileset dir="${project.build.directory}">
-											<include name="${packagedAddonName}/**" />
+										<fileset
+											dir="${project.build.directory}">
+											<include
+												name="${packagedAddonName}/**" />
 										</fileset>
 									</zip>
 								</target>
@@ -284,7 +300,8 @@
 								<goal>archive-repository</goal>
 							</goals>
 							<configuration>
-								<finalName>${packagedAddonName}-updateSite-${unqualifiedVersion}.${buildQualifier}</finalName>
+								<finalName>
+									${packagedAddonName}-updateSite-${unqualifiedVersion}.${buildQualifier}</finalName>
 							</configuration>
 						</execution>
 					</executions>
@@ -318,17 +335,17 @@
 
 		</pluginManagement>
 	</build>
-	
-  <profiles>
-  	<profile>
-		<id>sign</id>
-		<activation>
-			<property>
+
+	<profiles>
+		<profile>
+			<id>sign</id>
+			<activation>
+				<property>
 					<name>BUILD_SIGN</name>
 					<value>true</value>
-			</property>
-		</activation>
-		<build>
+				</property>
+			</activation>
+			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.eclipse.cbi.maven.plugins</groupId>
@@ -349,7 +366,8 @@
 			<pluginRepositories>
 				<pluginRepository>
 					<id>cbi</id>
-					<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
+					<url>
+						https://repo.eclipse.org/content/repositories/cbi-releases/</url>
 					<releases>
 						<enabled>true</enabled>
 					</releases>
@@ -359,17 +377,17 @@
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
-  </profiles>
-  <pluginRepositories>
-	<pluginRepository>
-		<id>cbi</id>
-		<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
-		<releases>
+	</profiles>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>cbi</id>
+			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
+			<releases>
 				<enabled>true</enabled>
-		</releases>
-		<snapshots>
-			<enabled>false</enabled>
-		</snapshots>
-	</pluginRepository>
-  </pluginRepositories>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
