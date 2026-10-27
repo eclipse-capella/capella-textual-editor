@@ -29,9 +29,9 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.xtext.redist"
-         version="0.0.0"/>
+   <requires>
+      <import feature="org.eclipse.xtext.redist"/>
+   </requires>
 
    <plugin
          id="org.polarsys.capella.scenario.editor"
